@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="16dp"
+    android:paddingBottom="300dp"
+    android:clipToPadding="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- My Profile Image -->
@@ -97,34 +99,87 @@
         app:layout_constraintEnd_toStartOf="@id/partner_search_filter_down_ic"
         app:layout_constraintTop_toTopOf="@id/partner_search_filtering_ic"
         app:layout_constraintBottom_toBottomOf="@id/partner_search_filtering_ic"
-        android:text="@string/partner_search_filter"/>
+        android:text="@string/partner_search_filter"
+        android:textSize="11sp"
+        android:fontFamily="@font/applesdgothicneoregular"/>
 
-    <GridLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/partner_search_recommended_partner_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:columnCount="2"
-        android:rowCount="5"
-        app:layout_constraintStart_toStartOf="@id/partner_search_recommended_partner_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/partner_search_filtering_ic"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"/>
 
-        <ImageView
-            android:id="@+id/partner_search_recommended_partner_iv_1"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/partner_profile_img_1"/>
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/partner_search_filtering_ic"-->
+<!--        android:layout_marginTop="20dp">-->
+<!--        <ImageView-->
+<!--            android:id="@+id/partner_search_recommended_partner_iv_1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/partner_search_recommended_partner_iv_2"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            android:src="@drawable/partner_profile_img_1"/>-->
+<!--        -->
+<!--        <TextView-->
+<!--            android:id="@+id/partner_search_recommended_partner_location_tv_1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="18dp"-->
+<!--            android:text="@string/partner_search_mapo_gu"-->
+<!--            android:textSize="8sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:includeFontPadding="true"-->
+<!--            android:paddingHorizontal="10dp"-->
+<!--            android:fontFamily="@font/applesdgothicneoregular"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/partner_search_recommended_partner_iv_1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/partner_search_recommended_partner_iv_1"-->
+<!--            android:layout_marginStart="6dp"-->
+<!--            android:layout_marginBottom="6dp"-->
+<!--            android:background="@drawable/rounded_rectangle"/>-->
 
-        <ImageView
-            android:id="@+id/partner_search_recommended_partner_iv_2"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginStart="16dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/partner_profile_img_2"/>
+<!--        <TextView-->
+<!--            android:id="@+id/partner_search_recommended_partner_ball_capability_tv_1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="18dp"-->
+<!--            android:text="@string/partner_search_ball_capability_1"-->
+<!--            android:textSize="8sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:includeFontPadding="true"-->
+<!--            android:paddingHorizontal="10dp"-->
+<!--            android:fontFamily="@font/applesdgothicneoregular"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintTop_toTopOf="@id/partner_search_recommended_partner_location_tv_1"-->
+<!--            app:layout_constraintStart_toEndOf="@id/partner_search_recommended_partner_location_tv_1"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:background="@drawable/rounded_rectangle"/>-->
 
-    </GridLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/patner_search_recommended_partner_id_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=""-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/partner_search_recommended_partner_iv_2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toEndOf="@id/partner_search_recommended_partner_iv_1"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            app:layout_constraintHorizontal_weight="1"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:src="@drawable/partner_profile_img_2"/>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

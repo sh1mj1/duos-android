@@ -20,7 +20,7 @@
         <item name="windowNoTitle">true</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/color_03</item>
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
     <style name="Widget.BottomNavigationView"
