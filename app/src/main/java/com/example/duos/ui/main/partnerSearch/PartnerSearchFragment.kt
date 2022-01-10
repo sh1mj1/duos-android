@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.partnerSearch
 
+import android.util.TypedValue
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.RecommendedPartner
@@ -30,6 +31,24 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         val partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
+
+
+        var marginStart : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
+        var marginTop : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20F, context?.resources?.displayMetrics).toInt()
+        var marginBottom : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
+
+        binding.partnerSearchRecommendedPartnerRv.addItemDecoration(GridSpacingItemDecoration(marginStart, marginTop, marginBottom))
+
+//        var bottomNavigationBarHeight : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 72F, context?.resources?.displayMetrics).toInt()   // 72는 bottomNavigationBar 높이
+//
+//        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+//        var deviceNavigationBarHeight = 0
+//        if (resourceId > 0) {
+//            deviceNavigationBarHeight = resources.getDimensionPixelSize(resourceId)
+//        }
+//        var deviceHeight = deviceNavigationBarHeight + bottomNavigationBarHeight
+//        binding.partnerSearchLayout.setPadding(0,0,0,deviceHeight)
 
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object:PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {

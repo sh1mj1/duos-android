@@ -42,6 +42,7 @@ class PartnerSearchRVGridAdapter(private val recommendedPartnerList: ArrayList<R
     inner class ViewHolder(val binding: RecommendedPartnerGridItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(recommendedPartner : RecommendedPartner){
             binding.partnerSearchRecommendedPartnerIv.setImageResource(recommendedPartner.profileImg!!)
+            binding.partnerSearchRecommendedPartnerIv.width
             binding.partnerSearchRecommendedPartnerLocationTv.text = recommendedPartner.location
             binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = recommendedPartner.ballCapacity
             binding.partnerSearchRecommendedPartnerIdTv.text = recommendedPartner.id
