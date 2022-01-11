@@ -14,6 +14,8 @@ com/example/duos/databinding/FragmentMypageBinding.java
  com.example.duos.databinding.FragmentMypageBinding
 com/example/duos/databinding/ActivityMainBinding.java
  com.example.duos.databinding.ActivityMainBinding
+com/example/duos/databinding/ItemRecommendedPartnerGridBinding.java
+ com.example.duos.databinding.ItemRecommendedPartnerGridBinding
 com/example/duos/databinding/ActivitySignupBinding.java
  com.example.duos.databinding.ActivitySignupBinding
 com/example/duos/databinding/FragmentPartnerSearchBinding.java
@@ -22,7 +24,5 @@ com/example/duos/databinding/FragmentChatBinding.java
  com.example.duos.databinding.FragmentChatBinding
 com/example/duos/databinding/ActivityLoginBinding.java
  com.example.duos.databinding.ActivityLoginBinding
-com/example/duos/databinding/RecommendedPartnerGridItemBinding.java
- com.example.duos.databinding.RecommendedPartnerGridItemBinding
 com/example/duos/databinding/ActivitySplashBinding.java
  com.example.duos.databinding.ActivitySplashBinding

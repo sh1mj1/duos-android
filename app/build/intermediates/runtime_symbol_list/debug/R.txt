@@ -2245,6 +2245,7 @@ int id partner_search_recommended_partner_ball_capability_tv 0x7f090150
 int id partner_search_recommended_partner_comma_tv 0x7f090151
 int id partner_search_recommended_partner_id_tv 0x7f090152
 int id partner_search_recommended_partner_iv 0x7f090153
+int id partner_search_recommended_partner_layout 0x7f0901f7
 int id partner_search_recommended_partner_location_tv 0x7f090154
 int id partner_search_recommended_partner_review_count_left_bracket_tv 0x7f090155
 int id partner_search_recommended_partner_review_count_right_bracket_tv 0x7f090156
@@ -2499,6 +2500,7 @@ int layout fragment_chat 0x7f0c0030
 int layout fragment_friend_list 0x7f0c0031
 int layout fragment_mypage 0x7f0c0032
 int layout fragment_partner_search 0x7f0c0033
+int layout item_recommended_partner_grid 0x7f0c0079
 int layout material_chip_input_combo 0x7f0c0034
 int layout material_clock_display 0x7f0c0035
 int layout material_clock_display_divider 0x7f0c0036
@@ -2548,7 +2550,6 @@ int layout notification_template_custom_big 0x7f0c0061
 int layout notification_template_icon_group 0x7f0c0062
 int layout notification_template_part_chronometer 0x7f0c0063
 int layout notification_template_part_time 0x7f0c0064
-int layout recommended_partner_grid_item 0x7f0c0065
 int layout select_dialog_item_material 0x7f0c0066
 int layout select_dialog_multichoice_material 0x7f0c0067
 int layout select_dialog_singlechoice_material 0x7f0c0068

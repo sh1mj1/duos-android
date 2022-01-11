@@ -16,6 +16,10 @@
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_partner_search.xml"
     },
     {
+        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\item_recommended_partner_grid.xml",
+        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\item_recommended_partner_grid.xml"
+    },
+    {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_chat.xml",
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_chat.xml"
     },

@@ -16,28 +16,24 @@
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_friend_list.xml"
     },
     {
-        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
-    },
-    {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_chat.xml.flat",
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_chat.xml"
+    },
+    {
+        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_rounded_rectangle.xml.flat",
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\rounded_rectangle.xml"
     },
     {
-        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_recommended_partner_grid_item.xml.flat",
-        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\recommended_partner_grid_item.xml"
+        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_partner_search.xml.flat",
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_partner_search.xml"
-    },
-    {
-        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_navi_partner_selector.xml.flat",
@@ -46,6 +42,10 @@
     {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_friend_selected.xml.flat",
         "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\selector_navi_friend_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_item_recommended_partner_grid.xml.flat",
+        "source": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\item_recommended_partner_grid.xml"
     },
     {
         "merged": "C:\\Users\\hj\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\navigation_navigation.xml.flat",

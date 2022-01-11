@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.RecommendedPartner
-import com.example.duos.databinding.RecommendedPartnerGridItemBinding
+import com.example.duos.databinding.ItemRecommendedPartnerGridBinding
 
-class PartnerSearchRVGridAdapter(private val recommendedPartnerList: ArrayList<RecommendedPartner>): RecyclerView.Adapter<PartnerSearchRVGridAdapter.ViewHolder>() {
+class PartnerSearchRVGridAdapter(private val recommendedPartnerList: ArrayList<RecommendedPartner>, private var width: Int): RecyclerView.Adapter<PartnerSearchRVGridAdapter.ViewHolder>() {
     //private val recommendedPartners = ArrayList<RecommendedPartner>()
 
     // 클릭 인터페이스 정의
@@ -22,7 +22,7 @@ class PartnerSearchRVGridAdapter(private val recommendedPartnerList: ArrayList<R
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val binding: RecommendedPartnerGridItemBinding = RecommendedPartnerGridItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        val binding: ItemRecommendedPartnerGridBinding = ItemRecommendedPartnerGridBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
     }
 
@@ -39,10 +39,10 @@ class PartnerSearchRVGridAdapter(private val recommendedPartnerList: ArrayList<R
 //        notifyDataSetChanged()
 //    }
 
-    inner class ViewHolder(val binding: RecommendedPartnerGridItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemRecommendedPartnerGridBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(recommendedPartner : RecommendedPartner){
             binding.partnerSearchRecommendedPartnerIv.setImageResource(recommendedPartner.profileImg!!)
-            binding.partnerSearchRecommendedPartnerIv.width
+            binding.partnerSearchRecommendedPartnerLayout.layoutParams.width = width
             binding.partnerSearchRecommendedPartnerLocationTv.text = recommendedPartner.location
             binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = recommendedPartner.ballCapacity
             binding.partnerSearchRecommendedPartnerIdTv.text = recommendedPartner.id

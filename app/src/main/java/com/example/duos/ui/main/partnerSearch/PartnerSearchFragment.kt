@@ -1,11 +1,15 @@
 package com.example.duos.ui.main.partnerSearch
 
+import android.content.res.Resources
+import android.util.DisplayMetrics
+import android.util.Log
 import android.util.TypedValue
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.RecommendedPartner
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.MainActivity
 
 class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate) {
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
@@ -28,11 +32,13 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         binding.partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
-        val partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+        val deviceWidthPixels = resources.displayMetrics.widthPixels
+        var space : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
+        val widthPixels = (deviceWidthPixels - space * 3) / 2
+
+        val partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas, widthPixels)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-
-
 
         var marginStart : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
         var marginTop : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20F, context?.resources?.displayMetrics).toInt()
