@@ -1,0 +1,30 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_navgraph"
+    app:startDestination="@id/menu_partnerFragment">
+
+    <fragment
+        android:id="@+id/menu_partnerFragment"
+        android:name="com.example.duos.ui.main.partnerSearch.PartnerSearchFragment"
+        android:label="homeFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_friendFragment"
+        android:name="com.example.duos.ui.main.chat.ChatFragment"
+        android:label="searchFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_chatFragment"
+        android:name="com.example.duos.ui.main.friendList.FriendListFragment"
+        android:label="matchFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_myPageFragment"
+        android:name="com.example.duos.ui.main.mypage.MypageFragment"
+        android:label="mypageFragment">
+    </fragment>
+</navigation>

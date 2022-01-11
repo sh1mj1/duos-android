@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_partnerFragment"
+        android:enabled="true"
+        android:title="@string/menu_partner"
+        android:icon="@drawable/navi_partner_selector" />
+    <item
+        android:id="@+id/menu_friendFragment"
+        android:enabled="true"
+        android:title="@string/menu_friend"
+        android:icon="@drawable/navi_friend_selector"/>
+    <item
+        android:id="@+id/menu_chatFragment"
+        android:enabled="true"
+        android:title="@string/menu_chat"
+        android:icon="@drawable/navi_chat_selector"/>
+    <item
+        android:id="@+id/menu_myPageFragment"
+        android:enabled="true"
+        android:title="@string/menu_mypage"
+        android:icon="@drawable/navi_mypage_selector"/>
+</menu>

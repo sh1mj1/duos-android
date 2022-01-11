@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- 공통 -->
+    <color name="primary">#34A9AB</color>
+    <color name="primary_70">#B334A9AB</color>
+    <color name="transparent">#00ff0000</color>
+    <color name="form_error">#F44336</color>
+
+    <!-- DUOS Color -->
+    <color name="color_01">#292929</color>
+    <color name="color_02">#AFAFAF</color>
+    <color name="dark_gray">#727272</color>
+    <color name="color_05">#FFFFFF</color>
+    <color name="color_06">#000000</color>
+    <color name="color_07">#B4B4B4</color>
+    <color name="gray">#7D7D7D</color>
+    <color name="color_09">#F4F4F4</color>
+    <color name="color_star">#FFCC39</color>
+    <color name="color_line">#D9D9D9</color>
+    <color name="color_3_1">#DFF4F4</color>
+
+
+</resources>
