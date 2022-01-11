@@ -1,6 +1,3 @@
-com/example/duos/data/local/AppDatabase_Impl.java
- com.example.duos.data.local.AppDatabase_Impl
- com.example.duos.data.local.AppDatabase_Impl$1
 com/example/duos/data/local/UserDao_Impl.java
  com.example.duos.data.local.UserDao_Impl
  com.example.duos.data.local.UserDao_Impl$1
@@ -8,6 +5,9 @@ com/example/duos/data/local/UserDao_Impl.java
  com.example.duos.data.local.UserDao_Impl$3
 com/example/duos/BuildConfig.java
  com.example.duos.BuildConfig
+com/example/duos/data/local/AppDatabase_Impl.java
+ com.example.duos.data.local.AppDatabase_Impl
+ com.example.duos.data.local.AppDatabase_Impl$1
 com/example/duos/databinding/FragmentFriendListBinding.java
  com.example.duos.databinding.FragmentFriendListBinding
 com/example/duos/databinding/FragmentMypageBinding.java
@@ -24,5 +24,7 @@ com/example/duos/databinding/FragmentChatBinding.java
  com.example.duos.databinding.FragmentChatBinding
 com/example/duos/databinding/ActivityLoginBinding.java
  com.example.duos.databinding.ActivityLoginBinding
+com/example/duos/databinding/ActivityPartnerFilterBinding.java
+ com.example.duos.databinding.ActivityPartnerFilterBinding
 com/example/duos/databinding/ActivitySplashBinding.java
  com.example.duos.databinding.ActivitySplashBinding

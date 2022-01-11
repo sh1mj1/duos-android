@@ -146,6 +146,8 @@ attr badgeGravity
 attr badgeStyle
 attr badgeTextColor
 attr barLength
+attr bar_color
+attr bar_highlight_color
 attr barrierAllowsGoneWidgets
 attr barrierDirection
 attr barrierMargin
@@ -333,6 +335,7 @@ attr cornerSizeBottomLeft
 attr cornerSizeBottomRight
 attr cornerSizeTopLeft
 attr cornerSizeTopRight
+attr corner_radius
 attr counterEnabled
 attr counterMaxLength
 attr counterOverflowTextAppearance
@@ -354,6 +357,7 @@ attr customReference
 attr customStringValue
 attr data
 attr dataPattern
+attr data_type
 attr dayInvalidStyle
 attr daySelectedStyle
 attr dayStyle
@@ -444,6 +448,7 @@ attr fastScrollHorizontalTrackDrawable
 attr fastScrollVerticalThumbDrawable
 attr fastScrollVerticalTrackDrawable
 attr firstBaselineToTopHeight
+attr fix_gap
 attr floatingActionButtonStyle
 attr flow_firstHorizontalBias
 attr flow_firstHorizontalStyle
@@ -479,6 +484,7 @@ attr fontWeight
 attr forceApplySystemWindowInsetTop
 attr foregroundInsidePadding
 attr framePosition
+attr gap
 attr gapBetweenBars
 attr gestureInsetBottomIgnored
 attr goIcon
@@ -635,6 +641,10 @@ attr layout_optimizationLevel
 attr layout_scrollFlags
 attr layout_scrollInterpolator
 attr layout_wrapBehaviorInParent
+attr left_thumb_color
+attr left_thumb_color_pressed
+attr left_thumb_image
+attr left_thumb_image_pressed
 attr liftOnScroll
 attr liftOnScrollTargetViewId
 attr limitBoundsTo
@@ -695,6 +705,8 @@ attr maxImageSize
 attr maxLines
 attr maxVelocity
 attr maxWidth
+attr max_start_value
+attr max_value
 attr measureWithLargestChild
 attr menu
 attr menuGravity
@@ -705,6 +717,8 @@ attr minHideDelay
 attr minSeparation
 attr minTouchTargetSize
 attr minWidth
+attr min_start_value
+attr min_value
 attr mock_diagonalsColor
 attr mock_label
 attr mock_labelBackgroundColor
@@ -800,6 +814,7 @@ attr popupMenuBackground
 attr popupMenuStyle
 attr popupTheme
 attr popupWindowStyle
+attr position
 attr prefixText
 attr prefixTextAppearance
 attr prefixTextColor
@@ -828,6 +843,10 @@ attr region_heightMoreThan
 attr region_widthLessThan
 attr region_widthMoreThan
 attr reverseLayout
+attr right_thumb_color
+attr right_thumb_color_pressed
+attr right_thumb_image
+attr right_thumb_image_pressed
 attr rippleColor
 attr rotationCenterId
 attr round
@@ -897,6 +916,7 @@ attr state_lifted
 attr statusBarBackground
 attr statusBarForeground
 attr statusBarScrim
+attr steps
 attr strokeColor
 attr strokeWidth
 attr subMenuArrow
@@ -1141,6 +1161,7 @@ color color_05
 color color_06
 color color_07
 color color_09
+color color_10
 color color_3_1
 color color_line
 color color_star
@@ -1400,6 +1421,8 @@ dimen abc_text_size_title_material
 dimen abc_text_size_title_material_toolbar
 dimen action_bar_size
 dimen appcompat_dialog_background_inset
+dimen bubble_thumb_height
+dimen bubble_thumb_width
 dimen cardview_compat_inset_shadow
 dimen cardview_default_elevation
 dimen cardview_default_radius
@@ -1732,6 +1755,8 @@ dimen test_navigation_bar_item_min_width
 dimen test_navigation_bar_label_padding
 dimen test_navigation_bar_shadow_height
 dimen test_navigation_bar_text_size
+dimen thumb_height
+dimen thumb_width
 dimen tooltip_corner_radius
 dimen tooltip_horizontal_padding
 dimen tooltip_margin
@@ -1819,21 +1844,32 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable age_range_thumb
 drawable avd_hide_password
 drawable avd_show_password
+drawable back_ic
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
 drawable btn_checkbox_unchecked_to_checked_mtrl_animation
+drawable btn_color_selector
 drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable btn_text_color_selector
+drawable calender_ic
+drawable chat_profile_img_1
+drawable chat_profile_img_2
+drawable chat_profile_img_3
+drawable chat_profile_img_4
+drawable clock_ic
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable exit_ic
 drawable ic_back
 drawable ic_clock_black_24dp
 drawable ic_down
@@ -1889,7 +1925,10 @@ drawable partner_profile_img_3
 drawable partner_profile_img_4
 drawable partner_profile_img_5
 drawable partner_profile_img_6
+drawable range_slider_rectangle_indicator_img
 drawable rounded_rectangle
+drawable seekbar_thumb_img
+drawable selected_btn
 drawable selector_navi_chat
 drawable selector_navi_chat_selected
 drawable selector_navi_friend
@@ -1899,10 +1938,13 @@ drawable selector_navi_mypage_selected
 drawable selector_navi_partner
 drawable selector_navi_partner_selected
 drawable selector_navi_text_color
+drawable send_off_ic
+drawable send_on_ic
 drawable test_custom_background
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+drawable unselected_btn
 font applesdgothicneoregular
 font font_custom
 id ALT
@@ -1919,6 +1961,12 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
+id _byte
+id _double
+id _float
+id _integer
+id _long
+id _short
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -2233,6 +2281,25 @@ id parent
 id parentPanel
 id parentRelative
 id parent_matrix
+id partner_filter_age_layout
+id partner_filter_age_max_tv
+id partner_filter_age_min_tv
+id partner_filter_age_to_tv
+id partner_filter_age_tv
+id partner_filter_apply_tv
+id partner_filter_back_iv
+id partner_filter_ball_capability_layout
+id partner_filter_ball_capability_max_tv
+id partner_filter_ball_capability_min_tv
+id partner_filter_ball_capability_to_tv
+id partner_filter_ball_capability_tv
+id partner_filter_careless_btn
+id partner_filter_filter_tv
+id partner_filter_gender_layout
+id partner_filter_gender_tv
+id partner_filter_init_tv
+id partner_filter_man_btn
+id partner_filter_woman_btn
 id partner_search_filter_down_ic
 id partner_search_filter_tv
 id partner_search_filtering_ic
@@ -2479,6 +2546,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_login
 layout activity_main
+layout activity_partner_filter
 layout activity_signup
 layout activity_splash
 layout custom_dialog
@@ -2692,6 +2760,23 @@ string mtrl_picker_toggle_to_text_input_mode
 string mtrl_picker_toggle_to_year_selection
 string nav_app_bar_navigate_up_description
 string nav_app_bar_open_drawer_description
+string partner_filter_age
+string partner_filter_age_max
+string partner_filter_age_min
+string partner_filter_age_set_max
+string partner_filter_age_set_min
+string partner_filter_apply
+string partner_filter_ball_capability
+string partner_filter_ball_capability_year_max
+string partner_filter_ball_capability_year_min
+string partner_filter_ball_capability_year_set_max
+string partner_filter_ball_capability_year_set_min
+string partner_filter_careless
+string partner_filter_female
+string partner_filter_gender
+string partner_filter_init
+string partner_filter_male
+string partner_filter_title
 string partner_search_filter
 string partner_search_lets_search
 string partner_search_my_partner
@@ -3493,6 +3578,7 @@ styleable ConstraintOverride android_orientation android_id android_visibility a
 styleable ConstraintSet android_orientation android_id android_visibility android_layout_width android_layout_height android_layout_marginLeft android_layout_marginTop android_layout_marginRight android_layout_marginBottom android_maxWidth android_maxHeight android_minWidth android_minHeight android_pivotX android_pivotY android_alpha android_transformPivotX android_transformPivotY android_translationX android_translationY android_scaleX android_scaleY android_rotation android_rotationX android_rotationY android_layout_marginStart android_layout_marginEnd android_translationZ android_elevation animateCircleAngleTo animateRelativeTo barrierAllowsGoneWidgets barrierDirection barrierMargin chainUseRtl constraintRotate constraint_referenced_ids constraint_referenced_tags deriveConstraintsFrom drawPath flow_firstHorizontalBias flow_firstHorizontalStyle flow_firstVerticalBias flow_firstVerticalStyle flow_horizontalAlign flow_horizontalBias flow_horizontalGap flow_horizontalStyle flow_lastHorizontalBias flow_lastHorizontalStyle flow_lastVerticalBias flow_lastVerticalStyle flow_maxElementsWrap flow_verticalAlign flow_verticalBias flow_verticalGap flow_verticalStyle flow_wrapMode layout_constrainedHeight layout_constrainedWidth layout_constraintBaseline_creator layout_constraintBaseline_toBaselineOf layout_constraintBaseline_toBottomOf layout_constraintBaseline_toTopOf layout_constraintBottom_creator layout_constraintBottom_toBottomOf layout_constraintBottom_toTopOf layout_constraintCircle layout_constraintCircleAngle layout_constraintCircleRadius layout_constraintDimensionRatio layout_constraintEnd_toEndOf layout_constraintEnd_toStartOf layout_constraintGuide_begin layout_constraintGuide_end layout_constraintGuide_percent layout_constraintHeight_default layout_constraintHeight_max layout_constraintHeight_min layout_constraintHeight_percent layout_constraintHorizontal_bias layout_constraintHorizontal_chainStyle layout_constraintHorizontal_weight layout_constraintLeft_creator layout_constraintLeft_toLeftOf layout_constraintLeft_toRightOf layout_constraintRight_creator layout_constraintRight_toLeftOf layout_constraintRight_toRightOf layout_constraintStart_toEndOf layout_constraintStart_toStartOf layout_constraintTag layout_constraintTop_creator layout_constraintTop_toBottomOf layout_constraintTop_toTopOf layout_constraintVertical_bias layout_constraintVertical_chainStyle layout_constraintVertical_weight layout_constraintWidth_default layout_constraintWidth_max layout_constraintWidth_min layout_constraintWidth_percent layout_editor_absoluteX layout_editor_absoluteY layout_goneMarginBaseline layout_goneMarginBottom layout_goneMarginEnd layout_goneMarginLeft layout_goneMarginRight layout_goneMarginStart layout_goneMarginTop layout_marginBaseline layout_wrapBehaviorInParent motionProgress motionStagger pathMotionArc pivotAnchor polarRelativeTo quantizeMotionSteps transitionEasing transitionPathRotate
 styleable CoordinatorLayout keylines statusBarBackground
 styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_anchorGravity layout_behavior layout_dodgeInsetEdges layout_insetEdge layout_keyline
+styleable CrystalRangeSeekbar bar_color bar_highlight_color corner_radius data_type fix_gap gap left_thumb_color left_thumb_color_pressed left_thumb_image left_thumb_image_pressed max_start_value max_value min_start_value min_value position right_thumb_color right_thumb_color_pressed right_thumb_image right_thumb_image_pressed steps
 styleable CustomAttribute attributeName customBoolean customColorDrawableValue customColorValue customDimension customFloatValue customIntegerValue customPixelDimension customReference customStringValue methodName
 styleable DialogFragmentNavigator android_name
 styleable DrawerArrowToggle arrowHeadLength arrowShaftLength barLength color drawableSize gapBetweenBars spinBars thickness
