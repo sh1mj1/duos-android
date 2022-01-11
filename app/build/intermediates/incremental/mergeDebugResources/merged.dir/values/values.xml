@@ -1310,6 +1310,15 @@
     <string name="signup_name_hint">이름</string>
     <string name="signup_password_confirm_hint">비밀번호 확인</string>
     <string name="signup_password_hint">비밀번호</string>
+    <string name="splash_button_start">시작하기</string>
+    <string name="splash_goto_login_text_01">이미 계정이 있나요? </string>
+    <string name="splash_goto_login_text_02">로그인</string>
+    <string name="splash_text_01">제대로된 스포츠 파트너가 없어\n고민이었던 모든 분들을 위한 서비스</string>
+    <string name="splash_text_02">필터링 기능을 통해\n개인의 니즈에 딱! 맞는 파트너 추천 받기</string>
+    <string name="splash_text_03">추천받은 파트너 중 마음에 드는\n상대와 채팅을 통해 약속 잡기</string>
+    <string name="splash_title_01">스포츠 메이트는 듀오스와 함께</string>
+    <string name="splash_title_02">개별 맞춤 파트너 추천</string>
+    <string name="splash_title_03">마음에 드는 파트너와 약속 잡기</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
@@ -3671,6 +3680,9 @@
     <style name="ShapeAppearanceOverlay.TopRightDifferentCornerSize">
     <item name="cornerSizeTopRight">20px</item>
   </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background_logo</item>
+    </style>
     <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/test_mtrl_calendar_day_cornerSize</item>
@@ -3945,7 +3957,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.DUOS" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.DUOS" parent="Theme.AppCompat.Light.NoActionBar">
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -3966,6 +3979,7 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/color_03</item>
+
     </style>
     <style name="Theme.Design" parent="Theme.AppCompat">
   </style>
@@ -6030,6 +6044,60 @@
     <attr format="dimension" name="horizontalOffset"/>
     <attr format="dimension" name="verticalOffset"/>
   </declare-styleable>
+    <declare-styleable name="BaseCircleIndicator">
+        <attr format="dimension" name="ci_width"/>
+        <attr format="dimension" name="ci_height"/>
+        <attr format="dimension" name="ci_margin"/>
+        <attr format="reference" name="ci_animator"/>
+        <attr format="reference" name="ci_animator_reverse"/>
+        <attr format="reference" name="ci_drawable"/>
+        <attr format="reference" name="ci_drawable_unselected"/>
+
+        <attr format="enum" name="ci_orientation">
+            <!-- Defines an horizontal widget. -->
+            <enum name="horizontal" value="0"/>
+            <!-- Defines a vertical widget. -->
+            <enum name="vertical" value="1"/>
+        </attr>
+
+        <attr name="ci_gravity">
+            <!-- Push object to the top of its container, not changing its size. -->
+            <flag name="top" value="0x30"/>
+            <!-- Push object to the bottom of its container, not changing its size. -->
+            <flag name="bottom" value="0x50"/>
+            <!-- Push object to the left of its container, not changing its size. -->
+            <flag name="left" value="0x03"/>
+            <!-- Push object to the right of its container, not changing its size. -->
+            <flag name="right" value="0x05"/>
+            <!-- Place object in the vertical center of its container, not changing its size. -->
+            <flag name="center_vertical" value="0x10"/>
+            <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+            <flag name="fill_vertical" value="0x70"/>
+            <!-- Place object in the horizontal center of its container, not changing its size. -->
+            <flag name="center_horizontal" value="0x01"/>
+            <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+            <flag name="fill_horizontal" value="0x07"/>
+            <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+            <flag name="center" value="0x11"/>
+            <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+            <flag name="fill" value="0x77"/>
+            <!-- Additional option that can be set to have the top and/or bottom edges of
+            the child clipped to its container's bounds.
+            The clip will be based on the vertical gravity: a top gravity will clip the bottom
+            edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+            <flag name="clip_vertical" value="0x80"/>
+            <!-- Additional option that can be set to have the left and/or right edges of
+            the child clipped to its container's bounds.
+            The clip will be based on the horizontal gravity: a left gravity will clip the right
+            edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+            <flag name="clip_horizontal" value="0x08"/>
+            <!-- Push object to the beginning of its container, not changing its size. -->
+            <flag name="start" value="0x00800003"/>
+            <!-- Push object to the end of its container, not changing its size. -->
+            <flag name="end" value="0x00800005"/>
+        </attr>
+
+    </declare-styleable>
     <declare-styleable name="BaseProgressIndicator">
     <!-- Whether the progress indicator should be indeterminate mode. -->
     <attr name="android:indeterminate"/>
