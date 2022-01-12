@@ -15,4 +15,10 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="backgroundTint">@color/color_08</item>
+        <item name="android:textColorHint">@color/color_07</item>
+        <item name="android:background">@drawable/edt_background_selector</item>
+        <item name="android:typeface">serif</item>
+    </style>
 </resources>

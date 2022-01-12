@@ -42,7 +42,7 @@
             android:layout_marginTop="27dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center_horizontal|top"
-            android:text="tennis01,"
+            android:text="@string/my_profile_my_nickname"
             android:textAlignment="center"
             android:textColor="@color/color_01"
             android:textSize="25sp"
@@ -58,7 +58,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/applesdgothicneoregular"
-            android:text="30대"
+            android:text="@string/my_profile_my_generation_dummy"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/my_nickname_tv"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/applesdgothicneoregular"
-            android:text="여"
+            android:text="@string/my_profile_sex_female"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/my_generation_tv"
@@ -114,7 +114,7 @@
                 android:gravity="center_horizontal|bottom"
                 android:letterSpacing="0.04"
                 android:lineSpacingExtra="0sp"
-                android:text="서울시 마포구"
+                android:text="@string/my_profile_my_location"
                 android:textColor="@color/color_03"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -165,7 +165,7 @@
                 android:gravity="center_horizontal|bottom"
                 android:letterSpacing="0.04"
                 android:lineSpacingExtra="0sp"
-                android:text="5.0"
+                android:text="@string/my_profile_my_grade"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -179,7 +179,7 @@
             android:layout_marginEnd="16dp"
             android:gravity="top"
             android:lineSpacingExtra="3sp"
-            android:text="오랜만에 테니스 연습해보려고 하는데 파트너 구하는게 너무 어렵네요.같이 플레이 하실 분 구합니다. 지역은 마포구 성산동인데 근처 계신 분이면 오시는데 부담없으실테니 좋고, 이쪽으로 오실 수 있다면 지역은 크게 상관없을 것 같습니다. 실력은 아주 초보만 아니시라면 좋을 것 같습니다. 관심 있으신 분 편하게 메시지 주세요."
+            android:text="@string/my_profile_my_introduction"
             android:textSize="11sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -238,7 +238,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="74dp"
-            android:text="년 미만"
+            android:text="@string/my_profile_under_more_than"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/career_year_num_tv"
             app:layout_constraintEnd_toStartOf="@+id/career_line2"
@@ -250,7 +250,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
-            android:text="구력"
+            android:text="@string/my_profile_career"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@id/career_line3"
             app:layout_constraintStart_toStartOf="@+id/career_year_num_tv"
@@ -264,7 +264,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="117dp"
             android:layout_marginBottom="28dp"
-            android:text="113"
+            android:text="@string/my_profile_played_num"
             android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line3"
             app:layout_constraintEnd_toEndOf="parent"
@@ -278,7 +278,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="15dp"
-            android:text="게임"
+            android:text="@string/my_profile_game"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@id/career_line3"
             app:layout_constraintStart_toStartOf="@+id/career_played_num_tv"
@@ -290,7 +290,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="41dp"
-            android:text="후기(97)"
+            android:text="@string/my_profile_review_counts"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/career_line3" />
@@ -356,15 +356,14 @@
                 android:background="@color/color_03"
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:gravity="center"
-                android:text="채팅하기"
+                android:text="@string/my_profile_do_chat"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/button_bottom_like_iv"
-                app:layout_constraintTop_toTopOf="@+id/button_bottom_like_iv"
-                tools:ignore="NotSibling" />
+                app:layout_constraintTop_toTopOf="@+id/button_bottom_like_iv" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

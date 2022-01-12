@@ -61,7 +61,6 @@
                 android:layout_marginStart="109dp"
                 android:layout_marginTop="23dp"
                 android:layout_marginEnd="19dp"
-
                 android:background="@drawable/ic_rectangle_stroke2_inside1_opac40"
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:gravity="center"
@@ -72,7 +71,8 @@
                 android:textSize="13sp"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"/>
 
             <View
                 android:id="@+id/top_myProfile_divider"

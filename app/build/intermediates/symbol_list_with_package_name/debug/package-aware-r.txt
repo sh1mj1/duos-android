@@ -1850,8 +1850,12 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable dummy_mask_1
+drawable edt_background_normal
+drawable edt_background_selected
+drawable edt_background_selector
 drawable ic_arrow_right
 drawable ic_back
+drawable ic_btn_close_iv
 drawable ic_clock_black_24dp
 drawable ic_emogi_heart
 drawable ic_keyboard_black_24dp
@@ -1861,8 +1865,11 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_pin_location_fill
+drawable ic_rectangle_fillcolor_9
 drawable ic_rectangle_stroke2_inside1_opac40
+drawable ic_rectangle_strokesolid_color3_inside1_2
 drawable ic_rectangle_strokesolid_inside1
+drawable ic_rectangler_introduction_off
 drawable ic_star_yellow_fill
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
@@ -2013,6 +2020,7 @@ id baseline
 id beginOnFirstDraw
 id beginning
 id bestChoice
+id birth_info_et
 id blocking
 id bottom
 id bottom_like_and_chat_cl
@@ -2020,7 +2028,10 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
-id but
+id btn_check_duplication_tv
+id btn_check_female_tv
+id btn_check_male_tv
+id btn_clear_introduction_tv
 id buttonPanel
 id button_bottom_like_iv
 id cache_measures
@@ -2061,6 +2072,7 @@ id constraint
 id container
 id content
 id contentPanel
+id content_introduction_et
 id contiguous
 id continuousVelocity
 id coordinator
@@ -2083,6 +2095,7 @@ id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
 id dialog_button
+id dimension_introduction_iv
 id dimensions
 id direct
 id disableHome
@@ -2140,6 +2153,12 @@ id graph_wrap
 id group_divider
 id grouping
 id groups
+id guide_birth_info_tv
+id guide_career_tv
+id guide_introduction_tv
+id guide_location_tv
+id guide_nickname_tv
+id guide_sex_info_tv
 id guideline
 id header_title
 id hideable
@@ -2178,6 +2197,7 @@ id line3
 id linear
 id listMode
 id list_item
+id location_info_et
 id main_activity_navgraph
 id main_bottom_navigation
 id masked
@@ -2263,6 +2283,7 @@ id navigation_header_container
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
+id nickname_et
 id noScroll
 id noState
 id none
@@ -2333,7 +2354,9 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id second_star_iv
+id select_career_gl
 id select_dialog_listview
+id select_sex_ll
 id selected
 id selection_type
 id sharedValueSet
@@ -3009,6 +3032,7 @@ style Bold_black_Content_Border
 style CardView
 style CardView_Dark
 style CardView_Light
+style EditTextTheme
 style EmptyTheme
 style Light_gray_Divider
 style MaterialAlertDialog_MaterialComponents

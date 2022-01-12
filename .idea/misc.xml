@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/drawable/edt_background_normal.xml" value="0.2713541666666667" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/drawable/edt_background_selected.xml" value="0.2713541666666667" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/drawable/focus_edit_text.xml" value="0.2713541666666667" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/drawable/ic_group_237.xml" value="0.14739583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_login.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_main.xml" value="0.152" />
@@ -10,9 +13,9 @@
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_signup.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_splash.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_chat.xml" value="0.12395833333333334" />
-        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_edit_profile.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_edit_profile.xml" value="0.264" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_friend_list.xml" value="0.12395833333333334" />
-        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_my_profile.xml" value="0.176" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_my_profile.xml" value="0.1" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_mypage.xml" value="0.1" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_partner_search.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_splash_viewpager_01.xml" value="0.13125" />

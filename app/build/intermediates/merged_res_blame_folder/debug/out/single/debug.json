@@ -24,6 +24,14 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_friend_selector.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_btn_close_iv.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_btn_close_iv.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_edt_background_selected.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\edt_background_selected.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_signup.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_signup.xml"
     },
@@ -40,6 +48,10 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_back.png"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_rectangle_strokesolid_color3_inside1_2.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_rectangle_strokesolid_color3_inside1_2.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
@@ -48,12 +60,12 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_chat_selector.xml"
     },
     {
-        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_main.xml"
-    },
-    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_partner_selected.xml.flat",
@@ -144,8 +156,16 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_mypage_selector.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_rectangle_fillcolor_9.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_rectangle_fillcolor_9.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_rectangle_strokesolid_inside1.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_rectangle_strokesolid_inside1.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_edt_background_selector.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\edt_background_selector.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\font_applesdgothicneoregular.otf.flat",
@@ -212,6 +232,10 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_partner_search.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_rectangler_introduction_off.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_rectangler_introduction_off.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_chat.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\selector_navi_chat.xml"
     },
@@ -230,5 +254,9 @@
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_chat_selected.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\selector_navi_chat_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_edt_background_normal.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\edt_background_normal.xml"
     }
 ]

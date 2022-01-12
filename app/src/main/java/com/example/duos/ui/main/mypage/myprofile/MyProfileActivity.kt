@@ -2,6 +2,7 @@ package com.example.duos.ui.main.mypage.myprofile
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -28,12 +29,13 @@ class MyProfileActivity :
             .commitAllowingStateLoss()
 
         binding.editMyProfileTv.setOnClickListener {
+            binding.topLeftArrowIv.setImageResource(R.drawable.ic_btn_close_iv)
+            binding.editMyProfileTv.visibility= View.GONE
+            binding.topMyProfileTv.text = "나의 프로필 수정"
+
             supportFragmentManager.beginTransaction()
                 .replace(R.id.my_page_into_fragment_container_fc, EditProfileFragment())
                 .commitAllowingStateLoss()
         }
-
-
     }
-
 }

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
+ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
 MERGED from [androidx.databinding:viewbinding:7.0.4] C:\Users\LG\.gradle\caches\transforms-3\3d1312f3ccf52e6aad5fb8278336e511\transformed\jetified-viewbinding-7.0.4\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-fragment-ktx:2.3.5] C:\Users\LG\.gradle\caches\transforms-3\937a9af063ab0186b7bd4c0aa5ca0c13\transformed\navigation-fragment-ktx-2.3.5\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.fragment:fragment-ktx:1.2.4] C:\Users\LG\.gradle\caches\transforms-3\e4d5fd5dbde2564b18c408ff1f1703c7\transformed\jetified-fragment-ktx-1.2.4\AndroidManifest.xml:17:1-24:12
@@ -71,20 +71,20 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.print:print:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\43037c0b2dd43be656c119826bff6d23\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\a30726b6f8c841ac03bf6f43d779f480\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\LG\.gradle\caches\transforms-3\29c7b199d4646ee497ba13091e7b830d\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
 	package
 		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:3:5-31
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
+		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-44:12
+		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-45:12
 		INJECTED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:11-69
@@ -93,7 +93,7 @@ ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidMa
 	android:name
 		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:7:5-42:19
+ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:7:5-43:19
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\LG\.gradle\caches\transforms-3\38b5338972231d7bbabd3884fc9ea7dc\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\LG\.gradle\caches\transforms-3\38b5338972231d7bbabd3884fc9ea7dc\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.2] C:\Users\LG\.gradle\caches\transforms-3\45019ef3417b6728bfcdfc768cf637d7\transformed\constraintlayout-2.1.2\AndroidManifest.xml:9:5-20
@@ -167,9 +167,11 @@ ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidMa
 	android:name
 		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:36:13-65
 activity#com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:38:9-40:39
+ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:38:9-41:39
+	android:windowSoftInputMode
+		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:40:13-55
 	android:exported
-		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:40:13-36
+		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:41:13-36
 	android:name
 		ADDED from C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:39:13-87
 uses-sdk
