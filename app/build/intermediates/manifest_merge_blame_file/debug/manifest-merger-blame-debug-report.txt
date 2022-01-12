@@ -21,7 +21,7 @@
 15        android:allowBackup="true"
 15-->C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:9:9-35
 16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-16-->[androidx.core:core:1.7.0] C:\Users\LG\.gradle\caches\transforms-3\ae3d7ae4493d11c21b25c5d58a0c4179\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+16-->[androidx.core:core:1.7.0] C:\Users\LG\.gradle\caches\transforms-3\fb3270031bd107031c21c5dc13d9e5ef\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
 17        android:debuggable="true"
 18        android:extractNativeLibs="false"
 19        android:icon="@mipmap/ic_launcher"
@@ -80,34 +80,34 @@
 46-->C:\Users\LG\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:40:13-36
 47
 48        <service
-48-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\f8412c49d280a44b12fb1bb714b684cf\transformed\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
+48-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\51aaaedb7602d6a0ea6e2a9a14c336dc\transformed\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
 49            android:name="androidx.room.MultiInstanceInvalidationService"
-49-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\f8412c49d280a44b12fb1bb714b684cf\transformed\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
+49-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\51aaaedb7602d6a0ea6e2a9a14c336dc\transformed\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
 50            android:directBootAware="true"
-50-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\f8412c49d280a44b12fb1bb714b684cf\transformed\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
+50-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\51aaaedb7602d6a0ea6e2a9a14c336dc\transformed\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
 51            android:exported="false" />
-51-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\f8412c49d280a44b12fb1bb714b684cf\transformed\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
+51-->[androidx.room:room-runtime:2.3.0] C:\Users\LG\.gradle\caches\transforms-3\51aaaedb7602d6a0ea6e2a9a14c336dc\transformed\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
 52
 53        <provider
-53-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+53-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
 54            android:name="androidx.startup.InitializationProvider"
-54-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+54-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
 55            android:authorities="com.example.DUOS.androidx-startup"
-55-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+55-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
 56            android:exported="false" >
-56-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+56-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
 57            <meta-data
-57-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+57-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
 58                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-58-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+58-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
 59                android:value="androidx.startup" />
-59-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\3d24b7c5ded344cd4260b8f2ad9ed030\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+59-->[androidx.emoji2:emoji2:1.0.0] C:\Users\LG\.gradle\caches\transforms-3\86bbdb4c704f0c6ef69f85fd6941d5d8\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
 60            <meta-data
-60-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\c55501271c534953631a61ceacf50e00\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+60-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\60fb03f7868607ff1baa13fa3ab998ab\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
 61                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-61-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\c55501271c534953631a61ceacf50e00\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+61-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\60fb03f7868607ff1baa13fa3ab998ab\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
 62                android:value="androidx.startup" />
-62-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\c55501271c534953631a61ceacf50e00\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+62-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\LG\.gradle\caches\transforms-3\60fb03f7868607ff1baa13fa3ab998ab\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
 63        </provider>
 64    </application>
 65

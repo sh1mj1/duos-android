@@ -5,56 +5,45 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
+import com.example.duos.data.entities.Review
+import com.example.duos.databinding.FragmentMyProfileBinding
+import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
-            //// TODO: Rename parameter arguments, choose names that match
-            //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-            //private const val ARG_PARAM1 = "param1"
-            //private const val ARG_PARAM2 = "param2"
-            //
-            ///**
-            // * A simple [Fragment] subclass.
-            // * Use the [MyProfileFragment.newInstance] factory method to
-            // * create an instance of this fragment.
-            // */
 class MyProfileFragment : Fragment() {
-            //    // TODO: Rename and change types of parameters
-            //    private var param1: String? = null
-            //    private var param2: String? = null
-            //
-            //    override fun onCreate(savedInstanceState: Bundle?) {
-            //        super.onCreate(savedInstanceState)
-            //        arguments?.let {
-            //            param1 = it.getString(ARG_PARAM1)
-            //            param2 = it.getString(ARG_PARAM2)
-            //        }
-            //    }
+
+    private var _binding : FragmentMyProfileBinding? =null
+    private val binding get() = _binding
+    private var reviewDatas = ArrayList<Review>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_profile, container, false)
+        _binding = FragmentMyProfileBinding.inflate(inflater,container, false)
+
+        reviewDatas.apply {
+            add(Review(R.drawable.tennis_racket_img_4, "5.0", "koko0311_1","처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"))
+            add(Review(R.drawable.tennis_racket_img_4, "3.0", "koko0311_2","처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"))
+            add(Review(R.drawable.tennis_racket_img_4, "4.0", "koko0311_3","처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"))
+            add(Review(R.drawable.tennis_racket_img_4, "5.0", "koko0311_4","처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"))
+
+        }
+
+        // 더미 데이터와 Adapter 연결
+        val profileReviewRVAdapter = ProfileReviewRVAdapter(reviewDatas)
+        // 리사이클러뷰에 어댑터 연결
+        binding!!.playingReviewContentRv.adapter = profileReviewRVAdapter
+        //레이아웃 매니저 설정
+        // applicationContext??????
+        binding!!.playingReviewContentRv.layoutManager = LinearLayoutManager(context,
+            LinearLayoutManager.VERTICAL, false)
+
+
+        return binding!!.root
     }
-            //
-            //    companion object {
-            //        /**
-            //         * Use this factory method to create a new instance of
-            //         * this fragment using the provided parameters.
-            //         *
-            //         * @param param1 Parameter 1.
-            //         * @param param2 Parameter 2.
-            //         * @return A new instance of fragment MyProfileFragment.
-            //         */
-            //        // TODO: Rename and change types and number of parameters
-            //        @JvmStatic
-            //        fun newInstance(param1: String, param2: String) =
-            //            MyProfileFragment().apply {
-            //                arguments = Bundle().apply {
-            //                    putString(ARG_PARAM1, param1)
-            //                    putString(ARG_PARAM2, param2)
-            //                }
-            //            }
-            //    }
+
 }

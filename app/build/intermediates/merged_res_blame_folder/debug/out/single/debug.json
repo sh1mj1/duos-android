@@ -28,6 +28,10 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_signup.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_my_profile.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_my_profile.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_mypage.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\selector_navi_mypage.xml"
     },
@@ -106,6 +110,10 @@
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\navigation_my_profile_nav.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\navigation\\my_profile_nav.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
@@ -214,6 +222,10 @@
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_edit_profile.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_edit_profile.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_chat_selected.xml.flat",

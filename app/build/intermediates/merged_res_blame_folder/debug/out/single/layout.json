@@ -8,6 +8,18 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_partner_search.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_my_profile.xml",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_my_profile.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_signup.xml",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_signup.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_login.xml",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_myprofile.xml",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_myprofile.xml"
     },
@@ -16,20 +28,16 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
     {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_edit_profile.xml",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_edit_profile.xml"
+    },
+    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\my_playing_review_item.xml",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\my_playing_review_item.xml"
     },
     {
-        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_signup.xml",
-        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_signup.xml"
-    },
-    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_friend_list.xml",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_friend_list.xml"
-    },
-    {
-        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_login.xml",
-        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_login.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_mypage.xml",

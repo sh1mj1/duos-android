@@ -1,5 +1,10 @@
 [
   {
+    "name": "my_profile_nav",
+    "navigationXmlIds": [],
+    "deepLinks": []
+  },
+  {
     "name": "navigation",
     "navigationXmlIds": [],
     "deepLinks": []
