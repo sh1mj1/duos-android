@@ -3,5 +3,10 @@
     "name": "navigation",
     "navigationXmlIds": [],
     "deepLinks": []
+  },
+  {
+    "name": "signup_navigation",
+    "navigationXmlIds": [],
+    "deepLinks": []
   }
 ]

@@ -34,5 +34,13 @@
         <item name="android:windowBackground">@drawable/splash_background_logo</item>
     </style>
 
+    <style name="AppTheme.NumberPicker" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">@color/color_09</item>
+        <!--Display textSize-->
+        <item name="android:textSize">25sp</item>
+        <!--Display textColor-->
+        <item name="android:editTextColor">@color/color_01</item>
+    </style>
+
 
 </resources>
