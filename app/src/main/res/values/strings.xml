@@ -45,6 +45,8 @@
     <string name="partner_search_recommended_partner_age">30대</string>
     <string name="partner_search_recommended_partner_star_rating">4.8</string>
     <string name="partner_search_recommended_partner_review_count">11</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- 여기까지 파트너 찾기 -->
 
