@@ -20,12 +20,12 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_navi_friend_selector.xml.flat",
-        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_friend_selector.xml"
-    },
-    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_btn_close_iv.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\ic_btn_close_iv.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_navi_friend_selector.xml.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_friend_selector.xml"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_edt_background_selected.xml.flat",
@@ -60,12 +60,12 @@
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\navi_chat_selector.xml"
     },
     {
-        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\LG\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_partner_selected.xml.flat",

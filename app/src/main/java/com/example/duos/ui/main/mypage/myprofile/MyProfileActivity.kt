@@ -28,14 +28,14 @@ class MyProfileActivity :
             .replace(R.id.my_page_into_fragment_container_fc, MyProfileFragment())
             .commitAllowingStateLoss()
 
-        binding.editMyProfileTv.setOnClickListener {
-            binding.topLeftArrowIv.setImageResource(R.drawable.ic_btn_close_iv)
-            binding.editMyProfileTv.visibility= View.GONE
-            binding.topMyProfileTv.text = "나의 프로필 수정"
 
+        binding.editMyProfileTv.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.my_page_into_fragment_container_fc, EditProfileFragment())
                 .commitAllowingStateLoss()
+            binding.topLeftArrowIv.setImageResource(R.drawable.ic_btn_close_iv)
+            binding.editMyProfileTv.visibility = View.GONE
+            binding.topMyProfileTv.text = "나의 프로필 수정"
         }
     }
 }
