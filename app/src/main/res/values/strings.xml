@@ -31,14 +31,21 @@
     <string name="signup_password_hint">비밀번호</string>
     <string name="signup_password_confirm_hint">비밀번호 확인</string>
 
-    <!-- splash -->
-    <string name="splash_button_start">시작하기</string>
-    <string name="splash_goto_login_text_01">이미 계정이 있나요?&#160;</string>
-    <string name="splash_goto_login_text_02">로그인</string>
-    <string name="splash_title_01">스포츠 메이트는 듀오스와 함께</string>
-    <string name="splash_text_01">제대로된 스포츠 파트너가 없어\n고민이었던 모든 분들을 위한 서비스</string>
-    <string name="splash_title_02">개별 맞춤 파트너 추천</string>
-    <string name="splash_text_02">필터링 기능을 통해\n개인의 니즈에 딱! 맞는 파트너 추천 받기</string>
-    <string name="splash_title_03">마음에 드는 파트너와 약속 잡기</string>
-    <string name="splash_text_03">추천받은 파트너 중 마음에 드는\n상대와 채팅을 통해 약속 잡기</string>
+    <!-- 여기부터 파트너 찾기 -->
+    <!-- 매칭화면 -->
+    <string name="partner_search_user_id">tennis01</string>
+    <string name="partner_search_nim">\ 님,</string>
+    <string name="partner_search_my_partner">나의 파트너</string>
+    <string name="partner_search_lets_search">를 찾아볼까요?</string>
+    <string name="partner_search_recommended_partner">추천 파트너</string>
+    <string name="partner_search_filter">서울시 마포구</string>
+    <string name="partner_search_recommended_partner_location">서울시 마포구</string>
+    <string name="partner_search_recommended_partner_ball_capability">구력 1년</string>
+    <string name="partner_search_recommended_partner_id">berlinalena</string>
+    <string name="partner_search_recommended_partner_age">30대</string>
+    <string name="partner_search_recommended_partner_star_rating">4.8</string>
+    <string name="partner_search_recommended_partner_review_count">11</string>
+
+    <!-- 여기까지 파트너 찾기 -->
+
 </resources>
