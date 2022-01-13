@@ -37,7 +37,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                 navController.navigate(R.id.action_signup_fragment_01_to_signup_fragment_02)
             }
             if(destination.id == R.id.signup_fragment_02) {
-                Log.d("fragment2", "다음 클릭")
+                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_03)
             }
         }
 
