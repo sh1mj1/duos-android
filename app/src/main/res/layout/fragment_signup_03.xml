@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signup_local"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signup_local_set"
-            android:textColor="@color/color_01"
+            android:textColor="@color/nero"
             android:textSize="16sp"/>
         
         <ImageView

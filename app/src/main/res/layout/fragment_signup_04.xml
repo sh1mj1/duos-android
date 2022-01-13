@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="@string/signup_local"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_color_selector"
-                android:backgroundTint="@color/color_09"
+                android:backgroundTint="@color/white_smoke_F"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -79,7 +79,7 @@
                 android:layout_height="42dp"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/btn_color_selector"
-                android:backgroundTint="@color/color_09"
+                android:backgroundTint="@color/white_smoke_E"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
