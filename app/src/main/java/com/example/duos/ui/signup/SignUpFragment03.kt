@@ -1,4 +1,4 @@
-package com.example.duos.ui.siginup
+package com.example.duos.ui.signup
 
 import com.example.duos.databinding.FragmentSignup03Binding
 import com.example.duos.ui.BaseFragment

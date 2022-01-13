@@ -1,23 +1,10 @@
-package com.example.duos.ui.siginup
+package com.example.duos.ui.signup
 
 
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import android.util.Log
 import android.view.*
 import android.widget.NumberPicker
-import androidx.appcompat.app.AlertDialog
-import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.ui.BaseFragment
-import android.view.WindowManager
-
-
 
 
 class SignUpFragment02() : BaseFragment<FragmentSignup02Binding>(FragmentSignup02Binding::inflate) {

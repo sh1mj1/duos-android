@@ -3,17 +3,12 @@ package com.example.duos.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.duos.data.remote.auth.AuthService
 import com.example.duos.databinding.ActivitySplashBinding
-import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.login.LoginActivity
-import com.example.duos.ui.main.MainActivity
-import com.example.duos.ui.siginup.SignUpActivity
+import com.example.duos.ui.signup.SignUpActivity
 
 class SplashActivity: AppCompatActivity(), SplashView {
 

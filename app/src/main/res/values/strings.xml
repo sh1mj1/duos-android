@@ -33,6 +33,27 @@
     <string name="signup_sex_woman">여성</string>
     <string name="signup_birth">생년월일</string>
     <string name="signup_birth_hint">생년월일을 입력해 주세요</string>
+    <string name="signup_local">지역</string>
+    <string name="signup_local_set">장소를 선택해 주세요</string>
+    <string name="signup_local_dialog_set">지역 설정</string>
+    <string name="signup_local_dialog_set_hint">지역명 검색 예) 서울, 마포구</string>
+    <string name="signup_length_of_play">구력</string>
+    <string name="signup_length_of_play_1">1개월 미만</string>
+    <string name="signup_length_of_play_2">3개월 미만</string>
+    <string name="signup_length_of_play_3">6개월 미만</string>
+    <string name="signup_length_of_play_4">1년 미만</string>
+    <string name="signup_length_of_play_5">2년 미만</string>
+    <string name="signup_length_of_play_6">3년 미만</string>
+    <string name="signup_length_of_play_7">4년 미만</string>
+    <string name="signup_length_of_play_8">5년 미만</string>
+    <string name="signup_length_of_play_9">6년 미만</string>
+    <string name="signup_length_of_play_10">7년 미만</string>
+    <string name="signup_length_of_play_11">8년 미만</string>
+    <string name="signup_length_of_play_12">9년 미만</string>
+    <string name="signup_length_of_play_13">10년 미만</string>
+    <string name="signup_length_of_play_14">10년 이상</string>
+
+
 
     <!-- splash -->
     <string name="splash_button_start">시작하기</string>

@@ -1,6 +1,5 @@
-package com.example.duos.ui.siginup
+package com.example.duos.ui.signup
 
-import android.util.Log
 import android.view.View
 
 import androidx.navigation.fragment.NavHostFragment
@@ -37,7 +36,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                 navController.navigate(R.id.action_signup_fragment_01_to_signup_fragment_02)
             }
             if(destination.id == R.id.signup_fragment_02) {
-                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_03)
+                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_04)
             }
         }
 

@@ -31,7 +31,7 @@
             android:exported="true"/>
 
         <activity
-            android:name="com.example.duos.ui.siginup.SignUpActivity"
+            android:name="com.example.duos.ui.signup.SignUpActivity"
             android:exported="true"/>
 
         <activity
