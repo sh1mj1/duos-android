@@ -35,17 +35,21 @@ public final class ActivitySignupBinding implements ViewBinding {
   public final TextView signupProcessTv;
 
   @NonNull
+  public final ConstraintLayout signupRootConstraintLayoutCl;
+
+  @NonNull
   public final TextView signupTitleTv;
 
   private ActivitySignupBinding(@NonNull ConstraintLayout rootView,
       @NonNull ImageView signupArrowIv, @NonNull FragmentContainerView signupFragmentContainerFc,
       @NonNull Button signupNextBtn, @NonNull TextView signupProcessTv,
-      @NonNull TextView signupTitleTv) {
+      @NonNull ConstraintLayout signupRootConstraintLayoutCl, @NonNull TextView signupTitleTv) {
     this.rootView = rootView;
     this.signupArrowIv = signupArrowIv;
     this.signupFragmentContainerFc = signupFragmentContainerFc;
     this.signupNextBtn = signupNextBtn;
     this.signupProcessTv = signupProcessTv;
+    this.signupRootConstraintLayoutCl = signupRootConstraintLayoutCl;
     this.signupTitleTv = signupTitleTv;
   }
 
@@ -100,6 +104,8 @@ public final class ActivitySignupBinding implements ViewBinding {
         break missingId;
       }
 
+      ConstraintLayout signupRootConstraintLayoutCl = (ConstraintLayout) rootView;
+
       id = R.id.signup_title_tv;
       TextView signupTitleTv = ViewBindings.findChildViewById(rootView, id);
       if (signupTitleTv == null) {
@@ -107,7 +113,8 @@ public final class ActivitySignupBinding implements ViewBinding {
       }
 
       return new ActivitySignupBinding((ConstraintLayout) rootView, signupArrowIv,
-          signupFragmentContainerFc, signupNextBtn, signupProcessTv, signupTitleTv);
+          signupFragmentContainerFc, signupNextBtn, signupProcessTv, signupRootConstraintLayoutCl,
+          signupTitleTv);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

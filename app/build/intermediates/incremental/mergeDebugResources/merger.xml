@@ -7841,6 +7841,12 @@
         <item name="android:textSize">25sp</item>
         
         <item name="android:editTextColor">@color/color_01</item>
+    </style><style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:layout_marginBottom">300dp</item>
     </style></file><file path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\res\values-night\themes.xml" qualifiers="night-v8"><style name="Theme.DUOS" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         
         <item name="colorPrimary">@color/purple_200</item>
@@ -7853,7 +7859,7 @@
         
         <item name="android:statusBarColor" ns2:targetApi="l">?attr/colorPrimaryVariant</item>
         
-    </style></file></source><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\build\generated\res\rs\debug"/><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\debug\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="AlertDialog">
+    </style></file><file name="signup_number_picker" path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\res\layout\signup_number_picker.xml" qualifiers="" type="layout"/></source><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\build\generated\res\rs\debug"/><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\debug\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="AlertDialog">
         <attr name="android:layout"/>
         <attr format="reference" name="buttonPanelSideLayout"/>
         <attr format="reference" name="listLayout"/>

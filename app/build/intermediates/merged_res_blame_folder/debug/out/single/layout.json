@@ -4,12 +4,16 @@
         "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_splash_viewpager_02.xml",
-        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_splash_viewpager_02.xml"
+        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\signup_number_picker.xml",
+        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\signup_number_picker.xml"
     },
     {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_splash.xml",
         "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_splash_viewpager_02.xml",
+        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\fragment_splash_viewpager_02.xml"
     },
     {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_signup_02.xml",

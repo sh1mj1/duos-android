@@ -40,12 +40,12 @@
         "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_signup_sex_unselected_rectangular.xml.flat",
-        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\signup_sex_unselected_rectangular.xml"
-    },
-    {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\navigation_navigation.xml.flat",
         "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\navigation\\navigation.xml"
+    },
+    {
+        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_signup_sex_unselected_rectangular.xml.flat",
+        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\signup_sex_unselected_rectangular.xml"
     },
     {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_chat_selected.xml.flat",
@@ -146,6 +146,10 @@
     {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_navi_text_color.xml.flat",
         "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\drawable\\selector_navi_text_color.xml"
+    },
+    {
+        "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\layout_signup_number_picker.xml.flat",
+        "source": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\src\\main\\res\\layout\\signup_number_picker.xml"
     },
     {
         "merged": "C:\\Users\\qkrwl\\AndroidStudioProjects\\duos-android\\app\\build\\intermediates\\merged_res\\debug\\navigation_signup_navigation.xml.flat",

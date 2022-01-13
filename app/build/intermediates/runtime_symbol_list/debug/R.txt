@@ -2324,6 +2324,7 @@ int id signup_02_nick_name_line_done_iv 0x7f09018b
 int id signup_02_nick_name_line_iv 0x7f09018c
 int id signup_02_nick_name_tv 0x7f09018d
 int id signup_02_np_linear_layout_ll 0x7f090217
+int id signup_02_root_constraint_layout_cl 0x7f090219
 int id signup_02_sex_linear_layout_ll 0x7f09018e
 int id signup_02_sex_man_btn 0x7f09018f
 int id signup_02_sex_tv 0x7f090190
@@ -2340,6 +2341,7 @@ int id signup_number_picker_month 0x7f09019a
 int id signup_number_picker_year 0x7f09019b
 int id signup_phone_number_erase_iv 0x7f09019c
 int id signup_process_tv 0x7f09019d
+int id signup_root_constraint_layout_cl 0x7f090218
 int id signup_title_tv 0x7f09019e
 int id sin 0x7f09019f
 int id skipCollapsed 0x7f0901a0
@@ -2610,6 +2612,7 @@ int layout notification_template_part_time 0x7f0c0069
 int layout select_dialog_item_material 0x7f0c006a
 int layout select_dialog_multichoice_material 0x7f0c006b
 int layout select_dialog_singlechoice_material 0x7f0c006c
+int layout signup_number_picker 0x7f0c007e
 int layout support_simple_spinner_dropdown_item 0x7f0c006e
 int layout test_action_chip 0x7f0c006f
 int layout test_chip_zero_corner_radius 0x7f0c0070
@@ -3010,6 +3013,7 @@ int style Base_Widget_MaterialComponents_TextView 0x7f1200e4
 int style CardView 0x7f1200e5
 int style CardView_Dark 0x7f1200e6
 int style CardView_Light 0x7f1200e7
+int style DialogTheme 0x7f1202db
 int style EmptyTheme 0x7f1200e8
 int style MaterialAlertDialog_MaterialComponents 0x7f1200e9
 int style MaterialAlertDialog_MaterialComponents_Body_Text 0x7f1200ea

@@ -1,58 +1,85 @@
 package com.example.duos.ui.siginup
 
 
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.util.Log
+import android.view.*
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.ui.BaseFragment
+import android.view.WindowManager
+
+
+
 
 class SignUpFragment02() : BaseFragment<FragmentSignup02Binding>(FragmentSignup02Binding::inflate) {
 
     override fun initAfterBinding() {
+
         binding.signup02BirthEt.setOnClickListener {
-            binding.signup02NpLinearLayoutLl.visibility = View.VISIBLE
-            val npYear : NumberPicker = binding.signupNumberPickerYear
-            val npMonth : NumberPicker = binding.signupNumberPickerMonth
-            val npDay : NumberPicker = binding.signupNumberPickerDay
+            BirthNumberPicker()
+        }
 
-            var yearList = ArrayList<String>()
-            var monthList = ArrayList<String>()
-            var dateList = ArrayList<String>()
+    }
 
-            for (i: Int in 2022 downTo 1922)
-                yearList.add(i.toString() + "년")
+    private fun BirthNumberPicker(){
 
-            for (i: Int in 12 downTo 1)
-                monthList.add(i.toString() + "월")
+        binding.signup02NpLinearLayoutLl.visibility = View.VISIBLE
 
-            for (i: Int in 31 downTo 1)
-                dateList.add(i.toString() + "일")
+        val npYear : NumberPicker = binding.signupNumberPickerYear
+        val npMonth : NumberPicker = binding.signupNumberPickerMonth
+        val npDay : NumberPicker = binding.signupNumberPickerDay
 
-            npYear.run {
-                minValue = 0
-                maxValue = yearList.size - 1
-                wrapSelectorWheel = false
-                displayedValues = yearList.toTypedArray()
-            }
-            npMonth.run {
-                minValue = 0
-                maxValue = monthList.size - 1
-                wrapSelectorWheel = false
-                displayedValues = monthList.toTypedArray()
+        var yearList = ArrayList<String>()
+        var monthList = ArrayList<String>()
+        var dateList = ArrayList<String>()
 
-            }
-            npDay.run {
-                minValue = 0
-                maxValue = dateList.size - 1
-                wrapSelectorWheel = false
-                displayedValues = dateList.toTypedArray()
-            }
+        for (i: Int in 2022 downTo 1922)
+            yearList.add(i.toString() + "년")
+
+        for (i: Int in 1..12)
+            monthList.add(i.toString() + "월")
+
+        for (i: Int in 1..31)
+            dateList.add(i.toString() + "일")
+
+        npYear.run {
+            minValue = 1
+            maxValue = 100
+            wrapSelectorWheel = false
+            value = 1
+            displayedValues = yearList.toTypedArray()
+        }
+        npMonth.run {
+            minValue = 1
+            maxValue = 12
+            wrapSelectorWheel = false
+            value = 1
+            displayedValues = monthList.toTypedArray()
 
         }
+        npDay.run {
+            minValue = 1
+            maxValue = 31
+            wrapSelectorWheel = false
+            value = 1
+            displayedValues = dateList.toTypedArray()
+        }
+
+        binding.signup02RootConstraintLayoutCl.setOnClickListener {
+            binding.signup02BirthEt.text = ((2022 - npYear.value + 1).toString()  + "년 " +
+                    npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
+            binding.signup02NpLinearLayoutLl.visibility = View.GONE
+        }
     }
+
 
 }

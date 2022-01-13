@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/signup_02_np_linear_layout_ll"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:gravity="center"
+    android:layout_marginStart="70dp"
+    android:layout_marginEnd="70dp"
+    android:layout_marginBottom="100dp"
+    style="@style/DialogTheme">
+
+        <NumberPicker
+            android:id="@+id/signup_number_picker_year"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+            android:theme="@style/AppTheme.NumberPicker"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:descendantFocusability="blocksDescendants" />
+
+        <NumberPicker
+            android:id="@+id/signup_number_picker_month"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+            android:theme="@style/AppTheme.NumberPicker"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:descendantFocusability="blocksDescendants"/>
+
+        <NumberPicker
+            android:id="@+id/signup_number_picker_day"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+            android:theme="@style/AppTheme.NumberPicker"
+            android:gravity="center"
+            android:descendantFocusability="blocksDescendants"/>
+
+
+</LinearLayout>
+

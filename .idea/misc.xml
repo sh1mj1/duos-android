@@ -43,11 +43,12 @@
         <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/drawable/signup_verifying_rectangular.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/drawable/splash_button_rectangular.xml" value="0.1953125" />
         <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_signup.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_splash.xml" value="0.10778985507246377" />
-        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_signup_01.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_signup_02.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_signup.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/activity_splash.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_signup_01.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/fragment_signup_02.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/signup_birth_numberpicker.xml" value="0.22" />
+        <entry key="..\:/Users/qkrwl/AndroidStudioProjects/duos-android/app/src/main/res/layout/signup_number_picker.xml" value="0.17916666666666667" />
       </map>
     </option>
   </component>

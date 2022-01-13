@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
 MERGED from [androidx.databinding:viewbinding:7.0.3] C:\Users\qkrwl\.gradle\caches\transforms-3\bdebbaec14c45c15f98b50940271f991\transformed\jetified-viewbinding-7.0.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-fragment-ktx:2.3.5] C:\Users\qkrwl\.gradle\caches\transforms-3\6e39cd005063afa914a657762e92524f\transformed\navigation-fragment-ktx-2.3.5\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.fragment:fragment-ktx:1.2.4] C:\Users\qkrwl\.gradle\caches\transforms-3\edd4a0b0cb273c02ceadeb999e92f512\transformed\jetified-fragment-ktx-1.2.4\AndroidManifest.xml:17:1-24:12
@@ -65,20 +65,20 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\qkrwl\.gradle\ca
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\qkrwl\.gradle\caches\transforms-3\a3069b0cb7bf77d0867ce0b7cd7f4984\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\qkrwl\.gradle\caches\transforms-3\084d9626b7e6e1bb6f4b7736011c1b83\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\qkrwl\.gradle\caches\transforms-3\c834ac66386d7ab1cc0524445ed4065d\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
 	package
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:3:5-31
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-41:12
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:1-42:12
 		INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:2:11-69
@@ -87,7 +87,7 @@ ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\Androi
 	android:name
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:7:5-39:19
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:7:5-40:19
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\qkrwl\.gradle\caches\transforms-3\18d14ff6081cdd4d7e524a53938b4251\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\qkrwl\.gradle\caches\transforms-3\18d14ff6081cdd4d7e524a53938b4251\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.2] C:\Users\qkrwl\.gradle\caches\transforms-3\408aa2c6bc6d127e4ffa32f46b3d735b\transformed\constraintlayout-2.1.2\AndroidManifest.xml:9:5-20
@@ -127,41 +127,43 @@ MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\qkrwl\.gradle\cach
 	android:name
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:8:9-57
 activity#com.example.duos.ui.splash.SplashActivity
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:17:9-26:20
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:17:9-27:20
+	android:windowSoftInputMode
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:20:13-55
 	android:exported
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:19:13-36
 	android:theme
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:20:13-47
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:21:13-47
 	android:name
 		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:18:13-69
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:21:13-25:29
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:22:13-26:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:22:17-69
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:23:17-69
 	android:name
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:22:25-66
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:23:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:24:17-77
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:24:27-74
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:25:27-74
 activity#com.example.duos.ui.login.LoginActivity
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:28:9-30:38
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:29:9-31:38
 	android:exported
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:30:13-36
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:31:13-36
 	android:name
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:29:13-67
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:30:13-67
 activity#com.example.duos.ui.siginup.SignUpActivity
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:32:9-34:38
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:33:9-35:38
 	android:exported
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:34:13-36
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:35:13-36
 	android:name
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:33:13-70
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:34:13-70
 activity#com.example.duos.ui.main.MainActivity
-ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:36:9-38:38
+ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:37:9-39:38
 	android:exported
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:38:13-36
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:39:13-36
 	android:name
-		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:37:13-65
+		ADDED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml:38:13-65
 uses-sdk
 INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\qkrwl\AndroidStudioProjects\duos-android\app\src\main\AndroidManifest.xml

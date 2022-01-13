@@ -2,26 +2,20 @@ package com.example.duos.ui.siginup
 
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
+
 import com.example.duos.R
-import com.example.duos.data.entities.User
-import com.example.duos.data.remote.auth.AuthService
+
 import com.example.duos.databinding.ActivitySignupBinding
 import com.example.duos.ui.BaseActivity
-import android.R.string.no
-import androidx.navigation.findNavController
+
 
 
 class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, View.OnClickListener {
 
     override fun initAfterBinding() {
+
 
         binding.signupNextBtn.setOnClickListener {
             initNavController()

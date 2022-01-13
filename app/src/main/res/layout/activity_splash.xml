@@ -43,6 +43,7 @@
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@id/splash_linear_layout_ll"/>
 
+
     <LinearLayout
         android:id="@+id/splash_linear_layout_ll"
         android:layout_width="wrap_content"
