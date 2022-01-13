@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/signup_04_local_line_done_iv"
+        android:id="@+id/signup_03_local_line_done_iv"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:src="@drawable/signup_unselected_line"

@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_number_et" />
 
     <ImageView
-        android:id="@+id/signup_phone_number_erase_iv"
+        android:id="@+id/signup_01_phone_number_erase_iv"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/signup_phone_verifying_erase_ic"
@@ -139,6 +139,7 @@
         app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_verifying_et"/>
 
     <TextView
+        android:id="@+id/signup_01_phone_verifying_again_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signup_phone_verifying_again"

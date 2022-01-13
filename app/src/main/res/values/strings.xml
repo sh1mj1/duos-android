@@ -52,6 +52,10 @@
     <string name="signup_length_of_play_12">9년 미만</string>
     <string name="signup_length_of_play_13">10년 미만</string>
     <string name="signup_length_of_play_14">10년 이상</string>
+    <string name="signup_last_page">회원가입 마지막 페이지 입니다. 마지막 마무리까지 화이팅!</string>
+    <string name="signup_profile_image">프로필 사진</string>
+    <string name="signup_profile_introduce">자기 소개</string>
+    <string name="signup_profile_introduce_text">간단한 자기 소개를 적어 주세요</string>
 
 
 

@@ -1,10 +1,12 @@
 package com.example.duos.ui.signup
 
+import android.widget.TextView
+import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup03Binding
 import com.example.duos.ui.BaseFragment
 
 class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup03Binding::inflate) {
     override fun initAfterBinding() {
-        TODO("Not yet implemented")
+        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "03"
     }
 }

@@ -3,6 +3,8 @@ package com.example.duos.ui.signup
 
 import android.view.*
 import android.widget.NumberPicker
+import android.widget.TextView
+import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.ui.BaseFragment
 
@@ -10,6 +12,8 @@ import com.example.duos.ui.BaseFragment
 class SignUpFragment02() : BaseFragment<FragmentSignup02Binding>(FragmentSignup02Binding::inflate) {
 
     override fun initAfterBinding() {
+
+        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
 
         binding.signup02BirthEt.setOnClickListener {
             BirthNumberPicker()
