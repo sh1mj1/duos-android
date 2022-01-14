@@ -29,7 +29,7 @@
                 android:layout_marginTop="23dp"
                 android:layout_marginEnd="12dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_back"
+                android:src="@drawable/ic_back_30"
                 app:layout_constraintEnd_toStartOf="@+id/top_myProfile_tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
