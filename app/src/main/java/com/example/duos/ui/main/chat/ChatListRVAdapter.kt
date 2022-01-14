@@ -24,7 +24,7 @@ class ChatListRVAdapter(private val chatList: ArrayList<ChatList>) : RecyclerVie
             binding.chatListProfileIv.setImageResource(chatList.profileImg!!)
             binding.chatListUserIdTv.text = chatList.id
             binding.chatListChatPreviewTv.text = chatList.contentPreview
-            binding.chatListChatReceivedTime.text = chatList.receivedTime
+            binding.chatListChatMessageTime.text = chatList.messageTime
         }
     }
 }

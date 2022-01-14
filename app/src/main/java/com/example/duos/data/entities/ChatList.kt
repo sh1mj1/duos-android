@@ -4,5 +4,5 @@ data class ChatList(
     var profileImg : Int? = null,
     var id : String = "",
     var contentPreview : String = "",
-    var receivedTime : String = ""
+    var messageTime : String = ""
 )
