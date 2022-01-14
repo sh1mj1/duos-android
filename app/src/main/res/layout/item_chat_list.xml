@@ -44,7 +44,7 @@
             android:id="@+id/chat_list_chat_message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/chat_list_chat_received_time"
+            android:text="@string/chat_list_chat_message_time"
             android:textColor="@color/dark_gray_A"
             android:textSize="11sp"
             android:textAlignment="center"
