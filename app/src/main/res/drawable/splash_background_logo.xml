@@ -6,7 +6,7 @@
     <item
         android:top="200dp"
         android:bottom="300dp"
-            android:gravity="center"
-            android:drawable="@drawable/splash_duos_logo"/>
+        android:gravity="center"
+        android:drawable="@drawable/splash_duos_logo"/>
 
 </layer-list>

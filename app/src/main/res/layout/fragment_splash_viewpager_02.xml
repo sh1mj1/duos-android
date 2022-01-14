@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/color_01"/>
+        android:textColor="@color/nero"/>
 
     <TextView
         android:id="@+id/splash_text_02_tv"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="13sp"
-        android:textColor="@color/color_04"
+        android:textColor="@color/dim_gray"
         android:gravity="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

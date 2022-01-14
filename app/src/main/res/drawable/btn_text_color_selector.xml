@@ -6,7 +6,7 @@
         android:state_checked="true"
         />
     <item
-        android:color="@color/color_07"
+        android:color="@color/dark_gray_B4"
         android:state_checked="false"
         />
 </selector>

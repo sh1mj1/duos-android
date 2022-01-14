@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.duos.databinding.FragmentSplashViewpager01Binding
 
-class SplashViewpagerFragament01  : Fragment() {
+class SplashViewpagerFragment01  : Fragment() {
 
     lateinit var binding : FragmentSplashViewpager01Binding
 

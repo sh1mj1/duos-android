@@ -26,7 +26,7 @@ class SplashActivity: AppCompatActivity(), SplashView {
 
     private fun initViewpager() {
         val viewpagerAdapter = SplashViewpagerAdapter(this)
-        viewpagerAdapter.addFragment(SplashViewpagerFragament01())
+        viewpagerAdapter.addFragment(SplashViewpagerFragment01())
         viewpagerAdapter.addFragment(SplashViewpagerFragment02())
         viewpagerAdapter.addFragment(SplashViewpagerFragment03())
 

@@ -3,5 +3,5 @@
     android:shape="rectangle">
 
     <solid
-        android:color="@color/color_signup_next_btn"/>
+        android:color="@color/white_smoke_E"/>
 </shape>
