@@ -8,7 +8,7 @@ import com.example.duos.ui.BaseFragment
 class SignUpFragment05 () : BaseFragment<FragmentSignup05Binding>(FragmentSignup05Binding::inflate) {
 
     override fun initAfterBinding() {
-        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "05"
+        requireActivity().findViewById<TextView>(R.id.login_process_tv).text = "05"
 
     }
 }

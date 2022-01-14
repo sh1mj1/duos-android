@@ -7,7 +7,7 @@ import com.example.duos.ui.BaseFragment
 
 class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup03Binding::inflate) {
     override fun initAfterBinding() {
-        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "03"
+        requireActivity().findViewById<TextView>(R.id.login_process_tv).text = "03"
 
         binding.signup03LinearLayoutLl.setOnClickListener {
             activity?.supportFragmentManager?.let {fragmentManager ->
