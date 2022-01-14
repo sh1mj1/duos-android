@@ -9,7 +9,6 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:src="@drawable/chat_profile_img_1"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"/>
@@ -23,7 +22,6 @@
         app:layout_constraintStart_toEndOf="@id/chat_list_profile_iv"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="10dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:flow_wrapMode="chain">
         <TextView
             android:id="@+id/chat_list_user_id_tv"
