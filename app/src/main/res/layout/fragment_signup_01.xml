@@ -78,7 +78,7 @@
 
 
 <!--    한번 누르면 사라지는 버튼-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup_01_phone_number_verifying_btn"
         android:layout_width="70dp"
         android:layout_height="32dp"

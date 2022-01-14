@@ -42,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="@id/signup_arrow_iv"
         android:layout_marginStart="10dp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup_next_btn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
