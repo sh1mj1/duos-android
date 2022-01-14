@@ -1,17 +1,14 @@
 package com.example.duos.ui.signup
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
-import androidx.navigation.NavController
-
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 
 import com.example.duos.R
 
 import com.example.duos.databinding.ActivitySignupBinding
 import com.example.duos.ui.BaseActivity
-
+import com.example.duos.ui.main.MainActivity
 
 
 class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, View.OnClickListener {
@@ -57,6 +54,12 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment05())
                     .addToBackStack(null)
                     .commit()
+            }
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05){
+                val intent: Intent = Intent(
+                    findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
+                    MainActivity::class.java)
+                findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
             }
 
 

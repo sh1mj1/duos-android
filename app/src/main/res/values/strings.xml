@@ -56,7 +56,10 @@
     <string name="signup_profile_image">프로필 사진</string>
     <string name="signup_profile_introduce">자기 소개</string>
     <string name="signup_profile_introduce_text">간단한 자기 소개를 적어 주세요</string>
-
+    <string name="signup_local_dialog_close_btn">닫기</string>
+    <string name="signup_local_dialog_ok_btn">확인</string>
+    <string name="signup_local_dialog_large_region">시/도</string>
+    <string name="signup_local_dialog_small_region">시/구/군</string>
 
 
     <!-- splash -->

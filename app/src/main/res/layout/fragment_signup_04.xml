@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="@string/signup_length_of_play"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

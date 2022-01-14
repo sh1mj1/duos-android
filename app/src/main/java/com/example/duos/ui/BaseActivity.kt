@@ -25,7 +25,7 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
 
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
 
-        initKeyboard()
+//        initKeyboard()
 
         initAfterBinding()
     }

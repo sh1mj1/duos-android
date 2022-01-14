@@ -29,6 +29,8 @@
         app:menu="@menu/navi_menu"
         app:itemTextColor="@color/nero"
         app:itemIconSize="24dp"
+        app:itemIconTint="@color/black"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_container"

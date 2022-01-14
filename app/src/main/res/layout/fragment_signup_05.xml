@@ -12,7 +12,7 @@
         android:layout_marginTop="43dp"
         android:text="@string/signup_last_page"
         android:textSize="12sp"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/signup_profile_image"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/signup_05_text_tv"
@@ -55,7 +55,7 @@
         android:layout_marginTop="30dp"
         android:text="@string/signup_profile_image"
         android:textSize="14sp"
-        android:textColor="@color/color_01"
+        android:textColor="@color/nero"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_background_iv"
         app:layout_constraintTop_toBottomOf="@id/signup_05_profile_image_background_iv" />
@@ -70,8 +70,10 @@
         android:layout_marginEnd="16dp"
         android:padding="11sp"
         android:background="@drawable/signup_profile_introduce_rectangular"
-        android:textColorHint="@color/color_01"
-        android:hint="@string/signup_profile_introduce_text" />
+        android:textColorHint="@color/nero"
+        android:hint="@string/signup_profile_introduce_text"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

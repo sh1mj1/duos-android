@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/signup_local_dialog_text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/signup_local_dialog_set"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/signup_local_dialog_search_et"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white_smoke_F"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:hint="@string/signup_local_dialog_set_hint"
+        android:paddingStart="44dp"
+        android:textColor="@color/dark_gray_B4"
+        android:textColorHint="@color/dark_gray_B4"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/signup_local_dialog_text_tv" />
+
+
+    <ImageView
+        android:id="@+id/signup_local_dialog_search_icon_iv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/dark_gray_B4"
+        android:src="@drawable/signup_local_search_ic"
+        app:layout_constraintBottom_toBottomOf="@id/signup_local_dialog_search_et"
+        app:layout_constraintStart_toStartOf="@id/signup_local_dialog_search_et"
+        app:layout_constraintTop_toTopOf="@id/signup_local_dialog_search_et" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_local_dialog_search_et"
+        app:layout_constraintBottom_toTopOf="@id/signup_local_dialog_radio_layout_ll">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/signup_local_dialog_large_region"
+                android:textColor="@color/nero"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/signup_large_local_list_rc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_signup_large_local_list" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/signup_local_dialog_small_region"
+                android:textColor="@color/nero"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/signup_small_local_list_rc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_signup_small_local_list" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/signup_local_dialog_radio_layout_ll"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/test_01"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="@string/signup_local_dialog_close_btn"
+            android:textColor="@color/dark_gray_B4"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/test_02"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="@string/signup_local_dialog_ok_btn"
+            android:textSize="16sp"
+            android:textColor="@color/primary"/>
+
+
+
+        <!--        <RadioGroup-->
+<!--            android:id="@+id/signup_local_dialog_radio_group_rg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/signup_local_dialog_close_rb"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:paddingTop="20dp"-->
+<!--                android:button="@null"-->
+<!--                android:text="@string/signup_local_dialog_close_btn"-->
+<!--                android:textColor="@drawable/btn_text_color_selector"-->
+<!--                android:textSize="16sp" />-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/signup_local_dialog_ok_rb"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:checked="true"-->
+<!--                android:gravity="center"-->
+<!--                android:paddingTop="20dp"-->
+<!--                android:button="@null"-->
+<!--                android:text="@string/signup_local_dialog_ok_btn"-->
+<!--                android:textColor="@drawable/btn_text_color_selector"-->
+<!--                android:textSize="16sp" />-->
+
+<!--        </RadioGroup>-->
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
