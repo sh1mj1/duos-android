@@ -12,13 +12,13 @@
 
     <fragment
         android:id="@+id/menu_friendFragment"
-        android:name="com.example.duos.ui.main.chat.ChatFragment"
+        android:name="com.example.duos.ui.main.friendList.FriendListFragment"
         android:label="searchFragment">
     </fragment>
 
     <fragment
         android:id="@+id/menu_chatFragment"
-        android:name="com.example.duos.ui.main.friendList.FriendListFragment"
+        android:name="com.example.duos.ui.main.chat.ChatListFragment"
         android:label="matchFragment">
     </fragment>
 

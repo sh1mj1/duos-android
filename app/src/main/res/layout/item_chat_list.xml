@@ -9,29 +9,111 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:src="@drawable/chat_profile_img_1"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"/>
 
+<!--    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toTopOf="@id/chat_list_profile_iv"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/chat_list_profile_iv"-->
+<!--        app:layout_constraintStart_toEndOf="@id/chat_list_profile_iv"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        app:flow_wrapMode="chain"-->
+<!--        android:orientation="vertical">-->
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+<!--            <TextView-->
+<!--                android:id="@+id/chat_list_user_id_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/chat_list_chat_received_time"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--                android:text="@string/partner_search_user_id"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textAlignment="center"-->
+<!--                android:gravity="center"-->
+<!--                android:fontFamily="@font/applesdgothicneoregular"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/chat_list_chat_received_time"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/chat_list_chat_received_time"-->
+<!--                android:textColor="@color/dark_gray_A"-->
+<!--                android:textSize="11sp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:gravity="center"-->
+<!--                app:layout_constraintTop_toTopOf="@id/chat_list_user_id_tv"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/chat_list_user_id_tv"-->
+<!--                app:layout_constraintStart_toEndOf="@id/chat_list_user_id_tv"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_chainStyle="spread_inside"/>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/chat_list_chat_preview_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/chat_list_user_id_tv"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="@string/chat_list_chat_preview"-->
+<!--            android:textAlignment="center"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="13sp"-->
+<!--            android:textColor="@color/grey"-->
+<!--            android:fontFamily="@font/applesdgothicneoregular"/>-->
+<!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/chat_list_info_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/chat_list_profile_iv"
         app:layout_constraintBottom_toBottomOf="@id/chat_list_profile_iv"
         app:layout_constraintStart_toEndOf="@id/chat_list_profile_iv"
-        android:layout_marginStart="10dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:flow_wrapMode="chain">
         <TextView
             android:id="@+id/chat_list_user_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chat_list_chat_received_time"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:text="@string/partner_search_user_id"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
             android:fontFamily="@font/applesdgothicneoregular"/>
+
+        <TextView
+            android:id="@+id/chat_list_chat_received_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_list_chat_received_time"
+            android:textColor="@color/dark_gray_A"
+            android:textSize="11sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@id/chat_list_user_id_tv"
+            app:layout_constraintBottom_toBottomOf="@id/chat_list_user_id_tv"
+            app:layout_constraintStart_toEndOf="@id/chat_list_user_id_tv"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/chat_list_chat_preview_tv"
@@ -46,19 +128,6 @@
             android:textSize="13sp"
             android:textColor="@color/grey"
             android:fontFamily="@font/applesdgothicneoregular"/>
-
-        <TextView
-            android:id="@+id/chat_list_chat_received_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/chat_list_chat_received_time"
-            android:textColor="@color/dark_gray_A"
-            android:textSize="11sp"
-            android:textAlignment="center"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="@id/chat_list_user_id_tv"
-            app:layout_constraintBottom_toBottomOf="@id/chat_list_user_id_tv"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
