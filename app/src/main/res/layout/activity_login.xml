@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="@id/login_arrow_iv"
         android:layout_marginStart="10dp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_next_btn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -125,7 +125,7 @@
 
 
 <!--    한번 누르면 사라지는 버튼-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_phone_number_verifying_btn"
         android:layout_width="70dp"
         android:layout_height="32dp"
