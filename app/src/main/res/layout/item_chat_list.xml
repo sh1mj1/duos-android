@@ -110,6 +110,7 @@
             android:textSize="11sp"
             android:textAlignment="center"
             android:gravity="center"
+            android:fontFamily="@font/applesdgothicneoregular"
             app:layout_constraintTop_toTopOf="@id/chat_list_user_id_tv"
             app:layout_constraintBottom_toBottomOf="@id/chat_list_user_id_tv"
             app:layout_constraintStart_toEndOf="@id/chat_list_user_id_tv"
