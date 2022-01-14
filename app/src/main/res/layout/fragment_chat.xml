@@ -5,14 +5,49 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageView
+        android:id="@+id/chat_list_back_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/back_ic"/>
+
     <TextView
+        android:id="@+id/chat_list_chat_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/chat_list_back_iv"
+        app:layout_constraintTop_toTopOf="@id/chat_list_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chat_list_back_iv"
+        android:layout_marginStart="11dp"
+        android:text="@string/chat_list_title"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <View
+        android:id="@+id/chat_list_top_divider"
+        style="@style/Light_gray_Divider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="채팅"
-        android:textSize="40sp"/>
+        app:layout_constraintTop_toBottomOf="@+id/chat_list_back_iv"
+        android:layout_marginTop="12dp"/>
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/chat_list_rv"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/chat_list_top_divider"-->
+    <!--        tools:listitem="@layout/item_chat_list"-->
+    <!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:overScrollMode="never"-->
+    <!--        android:clipToPadding="true"-->
+    <!--        android:paddingBottom="200dp"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

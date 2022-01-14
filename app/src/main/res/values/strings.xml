@@ -121,6 +121,12 @@
 
     <!-- 여기까지 파트너 찾기 -->
 
+    <!-- 채팅 -->
+    <string name="chat_list_title">채팅</string>
+    <string name="chat_list_chat_preview">네네 그럼 그때 뵐게요~!</string>
+    <string name="chat_list_chat_received_time">오후 10:59</string>
+    <!-- 여기까지 채팅 -->
+
 
 <!--    여기부터 마이 프로필-->
     <string name="my_profile_my_nickname">tennis01</string>
