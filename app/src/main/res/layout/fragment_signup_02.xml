@@ -26,6 +26,7 @@
         android:textColorHint="@color/dim_gray"
         android:textSize="16sp"
         android:textColor="@color/nero"
+        android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
         app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv"
         android:layout_marginTop="20dp"
@@ -189,7 +190,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:id="@+id/signup_02_np_linear_layout_ll"
+        android:id="@+id/signup_02_number_picker_linear_layout_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -229,7 +230,6 @@
             android:layout_weight="1"
             android:theme="@style/AppTheme.NumberPicker"
             android:gravity="center"/>
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

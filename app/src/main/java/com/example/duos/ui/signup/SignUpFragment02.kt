@@ -23,7 +23,7 @@ class SignUpFragment02() : BaseFragment<FragmentSignup02Binding>(FragmentSignup0
 
     private fun BirthNumberPicker(){
 
-        binding.signup02NpLinearLayoutLl.visibility = View.VISIBLE
+        binding.signup02NumberPickerLinearLayoutLl.visibility = View.VISIBLE
 
         val npYear : NumberPicker = binding.signupNumberPickerYear
         val npMonth : NumberPicker = binding.signupNumberPickerMonth
@@ -68,8 +68,9 @@ class SignUpFragment02() : BaseFragment<FragmentSignup02Binding>(FragmentSignup0
         binding.signup02RootConstraintLayoutCl.setOnClickListener {
             binding.signup02BirthEt.text = ((2022 - npYear.value + 1).toString()  + "년 " +
                     npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
-            binding.signup02NpLinearLayoutLl.visibility = View.GONE
+            binding.signup02NumberPickerLinearLayoutLl.visibility = View.GONE
         }
+
     }
 
 

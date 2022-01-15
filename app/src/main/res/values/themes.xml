@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DUOS" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.DUOS" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -11,17 +11,19 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
-        <item name="android:textViewStyle">@font/applesdgothicneoregular</item>
-        <item name="buttonStyle">@font/applesdgothicneoregular</item>
-        <item name="editTextStyle">@font/applesdgothicneoregular</item>
-        <item name="radioButtonStyle">@font/applesdgothicneoregular</item>
-        <item name="checkboxStyle">@font/applesdgothicneoregular</item>
+        <!-- 폰트 적용 -->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="buttonStyle">@style/customButtonFontStyle</item>
+        <item name="editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="checkboxStyle">@style/customCheckboxFontStyle</item>
         <!-- Remove the title bar -->
         <item name="windowNoTitle">true</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/primary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
     </style>
 
     <style name="Widget.BottomNavigationView"
@@ -47,6 +49,12 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:layout_marginBottom">300dp</item>
+    </style>
+
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/applesdgothicneoregular</item>
+        <item name="android:textColor">@color/nero</item>
     </style>
 
 
