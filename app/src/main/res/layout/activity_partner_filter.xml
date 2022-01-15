@@ -133,7 +133,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/applesdgothicneoregular"/>
 
-            <RadioGroup
+            <com.example.duos.ToggleButtonGroupTableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -141,13 +141,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/partner_filter_gender_tv"
                 android:orientation="vertical">
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <TableRow>
                     <RadioButton
                         android:id="@+id/partner_filter_man_btn"
-                        android:checked="true"
+                        android:checked="false"
                         android:layout_width="0dp"
                         android:layout_height="42dp"
                         android:layout_weight="1"
@@ -180,12 +177,9 @@
                         android:includeFontPadding="false"
                         android:button="@null">
                     </RadioButton>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="8dp">
                     <RadioButton
                         android:id="@+id/partner_filter_careless_btn"
                         android:checked="false"
@@ -212,8 +206,8 @@
                         android:layout_marginStart="8dp"
                         android:button="@null">
                     </RadioButton>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </RadioGroup>
+                </TableRow>
+            </com.example.duos.ToggleButtonGroupTableLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
