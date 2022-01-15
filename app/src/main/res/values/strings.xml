@@ -169,5 +169,11 @@
 
 <!--    여기까지 마이 프로필 수정하기-->
 
+    <!-- 친구 목록 -->
+    <string name="friend_list_text">친구목록</string>
+    <string name="friend_list_delete">삭제</string>
+    <string name="friend_list_recommend_today">오늘</string>
+    <string name="friend_list_recommend_yesterday">어제</string>
+
 
 </resources>

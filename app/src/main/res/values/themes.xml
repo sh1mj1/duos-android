@@ -48,5 +48,11 @@
         <item name="android:layout_marginBottom">300dp</item>
     </style>
 
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/applesdgothicneoregular</item>
+        <item name="android:textColor">@color/nero</item>
+    </style>
+
 
 </resources>
