@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.duos.databinding.ActivitySplashBinding
+import com.example.duos.ui.login.LoginActivity
 import com.example.duos.ui.signup.SignUpActivity
 
 class SplashActivity: AppCompatActivity(), SplashView {
@@ -40,6 +41,9 @@ class SplashActivity: AppCompatActivity(), SplashView {
     private fun initStatus(){
         binding.splashStartButtonBtn.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
+        }
+        binding.splashGotoLoginText02Tv.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 

@@ -17,21 +17,34 @@
         android:id="@+id/signup_fragment_02"
         android:name="com.example.duos.ui.signup.SignUpFragment02"
         android:label="signup_fragment_02">
+
         <action
-            android:id="@+id/action_signup_fragment_02_to_signup_fragment_04"
-            app:destination="@id/signup_fragment_04" />
+            android:id="@+id/action_signup_fragment_02_to_signup_fragment_03"
+            app:destination="@id/signup_fragment_03" />
     </fragment>
 
     <fragment
         android:id="@+id/signup_fragment_03"
         android:name="com.example.duos.ui.signup.SignUpFragment03"
         android:label="signup_fragment_03">
+        <action
+            android:id="@+id/action_signup_fragment_03_to_signup_fragment_04"
+            app:destination="@id/signup_fragment_04" />
     </fragment>
 
     <fragment
         android:id="@+id/signup_fragment_04"
         android:name="com.example.duos.ui.signup.SignUpFragment04"
         android:label="signup_fragment_04">
+        <action
+            android:id="@+id/action_signup_fragment_04_to_signup_fragment_05"
+            app:destination="@id/signup_fragment_05" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signup_fragment_05"
+        android:name="com.example.duos.ui.signup.SignUpFragment05"
+        android:label="signup_fragment_05">
     </fragment>
 
 </navigation>

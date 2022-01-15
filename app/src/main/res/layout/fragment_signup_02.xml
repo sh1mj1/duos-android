@@ -60,7 +60,7 @@
 
 
     <ImageView
-        android:id="@+id/signup_nick_name_check_iv"
+        android:id="@+id/signup_02_nick_name_check_iv"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/signup_phone_verifying_check_ic"
@@ -74,13 +74,13 @@
         android:layout_height="24dp"
         android:src="@drawable/signup_phone_verifying_erase_ic"
         android:layout_marginEnd="9dp"
-        app:layout_constraintEnd_toStartOf="@id/signup_nick_name_check_iv"
+        app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_check_iv"
         app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et"
         app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"/>
 
 
     <!--    한번 누르면 사라지는 버튼-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup_02_nick_name_duplicate_btn"
         android:layout_width="70dp"
         android:layout_height="32dp"
@@ -104,7 +104,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"/>
 
-    <LinearLayout
+    <com.example.duos.ToggleButtonGroupTableLayout
         android:id="@+id/signup_02_sex_linear_layout_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,29 +114,45 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/signup_02_sex_man_btn"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_weight="1"
-            android:background="@drawable/signup_sex_unselected_rectangular"
-            android:text="@string/signup_sex_man"
-            android:textColor="@color/dark_gray_B4"
-            android:gravity="center"
-            android:layout_marginEnd="5dp"/>
+        <TableRow>
+            <RadioButton
+                android:id="@+id/signup_02_sex_man_btn"
+                android:checked="false"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_color_selector"
+                android:text="@string/signup_sex_man"
+                android:textSize="15sp"
+                android:textColor="@drawable/btn_text_color_selector"
+                android:textAlignment="center"
+                android:fontFamily="@font/applesdgothicneoregular"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:includeFontPadding="false"
+                android:button="@null">
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/signup_02_sex_woman_btn"
+                android:checked="false"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_color_selector"
+                android:layout_marginStart="8dp"
+                android:text="@string/signup_sex_woman"
+                android:textSize="15sp"
+                android:textColor="@drawable/btn_text_color_selector"
+                android:textAlignment="center"
+                android:fontFamily="@font/applesdgothicneoregular"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:includeFontPadding="false"
+                android:button="@null">
+            </RadioButton>
+        </TableRow>
 
-        <Button
-            android:id="@+id/signup_02_sex_woman_btn"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_weight="1"
-            android:background="@drawable/signup_sex_unselected_rectangular"
-            android:text="@string/signup_sex_woman"
-            android:textColor="@color/dark_gray_B4"
-            android:gravity="center"
-            android:layout_marginStart="5dp"/>
-
-    </LinearLayout>
+    </com.example.duos.ToggleButtonGroupTableLayout>
 
     <TextView
         android:id="@+id/signup_02_birth_tv"

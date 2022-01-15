@@ -1,9 +1,8 @@
 package com.example.duos.ui.signup
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
-
-import androidx.navigation.fragment.NavHostFragment
 
 import com.example.duos.R
 
@@ -17,6 +16,9 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
     override fun initAfterBinding() {
 
 
+        supportFragmentManager.beginTransaction().replace(R.id.signup_fragment_container_fc, SignUpFragment01())
+            .commitAllowingStateLoss()
+
         binding.signupNextBtn.setOnClickListener {
             initNavController()
         }
@@ -28,21 +30,61 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
 
     private fun initNavController(){
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as NavHostFragment
-        val navController = navHostFragment.navController
+        supportFragmentManager.run {
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+                beginTransaction()
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02){
+                beginTransaction()
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment03())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment03){
+                beginTransaction()
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment04())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment04){
+                beginTransaction()
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment05())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05){
+                val intent: Intent = Intent(
+                    findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
+                    MainActivity::class.java)
+                findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
+            }
 
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.signup_fragment_01) {
-                navController.navigate(R.id.action_signup_fragment_01_to_signup_fragment_02)
-            }
-            if(destination.id == R.id.signup_fragment_02) {
-                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_04)
-            }
-            if(destination.id == R.id.signup_fragment_04) {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
+
         }
+
+//
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as NavHostFragment
+//        val navController = navHostFragment.navController
+//
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            Log.d("현재", destination.label as String)
+//            if(destination.id == R.id.signup_fragment_01) {
+//                navController.navigate(R.id.action_signup_fragment_01_to_signup_fragment_02)
+//            }
+//            else if(destination.id == R.id.signup_fragment_02) {
+//                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_03)
+//            }
+//            else if(destination.id == R.id.signup_fragment_03) {
+//                navController.navigate(R.id.action_signup_fragment_03_to_signup_fragment_04)
+//            }
+//            else if(destination.id == R.id.signup_fragment_04) {
+//                navController.navigate(R.id.action_signup_fragment_04_to_signup_fragment_05)
+//            }
+//        }
 
 
 
