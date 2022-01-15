@@ -125,6 +125,16 @@
     <string name="chat_list_title">채팅</string>
     <string name="chat_list_chat_preview">네네 그럼 그때 뵐게요~!</string>
     <string name="chat_list_chat_message_time">오후 10:59</string>
+
+    <string name="chatting_title">채팅(</string>
+    <string name="chatting_partner_id">djeikd0620</string>
+    <string name="chatting_title_right_brck">)</string>
+    <string name="chatting_make_plan">약속잡기</string>
+    <string name="chatting_partner_message">안녕하세요~ 반갑습니다!!</string>
+    <string name="chatting_my_message">안녕하세요!ㅎㅎ</string>
+    <string name="chatting_message_time">지금</string>
+    <string name="chatting_et_hint">이 곳에서 채팅을 시작할 수 있어요</string>
+
     <!-- 여기까지 채팅 -->
 
 

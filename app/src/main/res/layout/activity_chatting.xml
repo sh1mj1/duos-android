@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/chatting_back_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/ic_back_30"/>
+
+    <TextView
+        android:id="@+id/chatting_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/chatting_back_iv"
+        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
+        android:layout_marginStart="11dp"
+        android:text="@string/chatting_title"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <TextView
+        android:id="@+id/chatting_title_partner_id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/chatting_title_tv"
+        app:layout_constraintTop_toTopOf="@id/chatting_title_tv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_title_tv"
+        android:text="@string/chatting_partner_id"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <TextView
+        android:id="@+id/chatting_title_right_brck_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/chatting_title_partner_id_tv"
+        app:layout_constraintTop_toTopOf="@id/chatting_title_partner_id_tv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_title_partner_id_tv"
+        android:text="@string/chatting_title_right_brck"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/chatting_make_plan_btn"
+        android:checked="true"
+        android:layout_width="95dp"
+        android:layout_height="34dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
+        android:layout_marginEnd="19dp"
+        android:text="@string/chatting_make_plan"
+        android:textSize="13sp"
+        android:background="@drawable/check_box_color_selector"
+        android:textColor="@drawable/btn_text_color_selector"
+        android:textAlignment="center"
+        android:minHeight="0dp"
+        android:includeFontPadding="false"
+        android:button="@null"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <View
+        android:id="@+id/chatting_top_divider"
+        style="@style/Light_gray_Divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chatting_back_iv"
+        android:layout_marginTop="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toBottomOf="@id/chatting_top_divider"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/messages_view"
+            android:layout_weight="2"
+            android:divider="#fff"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/chatting_top_divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/chatting_send_box_bg"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/chatting_et"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/chatting_et_hint"
+                android:inputType="text"
+                android:gravity="center_vertical"
+                android:background="@color/white_smoke_F"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="8dp"
+                android:textColorHint="@color/dark_gray_B4"
+                android:text="" />
+
+            <ImageButton
+                android:id="@+id/chatting_send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/dark_gray_B0"
+                android:layout_marginStart="11dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_send"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

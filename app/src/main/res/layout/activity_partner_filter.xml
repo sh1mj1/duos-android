@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id="@+id/partner_filter_back_iv"
+        android:id="@+id/chatting_back_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -14,12 +14,12 @@
         android:src="@drawable/ic_back_30"/>
 
     <TextView
-        android:id="@+id/partner_filter_filter_tv"
+        android:id="@+id/chatting_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/partner_filter_back_iv"
-        app:layout_constraintTop_toTopOf="@id/partner_filter_back_iv"
-        app:layout_constraintBottom_toBottomOf="@id/partner_filter_back_iv"
+        app:layout_constraintStart_toEndOf="@id/chatting_back_iv"
+        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
         android:layout_marginStart="11dp"
         android:text="@string/partner_filter_title"
         android:textSize="19sp"
@@ -27,12 +27,12 @@
         android:fontFamily="@font/applesdgothicneoregular"/>
 
     <TextView
-        android:id="@+id/partner_filter_init_tv"
+        android:id="@+id/chatting_make_plan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/partner_filter_back_iv"
-        app:layout_constraintBottom_toBottomOf="@id/partner_filter_back_iv"
+        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
         android:layout_marginEnd="16dp"
         android:text="@string/partner_filter_init"
         android:textSize="13sp"
@@ -44,7 +44,7 @@
         style="@style/Light_gray_Divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/partner_filter_back_iv"
+        app:layout_constraintTop_toBottomOf="@+id/chatting_back_iv"
         android:layout_marginTop="12dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,9 +148,9 @@
                         android:layout_width="0dp"
                         android:layout_height="42dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_color_selector"
                         android:text="@string/partner_filter_male"
                         android:textSize="15sp"
+                        android:background="@drawable/btn_color_selector"
                         android:textColor="@drawable/btn_text_color_selector"
                         android:textAlignment="center"
                         android:fontFamily="@font/applesdgothicneoregular"
