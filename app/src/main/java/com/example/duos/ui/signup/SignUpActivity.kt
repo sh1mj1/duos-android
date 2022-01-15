@@ -22,6 +22,10 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         binding.signupNextBtn.setOnClickListener {
             initNavController()
         }
+        binding.signupBackArrowIv.setOnClickListener {
+            this.getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit()
+            this.getSupportFragmentManager().popBackStack();
+        }
 
 
 //        binding.signUpBackIv.setOnClickListener(this)

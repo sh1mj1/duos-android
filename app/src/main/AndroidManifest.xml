@@ -32,6 +32,7 @@
 
         <activity
             android:name="com.example.duos.ui.signup.SignUpActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"/>
 
         <activity

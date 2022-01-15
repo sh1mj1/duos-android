@@ -11,7 +11,8 @@ class SignUpFragment01() : BaseFragment<FragmentSignup01Binding>(FragmentSignup0
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initAfterBinding() {
-        requireActivity().findViewById<TextView>(R.id.login_process_tv).text = "01"
+        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "01"
+
     }
 
 
