@@ -78,4 +78,7 @@ dependencies {
 
     // double-thumb seekbar
     implementation 'com.crystal:crystalrangeseekbar:1.1.3'
+
+    // Custom  CalendarView
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 }

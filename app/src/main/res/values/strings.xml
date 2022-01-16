@@ -134,6 +134,10 @@
     <string name="chatting_my_message">안녕하세요!ㅎㅎ</string>
     <string name="chatting_message_time">지금</string>
     <string name="chatting_et_hint">이 곳에서 채팅을 시작할 수 있어요</string>
+    
+    <string name="make_plan_title">약속잡기</string>
+    <string name="make_plan_time">시간</string>
+    <string name="make_plan_confirm">약속잡기</string>
 
     <!-- 여기까지 채팅 -->
 

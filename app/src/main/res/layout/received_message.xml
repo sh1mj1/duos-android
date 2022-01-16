@@ -25,6 +25,9 @@
         app:layout_constraintTop_toTopOf="@id/chatting_partner_profile_iv"
         android:layout_marginStart="9dp"/>
 
+    <!-- 메세지가 두 줄 이상이면 화면을 이탈해버려서,
+    고정 width를 정하고 메세지 길이가 몇 자 이하이면
+    wrap_content가 되게 코드를 짜야할듯-->
     <TextView
         android:id="@+id/chatting_received_message_body"
         android:layout_width="wrap_content"
@@ -35,7 +38,7 @@
         android:textSize="13dp"
         android:text="@string/chatting_my_message"
         android:gravity="center_vertical|start"
-        android:paddingStart="25dp"
+        android:paddingStart="21dp"
         android:paddingEnd="11dp"
         android:paddingVertical="8dp"
         app:layout_constraintStart_toStartOf="@id/chatting_partner_id_tv"
