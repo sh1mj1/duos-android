@@ -12,6 +12,5 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val intent = Intent(this, MakePlanActivity::class.java)
             startActivity(intent)
         })
-        
     }
 }
