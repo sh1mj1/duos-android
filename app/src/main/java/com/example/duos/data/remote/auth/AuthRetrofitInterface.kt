@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthRetrofitInterface {
     @POST("/users")
@@ -15,4 +16,11 @@ interface AuthRetrofitInterface {
 
     @GET("/users/auto-login")
     fun autoLogin(): Call<AuthResponse>
+
+    @GET("v1/regcodes")
+    fun getLargeReg(
+        @Query("regcode_pattern") regcode_pattern : String? = null,
+        @Query("is_ignore_zero") is_ignore_zero: String? = null
+    ): Call<AuthResponse>
+
 }

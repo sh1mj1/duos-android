@@ -12,12 +12,18 @@ import android.util.Log
 import android.view.ViewGroup
 
 import android.widget.TableLayout
+import android.os.Bundle
+
+import android.os.Parcelable
+
+
+
 
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
-    private var activeRadioButton: RadioButton? = null
-    val checkedRadioButtonId: Int
-        get() = if (activeRadioButton != null) {
+
+    var checkedRadioButtonId: Int =
+        if (activeRadioButton != null) {
             activeRadioButton!!.id
         } else -1
 
@@ -44,7 +50,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         }
         rb.isChecked = true
         activeRadioButton = rb
-        Log.d("asdf", checkedRadioButtonId.toString())
+        checkedRadioButtonId = activeRadioButton!!.id
     }
 
     /* (non-Javadoc)
@@ -74,7 +80,27 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         }
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        activeRadioButton?.let { bundle.putInt("stuff", it.id) } // ... save stuff
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        var state = state
+        if (state is Bundle) // implicit null check
+        {
+            val bundle = state
+            this.checkedRadioButtonId = bundle.getInt("stuff") // ... load stuff
+            activeRadioButton = findViewById(checkedRadioButtonId)
+            state = bundle.getParcelable("superState")
+        }
+        super.onRestoreInstanceState(state)
+    }
+
     companion object {
         private const val TAG = "ToggleButtonGroupTableLayout"
+        var activeRadioButton: RadioButton? = null
     }
 }

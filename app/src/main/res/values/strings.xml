@@ -29,6 +29,7 @@
     <string name="signup_phone_verifying">인증번호</string>
     <string name="signup_phone_verifying_hint"><font size="16">인증번호를 입력해 주세요</font></string>
     <string name="signup_next_btn">다음</string>
+    <string name="signup_next_btn_02">완료</string>
     <string name="signup_phone_verifying_time">05:00</string>
     <string name="signup_phone_verifying_again">인증번호 다시 받기></string>
     <string name="signup_nick_name">닉네임</string>

@@ -106,7 +106,7 @@
         android:layout_marginStart="20dp"/>
 
     <com.example.duos.ToggleButtonGroupTableLayout
-        android:id="@+id/signup_02_sex_linear_layout_ll"
+        android:id="@+id/signup_02_sex_toggle_button_group_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/signup_02_sex_tv"
@@ -161,7 +161,7 @@
         android:layout_height="wrap_content"
         android:text="@string/signup_birth"
         app:layout_constraintStart_toStartOf="@id/signup_02_sex_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_linear_layout_ll"
+        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_toggle_button_group_ll"
         android:layout_marginTop="30dp"
         android:textColor="@color/dark_gray_B4"/>
 
@@ -181,7 +181,7 @@
         android:paddingStart="2dp" />
 
     <ImageView
-        android:id="@+id/signup_02_birth_line_done_iv"
+        android:id="@+id/signup_02_birth_line_iv"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:src="@drawable/signup_unselected_line"

@@ -1,4 +1,4 @@
-package com.example.duos.ui.signup
+package com.example.duos.ui.signup.localSearch
 
 import android.content.Context
 import android.graphics.Point
@@ -9,13 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import com.example.duos.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.duos.data.entities.LargeLocal
+import com.example.duos.data.local.LocalDatabase
+import com.example.duos.data.remote.auth.AuthService
 import com.example.duos.databinding.SignupLocalDialogBinding
 
-class SignUpLocalDialog : DialogFragment() {
+class LocalSearchDialogFragment : DialogFragment() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isCancelable = true
+
+//        AuthService.getLargeLocal(this)
+
     }
 
     private lateinit var binding: SignupLocalDialogBinding
@@ -41,6 +48,28 @@ class SignUpLocalDialog : DialogFragment() {
 
     }
 
+//    /* ----------
+//    시/도를 roomDB 에 저장한다.
+//     */
+//    override fun LargeLocalToRoomDB(largeLocalList : List<LargeLocal>) {
+//        val localDB = LocalDatabase.getInstance(requireContext())!!
+//        localDB.largeLocalDao().clearAll()
+//        localDB.largeLocalDao().insertAll(largeLocalList)
+//    }
+//
+//
+//    /* ----------
+//    시/도를 recyclerview 에 설정해준다.
+//     */
+//    override fun LargeLocalSearchOnView() {
+//        val largeLocalList : List<LargeLocal>
+//        val localDB = LocalDatabase.getInstance(requireContext())!!
+//        largeLocalList = localDB.largeLocalDao().getLargeRegs()
+//
+//        binding.signupLargeLocalListRc.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+//    }
+
     override fun onResume() {
         super.onResume()
         val windowManager = requireActivity().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -54,5 +83,4 @@ class SignUpLocalDialog : DialogFragment() {
         params?.height = (deviceHeight * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
-
 }
