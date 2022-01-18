@@ -69,8 +69,8 @@
     </style>
 
     <style name="CustomTimePicker">
-        <item name="android:textColorPrimary">@color/primary</item>     <!-- text color -->
-        <item name="colorControlNormal">@color/grainsboro_D</item>      <!-- divider color -->
+        <item name="android:textColorPrimary">@color/black</item>     <!-- text color -->
+        <item name="colorControlNormal">@color/primary</item>      <!-- divider color -->
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/applesdgothicneoregular</item>
     </style>
