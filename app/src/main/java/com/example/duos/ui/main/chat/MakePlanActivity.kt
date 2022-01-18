@@ -20,6 +20,10 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
         //var selectedYear: Int   // 년도 그대로
         //var selectedMonth: Int  // 0부터 시작 (0 = 1월)
         //var selectedDay: Int   // 1부터 시작
+
+        var selectedHour: Int
+        var selectedMinute: Int
+
         lateinit var calendar: MaterialCalendarView
         calendar = binding.makePlanCalendar
         calendar.setSelectedDate(CalendarDay.today())
@@ -69,5 +73,14 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
 
         val timePicker = binding.makePlanTimePicker
         timePicker.setIs24HourView(true)
+        timePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener{
+            override fun onTimeChanged(p0: TimePicker?, p1: Int, p2: Int) {
+                selectedHour = timePicker.hour
+                selectedMinute = timePicker.minute
+                Log.d("selectedHour", selectedHour.toString())
+                Log.d("selectedMinute", selectedMinute.toString())
+            }
+
+        })
     }
 }
