@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.chat
 
 import android.util.Log
+import android.widget.TimePicker
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMakePlanBinding
 import com.example.duos.ui.BaseActivity
@@ -65,5 +66,8 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
                 calendar.addDecorator(eventDecorator)
             }
         })
+
+        val timePicker = binding.makePlanTimePicker
+        timePicker.setIs24HourView(true)
     }
 }
