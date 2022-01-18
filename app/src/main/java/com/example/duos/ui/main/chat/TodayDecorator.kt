@@ -12,7 +12,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 class TodayDecorator(context: Context): DayViewDecorator {
     private var date = CalendarDay.today()
     // val drawable = context.resources.getDrawable(R.drawable.style_only_radius_10)
-    val drawable = context.getDrawable(R.drawable.ic_selected_date_decorator)
+    val drawable = context.getDrawable(R.drawable.selected_date_decorator_downscaled_ratio_adjusted)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
         return day?.equals(date)!!
     }

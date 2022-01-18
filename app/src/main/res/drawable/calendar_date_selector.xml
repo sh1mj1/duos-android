@@ -3,9 +3,9 @@
     android:exitFadeDuration="@android:integer/config_shortAnimTime">
     <item
         android:state_checked="true"
-        android:drawable="@drawable/ic_selected_date_decorator"/>
+        android:drawable="@drawable/selected_date_decorator_downscaled_ratio_adjusted"/>
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_selected_date_decorator"/>
+        android:drawable="@drawable/selected_date_decorator_downscaled_ratio_adjusted"/>
     <item android:drawable="@color/transparent"/>
 </selector>

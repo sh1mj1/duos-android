@@ -9,14 +9,8 @@ import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import java.util.*
-import android.content.res.Configuration
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
-
-import java.util.Locale
-
-
-
 
 class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBinding::inflate) {
     override fun initAfterBinding() {
@@ -45,14 +39,9 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
         //val sundayDecorator = SundayDecorator()
         //val saturdayDecorator = SaturdayDecorator()
         val minMaxDecorator = MinMaxDecorator(stCalendarDay, enCalendarDay)
-//        //val boldDecorator = BoldDecorator(stCalendarDay, enCalendarDay)
+        //val boldDecorator = BoldDecorator(stCalendarDay, enCalendarDay)
         val todayDecorator = TodayDecorator(this)
-//        val eventDecorator = EventDecorator(this, selectedDate)
-
-
-//        calendar.addDecorators(minMaxDecorator, todayDecorator, eventDecorator)
         calendar.addDecorators(minMaxDecorator, todayDecorator)
-        //calendar.setDateTextAppearance(R.drawable.calendar_date_text_color)
 
         calendar.setDateTextAppearance(R.style.CustomDateTextAppearance)
         calendar.setWeekDayTextAppearance(R.style.CustomWeekDayAppearance)
@@ -69,19 +58,11 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
 
         calendar.setOnDateChangedListener(object: OnDateSelectedListener{
             override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
-                Log.d("이전 selectedDate", selectedDate.toString())
-                //var eventDecorator = EventDecorator(this@MakePlanActivity, selectedDate)
                 calendar.removeDecorator(todayDecorator)    // 이전에 클릭했던 날짜의 decorator 삭제
                 selectedDate = calendar.selectedDate
-                Log.d("이후 selectedDate", selectedDate.toString())
+                Log.d("selectedDate", selectedDate.toString())
                 val eventDecorator = EventDecorator(this@MakePlanActivity, selectedDate)
                 calendar.addDecorator(eventDecorator)
-                //selectedYear = calendar.selectedDate.year
-                //selectedMonth = calendar.selectedDate.month
-                //selectedDay = calendar.selectedDate.day
-//                Log.d("선택 년도", selectedYear.toString())
-//                Log.d("선택 월", selectedMonth.toString())
-//                Log.d("선택 날짜", selectedDay.toString())
             }
         })
     }
