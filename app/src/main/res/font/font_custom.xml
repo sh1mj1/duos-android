@@ -9,4 +9,21 @@
         app:font="@font/applesdgothicneoregular"
         app:fontWeight="400"
         app:fontStyle="normal"/>
+
+    <font
+        android:font="@font/applesdgothicneosemibold"
+        android:fontWeight="600"
+        android:fontStyle="normal"
+        app:font="@font/applesdgothicneosemibold"
+        app:fontWeight="600"
+        app:fontStyle="normal"/>
+
+    <font
+        android:font="@font/robotoblack"
+        android:fontWeight="900"
+        android:fontStyle="normal"
+        app:font="@font/robotoblack"
+        app:fontWeight="900"
+        app:fontStyle="normal"/>
+
 </font-family>

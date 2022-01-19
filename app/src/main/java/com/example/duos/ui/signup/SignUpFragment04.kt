@@ -11,7 +11,7 @@ class SignUpFragment04() : BaseFragment<FragmentSignup04Binding>(FragmentSignup0
 
     override fun initAfterBinding() {
 
-        requireActivity().findViewById<TextView>(R.id.login_process_tv).text = "04"
+        requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "04"
 
         for (i in 1 .. 14){
             var btnId : Int = resources.getIdentifier("signup_04_table_" + i.toString() + "_btn", "id",requireActivity().packageName)

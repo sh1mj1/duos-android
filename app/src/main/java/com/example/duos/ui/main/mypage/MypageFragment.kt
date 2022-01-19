@@ -8,7 +8,7 @@ import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding::inflate) {
 
     override fun initAfterBinding() {
-        binding.myPageTv.setOnClickListener {
+        binding.myProfileHomeConstraintLayoutCl.setOnClickListener {
             val intent = Intent(activity, MyProfileActivity::class.java)
             startActivity(intent)
         }

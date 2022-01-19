@@ -3,6 +3,7 @@ package com.example.duos.ui.signup
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 
 import com.example.duos.R
 
@@ -11,16 +12,35 @@ import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
 
 
-class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, View.OnClickListener {
+class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, View.OnClickListener, SignUpNextBtnInterface {
 
+    var checkBtn : Boolean = true
+    lateinit var myFragment : SignUpFragment02
     override fun initAfterBinding() {
 
 
         supportFragmentManager.beginTransaction().replace(R.id.signup_fragment_container_fc, SignUpFragment01())
             .commitAllowingStateLoss()
 
+        myFragment = SignUpFragment02()
+
         binding.signupNextBtn.setOnClickListener {
-            initNavController()
+            if (checkBtn){
+                initNavController()
+            } else{
+                onNextBtnChanged(false)
+                myFragment.setBirth()
+            }
+        }
+        binding.signupBackArrowIv.setOnClickListener {
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+                finish()
+            }
+            else{
+                this.getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit()
+                this.getSupportFragmentManager().popBackStack();
+            }
+
         }
 
 
@@ -33,7 +53,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         supportFragmentManager.run {
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
+                    .replace(R.id.signup_fragment_container_fc, myFragment)
                     .addToBackStack(null)
                     .commit()
             }
@@ -61,32 +81,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                     MainActivity::class.java)
                 findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
             }
-
-
-
         }
-
-//
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as NavHostFragment
-//        val navController = navHostFragment.navController
-//
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            Log.d("현재", destination.label as String)
-//            if(destination.id == R.id.signup_fragment_01) {
-//                navController.navigate(R.id.action_signup_fragment_01_to_signup_fragment_02)
-//            }
-//            else if(destination.id == R.id.signup_fragment_02) {
-//                navController.navigate(R.id.action_signup_fragment_02_to_signup_fragment_03)
-//            }
-//            else if(destination.id == R.id.signup_fragment_03) {
-//                navController.navigate(R.id.action_signup_fragment_03_to_signup_fragment_04)
-//            }
-//            else if(destination.id == R.id.signup_fragment_04) {
-//                navController.navigate(R.id.action_signup_fragment_04_to_signup_fragment_05)
-//            }
-//        }
-
-
 
     }
 
@@ -149,4 +144,23 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
 //            }
 //        }
     }
+
+    override fun onNextBtnChanged(boolean: Boolean){
+
+        // 다음 -> 완료로 다시 바꾸기
+        if (boolean){
+            binding.signupNextBtn.setText(getText(R.string.signup_next_btn_02))
+            binding.signupNextBtn.setTextColor(getColor(R.color.white))
+            binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
+            checkBtn = false
+        }
+        // 완료 -> 다음으로 바꾸기
+        else{
+            binding.signupNextBtn.setText(getText(R.string.signup_next_btn))
+            binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
+            binding.signupNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
+            checkBtn = true
+        }
+    }
+
 }

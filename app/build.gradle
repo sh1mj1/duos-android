@@ -81,4 +81,6 @@ dependencies {
 
     // Custom  CalendarView
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
 }

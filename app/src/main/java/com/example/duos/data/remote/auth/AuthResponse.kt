@@ -9,4 +9,5 @@ data class AuthResponse(
     @SerializedName("code") val code: Int,
     @SerializedName("message") val message: String,
     @SerializedName("result") val result: Auth?
+
 )

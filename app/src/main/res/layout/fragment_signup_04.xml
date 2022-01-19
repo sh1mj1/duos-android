@@ -12,12 +12,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="@string/signup_length_of_play"
+        android:fontFamily="@font/applesdgothicneosemibold"
         android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TableLayout
+    <com.example.duos.ToggleButtonGroupTableLayout
         android:id="@+id/signup_04_table_layout_tl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,14 +35,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_1_btn"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="42dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -49,14 +50,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_2_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -71,14 +72,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_3_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -86,14 +87,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_4_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -108,14 +109,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_5_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -123,14 +124,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_6_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -145,14 +146,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_7_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -160,14 +161,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_8_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -182,14 +183,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_9_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -197,14 +198,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_10_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -219,14 +220,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_11_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -234,14 +235,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_12_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -256,14 +257,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_13_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -271,14 +272,14 @@
                 android:textColor="@drawable/btn_text_color_selector"
                 android:textSize="15sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <RadioButton
                 android:id="@+id/signup_04_table_14_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/unselected_btn"
+                android:background="@drawable/btn_color_selector"
                 android:button="@null"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -288,7 +289,7 @@
 
         </TableRow>
 
-    </TableLayout>
+    </com.example.duos.ToggleButtonGroupTableLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

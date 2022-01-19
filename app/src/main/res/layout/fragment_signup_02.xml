@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/signup_nick_name"
         android:textColor="@color/dark_gray_B4"
+        android:fontFamily="@font/applesdgothicneosemibold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
@@ -26,11 +27,12 @@
         android:textColorHint="@color/dim_gray"
         android:textSize="16sp"
         android:textColor="@color/nero"
+        android:background="@null"
+        android:inputType="textMultiLine|textNoSuggestions"
         app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
         app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv"
         android:layout_marginTop="20dp"
         android:paddingStart="2dp"
-        android:inputType="text"
         android:maxLength="10"
         android:focusable="true"
         android:focusableInTouchMode="true"/>
@@ -98,13 +100,14 @@
         android:layout_height="wrap_content"
         android:text="@string/signup_sex"
         android:textColor="@color/dark_gray_B4"
+        android:fontFamily="@font/applesdgothicneosemibold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_line_iv"
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"/>
 
     <com.example.duos.ToggleButtonGroupTableLayout
-        android:id="@+id/signup_02_sex_linear_layout_ll"
+        android:id="@+id/signup_02_sex_toggle_button_group_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/signup_02_sex_tv"
@@ -158,8 +161,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signup_birth"
+        android:fontFamily="@font/applesdgothicneosemibold"
         app:layout_constraintStart_toStartOf="@id/signup_02_sex_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_linear_layout_ll"
+        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_toggle_button_group_ll"
         android:layout_marginTop="30dp"
         android:textColor="@color/dark_gray_B4"/>
 
@@ -170,6 +174,8 @@
         android:hint="@string/signup_birth_hint"
         android:textColorHint="@color/dim_gray"
         android:textSize="16sp"
+        android:background="@color/transparent"
+        android:inputType="date"
         android:textColor="@color/nero"
         app:layout_constraintStart_toStartOf="@id/signup_02_birth_tv"
         app:layout_constraintTop_toBottomOf="@id/signup_02_birth_tv"
@@ -177,7 +183,7 @@
         android:paddingStart="2dp" />
 
     <ImageView
-        android:id="@+id/signup_02_birth_line_done_iv"
+        android:id="@+id/signup_02_birth_line_iv"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:src="@drawable/signup_unselected_line"
@@ -188,7 +194,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:id="@+id/signup_02_np_linear_layout_ll"
+        android:id="@+id/signup_02_number_picker_linear_layout_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -228,7 +234,6 @@
             android:layout_weight="1"
             android:theme="@style/AppTheme.NumberPicker"
             android:gravity="center"/>
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
