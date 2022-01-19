@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.duos.data.entities.LargeLocal
+import com.example.duos.data.entities.LocalCategory
 
-@Database(entities = [LargeLocal::class], version = 1)
+@Database(entities = [LocalCategory::class], version = 1)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun largeLocalDao(): LargeLocalDao
     companion object {

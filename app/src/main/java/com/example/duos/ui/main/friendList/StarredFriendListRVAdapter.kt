@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.Friend
+import com.bumptech.glide.Glide
+import com.example.duos.data.entities.StarredFriend
 import com.example.duos.databinding.ItemFragmentMyFriendListBinding
 
-class MyFriendListRVAdapter(private val friendlist : ArrayList<Friend>) : RecyclerView.Adapter<MyFriendListRVAdapter.ViewHolder>() {
+class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFriend>) : RecyclerView.Adapter<StarredFriendListRVAdapter.ViewHolder>() {
 
 
     // 클릭 인터페이스 정의
@@ -22,7 +23,7 @@ class MyFriendListRVAdapter(private val friendlist : ArrayList<Friend>) : Recycl
         mItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MyFriendListRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): StarredFriendListRVAdapter.ViewHolder {
         val binding: ItemFragmentMyFriendListBinding = ItemFragmentMyFriendListBinding.inflate(
             LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
@@ -33,7 +34,7 @@ class MyFriendListRVAdapter(private val friendlist : ArrayList<Friend>) : Recycl
 
         // 친구 삭제 버튼 클릭시 삭제
         holder.binding.myFriendListDeleteBtn.setOnClickListener {
-            mItemClickListener.onDeleteFriend(friendlist[position].profileId)
+            mItemClickListener.onDeleteFriend(friendlist[position].myFriendNickname)
             removeFriend(position)
         }
 
@@ -46,9 +47,9 @@ class MyFriendListRVAdapter(private val friendlist : ArrayList<Friend>) : Recycl
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(friends: ArrayList<Friend>) {
+    fun addFriend(myFriends: ArrayList<StarredFriend>) {
         this.friendlist.clear()
-        this.friendlist.addAll(friends)
+        this.friendlist.addAll(myFriends)
 
         notifyDataSetChanged()
     }
@@ -59,11 +60,18 @@ class MyFriendListRVAdapter(private val friendlist : ArrayList<Friend>) : Recycl
 
     // 뷰홀더
     inner class ViewHolder(val binding: ItemFragmentMyFriendListBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(friend : Friend, position: Int){
-            binding.myFriendListProfileIdTv.text = friend.profileId
-            friend.profileImg?.let { binding.myFriendListProfileImageIv.setImageResource(it) }
-            binding.myFriendListAgeTv.text = friend.profileAge.toString()
-            binding.myFriendListSexTv.text = friend.profileSex
+        fun bind(myFriend : StarredFriend, position: Int){
+            binding.myFriendListProfileIdTv.text = myFriend.myFriendNickname
+            binding.myFriendListAgeTv.text = (myFriend.myFriendAge?.minus(myFriend.myFriendAge!! % 10)).toString()
+            binding.myFriendListSexTv.text =
+                when(myFriend.myFriendGender) {
+                    1-> "남자"
+                    else -> "여자"
+                }
+            Glide.with(binding.myFriendListProfileIdTv.context)
+                .load(myFriend.myFriendImgUrl)
+                .into(binding.myFriendListProfileImageIv)
+
         }
     }
 }

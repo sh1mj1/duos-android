@@ -5,9 +5,9 @@
 
     <ImageView
         android:id="@+id/splash_image_02_iv"
-        android:layout_width="232dp"
-        android:layout_height="232dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="272dp"
+        android:layout_height="302dp"
+        android:layout_marginTop="56dp"
         android:src="@drawable/splash_image_02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/splash_title_03"
         app:layout_constraintTop_toBottomOf="@id/splash_image_02_iv"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="49dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="16sp"

@@ -4,22 +4,32 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/my_friend_list_profile_image_iv"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/my_friend_list_profile_image_cv"
         android:layout_width="52dp"
         android:layout_height="52dp"
-        android:src="@drawable/friend_list_profile_01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp"
+        app:cardCornerRadius="40dp">
+
+        <ImageView
+            android:id="@+id/my_friend_list_profile_image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/friend_list_profile_01" />
+    </androidx.cardview.widget.CardView>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/my_friend_list_profile_image_iv"
-        app:layout_constraintBottom_toBottomOf="@id/my_friend_list_profile_image_iv"
-        app:layout_constraintStart_toEndOf="@id/my_friend_list_profile_image_iv"
+        app:layout_constraintTop_toTopOf="@id/my_friend_list_profile_image_cv"
+        app:layout_constraintBottom_toBottomOf="@id/my_friend_list_profile_image_cv"
+        app:layout_constraintStart_toEndOf="@id/my_friend_list_profile_image_cv"
         android:layout_marginStart="12dp">
 
         <TextView
@@ -72,8 +82,8 @@
         android:layout_width="46dp"
         android:layout_height="27dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_friend_list_profile_image_iv"
-        app:layout_constraintBottom_toBottomOf="@id/my_friend_list_profile_image_iv"
+        app:layout_constraintTop_toTopOf="@id/my_friend_list_profile_image_cv"
+        app:layout_constraintBottom_toBottomOf="@id/my_friend_list_profile_image_cv"
         android:layout_marginEnd="16dp"
         android:text="@string/friend_list_delete"
         android:gravity="center"

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "LargeRegTable")
-data class LargeLocal(
+data class LocalCategory(
     @PrimaryKey
     @SerializedName("code") val code: String,
     @SerializedName("name") val name: String

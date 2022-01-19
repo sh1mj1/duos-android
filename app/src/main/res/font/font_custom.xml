@@ -18,4 +18,12 @@
         app:fontWeight="600"
         app:fontStyle="normal"/>
 
+    <font
+        android:font="@font/robotoblack"
+        android:fontWeight="900"
+        android:fontStyle="normal"
+        app:font="@font/robotoblack"
+        app:fontWeight="900"
+        app:fontStyle="normal"/>
+
 </font-family>

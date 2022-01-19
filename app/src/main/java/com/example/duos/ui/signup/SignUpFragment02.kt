@@ -42,13 +42,10 @@ class SignUpFragment02() : Fragment() {
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
         nextBtnListener = mContext
 
-
         binding.signup02BirthEt.setOnClickListener {
             nextBtnListener.onNextBtnChanged(true)
             BirthNumberPicker()
         }
-
-        initFocusLine()
 
         birthTextView = binding.signup02BirthEt
         if (savedInstanceState != null && savedState == null) {
@@ -83,24 +80,6 @@ class SignUpFragment02() : Fragment() {
             if (savedState != null) savedState else saveState()
         )
     }
-
-    fun initFocusLine() {
-        binding.signup02NickNameEt.setOnFocusChangeListener { view, b ->
-            if (b) {
-                binding.signup02NickNameLineIv.setImageResource(R.drawable.signup_selected_line)
-            } else {
-                binding.signup02NickNameLineIv.setImageResource(R.drawable.signup_unselected_line)
-            }
-        }
-        binding.signup02BirthEt.setOnFocusChangeListener { view, b ->
-            if (b) {
-                binding.signup02BirthLineIv.setImageResource(R.drawable.signup_selected_line)
-            } else {
-                binding.signup02BirthLineIv.setImageResource(R.drawable.signup_unselected_line)
-            }
-        }
-    }
-
 
     private fun BirthNumberPicker() {
 
@@ -145,8 +124,6 @@ class SignUpFragment02() : Fragment() {
             value = 1
             displayedValues = dateList.toTypedArray()
         }
-
-
     }
 
     fun setBirth(){

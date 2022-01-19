@@ -29,28 +29,7 @@ class SignUpFragment01() :  Fragment() {
 
         binding.signup01PhoneNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        initFocusLine()
-
         return binding.root
-    }
-
-    fun initFocusLine(){
-        binding.signup01PhoneNumberEt.setOnFocusChangeListener { view, b ->
-            if (b){
-                binding.signup01PhoneNumberLineIv.setImageResource(R.drawable.signup_selected_line)
-            }
-            else{
-                binding.signup01PhoneNumberLineIv.setImageResource(R.drawable.signup_unselected_line)
-            }
-        }
-        binding.signup01PhoneVerifyingEt.setOnFocusChangeListener { view, b ->
-            if (b){
-                binding.signup01PhoneVerifyingLineIv.setImageResource(R.drawable.signup_selected_line)
-            }
-            else{
-                binding.signup01PhoneVerifyingLineIv.setImageResource(R.drawable.signup_unselected_line)
-            }
-        }
     }
 
     override fun onDestroyView() {

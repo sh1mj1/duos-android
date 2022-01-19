@@ -33,8 +33,14 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
             }
         }
         binding.signupBackArrowIv.setOnClickListener {
-            this.getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit()
-            this.getSupportFragmentManager().popBackStack();
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+                finish()
+            }
+            else{
+                this.getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit()
+                this.getSupportFragmentManager().popBackStack();
+            }
+
         }
 
 

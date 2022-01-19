@@ -3,16 +3,11 @@ package com.example.duos.ui.signup.localSearch
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.duos.data.entities.LargeLocal
-import com.example.duos.data.local.LocalDatabase
-import com.example.duos.data.remote.auth.AuthService
 import com.example.duos.databinding.SignupLocalDialogBinding
 
 class LocalSearchDialogFragment : DialogFragment() {
@@ -51,7 +46,7 @@ class LocalSearchDialogFragment : DialogFragment() {
 //    /* ----------
 //    시/도를 roomDB 에 저장한다.
 //     */
-//    override fun LargeLocalToRoomDB(largeLocalList : List<LargeLocal>) {
+//    override fun LargeLocalToRoomDB(largeLocalList : List<LocalCategory>) {
 //        val localDB = LocalDatabase.getInstance(requireContext())!!
 //        localDB.largeLocalDao().clearAll()
 //        localDB.largeLocalDao().insertAll(largeLocalList)
@@ -62,7 +57,7 @@ class LocalSearchDialogFragment : DialogFragment() {
 //    시/도를 recyclerview 에 설정해준다.
 //     */
 //    override fun LargeLocalSearchOnView() {
-//        val largeLocalList : List<LargeLocal>
+//        val largeLocalList : List<LocalCategory>
 //        val localDB = LocalDatabase.getInstance(requireContext())!!
 //        largeLocalList = localDB.largeLocalDao().getLargeRegs()
 //

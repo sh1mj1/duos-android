@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_background_image"
+    android:background="@color/white"
     android:backgroundTint="#D9FFFFFF"
     android:backgroundTintMode="src_atop">
 
@@ -20,7 +20,7 @@
         android:id="@+id/splash_circle_indicator_ci"
         android:layout_width="wrap_content"
         android:layout_height="8dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="90dp"
         android:layout_marginBottom="50dp"
         app:ci_drawable="@drawable/splash_selected_dot"
         app:ci_drawable_unselected="@drawable/splash_unselected_dot"
@@ -33,7 +33,6 @@
         android:id="@+id/splash_start_button_btn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="30dp"
         android:background="@drawable/splash_button_rectangular"
         android:backgroundTint="@color/primary"
         android:gravity="center"
@@ -41,6 +40,7 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@id/splash_linear_layout_ll" />
 
 
@@ -48,18 +48,18 @@
         android:id="@+id/splash_linear_layout_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/splash_linear_layout_02_ll"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="25dp">
 
         <TextView
             android:id="@+id/splash_goto_login_text_01_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
             android:text="@string/splash_goto_login_text_01"
             android:textColor="@color/nero"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -70,11 +70,97 @@
             android:layout_height="wrap_content"
             android:text="@string/splash_goto_login_text_02"
             android:textColor="@color/dim_gray"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/splash_goto_login_text_01_tv"
             app:layout_constraintStart_toEndOf="@id/splash_goto_login_text_01_tv"
             app:layout_constraintTop_toTopOf="@id/splash_goto_login_text_01_tv" />
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/splash_linear_layout_02_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/splash_service_text_01_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_service_text_01"
+                android:textSize="10sp"
+                android:textColor="@color/nero"
+                android:lineSpacingExtra="4sp"
+                android:translationY="-2sp" />
+
+            <TextView
+                android:id="@+id/splash_goto_service_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_goto_service"
+                android:textSize="10sp"
+                android:textColor="@color/primary"
+                android:lineSpacingExtra="4sp"
+                android:translationY="-2sp"/>
+
+            <TextView
+                android:id="@+id/splash_service_text_02_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_service_text_02"
+                android:textSize="10sp"
+                android:textColor="@color/nero"
+                android:lineSpacingExtra="4sp"
+                android:translationY="-2sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/splash_privacy_text_01_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_privacy_text_01"
+                android:textSize="10sp"
+                android:textColor="@color/nero"
+                android:lineSpacingExtra="4sp" />
+
+            <TextView
+                android:id="@+id/splash_goto_privacy_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_goto_privacy"
+                android:textSize="10sp"
+                android:textColor="@color/primary"
+                android:lineSpacingExtra="4sp" />
+
+            <TextView
+                android:id="@+id/splash_privacy_text_02_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_privacy_text_02"
+                android:textSize="10sp"
+                android:textColor="@color/nero"
+                android:lineSpacingExtra="4sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.Friend
+import com.example.duos.data.entities.StarredFriend
 import com.example.duos.databinding.ItemFragmentLastRecommendFriendListTodayBinding
 
-class LastRecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<Friend>) : RecyclerView.Adapter<LastRecommendFriendListTodayRVAdapter.ViewHolder>() {
+class RecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<StarredFriend>) : RecyclerView.Adapter<RecommendFriendListTodayRVAdapter.ViewHolder>() {
 
 
     // 클릭 인터페이스 정의
@@ -23,7 +23,7 @@ class LastRecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<
         mItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): LastRecommendFriendListTodayRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecommendFriendListTodayRVAdapter.ViewHolder {
         val binding: ItemFragmentLastRecommendFriendListTodayBinding = ItemFragmentLastRecommendFriendListTodayBinding.inflate(
             LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
@@ -34,7 +34,7 @@ class LastRecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<
 
         // 친구 삭제 버튼 클릭시 삭제
         holder.binding.lastRecommendFriendListTodayDeleteBtn.setOnClickListener {
-            mItemClickListener.onDeleteFriend(friendlist[position].profileId)
+            mItemClickListener.onDeleteFriend(friendlist[position].myFriendNickname)
             removeFriend(position)
         }
 
@@ -47,9 +47,9 @@ class LastRecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(friends: ArrayList<Friend>) {
+    fun addFriend(myFriends: ArrayList<StarredFriend>) {
         this.friendlist.clear()
-        this.friendlist.addAll(friends)
+        this.friendlist.addAll(myFriends)
 
         notifyDataSetChanged()
     }
@@ -60,11 +60,14 @@ class LastRecommendFriendListTodayRVAdapter (private val friendlist : ArrayList<
 
     // 뷰홀더
     inner class ViewHolder(val binding: ItemFragmentLastRecommendFriendListTodayBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(friend : Friend, position: Int){
-            binding.lastRecommendFriendListTodayIdTv.text = friend.profileId
-            friend.profileImg?.let { binding.lastRecommendFriendListTodayProfileImageIv.setImageResource(it) }
-            binding.lastRecommendFriendListTodayAgeTv.text = friend.profileAge.toString()
-            binding.lastRecommendFriendListTodaySexTv.text = friend.profileSex
+        fun bind(myFriend : StarredFriend, position: Int){
+//            binding.lastRecommendFriendListTodayIdTv.text = myFriend.myFriendNickname
+//            binding.lastRecommendFriendListTodayAgeTv.text = myFriend.myFriendAge.toString()
+//            binding.lastRecommendFriendListTodaySexTv.text = myFriend.myFriendGender
+//            Glide.with(binding.lastRecommendFriendListTodayProfileImageIv.context)
+//                .load(myFriend.myFriendImgUrl)
+//                .into(binding.lastRecommendFriendListTodayProfileImageIv)
+
         }
     }
 }

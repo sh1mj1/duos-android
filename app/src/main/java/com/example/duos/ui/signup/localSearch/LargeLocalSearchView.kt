@@ -1,8 +1,8 @@
 package com.example.duos.ui.signup.localSearch
 
-import com.example.duos.data.entities.LargeLocal
+import com.example.duos.data.entities.LocalCategory
 
 interface LargeLocalSearchView {
-    fun LargeLocalToRoomDB(largeLocalList: List<LargeLocal>)
+    fun LargeLocalToRoomDB(localCategoryList: List<LocalCategory>)
     fun LargeLocalSearchOnView()
 }

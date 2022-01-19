@@ -48,7 +48,7 @@ class SplashActivity: AppCompatActivity(), SplashView {
     }
 
     private fun autoLogin() {
-//        AuthService.autoLogin(this)
+
     }
 
     override fun onAutoLoginLoading() {
@@ -56,10 +56,10 @@ class SplashActivity: AppCompatActivity(), SplashView {
     }
 
     override fun onAutoLoginSuccess() {
-//        startActivityWithClear(MainActivity::class.java)
+
     }
 
     override fun onAutoLoginFailure(code: Int, message: String) {
-//        startActivityWithClear(LoginActivity::class.java)
+
     }
 }

@@ -1,19 +1,8 @@
 package com.example.duos.data.remote.auth
 
-import android.util.Log
-import com.example.duos.ui.signup.localSearch.LargeLocalSearchView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
-
-import retrofit2.Retrofit
-
-
-
 
 object AuthService {
-//    fun signUp(signUpView: SignUpView ,user: User) {
+    //    fun signUp(signUpView: SignUpView ,user: User) {
 //        val authService = retrofit.create(AuthRetrofitInterface::class.java)
 //
 //        signUpView.onSignUpLoading()
@@ -82,33 +71,34 @@ object AuthService {
 //            }
 //        })
 //    }
+//
+//    fun getLargeLocal(localProcessing : LargeLocalSearchView){
+//        var BASE_URL = "https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/"
+//        val  retrofit = Retrofit.Builder()
+//            .baseUrl(BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        val authService = retrofit.create(AuthRetrofitInterface::class.java)
+//
+//        authService.getLargeReg(regcode_pattern = "*00000000").enqueue(object : Callback<AuthResponse>{
+//            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+//                Log.d("resp-success","성공")
+//                Log.d("resp-string", response.body().toString())
+//
+//                // room 에 local 저장하기
+//                response.body()?.let { localProcessing.LargeLocalToRoomDB(it.reg) }
+//
+//                // 시,도를 화면에 보여주기
+//                localProcessing.LargeLocalSearchOnView()
+//
+//
+//            }
+//
+//            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+//                Log.d("resp-failure","실패")
+//            }
+//        })
+//    }
 
-    fun getLargeLocal(localProcessing : LargeLocalSearchView){
-        var BASE_URL = "https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/"
-        val  retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val authService = retrofit.create(AuthRetrofitInterface::class.java)
-
-        authService.getLargeReg(regcode_pattern = "*00000000").enqueue(object : Callback<AuthResponse>{
-            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
-                Log.d("resp-success","성공")
-                Log.d("resp-string", response.body().toString())
-
-                // room 에 local 저장하기
-                response.body()?.let { localProcessing.LargeLocalToRoomDB(it.reg) }
-
-                // 시,도를 화면에 보여주기
-                localProcessing.LargeLocalSearchOnView()
-
-
-            }
-
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                Log.d("resp-failure","실패")
-            }
-        })
-    }
 }

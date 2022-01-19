@@ -1,13 +1,11 @@
-package com.example.duos.data.remote.auth
+package com.example.duos.data.remote.myFriendList
 
+import com.example.duos.data.entities.StarredFriend
 import com.google.gson.annotations.SerializedName
 
-data class Auth(@SerializedName("jwt") val jwt: String)
-
-data class AuthResponse(
+data class StarredFriendResponse(
     @SerializedName("isSuccess") val isSuccess: Boolean,
     @SerializedName("code") val code: Int,
     @SerializedName("message") val message: String,
-    @SerializedName("result") val result: Auth?
-
+    @SerializedName("result") val result: List<StarredFriend>?
 )

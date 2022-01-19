@@ -71,14 +71,21 @@
 
     <!-- splash -->
     <string name="splash_button_start">시작하기</string>
+    <string name="splash_duos_logo">DUOS</string>
     <string name="splash_goto_login_text_01">이미 계정이 있나요?&#160;</string>
     <string name="splash_goto_login_text_02">로그인</string>
-    <string name="splash_title_01">스포츠 메이트는 듀오스와 함께</string>
-    <string name="splash_text_01">제대로된 스포츠 파트너가 없어\n고민이었던 모든 분들을 위한 서비스</string>
-    <string name="splash_title_02">개별 맞춤 파트너 추천</string>
-    <string name="splash_text_02">필터링 기능을 통해\n개인의 니즈에 딱! 맞는 파트너 추천 받기</string>
-    <string name="splash_title_03">마음에 드는 파트너와 약속 잡기</string>
-    <string name="splash_text_03">추천받은 파트너 중 마음에 드는\n상대와 채팅을 통해 약속 잡기</string>
+    <string name="splash_title_01">운동 친구 찾는 새로운 방법, 듀오스</string>
+    <string name="splash_text_01">같이 운동할 친구를 찾고 싶은\n모든 분들을 위한 서비스</string>
+    <string name="splash_title_02">나에게 딱 맞는 친구 추천</string>
+    <string name="splash_text_02">듀오스가 추천하는\n나를 위한 친구들을 만나보세요</string>
+    <string name="splash_title_03">채팅하고 약속 잡기</string>
+    <string name="splash_text_03">개인정보 교환 없이\n채팅을 통해 약속을 잡아보세요</string>
+    <string name="splash_service_text_01">로그인하면 듀오스&#160;</string>
+    <string name="splash_goto_service"><u>이용약관</u></string>
+    <string name="splash_service_text_02">에 동의하는 것으로 간주됩니다.</string>
+    <string name="splash_privacy_text_01">듀오스의 회원정보 처리방식은&#160;</string>
+    <string name="splash_goto_privacy"><u>개인정보 취급 방침</u></string>
+    <string name="splash_privacy_text_02">에서 확인해 보세요.</string>
 
     <!-- number picker -->
     <string name="number_picker_year">년</string>
