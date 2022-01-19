@@ -9,7 +9,7 @@ class FriendListViewpagerAdapter(fragment : Fragment) : FragmentStateAdapter(fra
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> StarredFriendListFragment()
-            else -> LastRecommendFriendListFragment()
+            else -> RecommendFriendListFragment()
 
         }
     }

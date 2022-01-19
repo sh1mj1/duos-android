@@ -5,10 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.data.entities.StarredFriend
 import com.example.duos.databinding.FragmentLastRecommendFriendListBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.utils.getFriendListDiaglogNotShowing
 
 
-class LastRecommendFriendListFragment ()  : BaseFragment<FragmentLastRecommendFriendListBinding>(
-    FragmentLastRecommendFriendListBinding::inflate){
+class RecommendFriendListFragment() : BaseFragment<FragmentLastRecommendFriendListBinding>(
+    FragmentLastRecommendFriendListBinding::inflate
+) {
 
     private var todayFriendListDatas = ArrayList<StarredFriend>()
     private var yesterdayFriendListDatas = ArrayList<StarredFriend>()
@@ -34,14 +36,28 @@ class LastRecommendFriendListFragment ()  : BaseFragment<FragmentLastRecommendFr
 //
 //        }
 
-        binding.lastRecommendFriendListTodayRecyclerviewRv.layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.lastRecommendFriendListYesterdayRecyclerviewRv.layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        if (!getFriendListDiaglogNotShowing()) {
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                FriendListDialogFragment().show(
+                    fragmentManager,
+                    "친구목록 다이얼로그"
+                )
+            }
+        }
+
+
+        binding.lastRecommendFriendListTodayRecyclerviewRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.lastRecommendFriendListYesterdayRecyclerviewRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
 
         val todayFriendListRVAdapter = RecommendFriendListTodayRVAdapter(todayFriendListDatas)
-        val yesterdayFriendListRVAdapter= RecommendFriendListYesterdayRVAdapter(yesterdayFriendListDatas)
+        val yesterdayFriendListRVAdapter =
+            RecommendFriendListYesterdayRVAdapter(yesterdayFriendListDatas)
 
-        todayFriendListRVAdapter.setMyItemClickListener(object : RecommendFriendListTodayRVAdapter.MyItemClickListener{
+        todayFriendListRVAdapter.setMyItemClickListener(object :
+            RecommendFriendListTodayRVAdapter.MyItemClickListener {
             override fun onDeleteFriend(friendId: String) {
                 // 추천친구 목록에서 삭제
             }
@@ -51,7 +67,8 @@ class LastRecommendFriendListFragment ()  : BaseFragment<FragmentLastRecommendFr
             }
         })
 
-        yesterdayFriendListRVAdapter.setMyItemClickListener(object : RecommendFriendListYesterdayRVAdapter.MyItemClickListener{
+        yesterdayFriendListRVAdapter.setMyItemClickListener(object :
+            RecommendFriendListYesterdayRVAdapter.MyItemClickListener {
             override fun onDeleteFriend(friendId: String) {
                 // 찜한친구 목록에서 삭제
             }
@@ -60,8 +77,10 @@ class LastRecommendFriendListFragment ()  : BaseFragment<FragmentLastRecommendFr
                 // 찜한친구 목록으로 추가
             }
         })
+
         binding.lastRecommendFriendListTodayRecyclerviewRv.adapter = todayFriendListRVAdapter
-        binding.lastRecommendFriendListYesterdayRecyclerviewRv.adapter = yesterdayFriendListRVAdapter
+        binding.lastRecommendFriendListYesterdayRecyclerviewRv.adapter =
+            yesterdayFriendListRVAdapter
 
     }
 }
