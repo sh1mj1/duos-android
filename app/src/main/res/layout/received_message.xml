@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="10dp"
+    android:clipToPadding="false">
+
+    <ImageView
+        android:id="@+id/chatting_partner_profile_iv"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/chat_profile_img_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/chatting_partner_id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chatting_partner_id"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/chatting_partner_profile_iv"
+        app:layout_constraintTop_toTopOf="@id/chatting_partner_profile_iv"
+        android:layout_marginStart="9dp"/>
+
+    <!-- 메세지가 두 줄 이상이면 화면을 이탈해버려서,
+    고정 width를 정하고 메세지 길이가 몇 자 이하이면
+    wrap_content가 되게 코드를 짜야할듯-->
+    <TextView
+        android:id="@+id/chatting_received_message_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/received_message_bubble"
+        android:textColor="@color/grey"
+        android:elevation="0dp"
+        android:textSize="13dp"
+        android:text="@string/chatting_my_message"
+        android:gravity="center_vertical|start"
+        android:paddingStart="21dp"
+        android:paddingEnd="11dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintStart_toStartOf="@id/chatting_partner_id_tv"
+        app:layout_constraintTop_toBottomOf="@id/chatting_partner_id_tv"
+        android:layout_marginTop="9dp"/>
+
+    <TextView
+        android:id="@+id/chatting_received_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark_gray_A"
+        android:elevation="2dp"
+        android:textSize="9dp"
+        android:text="@string/chatting_message_time"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/chatting_received_message_body"
+        app:layout_constraintStart_toEndOf="@id/chatting_received_message_body"
+        android:layout_marginStart="5dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

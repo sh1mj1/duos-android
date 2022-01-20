@@ -47,6 +47,14 @@
         <activity
             android:name=".ui.main.partnerSearch.PartnerFilterActivity"
             android:exported="true"/>
+
+        <activity
+            android:name=".ui.main.chat.ChattingActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".ui.main.chat.MakePlanActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

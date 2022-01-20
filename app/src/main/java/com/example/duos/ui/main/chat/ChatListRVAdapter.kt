@@ -8,6 +8,16 @@ import com.example.duos.databinding.ItemChatListBinding
 
 class ChatListRVAdapter(private val chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
 
+    interface ChatListItemClickListener{
+        fun onItemClick(chatList: ChatList)
+    }
+
+    private lateinit var mItemClickListener: ChatListItemClickListener
+
+    fun setChatListItemClickListener(itemClickListener: ChatListItemClickListener){
+        mItemClickListener = itemClickListener
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemChatListBinding = ItemChatListBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
@@ -15,6 +25,7 @@ class ChatListRVAdapter(private val chatList: ArrayList<ChatList>) : RecyclerVie
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(chatList[position])
+        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(chatList[position]) }
     }
 
     override fun getItemCount(): Int = chatList.size

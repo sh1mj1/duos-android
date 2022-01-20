@@ -25,13 +25,15 @@ class RecommendFriendListFragment() :
     RecommendedFriendListView {
 
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
-    private var checkRecyclerviewIsNotEmpty = Array(8) { i -> false }
 
     override fun initAfterBinding() {
         FriendListService.recommendedFriendList(this, 1)
     }
 
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendedFriendListOnDate>) {
+
+        Log.d("recommend","ongetSuccess")
+
         if (!getFriendListDiaglogNotShowing()) {
             activity?.supportFragmentManager?.let { fragmentManager ->
                 FriendListDialogFragment().show(

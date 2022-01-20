@@ -133,6 +133,59 @@
     <string name="chat_list_title">채팅</string>
     <string name="chat_list_chat_preview">네네 그럼 그때 뵐게요~!</string>
     <string name="chat_list_chat_message_time">오후 10:59</string>
+
+    <string name="chatting_title">채팅(</string>
+    <string name="chatting_partner_id">djeikd0620</string>
+    <string name="chatting_title_right_brck">)</string>
+    <string name="chatting_make_plan">약속잡기</string>
+    <string name="chatting_partner_message">안녕하세요~ 반갑습니다!!</string>
+    <string name="chatting_my_message">안녕하세요!ㅎㅎ</string>
+    <string name="chatting_message_time">지금</string>
+    <string name="chatting_et_hint">이 곳에서 채팅을 시작할 수 있어요</string>
+    
+    <string name="make_plan_title">약속잡기</string>
+    <string name="make_plan_time">시간</string>
+    <string name="make_plan_confirm">약속잡기</string>
+
+    <string name="plan_info_title">약속(</string>
+    <string name="plan_info_title_id">djeikd0620</string>
+    <string name="plan_info_title_right_brck">)</string>
+    <string name="plan_info_delete">삭제</string>
+    <string name="plan_info_date_title">날짜</string>
+    <string name="plan_info_date">2021.12.30</string>
+    <string name="plan_info_time_title">시간</string>
+    <string name="plan_info_time">17:20</string>
+    <string name="plan_info_revise">수정하기</string>
+
+    <string name="plan_info_delete_dialog_message">약속을 삭제하시겠습니까?\n한 번 삭제된 약속은 복구할 수 없습니다.</string>
+    <string name="plan_info_delete_dialog_cancel_btn">취소</string>
+    <string name="plan_info_delete_dialog_delete_btn">삭제</string>
+
+    <string-array name="custom_weekdays">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+
+    <string-array name="custom_months">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </string-array>
+
     <!-- 여기까지 채팅 -->
 
 

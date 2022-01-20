@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.chat
 
+import android.content.Intent
 import android.graphics.Insets.add
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
@@ -33,6 +34,13 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         val chatListRVAdapter = ChatListRVAdapter(chatListDatas)
 
         binding.chatListRv.adapter = chatListRVAdapter
+
+        chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
+            override fun onItemClick(chatList: ChatList) {
+                val intent = Intent(activity, ChattingActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }

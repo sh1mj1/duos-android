@@ -12,12 +12,13 @@ import retrofit2.Response
 object FriendListService {
     fun starredFriendList(starredFriendListView: StarredFriendListView, userIdx : Int) {
         val friendListService = ApplicationClass.retrofit.create(FriendListRetrofitInterface::class.java)
+        Log.d("순서","1")
 
 
         friendListService.starredFriendList(userIdx).enqueue(object : Callback<StarredFriendResponse> {
             override fun onResponse(call: Call<StarredFriendResponse>, response: Response<StarredFriendResponse>) {
+                Log.d("순서","2")
                 val resp = response.body()!!
-
                 when (resp.code) {
                     1000 ->
                         resp.result?.let { starredFriendListView.onGetStarredFriendListSuccess(it) }

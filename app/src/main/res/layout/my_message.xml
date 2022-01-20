@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="10dp"
+    android:clipToPadding="false">
+
+    <!-- 메세지가 두 줄 이상이면 화면을 이탈해버려서,
+    고정 width를 정하고 메세지 길이가 몇 자 이하이면
+    wrap_content가 되게 코드를 짜야할듯-->
+    <TextView
+        android:id="@+id/my_message_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_message_bubble"
+        android:textColor="#fff"
+        android:elevation="0dp"
+        android:textSize="13dp"
+        android:text="@string/chatting_my_message"
+        android:gravity="center_vertical|start"
+        android:paddingStart="11dp"
+        android:paddingEnd="21dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/my_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark_gray_A"
+        android:elevation="2dp"
+        android:textSize="9dp"
+        android:text="@string/chatting_message_time"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/my_message_body"
+        app:layout_constraintEnd_toStartOf="@id/my_message_body"
+        android:layout_marginEnd="5dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
