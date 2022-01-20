@@ -43,7 +43,7 @@ class RecommendFriendListFragment() :
             }
         }
         // starredFriendList를 날짜별로 파싱하기
-        Log.d("받은 것", starredFriendList.toString())
+//        Log.d("받은 것", starredFriendList.toString())
 
         // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
         for (recommendedFriendListOnData in starredFriendList) {
@@ -78,11 +78,11 @@ class RecommendFriendListFragment() :
             adapterList[period]?.setMyItemClickListener(object :
                 RecommendFriendListRVAdapter.MyItemClickListener {
                 override fun onDeleteFriend(friendId: String) {
-                    Log.d("onDelete", "삭제")
+
                 }
 
                 override fun onAddFriend(friendId: String) {
-                    Log.d("onAdd", "추가")
+
                 }
 
                 override fun onDeleteText() {

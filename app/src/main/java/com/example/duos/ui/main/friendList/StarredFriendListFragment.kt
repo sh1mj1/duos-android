@@ -24,9 +24,6 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
     override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
 
-        Log.d("starred","ongetSuccess")
-
-
         friendListDatas.addAll(starredFriendList)
 
         val starredFriendListRVAdapter = StarredFriendListRVAdapter(friendListDatas)
