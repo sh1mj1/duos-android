@@ -13,13 +13,13 @@ class StarredFriendListFragment() : BaseFragment<FragmentMyFriendListBinding>(Fr
 
     override fun initAfterBinding() {
 
-        FriendListService.myFriendList(this, 1)
+        FriendListService.starredFriendList(this, 1)
 
     }
 
-    override fun onGetMyFriendListSuccess(myFriendList: List<StarredFriend>) {
+    override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
 
-        friendListDatas.addAll(myFriendList)
+        friendListDatas.addAll(starredFriendList)
         binding.myFriendListRecyclerviewRc.itemAnimator = null
         binding.myFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -33,7 +33,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentMyFriendListBinding>(Fr
         binding.myFriendListRecyclerviewRc.adapter = myFriendListRVAdapter
     }
 
-    override fun onGetMyFriendListFailure(code: Int, message: String) {
+    override fun onGetStarredFriendListFailure(code: Int, message: String) {
         showToast("code : $code, message : $message")
     }
 }
