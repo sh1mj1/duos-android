@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.R
 import com.example.duos.data.entities.RecommendedFriend
 import com.example.duos.data.remote.myFriendList.FriendListService
 import com.example.duos.data.remote.myFriendList.RecommendedFriendListOnDate

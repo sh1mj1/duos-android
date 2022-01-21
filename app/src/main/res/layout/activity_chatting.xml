@@ -90,12 +90,11 @@
         app:layout_constraintTop_toBottomOf="@id/chatting_top_divider"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatting_messages_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/messages_view"
             android:layout_weight="2"
-            android:divider="#fff"
             android:paddingHorizontal="16dp"
             app:layout_constraintTop_toBottomOf="@+id/chatting_top_divider"/>
 
