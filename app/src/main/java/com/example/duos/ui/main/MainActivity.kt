@@ -1,5 +1,6 @@
 package com.example.duos.ui.main
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -8,8 +9,11 @@ import com.example.duos.R
 import com.example.duos.databinding.ActivityMainBinding
 import com.example.duos.ui.BaseActivity
 
-class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+
+
+class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate){
     private lateinit var navHostFragment: NavHostFragment
+
 
     override fun initAfterBinding() {
         navHostFragment =
@@ -18,6 +22,8 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
 
         binding.mainBottomNavigation.setupWithNavController(navController)
         binding.mainBottomNavigation.itemIconTintList = null
+
     }
+
 
 }
