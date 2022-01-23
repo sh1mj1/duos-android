@@ -2,6 +2,7 @@ package com.example.duos.ui.main.chat
 
 import android.content.Intent
 import android.graphics.Insets.add
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.ChatList
@@ -33,7 +34,12 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
 
         val chatListRVAdapter = ChatListRVAdapter(chatListDatas)
 
-        binding.chatListRv.adapter = chatListRVAdapter
+        var chatListRv = binding.chatListRv
+        chatListRv.adapter = chatListRVAdapter
+
+        //ItemTouchHelper 생성
+        var helper = ItemTouchHelper(ChatListItemTouchHelperCallback(chatListRVAdapter))
+        helper.attachToRecyclerView(chatListRv)
 
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatList: ChatList) {

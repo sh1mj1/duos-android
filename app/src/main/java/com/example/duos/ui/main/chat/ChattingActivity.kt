@@ -1,7 +1,6 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Intent
-import android.graphics.Color
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
@@ -20,7 +19,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import com.example.duos.R
 import com.example.duos.data.entities.MessageData
 import java.text.SimpleDateFormat
@@ -30,8 +28,8 @@ import java.util.*
 class ChattingActivity: AppCompatActivity() {
     lateinit var binding: ActivityChattingBinding
     var roomIdx: Int = 0
-    var userId: String = "나나"
-    var partnerId: String = "상대방"
+    var userId: String = "tennis01"
+    var partnerId: String = "djeikd0620"
     private var layoutManager: LayoutManager? = null
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView

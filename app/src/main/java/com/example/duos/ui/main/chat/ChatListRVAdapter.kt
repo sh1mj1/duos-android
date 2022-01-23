@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.ChatList
 import com.example.duos.databinding.ItemChatListBinding
 
-class ChatListRVAdapter(private val chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
-
+class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(), ChatListItemTouchHelperListener{
     interface ChatListItemClickListener{
         fun onItemClick(chatList: ChatList)
     }
@@ -38,4 +37,17 @@ class ChatListRVAdapter(private val chatList: ArrayList<ChatList>) : RecyclerVie
             binding.chatListChatMessageTime.text = chatList.messageTime
         }
     }
+
+    override fun onItemSwipe(position: Int) {
+        chatList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    override fun onRightClick(position: Int, viewHolder: RecyclerView.ViewHolder) { //오른쪽 삭제 버튼 누르면 삭제 확인 팝업
+        chatList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+
+
 }
