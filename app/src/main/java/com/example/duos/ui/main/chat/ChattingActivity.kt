@@ -1,11 +1,10 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Intent
+import android.graphics.Color
 import android.widget.EditText
-import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
-import com.example.duos.ui.BaseActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,17 +13,22 @@ import com.example.duos.data.entities.MessageItem
 import com.example.duos.data.entities.ChatType
 
 import android.util.Log
-
-import android.R
-import android.graphics.Rect
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 
 import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
+import com.example.duos.R
 import com.example.duos.data.entities.MessageData
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate) {
+class ChattingActivity: AppCompatActivity() {
+    lateinit var binding: ActivityChattingBinding
     var roomIdx: Int = 0
     var userId: String = "나나"
     var partnerId: String = "상대방"
@@ -32,14 +36,16 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
-    private var isKeyBoardVisible = false
 
-    override fun initAfterBinding() {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityChattingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
 
-        var sendBtn: ImageButton = binding.chattingSendBtn
+        var sendBtn: ImageView = binding.chattingSendBtn
 
         chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
@@ -58,6 +64,37 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         addChat(chattingMessage)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
+        
+        // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
+        chattingEt.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(chattingEt.length() > 0){
+                    sendBtn.isClickable = true
+                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
+                } else{
+                    sendBtn.isClickable = false
+                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_gray)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+//        chattingEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
+//            override fun onFocusChange(view: View, hasFocus: Boolean) {
+//                if (hasFocus || !chattingEt.text.equals("")) {
+//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
+//                } else {
+//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_gray)
+//                }
+//            }
+//        })
         sendBtn.setOnClickListener{
                 v -> sendMessage(v)
         }

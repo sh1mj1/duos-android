@@ -37,6 +37,7 @@
         android:elevation="0dp"
         android:textSize="13dp"
         android:text="@string/chatting_my_message"
+        android:maxWidth="300dp"
         android:gravity="center_vertical|start"
         android:paddingStart="21dp"
         android:paddingEnd="11dp"
