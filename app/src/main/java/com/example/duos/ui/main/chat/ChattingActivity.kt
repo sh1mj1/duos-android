@@ -16,6 +16,7 @@ import com.example.duos.data.entities.ChatType
 import android.util.Log
 
 import android.R
+import android.graphics.Rect
 
 import android.view.View
 import com.example.duos.data.entities.MessageData
@@ -31,12 +32,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
+    private var isKeyBoardVisible = false
 
     override fun initAfterBinding() {
-        binding.chattingMakePlanBtn.setOnClickListener ({
-            val intent = Intent(this, MakePlanActivity::class.java)
-            startActivity(intent)
-        })
+
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
 
@@ -44,24 +43,35 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
+        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
         chattingRV.setLayoutManager(layoutManager)
         chattingRV.setItemAnimator(DefaultItemAnimator())
         chattingMessagesRVAdapter = ChattingMessagesRVAdapter()
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
-        var chattingMessage = MessageData("ENTER", userId, roomIdx.toString(),"2022년 01월 21일", System.currentTimeMillis())
+        // chatting test code
+        var chattingMessage = MessageData("DATE", userId, roomIdx.toString(),"2022년 01월 21일", System.currentTimeMillis())
+        addChat(chattingMessage)
+        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+
+        chattingMessage = MessageData("MESSAGE", partnerId, userId,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
         addChat(chattingMessage)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
         sendBtn.setOnClickListener{
                 v -> sendMessage(v)
         }
+
+        binding.chattingMakePlanBtn.setOnClickListener ({
+            val intent = Intent(this, MakePlanActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     // 리사이클러뷰에 채팅 추가
     private fun addChat(data: MessageData) {
         this.runOnUiThread {
-            if (data.type.equals("ENTER") || data.type.equals("LEFT")) {
+            if (data.type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
                     MessageItem(
                         data.from,

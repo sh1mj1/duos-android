@@ -17,7 +17,7 @@ object FriendListService {
             override fun onResponse(call: Call<StarredFriendResponse>, response: Response<StarredFriendResponse>) {
                 val resp = response.body()!!
                 when (resp.code) {
-                    1000 ->
+                     1000 ->
                         resp.result?.let { starredFriendListView.onGetStarredFriendListSuccess(it) }
                     else -> starredFriendListView.onGetStarredFriendListFailure(resp.code, resp.message)
                 }

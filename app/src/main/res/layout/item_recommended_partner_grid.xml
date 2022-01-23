@@ -8,13 +8,14 @@
     <ImageView
         android:id="@+id/partner_search_recommended_partner_iv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="133dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         app:layout_constraintHorizontal_weight="1"
-        android:src="@drawable/partner_profile_img_1"/>
+        android:src="@drawable/partner_profile_img_4"/>
 
     <TextView
         android:id="@+id/partner_search_recommended_partner_location_tv"

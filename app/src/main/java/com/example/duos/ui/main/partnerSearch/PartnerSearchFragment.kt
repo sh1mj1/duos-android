@@ -31,7 +31,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 3년", "time456 ","30대", 4.7, 21))
         }
 
-        binding.partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+        var partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         val deviceWidthPixels = resources.displayMetrics.widthPixels
         var space : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()

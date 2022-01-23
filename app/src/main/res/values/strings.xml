@@ -97,8 +97,8 @@
     <!-- 매칭화면 -->
     <string name="partner_search_user_id">tennis01</string>
     <string name="partner_search_nim">\ 님,</string>
-    <string name="partner_search_my_partner">나의 파트너</string>
-    <string name="partner_search_lets_search">를 찾아볼까요?</string>
+    <string name="partner_search_my_partner">운동 친구</string>
+    <string name="partner_search_lets_search">를 만나보세요</string>
     <string name="partner_search_recommended_partner">추천 파트너</string>
     <string name="partner_search_filter">서울시 마포구</string>
     <string name="partner_search_recommended_partner_location">서울시 마포구</string>

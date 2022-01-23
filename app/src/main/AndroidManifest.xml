@@ -45,7 +45,8 @@
 
         <activity
             android:name=".ui.main.chat.ChattingActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <activity
             android:name=".ui.main.chat.MakePlanActivity"
