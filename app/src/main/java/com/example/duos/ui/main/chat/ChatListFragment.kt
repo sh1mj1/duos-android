@@ -2,8 +2,13 @@ package com.example.duos.ui.main.chat
 
 import android.content.Intent
 import android.graphics.Insets.add
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
 import com.example.duos.data.entities.ChatList
 import com.example.duos.databinding.FragmentChatListBinding
@@ -11,6 +16,8 @@ import com.example.duos.ui.BaseFragment
 
 class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::inflate) {
     private var chatListDatas = ArrayList<ChatList>()
+//    private lateinit var chatListRVAdapter: ChatListRVAdapter
+//    private lateinit var chatListRv: RecyclerView
 
     override fun initAfterBinding() {
         chatListDatas.apply {
@@ -31,15 +38,22 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
             add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
         }
+    }
 
-        val chatListRVAdapter = ChatListRVAdapter(chatListDatas)
+    companion object {
+        fun newInstance(): ChatListFragment = ChatListFragment()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView(){
+        var chatListRVAdapter = ChatListRVAdapter(chatListDatas)
 
         var chatListRv = binding.chatListRv
         chatListRv.adapter = chatListRVAdapter
-
-        //ItemTouchHelper 생성
-        var helper = ItemTouchHelper(ChatListItemTouchHelperCallback(chatListRVAdapter))
-        helper.attachToRecyclerView(chatListRv)
 
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatList: ChatList) {
@@ -48,10 +62,16 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             }
         })
 
-        binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-    }
+        chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-    companion object {
-        fun newInstance(): ChatListFragment = ChatListFragment()
+        val swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
+            setClamp(resources.displayMetrics.widthPixels.toFloat()/4)
+        }
+        ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(chatListRv)
+
+        chatListRv.setOnTouchListener { _, _ ->
+            swipeHelperCallback.removePreviousClamp(chatListRv)
+            false
+        }
     }
 }

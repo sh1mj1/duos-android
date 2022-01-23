@@ -2,11 +2,12 @@ package com.example.duos.ui.main.chat
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.ChatList
 import com.example.duos.databinding.ItemChatListBinding
 
-class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(), ChatListItemTouchHelperListener{
+class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
     interface ChatListItemClickListener{
         fun onItemClick(chatList: ChatList)
     }
@@ -35,19 +36,17 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerVie
             binding.chatListUserIdTv.text = chatList.id
             binding.chatListChatPreviewTv.text = chatList.contentPreview
             binding.chatListChatMessageTime.text = chatList.messageTime
+
+            binding.chatListDeleteBtn.setOnClickListener {
+                removeData(this.layoutPosition)
+                Toast.makeText(binding.root.context, "삭제했습니다", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    override fun onItemSwipe(position: Int) {
+    // position 위치의 데이터를 삭제 후 어댑터 갱신
+    fun removeData(position: Int) {
         chatList.removeAt(position)
         notifyItemRemoved(position)
     }
-
-    override fun onRightClick(position: Int, viewHolder: RecyclerView.ViewHolder) { //오른쪽 삭제 버튼 누르면 삭제 확인 팝업
-        chatList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-
-
 }
