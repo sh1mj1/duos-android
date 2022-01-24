@@ -4,9 +4,9 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface RecommendedPartnerListRetrofitInterface {
+interface PartnerSearchRetrofitInterface {
     @GET("/test/search/partner")
-    fun recommendedPartnerList(
+    fun partnerSearchDataList(
         @Query("userIdx") userIdx: Int
-    ): Call<RecommendedPartnerResponse>
+    ): Call<PartnerSearchDataResponse>
 }
