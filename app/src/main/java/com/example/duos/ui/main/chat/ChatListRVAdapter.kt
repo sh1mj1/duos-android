@@ -4,17 +4,23 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.duos.CustomDialog
-import com.example.duos.data.entities.ChatList
+import com.example.duos.data.entities.ChatListItem
 import com.example.duos.databinding.ItemChatListBinding
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
+import kotlin.collections.ArrayList
 
-class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
+class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
     private lateinit var dialogBuilder: CustomDialog.Builder
+    private lateinit var context: Context
 
     interface ChatListItemClickListener{
-        fun onItemClick(chatList: ChatList)
+        fun onItemClick(chatListItem: ChatListItem)
     }
 
     private lateinit var mItemClickListener: ChatListItemClickListener
@@ -25,6 +31,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerVie
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemChatListBinding = ItemChatListBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        context = viewGroup.context
         return ViewHolder(binding)
     }
 
@@ -36,14 +43,19 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerVie
     override fun getItemCount(): Int = chatList.size
 
     inner class ViewHolder(val binding: ItemChatListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(chatList : ChatList){
-            binding.chatListProfileIv.setImageResource(chatList.profileImg!!)
-            binding.chatListUserIdTv.text = chatList.id
-            binding.chatListChatPreviewTv.text = chatList.contentPreview
-            binding.chatListChatMessageTime.text = chatList.messageTime
+        fun bind(chatListItem : ChatListItem){
+//            binding.chatListProfileIv.setImageResource(chatListItem.profileImg!!)
+//            binding.chatListUserIdTv.text = chatListItem.id
+//            binding.chatListChatPreviewTv.text = chatListItem.contentPreview
+//            binding.chatListChatMessageTime.text = chatListItem.messageTime
+
+            val messageTime = formatDateTime(chatListItem.lastUpdatedAt)
+            binding.chatListChatMessageTime.text = messageTime
+            binding.chatListChatPreviewTv.text = chatListItem.lastMessage
+            binding.chatListUserIdTv.text = chatListItem.chatRoomName
+            Glide.with(context).load(chatListItem.chatRoomImg).apply(RequestOptions().circleCrop()).into(binding.chatListProfileIv)
 
             binding.chatListDeleteBtn.setOnClickListener {
-
                 showDialog(it.context, this.layoutPosition)
                 dialogBuilder.show()
             }
@@ -75,5 +87,49 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatList>) : RecyclerVie
                     dialog.dismiss()
                 }
             })
+    }
+
+    fun formatDateTime(localDateTime: String): String{
+        // 마지막 채팅 온 시간 formatting
+        //var lastUpdatedAt = chatListData.lastUpdatedAt
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        val dateTime = LocalDateTime.parse(localDateTime, formatter).toString()
+        //var date = LocalDate.parse(lastUpdatedAt, formatter)
+        //val time = LocalTime.parse(lastUpdatedAt, formatter)
+
+//        lastUpdatedAt = lastUpdatedAt.format(
+//            DateTimeFormatter.ofPattern("a HH: mm").withLocale(
+//                Locale.forLanguageTag("ko")))
+        val pattern = DateTimeFormatter.ofPattern("a hh:mm")
+        val lastUpdatedAt = dateTime.format(pattern)
+        Log.d("after formatting", lastUpdatedAt)
+        return lastUpdatedAt
+    }
+
+    // 임시.... 10보다 작으면 0이 앞에 붙도록 고쳐야함
+    fun formatDateTime2(localDateTime: String): String{
+        // 마지막 채팅 온 시간 formatting
+        //var lastUpdatedAt = chatListData.lastUpdatedAt
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        //val dateTime = LocalDateTime.parse(localDateTime, formatter).toString()
+        //var date = LocalDate.parse(lastUpdatedAt, formatter)
+        val time = LocalTime.parse(localDateTime, formatter)
+        var ampm = ""
+        var hour = time.hour
+        var min = ""
+        if(time.hour < 12){
+            ampm = "오전 "
+        }else{
+            ampm = "오후 "
+            hour = hour - 12
+        }
+        var lastUpdatedAt = ampm + hour.toString() + ":"+min
+//        lastUpdatedAt = lastUpdatedAt.format(
+//            DateTimeFormatter.ofPattern("a HH: mm").withLocale(
+//                Locale.forLanguageTag("ko")))
+//        val pattern = DateTimeFormatter.ofPattern("a hh:mm")
+//        val lastUpdatedAt = dateTime.format(pattern)
+        Log.d("after formatting", lastUpdatedAt)
+        return lastUpdatedAt
     }
 }
