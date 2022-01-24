@@ -12,4 +12,3 @@ data class User(
     val sex: String
     // 지역, 구력, 프로필 사진 등 추가
 )
-

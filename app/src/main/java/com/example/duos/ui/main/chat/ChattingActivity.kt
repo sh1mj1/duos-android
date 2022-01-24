@@ -82,8 +82,8 @@ class ChattingActivity: AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
 
             }
-
         })
+
 //        chattingEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
 //            override fun onFocusChange(view: View, hasFocus: Boolean) {
 //                if (hasFocus || !chattingEt.text.equals("")) {

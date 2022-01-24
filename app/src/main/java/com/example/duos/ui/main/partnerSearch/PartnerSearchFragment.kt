@@ -1,35 +1,49 @@
 package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
-import android.content.res.Resources
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.duos.R
 import com.example.duos.data.entities.RecommendedPartner
+import com.example.duos.data.remote.partnerSearch.PartnerSearchData
+import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.MainActivity
 
-class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate) {
+class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView {
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
 
     override fun initAfterBinding() {
-        recommendedPartnerDatas.apply {
-            // 서울시 마포구로 필터링됐을 떄를 가정
-            // FLO clone coding 211110자 커밋 참고했음
-            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
-            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
-            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
-            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
-            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
-            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
-            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 3년", "time456 ","30대", 4.7, 21))
-        }
+        PartnerSearchService.partnerSearchData(this, 0)
+    }
+
+    companion object {
+        fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
+    }
+
+    override fun onGetPartnerSearchDataSuccess(partnerSearchDataList: List<PartnerSearchData>) {
+        //        recommendedPartnerDatas.apply {
+//            // 서울시 마포구로 필터링됐을 떄를 가정
+//            // FLO clone coding 211110자 커밋 참고했음
+//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
+//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 3년", "time456 ","30대", 4.7, 21))
+//        }
+
+        Log.d("get PartnerSearchData","ongetSuccess")
+
+//        for (partnerSearchData in partnerSearchDataList.size){
+//            val userProfileImageUrl = partnerSearchData.userProfileImageUrl
+//            val userNickName = partnerSearchData.userNickname
+//            recommendedPartnerDatas[]
+//        }
 
         var partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
@@ -69,7 +83,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         })
     }
 
-    companion object {
-        fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
+    override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
+        showToast("code : $code, message : $message")
     }
 }

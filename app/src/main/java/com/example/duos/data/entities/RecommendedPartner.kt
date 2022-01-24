@@ -1,11 +1,14 @@
 package com.example.duos.data.entities
 
+import com.google.gson.annotations.SerializedName
+
 data class RecommendedPartner(
-    var profileImg: Int? = null,
-    var location: String = "",
-    var ballCapacity: String = "",
-    var id: String = "",
-    var age: String = "",
-    var starRating: Double = 0.0,
-    var reviewCount: Int = 0
+//    var profileImg: Int? = null,
+    @SerializedName("profileImageUrl") var profileImg: String = "",
+    @SerializedName("location") var location: String = "",
+    @SerializedName("experience") var ballCapacity: Int = 0,
+    @SerializedName("nickname") var id: String = "",
+    @SerializedName("age") var age: Int? = 0,
+    @SerializedName("rating") var starRating: Float = 0.0f,
+    @SerializedName("reviewCnt") var reviewCount: Int = 0
 )
