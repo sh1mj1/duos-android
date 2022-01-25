@@ -9,16 +9,38 @@
         android:id="@+id/myProfileFragment"
         android:name="com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" >
+        tools:layout="@layout/fragment_my_profile">
         <action
             android:id="@+id/action_myProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_everyReviewFragment"
+            app:destination="@id/everyReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player">
+        <action
+            android:id="@+id/action_playerFragment_to_everyReviewFragment"
+            app:destination="@id/everyReviewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/everyReviewFragment"
+        android:name="com.example.duos.ui.main.mypage.myprofile.frag.EveryReviewFragment"
+        android:label="fragment_every_review"
+        tools:layout="@layout/fragment_every_review" />
 
 
 </navigation>

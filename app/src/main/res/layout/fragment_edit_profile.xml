@@ -22,13 +22,33 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/myProfile_img_iv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/dummy_mask_1"
-
-                />
+                android:src="@drawable/dummy_mask_1" />
         </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_edit_myProfile_img_cv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/myProfile_img_cv"
+            app:layout_constraintEnd_toEndOf="@+id/myProfile_img_cv">
+
+            <ImageView
+                android:id="@+id/btn_edit_myProfile_img_iv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:background="@color/white_smoke_F"
+                android:scaleType="center"
+                android:src="@drawable/ic_camera_edit" />
+
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/guide_nickname_tv"
@@ -293,6 +313,7 @@
             android:focusableInTouchMode="true"
             android:fontFamily="@font/applesdgothicneoregular"
             android:hint="@string/my_profile_my_introduction"
+            android:background="@color/white"
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textNoSuggestions"
             android:letterSpacing="0.05"
@@ -311,13 +332,15 @@
             android:layout_marginTop="40dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:text="@string/my_profile_career"
-            android:textColor="@color/dark_gray_B4"
+            android:textColor="@color/nero"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="19dp"
             app:layout_constraintTop_toBottomOf="@+id/dimension_introduction_iv"
-
+            app:layout_constraintBottom_toTopOf="@+id/edit_profile_table_layout_tl"
             />
+
 
 
         <com.example.duos.ToggleButtonGroupTableLayout

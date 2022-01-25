@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context=".ui.main.mypage.lastpromise.PreviousGameReviewFragment">
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/top_cl"
+    app:layout_constraintVertical_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/write_review_player_cv"
@@ -33,7 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="84dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:fontFamily="@font/applesdgothicneoregular"
         android:text="@string/game_review_player_nickname"
         android:textColor="@color/nero"
@@ -48,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="46dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:numStars="5"
         android:rating="0"
         android:scaleX=".8"
@@ -64,50 +72,50 @@
         android:layout_width="match_parent"
         android:layout_height="190dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="18dp"
         android:layout_marginBottom="90dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_rectangler_introduction_on"
         app:layout_constraintTop_toBottomOf="@+id/review_rating_rb"
-        app:layout_constraintBottom_toTopOf="@+id/complete_btn"
-        app:layout_constraintVertical_chainStyle="spread_inside"/>
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
     <EditText
         android:id="@+id/content_introduction_et"
         android:layout_width="0dp"
+        app:layout_constraintVertical_weight="1"
         android:layout_height="175dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="14dp"
+        android:background="@color/transparent"
         android:enabled="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:fontFamily="@font/applesdgothicneoregular"
-        android:hint="@string/my_profile_my_introduction"
+        android:gravity="top|start"
+        android:hint="@string/game_review_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:letterSpacing="0.05"
+        android:maxLength="300"
         android:textColor="@color/dark_gray_B4"
         android:textSize="16sp"
-        android:maxLength="300"
         app:layout_constraintEnd_toEndOf="@+id/dimension_review_content_iv"
         app:layout_constraintStart_toStartOf="@+id/dimension_review_content_iv"
         app:layout_constraintTop_toTopOf="@+id/dimension_review_content_iv" />
 
-
+</androidx.constraintlayout.widget.ConstraintLayout>
     <Button
         android:id="@+id/complete_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/next_btn_done_rectangular"
         android:gravity="center"
-        android:text=""
+        android:text="@string/game_review_complete"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dimension_review_content_iv"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

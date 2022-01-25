@@ -64,6 +64,7 @@ class PreviousGameFragment : Fragment() {
                         }
                     }).commitAllowingStateLoss()
                 (context as PreviousGameActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "후기 작성"
+
                 
             }
         })

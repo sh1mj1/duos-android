@@ -68,6 +68,14 @@
     <string name="signup_local_dialog_large_region">시/도</string>
     <string name="signup_local_dialog_small_region">시/구/군</string>
 
+    <string name="upload_pic_dialog_title">업로드할 방식을 선택해주세요</string>
+
+    <string-array name="upload_pic_dialog_title">
+        <item>카메라 1번(썸네일, 저장 안함></item>
+        <item>카메라 2번(저장함, 용량 큼)</item>
+        <item>앨범에서 사진 선택</item>
+
+    </string-array>
 
     <!-- splash -->
     <string name="splash_button_start">시작하기</string>
@@ -237,6 +245,7 @@
     <string name="edit_profile_under_10y">10년 미만</string>
     <string name="edit_profile_more_than_10y">10년 이상</string>
     <string name="edit_profile_apply">적용하기</string>
+    <string name="edit_profile_guide_career">구력</string>
 
     <!--    여기까지 마이 프로필 수정하기-->
 
@@ -265,6 +274,8 @@
     <string name="game_review_player_nickname">PLYAER명님과의 \n 테니스 경기 어떠셨나요?</string>
     <string name="game_review_complete">완료</string>
     <string name="previous_game_last_promise">지난 약속</string>
+    <string name="game_review_hint">간단한 경기 후기도 작성해주세요. 당신의 후기는 이 서비스를 이용하는 모두에게 귀중한 정보가 됩니다. 다만 인신공격을 피해주세요. 우리 모두 누군가의 귀한 딸과 아들입니다. :)\n </string>
+
 
     <!--    설정-->
     <string name="setup_setup">설정</string>
@@ -299,7 +310,7 @@
     <string name="friend_list_dialog_ok_btn">확인</string>
     <string name="friend_list_dialog_again">다시 보지 않기</string>
 
-    
+
     <!-- 마이 페이지 홈 -->
     <string name="my_page_text">마이 페이지</string>
     <string name="my_page_last_appointment">지난 약속</string>
