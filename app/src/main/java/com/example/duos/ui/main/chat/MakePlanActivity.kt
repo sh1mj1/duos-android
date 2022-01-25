@@ -5,6 +5,9 @@ import android.widget.TimePicker
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMakePlanBinding
 import com.example.duos.ui.BaseActivity
+import com.example.duos.ui.main.chat.calendarDecorators.EventDecorator
+import com.example.duos.ui.main.chat.calendarDecorators.MinMaxDecorator
+import com.example.duos.ui.main.chat.calendarDecorators.TodayDecorator
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView

@@ -50,7 +50,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
 //            binding.chatListChatPreviewTv.text = chatListItem.contentPreview
 //            binding.chatListChatMessageTime.text = chatListItem.messageTime
 
-            val messageTime = getFullYearMonth(chatListItem.lastUpdatedAt)
+            val messageTime = getFormattedDateTime(chatListItem.lastUpdatedAt)
             binding.chatListChatMessageTime.text = messageTime
             binding.chatListChatPreviewTv.text = chatListItem.lastMessage
             binding.chatListUserIdTv.text = chatListItem.chatRoomName
@@ -108,7 +108,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
     }
 
     @Throws(Exception::class)
-    fun getFullYearMonth(dateTime: String):String {
+    fun getFormattedDateTime(dateTime: String):String {
         // 대상 날짜로 LocalDateTime 만들기
         var parsedDateTimeArray = dateTime.split(".")
         var parsedDateTime = parsedDateTimeArray[0]

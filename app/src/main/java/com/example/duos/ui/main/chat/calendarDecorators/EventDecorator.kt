@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.chat
+package com.example.duos.ui.main.chat.calendarDecorators
 
 import android.content.Context
 import android.graphics.Color
