@@ -292,6 +292,7 @@
 <!--                app:thumbStrokeColor="@color/color_02"/>-->
 
             <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/partner_filter_age_range_sb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="0dp"
