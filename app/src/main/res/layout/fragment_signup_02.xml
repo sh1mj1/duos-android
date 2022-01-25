@@ -1,239 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/signup_02_root_constraint_layout_cl"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/signup_02_nick_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/signup_nick_name"
-        android:textColor="@color/dark_gray_B4"
-        android:fontFamily="@font/applesdgothicneosemibold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"/>
+    <data>
 
-    <EditText
-        android:id="@+id/signup_02_nick_name_et"
-        android:layout_width="180dp"
-        android:layout_height="22dp"
-        android:hint="@string/signup_nick_name_hint"
-        android:textColorHint="@color/dim_gray"
-        android:textSize="16sp"
-        android:textColor="@color/nero"
-        android:background="@null"
-        android:inputType="textMultiLine|textNoSuggestions"
-        app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv"
-        android:layout_marginTop="20dp"
-        android:paddingStart="2dp"
-        android:maxLength="10"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        <variable
+            name="viewmodel"
+            type="com.example.duos.utils.SignUpInfoViewModel" />
+    </data>
 
-    <ImageView
-        android:id="@+id/signup_02_nick_name_line_iv"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:src="@drawable/signup_unselected_line"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et"
-        app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-        app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_duplicate_btn" />
-
-    <ImageView
-        android:id="@+id/signup_02_nick_name_line_done_iv"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:src="@drawable/signup_unselected_line"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et"
-        app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/signup_02_nick_name_check_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/signup_phone_verifying_check_ic"
-        app:layout_constraintEnd_toEndOf="@id/signup_02_nick_name_line_iv"
-        app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et"
-        app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et" />
-
-    <ImageView
-        android:id="@+id/signup_02_nick_name_erase_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/signup_phone_verifying_erase_ic"
-        android:layout_marginEnd="9dp"
-        app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_check_iv"
-        app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et"
-        app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"/>
-
-
-    <!--    한번 누르면 사라지는 버튼-->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signup_02_nick_name_duplicate_btn"
-        android:layout_width="70dp"
-        android:layout_height="32dp"
-        app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_line_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        android:text="@string/signup_nick_name_duplicate"
-        android:textSize="11sp"
-        android:gravity="center"
-        android:textColor="@color/dark_gray_A"
-        android:background="@drawable/signup_phone_verifying_rectangular"/>
-
-    <TextView
-        android:id="@+id/signup_02_sex_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/signup_sex"
-        android:textColor="@color/dark_gray_B4"
-        android:fontFamily="@font/applesdgothicneosemibold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_line_iv"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"/>
-
-    <com.example.duos.ToggleButtonGroupTableLayout
-        android:id="@+id/signup_02_sex_toggle_button_group_ll"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/signup_02_root_constraint_layout_cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_tv"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TableRow>
-            <RadioButton
-                android:id="@+id/signup_02_sex_man_btn"
-                android:checked="false"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_color_selector"
-                android:text="@string/signup_sex_man"
-                android:textSize="15sp"
-                android:textColor="@drawable/btn_text_color_selector"
-                android:textAlignment="center"
-                android:fontFamily="@font/applesdgothicneoregular"
+
+        <TextView
+            android:id="@+id/signup_02_nick_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/applesdgothicneosemibold"
+            android:text="@string/signup_nick_name"
+            android:textColor="@color/dark_gray_B4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/signup_02_nick_name_et"
+            android:layout_width="180dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/signup_nick_name_hint"
+            android:text="@={viewmodel.nickName}"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:maxLength="10"
+            android:paddingStart="2dp"
+            android:textColor="@color/nero"
+            android:textColorHint="@color/dim_gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv" />
+
+        <ImageView
+            android:id="@+id/signup_02_nick_name_line_iv"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/signup_unselected_line"
+            app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_duplicate_btn"
+            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et" />
+
+        <ImageView
+            android:id="@+id/signup_02_nick_name_line_done_iv"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/signup_unselected_line"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et" />
+
+        <ImageView
+            android:id="@+id/signup_02_nick_name_check_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/signup_phone_verifying_check_ic"
+            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"
+            app:layout_constraintEnd_toEndOf="@id/signup_02_nick_name_line_iv"
+            app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et" />
+
+        <ImageView
+            android:id="@+id/signup_02_nick_name_erase_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="9dp"
+            android:src="@drawable/signup_phone_verifying_erase_ic"
+            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"
+            app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_check_iv"
+            app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et" />
+
+
+        <!--    한번 누르면 사라지는 버튼-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signup_02_nick_name_duplicate_btn"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/signup_phone_verifying_rectangular"
+            android:gravity="center"
+            android:text="@string/signup_nick_name_duplicate"
+            android:textColor="@color/dark_gray_A"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_line_iv"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/signup_02_sex_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/applesdgothicneosemibold"
+            android:text="@string/signup_sex"
+            android:textColor="@color/dark_gray_B4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_line_iv" />
+
+        <com.example.duos.ToggleButtonGroupTableLayout
+            android:id="@+id/signup_02_sex_toggle_button_group_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_sex_tv">
+
+            <TableRow>
+
+                <RadioButton
+                    android:id="@+id/signup_02_sex_man_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_color_selector"
+                    android:button="@null"
+                    android:checked="false"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:minHeight="0dp"
+                    android:text="@string/signup_sex_man"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/btn_text_color_selector"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/signup_02_sex_woman_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_color_selector"
+                    android:button="@null"
+                    android:checked="false"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:minHeight="0dp"
+                    android:text="@string/signup_sex_woman"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/btn_text_color_selector"
+                    android:textSize="15sp" />
+            </TableRow>
+
+        </com.example.duos.ToggleButtonGroupTableLayout>
+
+        <TextView
+            android:id="@+id/signup_02_birth_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/applesdgothicneosemibold"
+            android:text="@string/signup_birth"
+            android:textColor="@color/dark_gray_B4"
+            app:layout_constraintStart_toStartOf="@id/signup_02_sex_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_sex_toggle_button_group_ll" />
+
+        <TextView
+            android:id="@+id/signup_02_birth_et"
+            android:layout_width="180dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/transparent"
+            android:hint="@string/signup_birth_hint"
+            android:inputType="date"
+            android:paddingStart="2dp"
+            android:textColor="@color/nero"
+            android:textColorHint="@color/dim_gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/signup_02_birth_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_birth_tv" />
+
+        <ImageView
+            android:id="@+id/signup_02_birth_line_iv"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/signup_unselected_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/signup_02_birth_et"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_birth_et" />
+
+        <LinearLayout
+            android:id="@+id/signup_02_number_picker_linear_layout_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="45dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <NumberPicker
+                android:id="@+id/signup_number_picker_year"
+                android:layout_width="wrap_content"
+                android:layout_height="124dp"
+                android:layout_weight="2"
+                android:descendantFocusability="blocksDescendants"
                 android:gravity="center"
-                android:minHeight="0dp"
-                android:includeFontPadding="false"
-                android:button="@null">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/signup_02_sex_woman_btn"
-                android:checked="false"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
+                android:theme="@style/AppTheme.NumberPicker" />
+
+            <NumberPicker
+                android:id="@+id/signup_number_picker_month"
+                android:layout_width="wrap_content"
+                android:layout_height="124dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_color_selector"
-                android:layout_marginStart="8dp"
-                android:text="@string/signup_sex_woman"
-                android:textSize="15sp"
-                android:textColor="@drawable/btn_text_color_selector"
-                android:textAlignment="center"
-                android:fontFamily="@font/applesdgothicneoregular"
+                android:descendantFocusability="blocksDescendants"
                 android:gravity="center"
-                android:minHeight="0dp"
-                android:includeFontPadding="false"
-                android:button="@null">
-            </RadioButton>
-        </TableRow>
+                android:theme="@style/AppTheme.NumberPicker" />
 
-    </com.example.duos.ToggleButtonGroupTableLayout>
+            <NumberPicker
+                android:id="@+id/signup_number_picker_day"
+                android:layout_width="wrap_content"
+                android:layout_height="124dp"
+                android:layout_weight="1"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="center"
+                android:theme="@style/AppTheme.NumberPicker" />
 
-    <TextView
-        android:id="@+id/signup_02_birth_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/signup_birth"
-        android:fontFamily="@font/applesdgothicneosemibold"
-        app:layout_constraintStart_toStartOf="@id/signup_02_sex_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_sex_toggle_button_group_ll"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/dark_gray_B4"/>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/signup_02_birth_et"
-        android:layout_width="180dp"
-        android:layout_height="22dp"
-        android:hint="@string/signup_birth_hint"
-        android:textColorHint="@color/dim_gray"
-        android:textSize="16sp"
-        android:background="@color/transparent"
-        android:inputType="date"
-        android:textColor="@color/nero"
-        app:layout_constraintStart_toStartOf="@id/signup_02_birth_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_birth_tv"
-        android:layout_marginTop="20dp"
-        android:paddingStart="2dp" />
 
-    <ImageView
-        android:id="@+id/signup_02_birth_line_iv"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:src="@drawable/signup_unselected_line"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toBottomOf="@id/signup_02_birth_et"
-        app:layout_constraintStart_toStartOf="@id/signup_02_birth_et"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/signup_02_number_picker_linear_layout_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="45dp">
-
-        <NumberPicker
-            android:descendantFocusability="blocksDescendants"
-            android:id="@+id/signup_number_picker_year"
-            android:layout_width="wrap_content"
-            android:layout_height="124dp"
-            android:layout_weight="2"
-            android:theme="@style/AppTheme.NumberPicker"
-            android:gravity="center"/>
-
-        <NumberPicker
-            android:descendantFocusability="blocksDescendants"
-            android:id="@+id/signup_number_picker_month"
-            android:layout_width="wrap_content"
-            android:layout_height="124dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.NumberPicker"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:gravity="center"/>
-
-        <NumberPicker
-            android:descendantFocusability="blocksDescendants"
-            android:id="@+id/signup_number_picker_day"
-            android:layout_width="wrap_content"
-            android:layout_height="124dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.NumberPicker"
-            android:gravity="center"/>
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

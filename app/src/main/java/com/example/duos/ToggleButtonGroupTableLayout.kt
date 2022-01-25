@@ -8,19 +8,18 @@ import android.view.View
 import android.widget.TableRow
 
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ViewGroup
 
 import android.widget.TableLayout
 import android.os.Bundle
 
 import android.os.Parcelable
-
-
-
-
+import com.example.duos.ui.signup.SignUpActivity
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
+
+    lateinit var radioBtnListener: ToggleButtonInterface
+    lateinit var signupContext: SignUpActivity
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -30,7 +29,10 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
     /**
      * @param context
      */
-    constructor(context: Context?) : super(context) {        // TODO Auto-generated constructor stub
+    constructor(context: Context?) : super(context) {
+        if (context is SignUpActivity) {
+            signupContext = context
+        }
     }
 
     /**
@@ -40,7 +42,11 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
     constructor(context: Context?, attrs: AttributeSet?) : super(
         context,
         attrs
-    ) {        // TODO Auto-generated constructor stub
+    ) {
+        if (context is SignUpActivity) {
+            signupContext = context
+        }
+
     }
 
     override fun onClick(v: View) {
@@ -51,6 +57,13 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         rb.isChecked = true
         activeRadioButton = rb
         checkedRadioButtonId = activeRadioButton!!.id
+
+        radioBtnListener = signupContext
+        (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.text as String)
+
+//        val viewModel = ViewModelProvider(mcontext as ViewModelStoreOwner).get(SignUpInfoViewModel::class.java)
+//        viewModel.setGender(activeRadioButton!!.text.toString())
+
     }
 
     /* (non-Javadoc)

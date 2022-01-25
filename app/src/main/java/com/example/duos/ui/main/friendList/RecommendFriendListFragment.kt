@@ -3,7 +3,6 @@ package com.example.duos.ui.main.friendList
 
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +15,6 @@ import com.example.duos.utils.getFriendListDiaglogNotShowing
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Period
 import org.threeten.bp.format.DateTimeFormatter
-import org.w3c.dom.Text
 
 
 class RecommendFriendListFragment() :
@@ -26,7 +24,7 @@ class RecommendFriendListFragment() :
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
 
     override fun initAfterBinding() {
-        FriendListService.recommendedFriendList(this, 1)
+        FriendListService.getRecommendedFriendList(this, 1)
     }
 
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendedFriendListOnDate>) {

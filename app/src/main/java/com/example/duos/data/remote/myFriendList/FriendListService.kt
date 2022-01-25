@@ -10,7 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object FriendListService {
-    fun starredFriendList(starredFriendListView: StarredFriendListView, userIdx : Int) {
+    fun getStarredFriendList(starredFriendListView: StarredFriendListView, userIdx : Int) {
         val friendListService = ApplicationClass.retrofit.create(FriendListRetrofitInterface::class.java)
 
         friendListService.starredFriendList(userIdx).enqueue(object : Callback<StarredFriendResponse> {
@@ -30,7 +30,7 @@ object FriendListService {
         })
     }
 
-    fun recommendedFriendList(recommendedFriendListView: RecommendedFriendListView, userIdx: Int){
+    fun getRecommendedFriendList(recommendedFriendListView: RecommendedFriendListView, userIdx: Int){
         val friendListService = ApplicationClass.retrofit.create(FriendListRetrofitInterface::class.java)
 
 

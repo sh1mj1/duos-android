@@ -5,14 +5,15 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
-import com.example.duos.ToggleButtonGroupTableLayout
 import com.example.duos.databinding.FragmentSignup02Binding
+import com.example.duos.utils.SignUpInfoViewModel
 
 
 class SignUpFragment02() : Fragment() {
@@ -25,6 +26,7 @@ class SignUpFragment02() : Fragment() {
     lateinit var npYear: NumberPicker
     lateinit var npMonth: NumberPicker
     lateinit var npDay: NumberPicker
+    lateinit var viewModel : SignUpInfoViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,6 +59,13 @@ class SignUpFragment02() : Fragment() {
         savedState = null;
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        binding.viewmodel = viewModel
     }
 
 
@@ -128,8 +137,16 @@ class SignUpFragment02() : Fragment() {
     }
 
     fun setBirth(){
+        viewModel.birthYear.value = 2022 - npYear.value + 1
+        viewModel.birthMonth.value = npMonth.value
+        viewModel.birthDay.value = npDay.value
+
         binding.signup02BirthEt.text = ((2022 - npYear.value + 1).toString() + "년 " + npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
         binding.signup02NumberPickerLinearLayoutLl.visibility = View.GONE
+    }
+
+    fun setRadioButton(radioButton: String) {
+        viewModel.gender.value = radioButton
     }
 
 

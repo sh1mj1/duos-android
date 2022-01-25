@@ -72,7 +72,7 @@ object AuthService {
 //        })
 //    }
 //
-//    fun getLargeLocal(localProcessing : LargeLocalSearchView){
+//    fun getLargeLocal(localProcessing : LocalView){
 //        var BASE_URL = "https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/"
 //        val  retrofit = Retrofit.Builder()
 //            .baseUrl(BASE_URL)
