@@ -3,7 +3,6 @@
     android:id="@+id/partner_search_recommended_partner_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintHorizontal_weight="1"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView

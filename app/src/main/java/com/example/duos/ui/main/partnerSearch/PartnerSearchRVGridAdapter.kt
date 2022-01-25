@@ -53,7 +53,6 @@ class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<Recommend
         fun bind(recommendedPartner : RecommendedPartner){
 
             Glide.with(context).load(recommendedPartner.profileImg).into(binding.partnerSearchRecommendedPartnerIv)
-//            binding.partnerSearchRecommendedPartnerLayout.layoutParams.width = width
             binding.partnerSearchRecommendedPartnerLocationTv.text = recommendedPartner.location
             binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = recommendedPartner.ballCapacity
             binding.partnerSearchRecommendedPartnerIdTv.text = recommendedPartner.id
