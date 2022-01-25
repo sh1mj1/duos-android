@@ -85,6 +85,7 @@
             android:focusableInTouchMode="true"
             android:hint="@string/signup_profile_introduce_text"
             android:textColorHint="@color/nero"
+            android:textColor="@color/nero"
             android:textSize="16sp" />
 
     </LinearLayout>

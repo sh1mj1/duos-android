@@ -13,7 +13,7 @@
         android:textColor="@color/nero"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="23dp"
         android:layout_marginStart="16dp"
         android:textSize="19sp"
         android:textStyle="bold"/>

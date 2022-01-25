@@ -150,7 +150,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
             fragment.setRadioButton(radioButton)
         }
     }
-//
+
 //    override fun onStop() {
 //        super.onStop()
 ////         roomDB 에 회원가입 정보 모두 저장

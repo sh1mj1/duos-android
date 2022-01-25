@@ -13,6 +13,7 @@
         android:textSize="15sp"
         android:gravity="center"
         android:clickable="false"
+        android:fontFamily="@font/applesdgothicneoregular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

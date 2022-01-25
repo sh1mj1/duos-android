@@ -27,7 +27,6 @@ class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup0
 
         val viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
         viewModel.locationDialogShowing.observe(this, Observer {
-            Log.d("ㅎㅇ","observe")
             if (it){
                 binding.signup03LocationTextTv.text = viewModel.locationCateName.value + " " +
                         viewModel.locationName.value

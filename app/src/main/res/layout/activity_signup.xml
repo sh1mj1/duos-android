@@ -15,7 +15,7 @@
         android:src="@drawable/signup_arrow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="23dp"
         android:layout_marginStart="10dp" />
 
     <TextView

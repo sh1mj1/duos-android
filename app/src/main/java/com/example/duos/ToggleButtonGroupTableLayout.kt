@@ -14,14 +14,12 @@ import android.widget.TableLayout
 import android.os.Bundle
 
 import android.os.Parcelable
-import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
     lateinit var radioBtnListener: ToggleButtonInterface
-    lateinit var signupContext: SignUpActivity
-//    lateinit var partnerFilterContext: PartnerFilterActivity
+    lateinit var getContext: Context
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -33,11 +31,8 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
      */
     constructor(context: Context?) : super(context) {
         if (context is SignUpActivity) {
-            signupContext = context
+            getContext = context
         }
-//        else if(context is PartnerFilterActivity){
-//            partnerFilterContext = context
-//        }
     }
 
     /**
@@ -49,11 +44,8 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         attrs
     ) {
         if (context is SignUpActivity) {
-            signupContext = context
+            getContext = context
         }
-//        else if(context is PartnerFilterActivity){
-//            partnerFilterContext = context
-//        }
 
     }
 
@@ -66,8 +58,11 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         activeRadioButton = rb
         checkedRadioButtonId = activeRadioButton!!.id
 
-        radioBtnListener = signupContext
-        (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.text as String)
+
+        if (v.context is SignUpActivity){
+            radioBtnListener = getContext as SignUpActivity
+            (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.text as String)
+        }
 
 //        val viewModel = ViewModelProvider(mcontext as ViewModelStoreOwner).get(SignUpInfoViewModel::class.java)
 //        viewModel.setGender(activeRadioButton!!.text.toString())
