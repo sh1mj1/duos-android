@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.duos.data.entities.PartnerSearchData
@@ -55,13 +56,26 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
         var partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
-        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+        //partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
-        val deviceWidthPixels = resources.displayMetrics.widthPixels
-        var space : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
-        val widthPixels = (deviceWidthPixels - space * 3) / 2
+        var gap : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
 
-        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas, widthPixels)
+        partnerSearchRecommendedPartnerRv.layoutManager = object : GridLayoutManager(context, 2){
+            override fun checkLayoutParams(lp: RecyclerView.LayoutParams) : Boolean {
+                // force width of viewHolder to be a fraction of RecyclerViews
+                // this will override layout_width from xml
+                lp.width = (width - gap) / 2
+                return true
+            }
+        }
+
+//        val deviceWidthPixels = resources.displayMetrics.widthPixels
+//        var space : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
+//        val widthPixels = (deviceWidthPixels - space * 3) / 2
+//
+//        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas, widthPixels)
+
+        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 

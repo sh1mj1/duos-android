@@ -15,7 +15,7 @@ import kotlin.math.round
 
 import kotlin.math.roundToInt
 
-class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<RecommendedPartner>, private var width: Int): RecyclerView.Adapter<PartnerSearchRVGridAdapter.ViewHolder>() {
+class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<RecommendedPartner>): RecyclerView.Adapter<PartnerSearchRVGridAdapter.ViewHolder>() {
     //private val recommendedPartners = ArrayList<RecommendedPartner>()
     private lateinit var context: Context
     // 클릭 인터페이스 정의
@@ -53,7 +53,7 @@ class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<Recommend
         fun bind(recommendedPartner : RecommendedPartner){
 
             Glide.with(context).load(recommendedPartner.profileImg).into(binding.partnerSearchRecommendedPartnerIv)
-            binding.partnerSearchRecommendedPartnerLayout.layoutParams.width = width
+//            binding.partnerSearchRecommendedPartnerLayout.layoutParams.width = width
             binding.partnerSearchRecommendedPartnerLocationTv.text = recommendedPartner.location
             binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = recommendedPartner.ballCapacity
             binding.partnerSearchRecommendedPartnerIdTv.text = recommendedPartner.id
