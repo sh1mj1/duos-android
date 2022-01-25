@@ -13,6 +13,7 @@ import com.example.duos.databinding.ItemChatListBinding
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
@@ -49,7 +50,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
 //            binding.chatListChatPreviewTv.text = chatListItem.contentPreview
 //            binding.chatListChatMessageTime.text = chatListItem.messageTime
 
-            val messageTime = formatDateTime(chatListItem.lastUpdatedAt)
+            val messageTime = getFullYearMonth(chatListItem.lastUpdatedAt)
             binding.chatListChatMessageTime.text = messageTime
             binding.chatListChatPreviewTv.text = chatListItem.lastMessage
             binding.chatListUserIdTv.text = chatListItem.chatRoomName
@@ -97,39 +98,35 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
         //var date = LocalDate.parse(lastUpdatedAt, formatter)
         //val time = LocalTime.parse(lastUpdatedAt, formatter)
 
-//        lastUpdatedAt = lastUpdatedAt.format(
-//            DateTimeFormatter.ofPattern("a HH: mm").withLocale(
-//                Locale.forLanguageTag("ko")))
-        val pattern = DateTimeFormatter.ofPattern("a hh:mm")
-        val lastUpdatedAt = dateTime.format(pattern)
+        var lastUpdatedAt = localDateTime.format(
+            DateTimeFormatter.ofPattern("a HH:mm").withLocale(
+                Locale.forLanguageTag("ko")))
+        //val pattern = DateTimeFormatter.ofPattern("a hh:mm")
+        //val lastUpdatedAt = LocalDateTime.parse(localDateTime, pattern).toString()
         Log.d("after formatting", lastUpdatedAt)
         return lastUpdatedAt
     }
 
-    // 임시.... 10보다 작으면 0이 앞에 붙도록 고쳐야함
-    fun formatDateTime2(localDateTime: String): String{
-        // 마지막 채팅 온 시간 formatting
-        //var lastUpdatedAt = chatListData.lastUpdatedAt
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-        //val dateTime = LocalDateTime.parse(localDateTime, formatter).toString()
-        //var date = LocalDate.parse(lastUpdatedAt, formatter)
-        val time = LocalTime.parse(localDateTime, formatter)
-        var ampm = ""
-        var hour = time.hour
-        var min = ""
-        if(time.hour < 12){
-            ampm = "오전 "
-        }else{
-            ampm = "오후 "
-            hour = hour - 12
-        }
-        var lastUpdatedAt = ampm + hour.toString() + ":"+min
-//        lastUpdatedAt = lastUpdatedAt.format(
-//            DateTimeFormatter.ofPattern("a HH: mm").withLocale(
-//                Locale.forLanguageTag("ko")))
-//        val pattern = DateTimeFormatter.ofPattern("a hh:mm")
-//        val lastUpdatedAt = dateTime.format(pattern)
-        Log.d("after formatting", lastUpdatedAt)
-        return lastUpdatedAt
+    @Throws(Exception::class)
+    fun getFullYearMonth(dateTime: String):String {
+        // 대상 날짜로 LocalDateTime 만들기
+        var parsedDateTimeArray = dateTime.split(".")
+        var parsedDateTime = parsedDateTimeArray[0]
+
+        val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
+
+        // LocalDateTime에서 필요한 내용 필요한 형식으로 뽑기
+//        val yyyyMMdd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+//        val yyyy = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy"))
+//        val MM = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("MM"))
+//        val dd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("dd"))
+        val time = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("a hh:mm"))
+//        println(yyyyMMdd)
+//        println(yyyy)
+//        println(MM)
+//        println(dd)
+        println(time)
+
+        return time
     }
 }
