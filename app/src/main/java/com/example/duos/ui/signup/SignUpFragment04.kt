@@ -37,7 +37,7 @@ class SignUpFragment04() : BaseFragment<FragmentSignup04Binding>(FragmentSignup0
             )
         }
 
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+
         binding.viewmodel = viewModel
     }
 

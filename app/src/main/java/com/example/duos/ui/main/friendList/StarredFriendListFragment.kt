@@ -1,11 +1,8 @@
 package com.example.duos.ui.main.friendList
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.duos.ApplicationClass.Companion.TAG
 
 import com.example.duos.data.entities.StarredFriend
 import com.example.duos.data.remote.myFriendList.FriendListService
@@ -34,7 +31,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         binding.starredFriendListRecyclerviewRc.itemAnimator = null
         binding.starredFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.starredFriendListRecyclerviewRc.adapter = StarredFriendListRVAdapter(ArrayList<StarredFriend>())
-        FriendListService.starredFriendList(this, 1)
+        FriendListService.getStarredFriendList(this, 1)
 
 
     }

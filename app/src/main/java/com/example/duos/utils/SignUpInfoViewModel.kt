@@ -1,10 +1,10 @@
 package com.example.duos.utils
 
-import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.duos.data.entities.LocationCategoryList
+import com.example.duos.data.entities.LocationList
 
 class SignUpInfoViewModel : ViewModel() {
 
@@ -14,8 +14,11 @@ class SignUpInfoViewModel : ViewModel() {
     var birthYear = MutableLiveData<Int>() // 년
     var birthMonth = MutableLiveData<Int>() // 월
     var birthDay = MutableLiveData<Int>() // 일
-    var localCate = MutableLiveData<String>()
-    var local = MutableLiveData<String>()
+    var locationCate = MutableLiveData<Int>()
+    var location = MutableLiveData<Int>()
+    var locationCateName = MutableLiveData<String>()
+    var locationName = MutableLiveData<String>()
+    var locationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
     var experience = MutableLiveData<String>()
     var profileImg = MutableLiveData<Int>()
     var introduce = MutableLiveData<String>()
@@ -33,10 +36,10 @@ class SignUpInfoViewModel : ViewModel() {
         get() = birthMonth
     val birthDayData : LiveData<Int>
         get() = birthDay
-    val localCateData : LiveData<String>
-        get() = localCate
-    val localData : LiveData<String>
-        get() = local
+    val localCateData : LiveData<Int>
+        get() = locationCate
+    val localData : LiveData<Int>
+        get() = location
     val experienceData : LiveData<String>
         get() = experience
     val profileImgData : LiveData<Int>
@@ -44,8 +47,5 @@ class SignUpInfoViewModel : ViewModel() {
     val introduceData : LiveData<String>
         get() = introduce
 
-    fun setGender(genderValue: String){
-        gender.value = genderValue
-    }
 
 }

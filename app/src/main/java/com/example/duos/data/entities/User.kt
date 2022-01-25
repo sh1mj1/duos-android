@@ -14,8 +14,8 @@ data class User(
     var birthYear : Int? = null,
     var birthMonth : Int? = null,
     var birthDay : Int? = null,
-    var localCate : String? = null,
-    var local : String? = null,
+    var locationCate : Int? = null,
+    var location : Int? = null,
     var experience : String? = null,
     var profileImg : Int? = null,
     var introduce: String? = null

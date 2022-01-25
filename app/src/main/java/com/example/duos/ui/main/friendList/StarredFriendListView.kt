@@ -4,5 +4,5 @@ import com.example.duos.data.entities.StarredFriend
 
 interface StarredFriendListView {
     fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>)
-    fun  onGetStarredFriendListFailure(code: Int, message: String)
+    fun onGetStarredFriendListFailure(code: Int, message: String)
 }
