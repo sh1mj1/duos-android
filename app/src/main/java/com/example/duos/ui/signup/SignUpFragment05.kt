@@ -33,7 +33,7 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val CAMERA_PERMISSION_REQUEST = 100
 
-    // 멀티 퍼미션 카메라1
+    // 멀티퍼미션 카메라1
     val requiredPermissions1 = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,

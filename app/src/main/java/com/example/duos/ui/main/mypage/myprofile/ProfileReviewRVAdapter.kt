@@ -11,6 +11,19 @@ import com.example.duos.databinding.MyPlayingReviewItemBinding
 class ProfileReviewRVAdapter(private val myProfileReviewList: ArrayList<MyProfileReview>) :
     RecyclerView.Adapter<ProfileReviewRVAdapter.ViewHolder>() {
 
+    interface PlayerReviewItemClickListener {
+        fun onItemClick(player: MyProfileReview)
+    }
+
+    //  리스너 객체를 전달받는 함수와 리스터 객체를 저장할 변수
+    private lateinit var mItemClickListener: PlayerReviewItemClickListener
+
+    // 외부에서 리스너 객체를 전달 받을 함수
+    fun clickPlayerReviewListener(itemClickListener: PlayerReviewItemClickListener) {
+        mItemClickListener = itemClickListener
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // ViewHolder 생성. (아이템 뷰 객체를 binding해서 뷰 홀더에 던져줌)
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,6 +37,8 @@ class ProfileReviewRVAdapter(private val myProfileReviewList: ArrayList<MyProfil
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
     override fun onBindViewHolder(holder: ProfileReviewRVAdapter.ViewHolder, position: Int) {
         holder.bind(myProfileReviewList[position])
+
+        holder.itemView.setOnClickListener{mItemClickListener.onItemClick(myProfileReviewList[position])}
     }
 
     // 데이터 리스트의 크기
