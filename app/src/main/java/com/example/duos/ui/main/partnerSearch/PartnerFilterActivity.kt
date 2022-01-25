@@ -1,18 +1,8 @@
 package com.example.duos.ui.main.partnerSearch
 
-import com.example.duos.ToggleButtonGroupTableLayout
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
-import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener
-
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-
-import android.R
-import android.content.Context
-import android.os.VibrationEffect
-import android.os.Vibrator
-
-import android.widget.TextView
 
 class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate) {
     override fun initAfterBinding() {

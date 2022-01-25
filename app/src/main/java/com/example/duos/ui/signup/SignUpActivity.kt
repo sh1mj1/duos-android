@@ -150,32 +150,32 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
             fragment.setRadioButton(radioButton)
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-//         roomDB 에 회원가입 정보 모두 저장
-        val viewModel = ViewModelProvider(this).get(SignUpInfoViewModel::class.java)
-
-        val user : User
-        user = User(viewModel.phoneNumber.value,
-        viewModel.nickName.value!!,
-        viewModel.gender.value,
-        viewModel.birthYear.value,
-        viewModel.birthMonth.value,
-        viewModel.birthDay.value,
-        viewModel.locationCate.value,
-        viewModel.location.value,
-        viewModel.experience.value,
-        null,
-        viewModel.introduce.value)
-
-        val roomDB = UserDatabase.getInstance(this)!!
-        if (viewModel.nickName.value?.let { roomDB.userDao().getUser(it) } == null){
-            roomDB.userDao().insert(user)
-        } else{
-            roomDB.userDao().update(user)
-        }
-    }
+//
+//    override fun onStop() {
+//        super.onStop()
+////         roomDB 에 회원가입 정보 모두 저장
+//        val viewModel = ViewModelProvider(this).get(SignUpInfoViewModel::class.java)
+//
+//        val user : User
+//        user = User(viewModel.phoneNumber.value,
+//        viewModel.nickName.value!!,
+//        viewModel.gender.value,
+//        viewModel.birthYear.value,
+//        viewModel.birthMonth.value,
+//        viewModel.birthDay.value,
+//        viewModel.locationCate.value,
+//        viewModel.location.value,
+//        viewModel.experience.value,
+//        null,
+//        viewModel.introduce.value)
+//
+//        val roomDB = UserDatabase.getInstance(this)!!
+//        if (viewModel.nickName.value?.let { roomDB.userDao().getUser(it) } == null){
+//            roomDB.userDao().insert(user)
+//        } else{
+//            roomDB.userDao().update(user)
+//        }
+//    }
 
 
 }

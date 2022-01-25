@@ -14,12 +14,14 @@ import android.widget.TableLayout
 import android.os.Bundle
 
 import android.os.Parcelable
+import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
     lateinit var radioBtnListener: ToggleButtonInterface
     lateinit var signupContext: SignUpActivity
+//    lateinit var partnerFilterContext: PartnerFilterActivity
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -33,6 +35,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         if (context is SignUpActivity) {
             signupContext = context
         }
+//        else if(context is PartnerFilterActivity){
+//            partnerFilterContext = context
+//        }
     }
 
     /**
@@ -46,6 +51,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         if (context is SignUpActivity) {
             signupContext = context
         }
+//        else if(context is PartnerFilterActivity){
+//            partnerFilterContext = context
+//        }
 
     }
 
