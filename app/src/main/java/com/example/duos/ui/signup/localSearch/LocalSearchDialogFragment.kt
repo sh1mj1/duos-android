@@ -47,7 +47,7 @@ class LocalSearchDialogFragment : DialogFragment() {
 //    시/도를 roomDB 에 저장한다.
 //     */
 //    override fun LargeLocalToRoomDB(largeLocalList : List<LocalCategory>) {
-//        val localDB = LocalDatabase.getInstance(requireContext())!!
+//        val localDB = UserDatabase.getInstance(requireContext())!!
 //        localDB.largeLocalDao().clearAll()
 //        localDB.largeLocalDao().insertAll(largeLocalList)
 //    }
@@ -58,7 +58,7 @@ class LocalSearchDialogFragment : DialogFragment() {
 //     */
 //    override fun LargeLocalSearchOnView() {
 //        val largeLocalList : List<LocalCategory>
-//        val localDB = LocalDatabase.getInstance(requireContext())!!
+//        val localDB = UserDatabase.getInstance(requireContext())!!
 //        largeLocalList = localDB.largeLocalDao().getLargeRegs()
 //
 //        binding.signupLargeLocalListRc.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

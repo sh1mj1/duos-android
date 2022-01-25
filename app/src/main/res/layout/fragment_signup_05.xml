@@ -1,92 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/signup_05_text_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="43dp"
-        android:text="@string/signup_last_page"
-        android:textSize="12sp"
-        android:textColor="@color/nero"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/signup_05_profile_image_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/signup_profile_image"
-        android:fontFamily="@font/applesdgothicneosemibold"
-        android:textColor="@color/nero"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/signup_05_text_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_05_text_tv" />
 
 
-    <ImageView
-        android:id="@+id/signup_05_profile_image_background_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/signup_profile_image_background"
-        app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_tv"
-        app:layout_constraintTop_toBottomOf="@id/signup_05_profile_image_tv"
-        android:layout_marginTop="17dp"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/signup_profile_image_icon_iv"
-        android:layout_width="15dp"
-        android:layout_height="12.75dp"
-        app:layout_constraintTop_toTopOf="@id/signup_05_profile_image_background_iv"
-        app:layout_constraintBottom_toBottomOf="@id/signup_05_profile_image_background_iv"
-        app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_background_iv"
-        app:layout_constraintEnd_toEndOf="@id/signup_05_profile_image_background_iv"
-        android:src="@drawable/signup_profile_image_icon"/>
+    <data>
 
-    <TextView
-        android:id="@+id/signup_05_introduce_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/signup_profile_introduce"
-        android:fontFamily="@font/applesdgothicneosemibold"
-        android:textSize="14sp"
-        android:textColor="@color/nero"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_background_iv"
-        app:layout_constraintTop_toBottomOf="@id/signup_05_profile_image_background_iv" />
+        <variable
+            name="viewmodel"
+            type="com.example.duos.utils.SignUpInfoViewModel" />
+    </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-         android:layout_height="100dp"
-        app:layout_constraintTop_toBottomOf="@id/signup_05_introduce_tv"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/signup_profile_introduce_rectangular">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/signup_05_introduce_et"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/signup_05_text_tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:textSize="16sp"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginEnd="11dp"
-            android:layout_marginBottom="11dp"
-            android:textColorHint="@color/nero"
-            android:hint="@string/signup_profile_introduce_text"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="43dp"
+            android:text="@string/signup_last_page"
+            android:textColor="@color/nero"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/signup_05_profile_image_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/applesdgothicneosemibold"
+            android:text="@string/signup_profile_image"
+            android:textColor="@color/nero"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/signup_05_text_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_05_text_tv" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/signup_05_profile_image_background_iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="17dp"
+            android:src="@drawable/signup_profile_image_background"
+            app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_tv"
+            app:layout_constraintTop_toBottomOf="@id/signup_05_profile_image_tv" />
+
+        <ImageView
+            android:id="@+id/signup_profile_image_icon_iv"
+            android:layout_width="15dp"
+            android:layout_height="12.75dp"
+            android:src="@drawable/signup_profile_image_icon"
+            app:layout_constraintBottom_toBottomOf="@id/signup_05_profile_image_background_iv"
+            app:layout_constraintEnd_toEndOf="@id/signup_05_profile_image_background_iv"
+            app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_background_iv"
+            app:layout_constraintTop_toTopOf="@id/signup_05_profile_image_background_iv" />
+
+        <TextView
+            android:id="@+id/signup_05_introduce_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/applesdgothicneosemibold"
+            android:text="@string/signup_profile_introduce"
+            android:textColor="@color/nero"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/signup_05_profile_image_background_iv"
+            app:layout_constraintTop_toBottomOf="@id/signup_05_profile_image_background_iv" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/signup_profile_introduce_rectangular"
+            app:layout_constraintTop_toBottomOf="@id/signup_05_introduce_tv">
+
+            <EditText
+                android:id="@+id/signup_05_introduce_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginBottom="11dp"
+                android:text="@{viewmodel.introduce}"
+                android:background="@color/transparent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/signup_profile_introduce_text"
+                android:textColorHint="@color/nero"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

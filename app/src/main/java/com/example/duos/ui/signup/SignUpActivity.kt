@@ -1,23 +1,24 @@
 package com.example.duos.ui.signup
 
 import android.content.Intent
-import android.util.Log
-import android.view.View
-import androidx.fragment.app.Fragment
-
+import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 
 import com.example.duos.databinding.ActivitySignupBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ToggleButtonInterface
+import com.example.duos.data.entities.User
+import com.example.duos.data.local.UserDatabase
+import com.example.duos.utils.SignUpInfoViewModel
 
 
-class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, View.OnClickListener, SignUpNextBtnInterface {
+class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, SignUpNextBtnInterface ,
+    ToggleButtonInterface {
 
     var checkBtn : Boolean = true
     lateinit var myFragment : SignUpFragment02
     override fun initAfterBinding() {
-
 
         supportFragmentManager.beginTransaction().replace(R.id.signup_fragment_container_fc, SignUpFragment01())
             .commitAllowingStateLoss()
@@ -42,10 +43,6 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
             }
 
         }
-
-
-//        binding.signUpBackIv.setOnClickListener(this)
-//        binding.signUpSignUpBtn.setOnClickListener(this)
     }
 
     private fun initNavController(){
@@ -82,26 +79,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                 findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
             }
         }
-
     }
-
-    override fun onClick(v: View?) {
-//        if(v == null) return
-//
-//        when(v) {
-//            binding.signUpBackIv -> finish()
-//            binding.signUpSignUpBtn -> signUp()
-//        }
-    }
-
-//    private fun getUser(): User {
-//        val email: String =
-//            binding.signUpIdEt.text.toString() + "@" + binding.signUpDirectInputEt.text.toString()
-//        val pwd: String = binding.signUpPasswordEt.text.toString()
-//        val name: String = binding.signUpNameEt.text.toString()
-//
-//        return User(email, pwd, name)
-//    }
 
     private fun signUp() {
 //        if (binding.signUpIdEt.text.toString()
@@ -162,5 +140,42 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
             checkBtn = true
         }
     }
+
+    override fun setRadiobutton(radioButton: String) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc)
+        if(fragment is SignUpFragment02){
+            fragment.setRadioButton(radioButton)
+        }
+        else if (fragment is SignUpFragment04){
+            fragment.setRadioButton(radioButton)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // roomDB 에 회원가입 정보 모두 저장
+        val viewModel = ViewModelProvider(this).get(SignUpInfoViewModel::class.java)
+
+        val user : User
+        user = User(viewModel.phoneNumber.value,
+        viewModel.nickName.value!!,
+        viewModel.gender.value,
+        viewModel.birthYear.value,
+        viewModel.birthMonth.value,
+        viewModel.birthDay.value,
+        null,
+        null,
+        viewModel.experience.value,
+        null,
+        viewModel.introduce.value)
+
+        val roomDB = UserDatabase.getInstance(this)!!
+        if (viewModel.nickName.value?.let { roomDB.userDao().getUser(it) } == null){
+            roomDB.userDao().insert(user)
+        } else{
+            roomDB.userDao().update(user)
+        }
+    }
+
 
 }
