@@ -68,6 +68,14 @@
     <string name="signup_local_dialog_large_region">시/도</string>
     <string name="signup_local_dialog_small_region">시/구/군</string>
 
+    <string name="upload_pic_dialog_title">업로드할 방식을 선택해주세요</string>
+    
+    <string-array name="upload_pic_dialog_title">
+        <item>카메라 1번(썸네일, 저장 안함></item>
+        <item>카메라 2번(저장함, 용량 큼)</item>
+        <item>저장 공간에 접근해서</item>
+
+    </string-array>
 
     <!-- splash -->
     <string name="splash_button_start">시작하기</string>

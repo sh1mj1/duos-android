@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.duos">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--    저장소 접근 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.example.duos.ApplicationClass"
@@ -73,6 +78,17 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
 
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.duos.camera.file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+<!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
+        </provider>
 
     </application>
 
