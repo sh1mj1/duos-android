@@ -13,6 +13,7 @@
         android:textSize="15sp"
         android:clickable="false"
         android:paddingStart="35dp"
+        android:fontFamily="@font/applesdgothicneoregular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

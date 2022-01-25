@@ -28,9 +28,6 @@ class RecommendFriendListFragment() :
     }
 
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendedFriendListOnDate>) {
-
-        Log.d("recommend","ongetSuccess")
-
         if (!getFriendListDiaglogNotShowing()) {
             activity?.supportFragmentManager?.let { fragmentManager ->
                 FriendListDialogFragment().show(
