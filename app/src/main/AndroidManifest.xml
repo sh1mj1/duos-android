@@ -5,9 +5,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <!--    저장소 접근 권한-->
+    
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
     <application
         android:name="com.example.duos.ApplicationClass"
@@ -87,7 +90,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
-<!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
+            <!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
         </provider>
 
     </application>
