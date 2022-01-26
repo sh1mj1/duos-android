@@ -18,8 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/partner_search_main_img"/>
+            android:adjustViewBounds="true"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
