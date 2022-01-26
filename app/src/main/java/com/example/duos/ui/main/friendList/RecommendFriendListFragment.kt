@@ -36,14 +36,14 @@ class RecommendFriendListFragment() :
                 )
             }
         }
-        // starredFriendList를 날짜별로 파싱하기
+            // starredFriendList를 날짜별로 파싱하기
 //        Log.d("받은 것", starredFriendList.toString())
 
-        // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
-        for (recommendedFriendListOnData in starredFriendList) {
-            val recommendedAt = recommendedFriendListOnData.recommendedDate
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-            val date = LocalDate.parse(recommendedAt, formatter)
+            // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
+                for (recommendedFriendListOnData in starredFriendList) {
+                    val recommendedAt = recommendedFriendListOnData.recommendedDate
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+                    val date = LocalDate.parse(recommendedAt, formatter)
             val period: Int = 7 - (Period.between(date, LocalDate.now()).days)
 
             var recyclerviewId: Int = resources.getIdentifier(

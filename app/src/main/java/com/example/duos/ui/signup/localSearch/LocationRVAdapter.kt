@@ -5,13 +5,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
 import com.example.duos.data.entities.LocationList
 import com.example.duos.databinding.ItemLocationListBinding
 
-class LocationRVAdapter(private val locationList : List<LocationList>) : RecyclerView.Adapter<LocationRVAdapter.ViewHolder>() {
+class LocationRVAdapter(private val locationList : List<LocationList>) : RecyclerView.Adapter<LocationRVAdapter.ViewHolder>(){
 
     var row_index : Int = 0
 
@@ -62,4 +64,5 @@ class LocationRVAdapter(private val locationList : List<LocationList>) : Recycle
             }
         }
     }
+
 }

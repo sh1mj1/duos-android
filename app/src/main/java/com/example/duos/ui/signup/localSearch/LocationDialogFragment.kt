@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +69,6 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
             viewModel.locationName.value = myLocation.locationName
             viewModel.locationDialogShowing.value = true
         }
-
     }
 
     override fun onLocationCategoryListOnView(locationCategoryList: List<LocationCategoryList>) {
@@ -115,6 +116,10 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
                 myLocation = location
             }
         })
+    }
+
+    fun filter(){
+
     }
 
 
