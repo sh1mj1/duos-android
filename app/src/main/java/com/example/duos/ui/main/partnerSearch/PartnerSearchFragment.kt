@@ -96,7 +96,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 return@OnCompleteListener
             }
 
-            // Get new FCM registration token
+            // Get new FCM registration token // FCM 등록 토큰 get
             val token = task.result
 
             // Log and toast
