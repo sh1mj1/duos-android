@@ -38,15 +38,15 @@ class FriendListDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.friendListDialogCheckBoxCb.setOnCheckedChangeListener { compoundButton, b ->
-            if (b){
-                // 체크되었다면
-                binding.friendListDialogCheckAgainTv.setTextColor(resources.getColor(R.color.primary))
-            } else {
-                // 체크안되었다면
-                binding.friendListDialogCheckAgainTv.setTextColor(resources.getColor(R.color.dark_gray_A))
-            }
-        }
+//        binding.friendListDialogCheckBoxCb.setOnCheckedChangeListener { compoundButton, b ->
+//            if (b){
+//                // 체크되었다면
+//                binding.friendListDialogCheckAgainTv.setTextColor(resources.getColor(R.color.primary))
+//            } else {
+//                // 체크안되었다면
+//                binding.friendListDialogCheckAgainTv.setTextColor(resources.getColor(R.color.dark_gray_A))
+//            }
+//        }
 
         binding.friendListDialogOkTv.setOnClickListener {
             if (binding.friendListDialogCheckBoxCb.isChecked){

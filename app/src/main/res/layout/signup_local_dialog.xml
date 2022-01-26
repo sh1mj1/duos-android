@@ -19,44 +19,45 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <EditText
-        android:id="@+id/location_dialog_search_et"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/white_smoke_F"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center_vertical"
-        android:hint="@string/signup_local_dialog_set_hint"
-        android:paddingStart="44dp"
-        android:textColor="@color/dark_gray_B4"
-        android:textColorHint="@color/dark_gray_B4"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/location_dialog_text_tv" />
+<!--    <EditText-->
+<!--        android:id="@+id/location_dialog_search_et"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:background="@color/white_smoke_F"-->
+<!--        android:focusable="true"-->
+<!--        android:focusableInTouchMode="true"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:hint="@string/signup_local_dialog_set_hint"-->
+<!--        android:paddingStart="44dp"-->
+<!--        android:textColor="@color/dark_gray_B4"-->
+<!--        android:textColorHint="@color/dark_gray_B4"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/location_dialog_text_tv" />-->
 
 
-    <ImageView
-        android:id="@+id/location_dialog_search_icon_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/dark_gray_B4"
-        android:src="@drawable/signup_local_search_ic"
-        app:layout_constraintBottom_toBottomOf="@id/location_dialog_search_et"
-        app:layout_constraintStart_toStartOf="@id/location_dialog_search_et"
-        app:layout_constraintTop_toTopOf="@id/location_dialog_search_et" />
+<!--    <ImageView-->
+<!--        android:id="@+id/location_dialog_search_icon_iv"-->
+<!--        android:layout_width="24dp"-->
+<!--        android:layout_height="24dp"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:backgroundTint="@color/dark_gray_B4"-->
+<!--        android:src="@drawable/signup_local_search_ic"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/location_dialog_search_et"-->
+<!--        app:layout_constraintStart_toStartOf="@id/location_dialog_search_et"-->
+<!--        app:layout_constraintTop_toTopOf="@id/location_dialog_search_et" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
+        android:layout_marginTop="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/location_dialog_search_et"
+        app:layout_constraintTop_toBottomOf="@id/location_dialog_text_tv"
         app:layout_constraintBottom_toTopOf="@id/location_dialog_button_layout_ll">
 
         <LinearLayout
@@ -68,8 +69,8 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="35dp"
+                android:gravity="center"
                 android:layout_marginBottom="2dp"
                 android:text="@string/signup_local_dialog_large_region"
                 android:textColor="@color/nero"
@@ -96,8 +97,8 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="35dp"
+                android:gravity="center"
                 android:layout_marginBottom="2dp"
                 android:text="@string/signup_local_dialog_small_region"
                 android:textColor="@color/nero"

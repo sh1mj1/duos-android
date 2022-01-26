@@ -3,6 +3,8 @@ package com.example.duos.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +16,8 @@ import com.example.duos.ui.signup.SignUpActivity
 class SplashActivity: AppCompatActivity(), SplashView {
 
     lateinit var binding: ActivitySplashBinding
-    var handler: Handler = Handler()
+    var currentPage = 0
+    lateinit var thread : Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,37 @@ class SplashActivity: AppCompatActivity(), SplashView {
         setContentView(binding.root)
         initViewpager()
         initStatus()
+        thread = Thread(PagerRunnable())
+        thread.start()
     }
+
+    val handler=Handler(Looper.getMainLooper()){
+        setPage()
+        true
+    }
+
+    //페이지 변경하기
+    fun setPage(){
+        if(currentPage == 4)
+            currentPage = 0
+        binding.splashViewpagerVp.setCurrentItem(currentPage, true)
+        currentPage+=1
+    }
+
+    //2초 마다 페이지 넘기기
+    inner class PagerRunnable:Runnable{
+        override fun run() {
+            while(true){
+                try {
+                    Thread.sleep(2000)
+                    handler.sendEmptyMessage(0)
+                } catch (e : InterruptedException){
+                    Log.d("interupt", "interupt발생")
+                }
+            }
+        }
+    }
+
 
     private fun initViewpager() {
         val viewpagerAdapter = SplashViewpagerAdapter(this)
