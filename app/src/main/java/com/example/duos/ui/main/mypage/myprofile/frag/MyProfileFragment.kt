@@ -1,30 +1,21 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
-import android.opengl.Visibility
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.TextView
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.MyProfileReview
-import com.example.duos.data.entities.Review
 import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.mypage.lastpromise.PreviousGameActivity
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
-import org.w3c.dom.Text
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
     private var reviewDatas = ArrayList<MyProfileReview>()
 
     override fun initAfterBinding() {
-        // 더미데이터 넣기
+        // 더미데이터 넣기 (내 프로필에)
         reviewDatas.apply {
             add(
                 MyProfileReview(
@@ -69,7 +60,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context,
             LinearLayoutManager.VERTICAL, false)
 
-
+        // 리사이클러뷰 아이템 클릭 리스너
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
                 override fun onItemClick(player: MyProfileReview) {
@@ -93,8 +84,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
 
                     }
                 }).commitAllowingStateLoss()
-            val reviewcount = binding.playingReviewTv.text
-            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewcount.toString()
+            val reviewCount = binding.playingReviewTv.text
+            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewCount.toString()
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         }
 
