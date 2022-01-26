@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.duos.databinding.FragmentPreviousGameReviewBinding
 
@@ -22,9 +23,6 @@ class PreviousGameReviewFragment : Fragment() {
         val playerNickname = arguments?.getString("playerNickname")
         val playerProfileImg = arguments?.getInt("playerProfileImg")
 
-
-        binding!!.writeReviewPlayerNicknameTv.text = playerNickname.toString() + "님과의 \n 테니스 경기 어떠셨나요?"
-        binding!!.imgWriteReviewPlayerIv.setImageResource(playerProfileImg!!)
 
         return binding!!.root
     }
