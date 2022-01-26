@@ -14,26 +14,56 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.duos.ApplicationClass.Companion.TAG
+import com.example.duos.R
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class PartnerSearchFragment(): Fragment(), PartnerSearchView {
     lateinit var binding : FragmentPartnerSearchBinding
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
+    private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPartnerSearchBinding.inflate(inflater, container, false)
+
+        partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
         PartnerSearchService.partnerSearchData(this, 0)
+
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            //val msg = getString(R.string.msg_token_fmt, token)
+            //Log.d(TAG, msg)
+            Log.d("토큰 확인", token)
+            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+        })
+
         return binding.root
     }
 
@@ -74,7 +104,6 @@ class PartnerSearchFragment(): Fragment(), PartnerSearchView {
         binding.partnerSearchUserIdTv.text = userNickName
 
         recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
-        var partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
