@@ -125,26 +125,30 @@
     <string name="partner_filter_careless">무관</string>
     <string name="partner_filter_age">연령</string>
     <string name="partner_filter_age_min">20</string>
-    <string name="partner_filter_unit">대</string>
+    <string name="partner_filter_age_unit">대</string>
+    <string name="partner_filter_age_min_bottom">20대</string>
     <string name="partner_filter_age_set_min">20</string>
     <string name="partner_filter_age_set_max">40</string>
     <string name="partner_filter_age_max">60</string>
+    <string name="partner_filter_age_max_bottom">60대</string>
+    <string name="partner_filter_ball_capacity_min">0</string>
+    <string name="partner_filter_ball_capacity_min_bottom">0개월</string>
+    <string name="partner_filter_ball_capacity_set_min">0개월</string>
+    <string name="partner_filter_ball_capacity_set_max">10</string>
+    <string name="partner_filter_ball_capacity_max">10</string>
+    <string name="partner_filter_ball_capacity_max_bottom">10년</string>
 
     <string-array name="partner_filter_age_array">
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
+        <item>20대</item>
+        <item>30대</item>
+        <item>40대</item>
+        <item>50대</item>
+        <item>60대</item>
     </string-array>
 
     <string name="partner_filter_ball_capability">구력</string>
-    <string name="partner_filter_ball_capability_month_unit">개월</string>
-    <string name="partner_filter_ball_capability_year_unit">년</string>
-    <string name="partner_filter_ball_capability_year_min">0</string>
-    <string name="partner_filter_ball_capability_year_max">10</string>
-    <string name="partner_filter_ball_capability_year_set_min">1</string>
-    <string name="partner_filter_ball_capability_year_set_max">3</string>
+    <string name="partner_filter_ball_capability_year_min_bottom">0개월</string>
+    <string name="partner_filter_ball_capability_year_max_bottom">10년</string>
 
     <string-array name="partner_filter_ball_capability_array">
         <item>0</item>
