@@ -109,4 +109,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // custom RangeSeekBar (dual-thumb seekBar)
+    implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 }
