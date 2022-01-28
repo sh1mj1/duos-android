@@ -27,7 +27,8 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
         // 드래그 방향 : 위, 아래 인식
         // 스와이프 방향 : 왼쪽, 오른쪽 인식
         // 설정 안 하고 싶으면 0
-        val swipe_flags = ItemTouchHelper.START // 왼쪽으로 스와이프 인식
+        val swipe_flags = ItemTouchHelper.START or ItemTouchHelper.END  // START: 왼쪽으로 스와이프 인식, END: 오른쪽으로 스와이프 인식
+
         return makeMovementFlags(0, swipe_flags)
     }
 
@@ -119,7 +120,7 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
             // 현재 swipe 중이면 swipe되는 영역 제한
             if (isCurrentlyActive)
             // 오른쪽 swipe일 때
-                if (dX < 0) dX/3 - clamp
+                if (dX < 0) dX/4 - clamp
                 // 왼쪽 swipe일 때
                 else dX - clamp
             // swipe 중이 아니면 고정시키기
