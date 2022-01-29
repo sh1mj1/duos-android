@@ -35,7 +35,7 @@ class SignUpFragment02() : Fragment() {
     lateinit var npYear: NumberPicker
     lateinit var npMonth: NumberPicker
     lateinit var npDay: NumberPicker
-    lateinit var viewModel : SignUpInfoViewModel
+    lateinit var viewModel: SignUpInfoViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -145,20 +145,19 @@ class SignUpFragment02() : Fragment() {
         }
     }
 
-    fun setBirth(){
+    fun setBirth() {
         viewModel.birthYear.value = 2022 - npYear.value + 1
         viewModel.birthMonth.value = npMonth.value
         viewModel.birthDay.value = npDay.value
 
-        binding.signup02BirthEt.text = ((2022 - npYear.value + 1).toString() + "년 " + npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
+        binding.signup02BirthEt.text =
+            ((2022 - npYear.value + 1).toString() + "년 " + npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
         binding.signup02NumberPickerLinearLayoutLl.visibility = View.GONE
     }
 
     fun setRadioButton(radioButton: String) {
         viewModel.gender.value = radioButton
     }
-
-
 
 
 }
