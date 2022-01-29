@@ -16,11 +16,12 @@ import com.example.duos.data.remote.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
 import kotlin.collections.ArrayList
 
-class ChatListFragment(): Fragment(), ChatListView {
+class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClickListener {
     lateinit var binding : FragmentChatListBinding
     private var chatListDatas = ArrayList<ChatListItem>()
     private lateinit var chatListRv: RecyclerView
     private lateinit var chatListRVAdapter: ChatListRVAdapter
+    lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
     private lateinit var mContext:Context
 
     override fun onCreateView(
@@ -32,7 +33,7 @@ class ChatListFragment(): Fragment(), ChatListView {
 
         chatListRv = binding.chatListRv
         chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        chatListRVAdapter = ChatListRVAdapter(chatListDatas)
+        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
         ChatListService.chatList(this, 0)
@@ -75,7 +76,7 @@ class ChatListFragment(): Fragment(), ChatListView {
         chatListDatas.clear()
         chatListDatas.addAll(chatList)
 
-        chatListRVAdapter = ChatListRVAdapter(chatListDatas)
+        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
@@ -87,7 +88,7 @@ class ChatListFragment(): Fragment(), ChatListView {
 
         chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
 
-        val swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
+        swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
             if(mContext != null){
                 setClamp(resources.displayMetrics.widthPixels.toFloat()/4)
             }
@@ -108,4 +109,14 @@ class ChatListFragment(): Fragment(), ChatListView {
         super.onAttach(context)
         mContext = context
     }
+
+    override fun getIsClamped(viewHolder: RecyclerView.ViewHolder): Boolean {
+        return swipeHelperCallback.getTag(viewHolder)
+    }
+
+    override fun onDeleteClick() {
+        val intent = Intent(activity, ChattingActivity::class.java)
+        startActivity(intent)
+    }
+
 }
