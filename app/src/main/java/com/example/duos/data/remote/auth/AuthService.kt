@@ -2,7 +2,7 @@ package com.example.duos.data.remote.auth
 
 
 object AuthService {
-    //    fun signUp(signUpView: SignUpView ,user: User) {
+    //    fun signUp(signUpView: SignUp01View ,user: User) {
 //        val authService = retrofit.create(AuthRetrofitInterface::class.java)
 //
 //        signUpView.onSignUpLoading()

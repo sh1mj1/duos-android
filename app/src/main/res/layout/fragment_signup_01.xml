@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewmodel"
@@ -13,7 +14,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <TextView
             android:id="@+id/signup_01_phone_number_tv"
@@ -27,71 +27,88 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/signup_01_phone_number_et"
-            android:layout_width="180dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/transparent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/signup_phone_number_hint"
-            android:inputType="phone"
-            android:maxLength="13"
-            android:paddingStart="2dp"
-            android:text="@={viewmodel.phoneNumber}"
-            android:textColor="@color/nero"
-            android:textColorHint="@color/dim_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/signup_01_phone_number_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_number_tv" />
 
-        <ImageView
-            android:id="@+id/signup_01_phone_number_line_iv"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/signup_unselected_line"
-            app:layout_constraintEnd_toStartOf="@id/signup_01_phone_number_verifying_btn"
-            app:layout_constraintStart_toStartOf="@id/signup_01_phone_number_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_number_et" />
 
-        <!--    폰번호 양식이 맞을시 보이는 선-->
-        <ImageView
-            android:id="@+id/signup_01_phone_number_line_done_iv"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/signup_unselected_line"
-            android:visibility="gone"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signup_01_constraint_layout_01_cl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/edt_underline_unselected"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/signup_01_phone_number_et"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_number_et" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_number_tv">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_01_phone_number_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:animateLayoutChanges="false"
+                android:paddingTop="10dp"
+                app:boxBackgroundMode="none"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:errorEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_01_phone_number_et"
+                    style="@style/styleTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:hint="@string/signup_phone_number_hint"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:paddingStart="2dp"
+                    android:singleLine="true"
+                    android:text="@={viewmodel.phoneNumber}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dim_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/signup_01_phone_number_verifying_check_iv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/signup_phone_verifying_check_ic"
-            app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_number_et"
-            app:layout_constraintEnd_toEndOf="@id/signup_01_phone_number_line_iv"
-            app:layout_constraintTop_toTopOf="@id/signup_01_phone_number_et" />
-
-        <ImageView
-            android:id="@+id/signup_01_phone_number_erase_iv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="9dp"
-            android:src="@drawable/signup_phone_verifying_erase_ic"
-            app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_number_et"
-            app:layout_constraintEnd_toStartOf="@id/signup_01_phone_number_verifying_check_iv"
-            app:layout_constraintTop_toTopOf="@id/signup_01_phone_number_et" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!--    한번 누르면 사라지는 버튼-->
+            <ImageView
+                android:id="@+id/signup_01_phone_number_check_icon_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/signup_phone_verifying_check_ic"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/signup_01_phone_number_error_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:text="@string/signup_phone_verifying_notice"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/signup_01_constraint_layout_01_cl"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_constraint_layout_01_cl"/>
+
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signup_01_phone_number_verifying_btn"
             android:layout_width="70dp"
@@ -100,9 +117,10 @@
             android:background="@drawable/signup_phone_verifying_rectangular"
             android:gravity="center"
             android:text="@string/signup_phone_verifying"
+            android:enabled="false"
             android:textColor="@color/dark_gray_A"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_number_line_iv"
+            app:layout_constraintBottom_toBottomOf="@id/signup_01_constraint_layout_01_cl"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
@@ -113,49 +131,103 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/applesdgothicneosemibold"
             android:text="@string/signup_phone_verifying"
+            android:enabled="false"
             android:textColor="@color/dark_gray_B4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_number_line_iv" />
+            app:layout_constraintTop_toBottomOf="@id/signup_01_constraint_layout_01_cl" />
 
-        <EditText
-            android:id="@+id/signup_01_phone_verifying_et"
-            android:layout_width="180dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/transparent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/signup_phone_verifying_hint"
-            android:maxLength="6"
-            android:inputType="number"
-            android:paddingStart="2dp"
-            android:textColor="@color/nero"
-            android:textColorHint="@color/dim_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/signup_01_phone_verifying_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_verifying_tv" />
-
-        <ImageView
-            android:id="@+id/signup_01_phone_verifying_line_iv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signup_01_constraint_layout_02_cl"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="6dp"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/signup_unselected_line"
-            app:layout_constraintStart_toStartOf="@id/signup_01_phone_verifying_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_verifying_et" />
+            android:background="@drawable/edt_underline_unselected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_verifying_tv">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_01_phone_number_verifying_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:animateLayoutChanges="false"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_01_phone_number_verifying_et"
+                    style="@style/styleTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:hint="@string/signup_phone_verifying_hint"
+                    android:inputType="phone"
+                    android:maxLength="6"
+                    android:paddingStart="2dp"
+                    android:singleLine="true"
+                    android:text="@={viewmodel.phoneNumberVerifying}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dim_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/signup_01_phone_verifying_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_phone_verifying_time"
+                android:textColor="@color/french_rose"
+                android:textSize="11sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/signup_01_phone_verifying_time_tv"
+            android:id="@+id/signup_01_phone_verifying_notice_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/signup_phone_verifying_time"
-            android:textColor="@color/french_rose"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/signup_01_phone_verifying_et"
-            app:layout_constraintEnd_toEndOf="@id/signup_01_phone_number_verifying_btn"
-            app:layout_constraintTop_toTopOf="@id/signup_01_phone_verifying_et" />
+            android:layout_marginTop="10dp"
+            android:paddingStart="2dp"
+            android:text="@string/signup_phone_verifying_notice"
+            android:textColor="@color/dark_gray_A"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/signup_01_constraint_layout_02_cl"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_constraint_layout_02_cl"/>
+
+        <TextView
+            android:id="@+id/signup_01_phone_verifying_error_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:text="@string/signup_phone_verifying_notice"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/signup_01_constraint_layout_02_cl"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_constraint_layout_02_cl"/>
+
+
 
         <TextView
             android:id="@+id/signup_01_phone_verifying_again_tv"
@@ -163,10 +235,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/signup_phone_verifying_again"
+            android:visibility="invisible"
             android:textColor="@color/primary"
             android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="@id/signup_01_phone_verifying_time_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_01_phone_verifying_line_iv" />
+            app:layout_constraintEnd_toEndOf="@id/signup_01_constraint_layout_02_cl"
+            app:layout_constraintTop_toBottomOf="@id/signup_01_constraint_layout_02_cl" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

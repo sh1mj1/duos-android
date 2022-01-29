@@ -1,45 +1,48 @@
 package com.example.duos.ui.signup
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 
 import com.example.duos.databinding.ActivitySignupBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.ToggleButtonInterface
-import com.example.duos.data.entities.User
-import com.example.duos.data.local.UserDatabase
-import com.example.duos.utils.SignUpInfoViewModel
 
 
-class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpView, SignUpNextBtnInterface ,
-    ToggleButtonInterface {
+class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpBirthNextBtnInterface ,
+    ToggleButtonInterface, SignUpNextBtnInterface, SignUpGoNextInterface {
 
     var checkBtn : Boolean = true
-    lateinit var myFragment : SignUpFragment02
+
     override fun initAfterBinding() {
 
         supportFragmentManager.beginTransaction().replace(R.id.signup_fragment_container_fc, SignUpFragment01())
             .commitAllowingStateLoss()
 
-        myFragment = SignUpFragment02()
-
         binding.signupNextBtn.setOnClickListener {
-            if (checkBtn){
-                initNavController()
-            } else{
-                onNextBtnChanged(false)
-                myFragment.setBirth()
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+                // 인증번호 인증하기
+                (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment01).verifyAuthNum()
+                //
             }
+
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02){
+                if (checkBtn){
+                    initNavController()
+                } else{
+                    onNextBtnChanged(false)
+                    (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment02).setBirth()
+                }
+            }
+
         }
         binding.signupBackArrowIv.setOnClickListener {
             if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
                 finish()
             }
             else{
-                this.getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().getFragments().get(0)).commit()
-                this.getSupportFragmentManager().popBackStack();
+                this.supportFragmentManager.beginTransaction().remove(supportFragmentManager.fragments[0]).commit()
+                this.supportFragmentManager.popBackStack()
             }
 
         }
@@ -50,7 +53,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         supportFragmentManager.run {
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, myFragment)
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
                     .addToBackStack(null)
                     .commit()
             }
@@ -102,31 +105,11 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
 //        AuthService.signUp(this, getUser())
     }
 
-    override fun onSignUpLoading() {
-//        binding.signUpLoadingPb.visibility = View.VISIBLE
-    }
-
-    override fun onSignUpSuccess() {
-//        binding.signUpLoadingPb.visibility = View.GONE
-//
-//        finish()
-    }
-
-    override fun onSignUpFailure(code: Int, message: String) {
-//        binding.signUpLoadingPb.visibility = View.GONE
-//
-//        when(code) {
-//            2016, 2017 -> {
-//                binding.signUpEmailErrorTv.visibility = View.VISIBLE
-//                binding.signUpEmailErrorTv.text = message
-//            }
-//        }
-    }
 
     override fun onNextBtnChanged(boolean: Boolean){
-
         // 다음 -> 완료로 다시 바꾸기
         if (boolean){
+            binding.signupNextBtn.isEnabled = true
             binding.signupNextBtn.setText(getText(R.string.signup_next_btn_02))
             binding.signupNextBtn.setTextColor(getColor(R.color.white))
             binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
@@ -134,11 +117,24 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         }
         // 완료 -> 다음으로 바꾸기
         else{
+            binding.signupNextBtn.isEnabled = false
             binding.signupNextBtn.setText(getText(R.string.signup_next_btn))
             binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
             binding.signupNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
             checkBtn = true
         }
+    }
+
+    override fun onNextBtnEnable(){
+        binding.signupNextBtn.isEnabled = true
+        binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
+        binding.signupNextBtn.setTextColor(getColor(R.color.white))
+    }
+
+    override fun onNextBtnUnable() {
+        binding.signupNextBtn.isEnabled = false
+        binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
+        binding.signupNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
     }
 
     override fun setRadiobutton(radioButton: String) {
@@ -149,6 +145,10 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         else if (fragment is SignUpFragment04){
             fragment.setRadioButton(radioButton)
         }
+    }
+
+    override fun onGoingNext() {
+        initNavController()
     }
 
 //    override fun onStop() {
