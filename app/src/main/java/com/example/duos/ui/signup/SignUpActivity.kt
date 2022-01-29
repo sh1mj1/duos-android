@@ -56,30 +56,35 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
                     .addToBackStack(null)
                     .commit()
+                onNextBtnUnable()
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02){
                 beginTransaction()
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment03())
                     .addToBackStack(null)
                     .commit()
+                onNextBtnUnable()
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment03){
                 beginTransaction()
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment04())
                     .addToBackStack(null)
                     .commit()
+                onNextBtnUnable()
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment04){
                 beginTransaction()
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment05())
                     .addToBackStack(null)
                     .commit()
+                onNextBtnUnable()
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05){
                 val intent: Intent = Intent(
                     findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
                     MainActivity::class.java)
                 findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
+
             }
         }
     }

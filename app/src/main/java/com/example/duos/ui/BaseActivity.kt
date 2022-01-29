@@ -17,7 +17,7 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
     protected lateinit var binding: T
         private set
 
-//    private var imm : InputMethodManager? = null
+    private var imm : InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
 
         AndroidThreeTen.init(this)
 
-//        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
 
         //initKeyboard()
 

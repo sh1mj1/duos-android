@@ -1,11 +1,11 @@
 package com.example.duos.data.remote.signUp
 
-import android.text.Editable
 import android.util.Log
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.ApplicationClass.Companion.retrofit
 import com.example.duos.data.entities.PhoneAuthNum
 import com.example.duos.ui.signup.SignUpCreateAuthNumView
+import com.example.duos.ui.signup.SignUpNickNameView
 import com.example.duos.ui.signup.SignUpVerifyAuthNumView
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,5 +64,34 @@ object SignUpService {
         })
     }
 
+    fun signUpNickNameDuplicate(signUpNickNameView: SignUpNickNameView, nickName : String){
+        val signUpNickNameService = retrofit.create(SignUpRetrofitInterface::class.java)
+
+        signUpNickNameService.signUpNickNameDupli(nickName).enqueue(object :
+            Callback<SignUpNickNameDuplicateResponse>
+        {
+            override fun onResponse(call: Call<SignUpNickNameDuplicateResponse>, response: Response<SignUpNickNameDuplicateResponse>) {
+
+                val resp = response.body()!!
+                Log.d("resp",resp.toString())
+
+                when(resp.code){
+                    1000 -> {
+                        if (!resp.result.isDuplicated)
+                            signUpNickNameView.onSignUpNickNameSuccess()
+                        else
+                            signUpNickNameView.onSignUpNickNameFailure(resp.code, resp.result.resultMessage)
+                    }
+                    else -> signUpNickNameView.onSignUpNickNameFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<SignUpNickNameDuplicateResponse>, t: Throwable) {
+                Log.d("$TAG/API-ERROR", t.message.toString())
+
+                signUpNickNameView.onSignUpNickNameFailure(400, "네트워크 오류가 발생했습니다.")
+            }
+        })
+    }
 
 }

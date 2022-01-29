@@ -2,27 +2,26 @@ package com.example.duos.ui.signup
 
 
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
+import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.utils.SignUpInfoViewModel
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.Rect
 
-import androidx.core.content.ContextCompat.getSystemService
-
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.widget.TextViewOnReceiveContentListener
+import java.util.regex.Pattern
 
 
-class SignUpFragment02() : Fragment() {
+class SignUpFragment02() : Fragment(), SignUpNickNameView {
 
     lateinit var binding: FragmentSignup02Binding
     lateinit var birthNextBtnListener: SignUpBirthNextBtnInterface
@@ -33,6 +32,7 @@ class SignUpFragment02() : Fragment() {
     lateinit var npMonth: NumberPicker
     lateinit var npDay: NumberPicker
     lateinit var viewModel : SignUpInfoViewModel
+    var isDuplicated : Boolean = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,6 +49,7 @@ class SignUpFragment02() : Fragment() {
         binding = FragmentSignup02Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
         birthNextBtnListener = mContext
+        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
 
         binding.signup02BirthEt.setOnClickListener {
             birthNextBtnListener.onNextBtnChanged(true)
@@ -69,15 +70,49 @@ class SignUpFragment02() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
         binding.viewmodel = viewModel
-    }
 
+       this.viewModel.nickName.observe(requireActivity(), {
+           val pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"
+           if (it.isNotEmpty()){
+               binding.signup02NickNameLayout.isEndIconVisible = true
+               if (!Pattern.matches(pattern, it.toString()) or (it.length<2)) {
+                   binding.signup02NickNameErrorTv.visibility = View.VISIBLE
+                   binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
+                   binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+                   binding.signup02NickNameDuplicateBtn.isEnabled = false
+                   binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+                   binding.signup02NickNameDuplicateBtn.setTextColor(
+                       ContextCompat.getColor(
+                           requireContext(),
+                           R.color.dark_gray_A
+                       )
+                   )
+               } else{
+                   binding.signup02NickNameErrorTv.visibility = View.INVISIBLE
+                   binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
+                   binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
+                   binding.signup02NickNameDuplicateBtn.isEnabled = true
+                   binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+                   binding.signup02NickNameDuplicateBtn.setTextColor(
+                       ContextCompat.getColor(
+                           requireContext(),
+                           R.color.primary
+                       )
+                   )
+               }
+           }
+
+
+        })
+        binding.signup02NickNameDuplicateBtn.setOnClickListener {
+            SignUpService.signUpNickNameDuplicate(this, binding.signup02NickNameEt.text.toString())
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        savedState = saveState() /* vstup defined here for sure */
+        savedState = saveState()
         birthTextView = null
     }
 
@@ -155,7 +190,32 @@ class SignUpFragment02() : Fragment() {
         viewModel.gender.value = radioButton
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onSignUpNickNameSuccess() {
+        isDuplicated = false
+        binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+        binding.signup02NickNameDuplicateBtn.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.dark_gray_A
+            )
+        )
+        binding.signup02NickNameDuplicateBtn.isEnabled = false
+        binding.signup02NickNameLayout.isEndIconVisible = false
+    }
 
-
+    override fun onSignUpNickNameFailure(code: Int, message: String) {
+        binding.signup02NickNameErrorTv.visibility = View.VISIBLE
+        binding.signup02NickNameErrorTv.text = message
+        binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
+        binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+        binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+        binding.signup02NickNameDuplicateBtn.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.dark_gray_A
+            )
+        )
+    }
 
 }
