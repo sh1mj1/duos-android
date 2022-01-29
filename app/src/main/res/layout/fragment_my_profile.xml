@@ -24,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/myProfile_img_iv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
@@ -286,7 +287,7 @@
             app:layout_constraintTop_toBottomOf="@+id/career_played_num_tv" />
         <!--    후기-->
         <TextView
-            android:id="@+id/playing_review_tv"
+            android:id="@+id/playing_review_count_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -301,8 +302,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_right"
-            app:layout_constraintStart_toEndOf="@+id/playing_review_tv"
-            app:layout_constraintTop_toTopOf="@+id/playing_review_tv" />
+            app:layout_constraintStart_toEndOf="@+id/playing_review_count_tv"
+            app:layout_constraintTop_toTopOf="@+id/playing_review_count_tv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playing_review_content_rv"
@@ -313,7 +314,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playing_review_tv"
+            app:layout_constraintTop_toBottomOf="@+id/playing_review_count_tv"
             tools:listitem="@layout/my_playing_review_item" />
 
 

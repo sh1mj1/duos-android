@@ -125,96 +125,6 @@
 
             />
 
-        <TextView
-            android:id="@+id/guide_birth_info_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/applesdgothicneoregular"
-            android:text="@string/edit_profile_guide_birth_info"
-            android:textColor="@color/dark_gray_B4"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_et" />
-
-        <EditText
-            android:id="@+id/birth_info_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="19dp"
-            android:background="@drawable/edt_focus_selector"
-            android:enabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="@font/applesdgothicneoregular"
-            android:hint="@string/edit_profile_fillin_birth_info"
-            android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
-            android:paddingBottom="5dp"
-            android:textColor="@color/grey"
-
-            android:textSize="16sp"
-            android:textStyle="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_birth_info_tv" />
-
-        <TextView
-            android:id="@+id/guide_sex_info_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/applesdgothicneoregular"
-            android:text="@string/edit_profile_guide_sex_info"
-            android:textColor="@color/dark_gray_B4"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/birth_info_et" />
-
-        <LinearLayout
-            android:id="@+id/select_sex_ll"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintHorizontal_weight="10"
-            app:layout_constraintTop_toBottomOf="@+id/guide_sex_info_tv">
-
-            <TextView
-                android:id="@+id/btn_check_male_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="4"
-                android:background="@drawable/ic_rectangle_strokesolid_color3_inside1_2"
-                android:fontFamily="@font/applesdgothicneoregular"
-                android:gravity="center"
-                android:text="@string/edit_profile_select_male"
-                android:textColor="@color/primary"
-                android:textSize="16sp"
-                android:textStyle="normal" />
-
-            <TextView
-                android:id="@+id/btn_check_female_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_weight="4"
-                android:background="@drawable/ic_rectangle_fillcolor_9"
-                android:fontFamily="@font/applesdgothicneoregular"
-                android:gravity="center"
-                android:text="@string/edit_profile_select_female"
-                android:textColor="@color/dark_gray_B4"
-                android:textSize="16sp"
-                android:textStyle="normal" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/guide_location_tv"
@@ -228,7 +138,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/select_sex_ll"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_et"
 
             />
 
@@ -308,12 +218,12 @@
             android:layout_height="195dp"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="9dp"
+            android:background="@color/white"
             android:enabled="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:fontFamily="@font/applesdgothicneoregular"
             android:hint="@string/my_profile_my_introduction"
-            android:background="@color/white"
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textNoSuggestions"
             android:letterSpacing="0.05"
@@ -330,17 +240,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="19dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:text="@string/my_profile_career"
             android:textColor="@color/nero"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="19dp"
-            app:layout_constraintTop_toBottomOf="@+id/dimension_introduction_iv"
             app:layout_constraintBottom_toTopOf="@+id/edit_profile_table_layout_tl"
-            />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dimension_introduction_iv" />
 
 
         <com.example.duos.ToggleButtonGroupTableLayout

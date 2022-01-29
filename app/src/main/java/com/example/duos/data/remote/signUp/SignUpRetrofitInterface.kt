@@ -11,7 +11,8 @@ interface SignUpRetrofitInterface {
     @POST("/api/signup/auth/num")
     fun signUpCreateAuthNum(@Body phoneNum : String): Call<SignUpCreateAuthNumResponse>
 
-    @POST("/api/signup/auth/num")
+    @POST("/api/signup/auth")
     fun signUpVerifyAuthNum(@Body phoneAuthNum : PhoneAuthNum): Call<SignUpVerifyAuthNumResponse>
+
 
 }

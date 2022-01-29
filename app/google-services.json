@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "580552614516",
+    "project_id": "duos-2a938",
+    "storage_bucket": "duos-2a938.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580552614516:android:bd833c45ea9cad609fe721",
+        "android_client_info": {
+          "package_name": "com.example.DUOS"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580552614516-vt4c0m25uihnhac0oktq861jt1jf3pvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKJqhVedaxVmGtdyc7SebahOEjEA1x31M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580552614516-vt4c0m25uihnhac0oktq861jt1jf3pvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -53,22 +53,22 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         binding.signup01PhoneNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
 
-//            if (savedInstanceState != null && savedState == null) {
-//                savedState = savedInstanceState.getBundle("savedState")
-//            }
-//            if (savedState != null) {
-//                binding.signup01PhoneNumberCheckIconIv.visibility = View.VISIBLE
-//                binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_done_ic)
-//                binding.signup01PhoneNumberVerifyingBtn.visibility = View.GONE
-//                binding.signup01PhoneNumberLayout.isEndIconVisible = false
-//                binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
-//
-//                val param =
-//                    binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
-//                param.marginEnd = 20.toDp(requireContext())
-//                binding.signup01ConstraintLayout01Cl.layoutParams = param
-//            }
-//            savedState = null;
+            if (savedInstanceState != null && savedState == null) {
+                savedState = savedInstanceState.getBundle("savedState")
+            }
+            if (savedState != null) {
+                binding.signup01PhoneNumberCheckIconIv.visibility = View.VISIBLE
+                binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_done_ic)
+                binding.signup01PhoneNumberVerifyingBtn.visibility = View.GONE
+                binding.signup01PhoneNumberLayout.isEndIconVisible = false
+                binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
+
+                val param =
+                    binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
+                param.marginEnd = 20.toDp(requireContext())
+                binding.signup01ConstraintLayout01Cl.layoutParams = param
+            }
+            savedState = null;
 
         return binding.root
     }

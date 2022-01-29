@@ -84,28 +84,6 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
         }
     }
 
-    private fun signUp() {
-//        if (binding.signUpIdEt.text.toString()
-//                .isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()
-//        ) {
-//            Toast.makeText(this, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        if (binding.signUpNameEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "이름 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        if (binding.signUpPasswordEt.text.toString() != binding.signUpPasswordCheckEt.text.toString()) {
-//            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        AuthService.signUp(this, getUser())
-    }
-
-
     override fun onNextBtnChanged(boolean: Boolean){
         // 다음 -> 완료로 다시 바꾸기
         if (boolean){

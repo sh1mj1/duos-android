@@ -7,105 +7,116 @@
     android:orientation="vertical"
     tools:context=".ui.main.mypage.lastpromise.PreviousGameReviewFragment">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/top_cl"
-    app:layout_constraintVertical_weight="1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toTopOf="parent"
-    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/write_review_player_cv"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        app:cardCornerRadius="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/write_review_player_cv"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_write_review_player_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/dummy_mask_2">
+
+            </ImageView>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/write_review_player_nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="84dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:gravity="center"
+            android:text="@string/game_review_player_nickname"
+            android:textColor="@color/nero"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/write_review_player_cv" />
+
+        <RatingBar
+            android:id="@+id/review_rating_rb"
+            style="@style/duos_custom_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="46dp"
+            android:layout_marginTop="10dp"
+            android:numStars="5"
+            android:rating="0"
+            android:scaleX=".8"
+            android:scaleY=".8"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/write_review_player_nickname_tv" />
+
 
         <ImageView
-            android:id="@+id/img_write_review_player_iv"
+            android:id="@+id/dimension_review_content_iv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/dummy_mask_2">
-
-        </ImageView>
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/write_review_player_nickname_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="84dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/game_review_player_nickname"
-        android:textColor="@color/nero"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_review_player_cv" />
-
-    <RatingBar
-        android:id="@+id/review_rating_rb"
-        style="@style/duos_custom_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="46dp"
-        android:layout_marginTop="10dp"
-        android:numStars="5"
-        android:rating="0"
-        android:scaleX=".8"
-        android:scaleY=".8"
-        android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_review_player_nickname_tv" />
+            android:layout_height="190dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="90dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_rectangler_introduction_on"
+            app:layout_constraintTop_toBottomOf="@+id/review_rating_rb"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
-    <ImageView
-        android:id="@+id/dimension_review_content_iv"
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="90dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_rectangler_introduction_on"
-        app:layout_constraintTop_toBottomOf="@+id/review_rating_rb"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        <EditText
+            android:id="@+id/content_review_et"
+            android:layout_width="0dp"
+            android:layout_height="175dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="14dp"
+            android:background="@color/transparent"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:gravity="top|start"
+            android:hint="@string/game_review_hint"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:letterSpacing="0.05"
+            android:maxLength="300"
+            android:textColor="@color/dark_gray_B4"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/dimension_review_content_iv"
+            app:layout_constraintStart_toStartOf="@+id/dimension_review_content_iv"
+            app:layout_constraintTop_toTopOf="@+id/dimension_review_content_iv"
+            app:layout_constraintVertical_weight="1" />
 
+        <TextView
+            android:id="@+id/count_text_length_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/notion_service_update_notion"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/dimension_review_content_iv"
+            app:layout_constraintTop_toBottomOf="@+id/dimension_review_content_iv"
 
-    <EditText
-        android:id="@+id/content_introduction_et"
-        android:layout_width="0dp"
-        app:layout_constraintVertical_weight="1"
-        android:layout_height="175dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="14dp"
-        android:background="@color/transparent"
-        android:enabled="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:gravity="top|start"
-        android:hint="@string/game_review_hint"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:letterSpacing="0.05"
-        android:maxLength="300"
-        android:textColor="@color/dark_gray_B4"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/dimension_review_content_iv"
-        app:layout_constraintStart_toStartOf="@+id/dimension_review_content_iv"
-        app:layout_constraintTop_toTopOf="@+id/dimension_review_content_iv" />
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
         android:id="@+id/complete_btn"
         android:layout_width="match_parent"
@@ -115,7 +126,7 @@
         android:text="@string/game_review_complete"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

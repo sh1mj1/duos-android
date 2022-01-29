@@ -36,6 +36,7 @@
             android:layout_marginTop="20dp"
             android:background="@null"
             android:focusable="true"
+            android:clickable="true"
             android:focusableInTouchMode="true"
             android:hint="@string/signup_nick_name_hint"
             android:text="@={viewmodel.nickName}"

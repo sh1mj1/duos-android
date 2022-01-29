@@ -1,6 +1,7 @@
 package com.example.duos.data.entities
 
-data class MyProfileReview(
+// 내 프로필 페이지에 있는 후기 내용들.
+data class PlayerProfileInfo(
 
     val profileImg: Int? =null,
     val playerGrade: String= "",

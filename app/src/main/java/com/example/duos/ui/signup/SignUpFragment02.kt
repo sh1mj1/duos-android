@@ -11,6 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.utils.SignUpInfoViewModel
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Rect
+
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewOnReceiveContentListener
 
 
 class SignUpFragment02() : Fragment() {
@@ -145,6 +154,8 @@ class SignUpFragment02() : Fragment() {
     fun setRadioButton(radioButton: String) {
         viewModel.gender.value = radioButton
     }
+
+
 
 
 }

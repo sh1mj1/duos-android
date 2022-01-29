@@ -14,35 +14,21 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.duos.ApplicationClass.Companion.TAG
+import com.example.duos.R
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
+import com.example.duos.databinding.FragmentSignup03Binding
 import com.example.duos.ui.BaseFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
-class PartnerSearchFragment(): Fragment(), PartnerSearchView {
-    lateinit var binding : FragmentPartnerSearchBinding
+class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView {
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentPartnerSearchBinding.inflate(inflater, container, false)
-        PartnerSearchService.partnerSearchData(this, 0)
-        binding.partnerSearchFilteringIc.setOnClickListener{
-            startActivity(Intent(activity, PartnerFilterActivity::class.java))
-        }
-        return binding.root
-    }
-
-//    override fun initAfterBinding() {
-//        PartnerSearchService.partnerSearchData(this, 0)
-//        binding.partnerSearchFilteringIc.setOnClickListener{
-//            startActivity(Intent(activity, PartnerFilterActivity::class.java))
-//        }
-//    }
+    private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
 
     companion object {
         fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
@@ -64,7 +50,7 @@ class PartnerSearchFragment(): Fragment(), PartnerSearchView {
 //            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 3년", "time456 ","30대", 4.7, 21))
 //        }
 
-        Log.d("get recommendedPartnerList","ongetSuccess")
+        Log.d("get_recommendedPartnerList","ongetSuccess")
 
         val userNickName = partnerSearchData.userNickname
 
@@ -73,19 +59,13 @@ class PartnerSearchFragment(): Fragment(), PartnerSearchView {
 
         binding.partnerSearchUserIdTv.text = userNickName
 
+        recommendedPartnerDatas.clear()
         recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
-        var partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-
-        var space : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
-        var marginTop : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20F, context?.resources?.displayMetrics).toInt()
-        var marginBottom : Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, context?.resources?.displayMetrics).toInt()
-
-        binding.partnerSearchRecommendedPartnerRv.addItemDecoration(GridSpacingItemDecoration(space, marginTop, marginBottom))
 
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object:PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
@@ -96,5 +76,34 @@ class PartnerSearchFragment(): Fragment(), PartnerSearchView {
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
         Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+    }
+
+    override fun initAfterBinding() {
+        partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
+        PartnerSearchService.partnerSearchData(this, 0)
+
+        binding.partnerSearchFilteringIc.setOnClickListener{
+            startActivity(Intent(activity, PartnerFilterActivity::class.java))
+        }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            //val msg = getString(R.string.msg_token_fmt, token)
+            //Log.d(TAG, msg)
+            Log.d("토큰 확인", token)
+            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+        })
     }
 }

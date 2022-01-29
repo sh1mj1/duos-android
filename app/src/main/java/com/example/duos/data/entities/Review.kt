@@ -1,5 +1,7 @@
 package com.example.duos.data.entities
 
+
+
 data class Review(
 
     val profileImg: Int? =null,
