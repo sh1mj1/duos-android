@@ -1,5 +1,6 @@
 package com.example.duos.ui.login
 
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import com.example.duos.data.remote.auth.Auth
 import com.example.duos.databinding.ActivityLoginBinding
@@ -8,6 +9,10 @@ import com.example.duos.ui.BaseActivity
 class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView, View.OnClickListener {
 
     override fun initAfterBinding() {
+        binding.loginPhoneNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.loginArrowIv.setOnClickListener {
+            finish()
+        }
 //        binding.loginSignUpTv.setOnClickListener(this)
 //        binding.loginSignInBtn.setOnClickListener(this)
     }

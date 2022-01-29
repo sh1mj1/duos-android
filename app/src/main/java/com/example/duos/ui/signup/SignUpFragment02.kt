@@ -3,13 +3,10 @@ package com.example.duos.ui.signup
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.NumberPicker
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup02Binding
@@ -19,7 +16,7 @@ import com.example.duos.utils.SignUpInfoViewModel
 class SignUpFragment02() : Fragment() {
 
     lateinit var binding: FragmentSignup02Binding
-    lateinit var nextBtnListener: SignUpNextBtnInterface
+    lateinit var birthNextBtnListener: SignUpBirthNextBtnInterface
     lateinit var mContext: SignUpActivity
     var savedState: Bundle? = null
     var birthTextView: TextView? = null
@@ -42,10 +39,10 @@ class SignUpFragment02() : Fragment() {
     ): View? {
         binding = FragmentSignup02Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
-        nextBtnListener = mContext
+        birthNextBtnListener = mContext
 
         binding.signup02BirthEt.setOnClickListener {
-            nextBtnListener.onNextBtnChanged(true)
+            birthNextBtnListener.onNextBtnChanged(true)
             BirthNumberPicker()
         }
 
@@ -56,7 +53,7 @@ class SignUpFragment02() : Fragment() {
         if (savedState != null) {
             birthTextView!!.setText(savedState!!.getCharSequence("birth"));
         }
-        savedState = null;
+        savedState = null
 
         return binding.root
     }

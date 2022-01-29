@@ -35,6 +35,7 @@
     <string name="signup_nick_name">닉네임</string>
     <string name="signup_nick_name_hint">2-10자로 입력해 주세요</string>
     <string name="signup_nick_name_duplicate">중복확인</string>
+    <string name="signup_phone_verifying_notice">휴대폰 번호는 인증 용도 외에는 사용되지 않으며 타인에게 공개되지 않습니다.</string>
     <string name="signup_sex">성별</string>
     <string name="signup_sex_man">남성</string>
     <string name="signup_sex_woman">여성</string>
