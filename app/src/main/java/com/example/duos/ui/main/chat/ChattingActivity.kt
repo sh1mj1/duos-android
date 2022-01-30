@@ -12,13 +12,11 @@ import com.example.duos.data.entities.MessageItem
 import com.example.duos.data.entities.ChatType
 
 import android.util.Log
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.duos.R
 import com.example.duos.data.entities.MessageData
 import com.example.duos.ui.BaseActivity
@@ -225,5 +223,34 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         binding.chattingBackIv.setOnClickListener {
             finish()
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+//        var bundle = intent?.extras
+//        val type = bundle?.getString("type")
+//        val from = bundle?.getString("from")
+//        val to = bundle?.getString("to")
+//        val body = bundle?.getString("messageBody")
+//        val sendTime = bundle?.getLong("sendTime")
+        val type = intent?.getStringExtra("type")
+        val from = intent?.getStringExtra("from")
+        val to = intent?.getStringExtra("to")
+        val body = intent?.getStringExtra("messageBody")
+        val sendTime = intent?.getLongExtra("sendTime", 0)
+
+        Log.d("채팅액티비티"," 1")
+
+        if (type != null && from != null && to != null && body != null && sendTime != null) {
+            Log.d("채팅액티비티", "2")
+            updateMessage(type, from, to, body, sendTime)
+        }
+        super.onNewIntent(intent)
+    }
+
+    fun updateMessage(type: String, from: String, to: String, body: String, sendTime: Long) {
+        Log.d("채팅액티비티", "3")
+        val chattingMessage = MessageData(type, from, to,body, sendTime)
+        addChat(chattingMessage)
+        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
     }
 }
