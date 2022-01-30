@@ -3,6 +3,7 @@ package com.example.duos
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.duos.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,12 +16,18 @@ class ApplicationClass : Application() {
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
 
-        const val DEV_URL: String = "https://duos.co.kr/";       // 테스트 서버 주소
+        const val DEV_URL: String = "https://duos.co.kr/"       // 테스트 서버 주소
         const val PROD_URL: String = "https://api.template.com/"    // 실서버 주소
         const val BASE_URL: String = DEV_URL
 
+        const val MY_PAGE_API = "api/mypage?userIdx={userIdx}"
+
         lateinit var mSharedPreferences: SharedPreferences
         lateinit var retrofit: Retrofit
+
+
+
+
     }
 
     override fun onCreate() {

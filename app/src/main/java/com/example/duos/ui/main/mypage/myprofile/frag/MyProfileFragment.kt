@@ -1,6 +1,5 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -8,12 +7,14 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.PlayerProfileInfo
+import com.example.duos.data.remote.myPage.MyPageService
 import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+    val TAG : String = "MyProfileFragment"
     private var reviewDatas = ArrayList<PlayerProfileInfo>()
 
     override fun initAfterBinding() {
@@ -54,6 +55,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
 
         }
 
+
+        MyPageService.getMyPageService(myPageService =MyPageService, 1 )
+
+
         // 더미 데이터와 Adapter 연결
         val profileReviewRVAdapter = ProfileReviewRVAdapter(reviewDatas)
         // 리사이클러뷰에 어댑터 연결
@@ -70,24 +75,20 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
                 override fun onItemClick(playerProfileInfo: PlayerProfileInfo) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+
+//                            Log.d(TAG,"나의 프로필 페이지에서 PartnerPage로 이동")
+//                            PartnerPageRetrofitManager.instance.goPartnerPage()
+
                             arguments = Bundle().apply {
                                 putString("nickname", playerProfileInfo.profileNickname)
                                 putString("introduction", playerProfileInfo.introduction)
                                 putInt("coverImg", playerProfileInfo.profileImg!!)
                             }
 
+
+
                         })
 
-//                    (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-//                        .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-//                            arguments = Bundle().apply {
-//                                putString("nickname", player.profileNickname)
-//                                putString("introduction", player.introduction)
-//                                putInt("coverImg", player.profileImg!!)
-//
-//                            }
-//                        }).commitAllowingStateLoss()
-                    // 해당 transaction을 BackStack에 저장
                     fragmentTransaction.addToBackStack(null)
 
                     // 해당 transaction 실행
