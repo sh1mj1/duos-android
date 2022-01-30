@@ -3,6 +3,7 @@ package com.example.duos.ui.main.partnerSearch
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,10 @@ class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<Recommend
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(recommendedPartnerList[position])
+        holder.itemView.setOnClickListener {
+            mItemClickListener.onItemClick(recommendedPartnerList[position])
+            Log.d("포지션", position.toString())
+        }
     }
 
     override fun getItemCount(): Int = recommendedPartnerList.size

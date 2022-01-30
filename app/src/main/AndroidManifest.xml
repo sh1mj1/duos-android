@@ -80,6 +80,10 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.main.partnerSearch.PartnerProfileActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.main.chat.ChattingActivity"
             android:exported="true"
