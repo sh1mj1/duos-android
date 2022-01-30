@@ -8,8 +8,10 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,6 +24,9 @@ import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.databinding.FragmentSignup03Binding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -70,6 +75,37 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object:PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
+
+                // 아래코드 안됨
+//                val fragmentTransaction: FragmentTransaction = (context as MainActivity).supportFragmentManager.beginTransaction()
+//                    .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+//                        arguments = Bundle().apply {
+//                            putString("nickname", "으항")
+//                            putString("introduction", "소개글이다")
+//                            putInt("coverImg", R.drawable.tennis_racket_img_4)
+//                        }
+//
+//                    })
+//
+////                    (context as MyProfileActivity).supportFragmentManager.beginTransaction()
+////                        .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+////                            arguments = Bundle().apply {
+////                                putString("nickname", player.profileNickname)
+////                                putString("introduction", player.introduction)
+////                                putInt("coverImg", player.profileImg!!)
+////
+////                            }
+////                        }).commitAllowingStateLoss()
+//                // 해당 transaction을 BackStack에 저장
+//                fragmentTransaction.addToBackStack(null)
+//
+//                // 해당 transaction 실행
+//                // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
+//                fragmentTransaction.commit()
+//
+//                // 상단 텍스트 변경
+//                (context as MainActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
+//                (context as MainActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
             }
         })
     }
@@ -91,20 +127,20 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         }
 
         // fcm 등록토큰 받아오기
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token // FCM 등록 토큰 get
-//            val token = task.result
-//
-//            // Log and toast
-//            //val msg = getString(R.string.msg_token_fmt, token)
-//            //Log.d(TAG, msg)
-//            Log.d("토큰 확인", token)
-//            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
-//        })
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token // FCM 등록 토큰 get
+            val token = task.result
+
+            // Log and toast
+            //val msg = getString(R.string.msg_token_fmt, token)
+            //Log.d(TAG, msg)
+            Log.d("토큰 확인", token)
+            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+        })
     }
 }

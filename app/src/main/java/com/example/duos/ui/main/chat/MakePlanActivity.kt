@@ -83,7 +83,10 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
                 Log.d("selectedHour", selectedHour.toString())
                 Log.d("selectedMinute", selectedMinute.toString())
             }
-
         })
+
+        binding.makePlanBackIv.setOnClickListener {
+            finish()
+        }
     }
 }

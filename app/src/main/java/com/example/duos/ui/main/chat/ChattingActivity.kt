@@ -31,6 +31,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     var roomIdx: Int = 0
     var userId: String = "tennis01"
     var partnerId: String = "djeikd0620"
+    var userIdx = 76
+    var partnerIdx = 101
     private var layoutManager: LayoutManager? = null
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
@@ -219,5 +221,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val intent = Intent(this, MakePlanActivity::class.java)
             startActivity(intent)
         })
+
+        binding.chattingBackIv.setOnClickListener {
+            finish()
+        }
     }
 }
