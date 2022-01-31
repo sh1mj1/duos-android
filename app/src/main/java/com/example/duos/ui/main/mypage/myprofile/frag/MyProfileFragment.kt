@@ -8,14 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.PlayerProfileInfo
 import com.example.duos.data.remote.myPage.MyPageService
+import com.example.duos.data.remote.myPage.MyPageService.getMyPageService
 import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
-    val TAG : String = "MyProfileFragment"
+    val TAG: String = "MyProfileFragment"
     private var reviewDatas = ArrayList<PlayerProfileInfo>()
+
 
     override fun initAfterBinding() {
         // 더미데이터 넣기 (내 프로필에)
@@ -55,19 +57,14 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
 
         }
 
+        getMyPageService(myPageService = MyPageService, 1)
 
-        MyPageService.getMyPageService(myPageService =MyPageService, 1 )
+        // 리사이클러뷰
+        val profileReviewRVAdapter = initRecyclerView()
 
+        // Glide 이용해서 이미지 바인딩
+//        binding.myNicknameTv.text = myUserIdx<MyPageService>
 
-        // 더미 데이터와 Adapter 연결
-        val profileReviewRVAdapter = ProfileReviewRVAdapter(reviewDatas)
-        // 리사이클러뷰에 어댑터 연결
-        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
-        //레이아웃 매니저 설정
-        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.VERTICAL, false
-        )
 
         // 리사이클러뷰 아이템 클릭 리스너
         profileReviewRVAdapter.clickPlayerReviewListener(
@@ -84,8 +81,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
                                 putString("introduction", playerProfileInfo.introduction)
                                 putInt("coverImg", playerProfileInfo.profileImg!!)
                             }
-
-
 
                         })
 
@@ -138,6 +133,19 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         }
 
+    }
+
+    private fun initRecyclerView(): ProfileReviewRVAdapter {
+        // 더미 데이터와 Adapter 연결
+        val profileReviewRVAdapter = ProfileReviewRVAdapter(reviewDatas)
+        // 리사이클러뷰에 어댑터 연결
+        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
+        //레이아웃 매니저 설정
+        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL, false
+        )
+        return profileReviewRVAdapter
     }
 
 

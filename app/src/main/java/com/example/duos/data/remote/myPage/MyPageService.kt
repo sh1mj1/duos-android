@@ -30,6 +30,13 @@ object MyPageService {
                             Log.d(TAG, it.result.userIdx.toString()); Log.d(TAG, it.result.nickname.toString())
                             Log.d(TAG, it.result.phoneNumber.toString()); Log.d(TAG, it.result.experience.toString())
                             Log.d(TAG, it.result.gamesCount.toString())
+
+                            val myUserIdx = it.result.userIdx
+                            val myUserImg = it.result.profileImgUrl.toString()
+                            val myNickname = it.result.nickname.toString()
+                            val myphoneNumber = it.result.phoneNumber.toString()
+                            val myExperience = it.result.experience.toString()
+                            val myGameCount = it.result.gamesCount?.toInt()
                         }
                     }
                     else -> {
