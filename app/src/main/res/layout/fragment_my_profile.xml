@@ -110,6 +110,7 @@
                 />
 
             <TextView
+                android:id="@+id/my_location_tv"
                 android:layout_width="75dp"
                 android:layout_height="18dp"
                 android:fontFamily="@font/applesdgothicneoregular"

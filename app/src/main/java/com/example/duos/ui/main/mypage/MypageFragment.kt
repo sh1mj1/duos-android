@@ -13,13 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.duos.data.entities.MyPageItem
+import com.example.duos.data.entities.MyPageInfo
 import com.example.duos.data.remote.myPage.MyPageService
 import com.example.duos.databinding.FragmentMypageBinding
 import com.example.duos.ui.main.mypage.customerservice.CustomerServiceActivity
 import com.example.duos.ui.main.mypage.lastpromise.PreviousGameActivity
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.MyPageItemView
+import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
 import com.example.duos.ui.main.mypage.notion.NotionActivity
 import com.example.duos.ui.main.mypage.setup.SetupActivity
 
@@ -65,19 +65,19 @@ class MypageFragment() : Fragment(), MyPageItemView {
         }
     }
 
-    override fun onGetMyPageItemSuccess(myPageItem: MyPageItem) {
+    override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
         Log.d(TAG, "onGetMyPageItemSuccess")
-        binding.myProfileHomeNicknameTv.text = myPageItem.nickname
+        binding.myProfileHomeNicknameTv.text = myPageInfo.nickname
         val phoneNumberView = "010 1234 1234"
-        if (myPageItem.phoneNumber.length >= 10) {
-            val phoneNumberView = myPageItem.phoneNumber.substring(0, 9)
+        if (myPageInfo.phoneNumber.length >= 10) {
+            val phoneNumberView = myPageInfo.phoneNumber.substring(0, 9)
         }
 //        val phoneNumberView = myPageItem.phoneNumber.let { it.substring(0,9) }
         binding.myProfileHomePhoneNumberFirstTv.text = phoneNumberView
-        binding.myProfileHomeCareerYearNumTv.text = myPageItem.experience
-        binding.myProfileHomeCareerPlayedNumTv.text = myPageItem.gamesCount.toString()
+        binding.myProfileHomeCareerYearNumTv.text = myPageInfo.experience
+        binding.myProfileHomeCareerPlayedNumTv.text = myPageInfo.gamesCount.toString()
         Glide.with(binding.myProfileHomeProfileImageIv.context)
-            .load(myPageItem.profileImgUrl)
+            .load(myPageInfo.profileImgUrl)
             .into(binding.myProfileHomeProfileImageIv)
         //  ?년 미만 구력 참조
         val textExperience = binding.myProfileHomeCareerYearNumTv

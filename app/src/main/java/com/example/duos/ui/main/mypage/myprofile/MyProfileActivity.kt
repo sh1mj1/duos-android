@@ -1,18 +1,7 @@
 package com.example.duos.ui.main.mypage.myprofile
 
-import android.app.Activity
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
-import com.example.duos.data.entities.Review
-import com.example.duos.databinding.ActivityMainBinding
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment

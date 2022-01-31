@@ -1,6 +1,6 @@
 package com.example.duos.data.remote.myPage
 
-import com.example.duos.data.entities.MyPageItem
+import com.example.duos.data.entities.MyPageInfo
 import com.google.gson.annotations.SerializedName
 
 data class MyPageResponse(
@@ -12,6 +12,6 @@ data class MyPageResponse(
     @SerializedName("message") val message: String,
 
 //    @SerializedName("result") val result : List<MyPageListItem> = listOf()
-    @SerializedName("result") val result: MyPageItem
+    @SerializedName("result") val result: MyPageInfo
 
 )

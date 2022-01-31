@@ -25,8 +25,8 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatListFragment(): Fragment(), ChatListView {
-    lateinit var binding : FragmentChatListBinding
+class ChatListFragment() : Fragment(), ChatListView {
+    lateinit var binding: FragmentChatListBinding
     private var chatListDatas = ArrayList<ChatListItem>()
 
     override fun onCreateView(
@@ -67,7 +67,7 @@ class ChatListFragment(): Fragment(), ChatListView {
         super.onResume()
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
 
     }
 
@@ -80,7 +80,7 @@ class ChatListFragment(): Fragment(), ChatListView {
         var chatListRv = binding.chatListRv
         chatListRv.adapter = chatListRVAdapter
 
-        chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
+        chatListRVAdapter.setChatListItemClickListener(object : ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatListItem: ChatListItem) {
                 val intent = Intent(activity, ChattingActivity::class.java)
                 startActivity(intent)
@@ -90,7 +90,7 @@ class ChatListFragment(): Fragment(), ChatListView {
         chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
-            setClamp(resources.displayMetrics.widthPixels.toFloat()/4)
+            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
         }
         ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(chatListRv)
 
@@ -101,6 +101,6 @@ class ChatListFragment(): Fragment(), ChatListView {
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG)
     }
 }

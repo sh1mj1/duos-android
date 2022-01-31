@@ -2,9 +2,7 @@ package com.example.duos.data.remote.myPage
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.MyPageItem
-import com.example.duos.ui.main.mypage.MypageFragment
-import com.example.duos.ui.main.mypage.myprofile.frag.MyPageItemView
+import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

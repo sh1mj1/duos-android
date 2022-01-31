@@ -3,7 +3,6 @@ package com.example.duos
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.duos.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 // Retrofit을 호출하기 위한 Creator( API를 바로 호출할 수 있도록 설정해주는 클래스)
 class ApplicationClass : Application() {
-    companion object{
+    companion object {
         const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
@@ -25,6 +24,7 @@ class ApplicationClass : Application() {
         lateinit var retrofit: Retrofit
 
         const val MY_PAGE_API = "api/mypage"
+        const val MY_PROFILE_API = "api/mypage/myprofile"
 
 
     }

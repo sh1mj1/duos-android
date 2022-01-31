@@ -1,92 +1,73 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.data.entities.PlayerProfileInfo
+import com.example.duos.data.entities.MyProfileResult
+import com.example.duos.data.entities.MyProfileReviewItem
+import com.example.duos.data.remote.myProfile.MyProfileService
 import com.example.duos.databinding.FragmentMyProfileBinding
-import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
-class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+class MyProfileFragment : Fragment(), ProfileListView {
     val TAG: String = "MyProfileFragment"
-    private var reviewDatas = ArrayList<PlayerProfileInfo>()
+    private var myProfileReviewDatas = ArrayList<MyProfileReviewItem>()
 
-    // 메모리 누수 방지?
-//    lateinit var compositeDisposable: CompositeDisposable
+    lateinit var binding: FragmentMyProfileBinding
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentMyProfileBinding.inflate(inflater, container, false)
+        Log.d(TAG, "Start_MypageFragment")
 
-    override fun initAfterBinding() {
-        // 더미데이터 넣기 (내 프로필에)
-        reviewDatas.apply {
-            add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_1",
-                    "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
-                )
-            )
-            add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "3.0",
-                    "koko0311_2",
-                    "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
-                )
-            )
-            add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "4.0",
-                    "koko0311_3",
-                    "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
-                )
-            )
-            add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_4",
-                    "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
-                )
-            )
-
-        }
-
-//        getMyPageService(myPageService = MyPageService, 1)
-
-        // 리사이클러뷰
-        val profileReviewRVAdapter = initRecyclerView()
-
-        // Glide 이용해서 이미지 바인딩
+        MyProfileService.myProfileInfo(this, 1)
+        // 클릭리스너
+        return binding.root
+    }
+//    lateinit var compositeDisposable: CompositeDisposable    // 메모리 누수 방지?
 
 
 
-        // 리사이클러뷰 아이템 클릭 리스너
+    override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
+        Glide.with(binding.myProfileImgIv.context)
+            .load(myProfile.profileInfo.profileImgUrl)
+            .into(binding.myProfileImgIv)
+        binding.myNicknameTv.text = myProfile.profileInfo.nickname
+        binding.myGenerationTv.text = myProfile.profileInfo.age
+        binding.myLocationTv.text = myProfile.profileInfo.location
+        binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString()
+        binding.myIntroductionTv.text = myProfile.profileInfo.introduction
+        binding.careerYearNumTv.text = myProfile.profileInfo.experience
+        binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()
+        binding.playingReviewCountTv.text = myProfile.profileInfo.reviewCount.toString()
+
+        myProfileReviewDatas.addAll(myProfile.reviews)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
+        val profileReviewRVAdapter = ProfileReviewRVAdapter(myProfileReviewDatas)
+        // 리사이클러뷰에 어댑터 연결
+        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
+        //레이아웃 매니저 설정
+        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
-                override fun onItemClick(playerProfileInfo: PlayerProfileInfo) {
+                override fun onItemClick(myProfileReviewItem: MyProfileReviewItem) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-
 //                            Log.d(TAG,"나의 프로필 페이지에서 PartnerPage로 이동")
-//                            PartnerPageRetrofitManager.instance.goPartnerPage()
-
                             arguments = Bundle().apply {
-                                putString("nickname", playerProfileInfo.profileNickname)
-                                putString("introduction", playerProfileInfo.introduction)
-                                putInt("coverImg", playerProfileInfo.profileImg!!)
+                                // TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동해야되 그 Idx 는 Intent 로 전달해도될 듯???
+
                             }
-
                         })
-
                     fragmentTransaction.addToBackStack(null)
-
-                    // 해당 transaction 실행
                     // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
                     fragmentTransaction.commit()
 
@@ -96,34 +77,19 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
                 }
             })
 
-        // 해당 회원의 모든 후기 보기 페이지로 이동
+        //         해당 회원의 모든 후기 보기 페이지로 이동
         binding.playingReviewCountTv.setOnClickListener {
             val profileNickname = binding.myNicknameTv.text.toString()
-//            val profileIntroduction = binding.myIntroductionTv.text.toString()
-//            val profileImg = resources.getInteger(binding.myProfileImgIv)
             val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                     arguments = Bundle().apply {
-//                        TODO: 넘길 데이터
-                        // 해당 회원의 Idx 값을 받아서 API 파싱해서 받는 곳에서 받으면 될듯.
-                        putString("nickname", profileNickname)
-//                        putInt("coverImg", playerProfiㅣleInfo.profileImg!!)
 
+                        // TODO:  해당 회원의 Idx 값을 받아서 API 파싱해서 받는 곳에서 받으면 될듯.
                     }
-
-//                    (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-//                        .add(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
-//                            arguments = Bundle().apply {
-//
-//                            }
-//                        }).commitAllowingStateLoss()
 
                 })
 
-            // 해당 transaction 을 BackStack에 저장
-            fragmentTransaction.addToBackStack(null)
-
-            // 해당 transaction 실행
+            fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
             // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
             fragmentTransaction.commit()
 
@@ -135,19 +101,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
 
     }
 
-    private fun initRecyclerView(): ProfileReviewRVAdapter {
-        // 더미 데이터와 Adapter 연결
-        val profileReviewRVAdapter = ProfileReviewRVAdapter(reviewDatas)
-        // 리사이클러뷰에 어댑터 연결
-        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
-        //레이아웃 매니저 설정
-        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.VERTICAL, false
-        )
-        return profileReviewRVAdapter
+    override fun onGetMyProfileInfoFailure(code: Int, message: String) {
+        Toast.makeText(context,"sdf",Toast.LENGTH_LONG).show()
     }
-
 
 }
 
