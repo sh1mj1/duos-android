@@ -21,12 +21,10 @@ class ApplicationClass : Application() {
         const val PROD_URL: String = "https://api.template.com/"    // 실서버 주소
         const val BASE_URL: String = DEV_URL
 
-        const val MY_PAGE_API = "api/mypage"
-
         lateinit var mSharedPreferences: SharedPreferences
         lateinit var retrofit: Retrofit
 
-
+        const val MY_PAGE_API = "api/mypage"
 
 
     }

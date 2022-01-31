@@ -1,7 +1,6 @@
 package com.example.duos.data.remote.myPage
 
-import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.entities.MyPageListItem
+import com.example.duos.data.entities.MyPageItem
 import com.google.gson.annotations.SerializedName
 
 data class MyPageResponse(
@@ -12,19 +11,7 @@ data class MyPageResponse(
     @SerializedName("code") val code: Int,
     @SerializedName("message") val message: String,
 
-    // 디버깅
-    // @SerializedName("result") val result: List<MyPageListItem>,
+//    @SerializedName("result") val result : List<MyPageListItem> = listOf()
+    @SerializedName("result") val result: MyPageItem
 
-    @SerializedName("result") val result : MyPageListItem
-
-
-    )
-
-/*
- "userIdx": 1,
-        "profileImgUrl": null,
-        "nickname": "duos1221",
-        "phoneNumber": "1",
-        "experience": "10년 이상",
-        "gamesCount": 2
- */
+)

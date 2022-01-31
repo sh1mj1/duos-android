@@ -2,7 +2,7 @@ package com.example.duos.data.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class MyPageListItem(
+data class MyPageItem(
     @SerializedName("userIdx") var userIdx: Int? = null,
     @SerializedName("profileImgUrl") var profileImgUrl: String? = "",
     @SerializedName("nickname") var nickname: String = "",

@@ -25,7 +25,6 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class ChatListFragment(): Fragment(), ChatListView {
     lateinit var binding : FragmentChatListBinding
     private var chatListDatas = ArrayList<ChatListItem>()

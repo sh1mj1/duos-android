@@ -7,8 +7,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.PlayerProfileInfo
-import com.example.duos.data.remote.myPage.MyPageService
-import com.example.duos.data.remote.myPage.MyPageService.getMyPageService
 import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
@@ -18,6 +16,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     val TAG: String = "MyProfileFragment"
     private var reviewDatas = ArrayList<PlayerProfileInfo>()
 
+    // 메모리 누수 방지?
+//    lateinit var compositeDisposable: CompositeDisposable
 
     override fun initAfterBinding() {
         // 더미데이터 넣기 (내 프로필에)
@@ -57,13 +57,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
 
         }
 
-        getMyPageService(myPageService = MyPageService, 1)
+//        getMyPageService(myPageService = MyPageService, 1)
 
         // 리사이클러뷰
         val profileReviewRVAdapter = initRecyclerView()
 
         // Glide 이용해서 이미지 바인딩
-//        binding.myNicknameTv.text = myUserIdx<MyPageService>
+
 
 
         // 리사이클러뷰 아이템 클릭 리스너

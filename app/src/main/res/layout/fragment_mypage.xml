@@ -71,51 +71,26 @@
             app:layout_constraintTop_toTopOf="@id/my_profile_card_view_cv" />
 
         <TextView
-            android:id="@+id/my_profile_hone_phone_number_first_tv"
+            android:id="@+id/my_profile_home_phone_number_first_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="010"
+            android:bufferType="spannable"
+            android:text="010 7441"
             android:textColor="@color/white_smoke_F"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
             app:layout_constraintStart_toStartOf="@id/my_profile_home_nickname_tv" />
 
         <TextView
-            android:id="@+id/my_profile_home_phone_number_space_01_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
-            app:layout_constraintStart_toEndOf="@id/my_profile_hone_phone_number_first_tv" />
-
-        <TextView
             android:id="@+id/my_profile_home_phone_number_middle_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5409"
+            android:text=" ****"
             android:textColor="@color/white_smoke_F"
             android:textSize="13sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/my_profile_home_phone_number_first_tv"
             app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
-            app:layout_constraintStart_toEndOf="@id/my_profile_home_phone_number_space_01_tv" />
-
-        <TextView
-            android:id="@+id/my_profile_home_phone_number_space_02_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
-            app:layout_constraintStart_toEndOf="@id/my_profile_home_phone_number_middle_tv" />
-
-
-        <TextView
-            android:id="@+id/my_profile_home_phone_number_last_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/my_page_home_phone_last_num"
-            android:textColor="@color/white_smoke_F"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
-            app:layout_constraintStart_toEndOf="@id/my_profile_home_phone_number_space_02_tv" />
+            app:layout_constraintStart_toEndOf="@id/my_profile_home_phone_number_first_tv" />
 
         <ImageView
             android:id="@+id/my_page_home_profile_arrow_01_iv"
@@ -168,26 +143,14 @@
         android:layout_marginStart="46dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="28dp"
+        android:bufferType="spannable"
         android:fontFamily="@font/applesdgothicneoregular"
-        android:text="3"
-        android:textSize="25sp"
+        android:text="3년 미만"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/my_profile_home_career_line3"
-        app:layout_constraintEnd_toStartOf="@id/my_profile_home_career_year_under_more_than_tv"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/my_profile_home_career_line1" />
-
-    <TextView
-        android:id="@+id/my_profile_home_career_year_under_more_than_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="74dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/my_profile_under_more_than"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/my_profile_home_career_year_num_tv"
-        app:layout_constraintEnd_toStartOf="@+id/my_profile_home_career_line2"
-        app:layout_constraintStart_toEndOf="@+id/my_profile_home_career_year_num_tv" />
 
     <TextView
         android:id="@+id/my_profile_home_career_tv"
@@ -230,134 +193,166 @@
         app:layout_constraintStart_toStartOf="@+id/my_profile_home_career_played_num_tv"
         app:layout_constraintTop_toBottomOf="@+id/my_profile_home_career_played_num_tv" />
 
-    <ImageView
-        android:id="@+id/my_page_last_appointment_icon_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_page_last_appointment_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
-        android:src="@drawable/my_page_last_appointment_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_profile_home_career_line3" />
+        app:layout_constraintTop_toBottomOf="@+id/my_profile_home_career_line3">
 
-    <TextView
-        android:id="@+id/my_page_last_appointment_text_tv"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/my_page_last_appointment_icon_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/my_page_last_appointment_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/my_page_last_appointment_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:text="@string/my_page_last_appointment"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_last_appointment_icon_iv"
+            app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
+
+        <ImageView
+            android:id="@+id/my_page_last_appointment_arrow_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_page_notice_cl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/my_page_last_appointment"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
-        app:layout_constraintStart_toEndOf="@id/my_page_last_appointment_icon_iv"
-        app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
-
-    <ImageView
-        android:id="@+id/my_page_last_appointment_arrow_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_arrow_right"
-        android:backgroundTint="@color/grey"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
-
-
-    <ImageView
-        android:id="@+id/my_page_notice_icon_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
-        android:src="@drawable/my_page_notice_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_page_last_appointment_icon_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/my_page_last_appointment_cl">
 
-    <TextView
-        android:id="@+id/my_page_notice_text_tv"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/my_page_notice_icon_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/my_page_notice_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/my_page_notice_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:text="@string/my_page_notice"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_notice_icon_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_notice_icon_iv"
+            app:layout_constraintTop_toTopOf="@id/my_page_notice_icon_iv" />
+
+        <ImageView
+            android:id="@+id/my_page_notice_arrow_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_notice_icon_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/my_page_notice_icon_iv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_page_customer_service_cl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/my_page_notice"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_notice_icon_iv"
-        app:layout_constraintStart_toEndOf="@id/my_page_notice_icon_iv"
-        app:layout_constraintTop_toTopOf="@id/my_page_notice_icon_iv" />
-
-    <ImageView
-        android:id="@+id/my_page_notice_arrow_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_arrow_right"
-        android:backgroundTint="@color/grey"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_notice_icon_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_page_notice_icon_iv" />
-
-    <ImageView
-        android:id="@+id/my_page_customer_service_center_icon_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
-        android:src="@drawable/my_page_customer_service_center_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_page_notice_icon_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/my_page_notice_cl">
 
-    <TextView
-        android:id="@+id/my_page_customer_service_center_text_tv"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/my_page_customer_service_center_icon_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/my_page_customer_service_center_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/my_page_customer_service_center_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:text="@string/my_page_customer_service_center"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_customer_service_center_icon_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_customer_service_center_icon_iv"
+            app:layout_constraintTop_toTopOf="@id/my_page_customer_service_center_icon_iv" />
+
+        <ImageView
+            android:id="@+id/my_page_customer_service_center_arrow_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_customer_service_center_icon_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/my_page_customer_service_center_icon_iv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_page_set_cl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/my_page_customer_service_center"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_customer_service_center_icon_iv"
-        app:layout_constraintStart_toEndOf="@id/my_page_customer_service_center_icon_iv"
-        app:layout_constraintTop_toTopOf="@id/my_page_customer_service_center_icon_iv" />
-
-    <ImageView
-        android:id="@+id/my_page_customer_service_center_arrow_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_arrow_right"
-        android:backgroundTint="@color/grey"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_customer_service_center_icon_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_page_customer_service_center_icon_iv" />
-
-    <ImageView
-        android:id="@+id/my_page_set_icon_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
-        android:src="@drawable/my_page_set_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_page_customer_service_center_icon_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/my_page_customer_service_cl">
 
-    <TextView
-        android:id="@+id/my_page_set_text_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/my_page_set"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_set_icon_iv"
-        app:layout_constraintStart_toEndOf="@id/my_page_set_icon_iv"
-        app:layout_constraintTop_toTopOf="@id/my_page_set_icon_iv" />
+        <ImageView
+            android:id="@+id/my_page_set_icon_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/my_page_set_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/my_page_set_arrow_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_arrow_right"
-        android:backgroundTint="@color/grey"
-        app:layout_constraintBottom_toBottomOf="@id/my_page_set_icon_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_page_set_icon_iv" />
+        <TextView
+            android:id="@+id/my_page_set_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:text="@string/my_page_set"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_set_icon_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_set_icon_iv"
+            app:layout_constraintTop_toTopOf="@id/my_page_set_icon_iv" />
+
+        <ImageView
+            android:id="@+id/my_page_set_arrow_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_set_icon_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/my_page_set_icon_iv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
