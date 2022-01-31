@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.remote.chatList.ChatListService
+import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
 import kotlin.collections.ArrayList
 

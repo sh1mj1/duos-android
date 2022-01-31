@@ -29,8 +29,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     var roomIdx: Int = 0
     var userId: String = "tennis01"
     var partnerId: String = "djeikd0620"
-    var userIdx = 76
-    var partnerIdx = 101
+    var thisUserIdx = 76
+    var targetUserIdx = 110
     private var layoutManager: LayoutManager? = null
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
@@ -110,8 +110,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             if (data.type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
                     MessageItem(
-                        data.from,
-                        data.content,
+                        userId,
+                        data.message,
                         toDate(data.sendTime),
                         ChatType.CENTER_MESSAGE
                     )
@@ -120,8 +120,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             } else {
                 chattingMessagesRVAdapter.addItem(
                     MessageItem(
-                        data.from,
-                        data.content,
+                        userId,
+                        data.message,
                         toDate(data.sendTime),
                         ChatType.LEFT_MESSAGE
                     )
@@ -134,8 +134,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     private fun sendMessage(view: View) {
         Log.d(
             "MESSAGE", MessageData(
+                "957cfc80-481c-4ae4-88a0-25a9599dd511",
                 "MESSAGE",
-                userId, roomIdx.toString() + "",
+                thisUserIdx, targetUserIdx,
                 chattingEt.text.toString(),
                 System.currentTimeMillis()
             ).toString()
@@ -172,11 +173,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // chatting test code
-        var chattingMessage = MessageData("DATE", userId, roomIdx.toString(),"2022년 01월 21일", System.currentTimeMillis())
+        var chattingMessage = MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "DATE", thisUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis())
         addChat(chattingMessage)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
-        chattingMessage = MessageData("MESSAGE", partnerId, userId,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
+        chattingMessage = MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", targetUserIdx, thisUserIdx,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
         addChat(chattingMessage)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
@@ -225,32 +226,33 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-//        var bundle = intent?.extras
-//        val type = bundle?.getString("type")
-//        val from = bundle?.getString("from")
-//        val to = bundle?.getString("to")
-//        val body = bundle?.getString("messageBody")
-//        val sendTime = bundle?.getLong("sendTime")
-        val type = intent?.getStringExtra("type")
-        val from = intent?.getStringExtra("from")
-        val to = intent?.getStringExtra("to")
-        val body = intent?.getStringExtra("messageBody")
-        val sendTime = intent?.getLongExtra("sendTime", 0)
-
-        Log.d("채팅액티비티"," 1")
-
-        if (type != null && from != null && to != null && body != null && sendTime != null) {
-            Log.d("채팅액티비티", "2")
-            updateMessage(type, from, to, body, sendTime)
-        }
-        super.onNewIntent(intent)
-    }
-
-    fun updateMessage(type: String, from: String, to: String, body: String, sendTime: Long) {
-        Log.d("채팅액티비티", "3")
-        val chattingMessage = MessageData(type, from, to,body, sendTime)
-        addChat(chattingMessage)
-        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-    }
+//    override fun onNewIntent(intent: Intent?) {
+////        var bundle = intent?.extras
+////        val type = bundle?.getString("type")
+////        val from = bundle?.getString("from")
+////        val to = bundle?.getString("to")
+////        val body = bundle?.getString("messageBody")
+////        val sendTime = bundle?.getLong("sendTime")
+//        val chatRoomIdx = intent?.getStringExtra("chatRoomIdx")
+//        val type = intent?.getStringExtra("type")
+//        val from = intent?.getStringExtra("from")
+//        val to = intent?.getStringExtra("to")
+//        val body = intent?.getStringExtra("messageBody")
+//        val sendTime = intent?.getLongExtra("sendTime", 0)
+//
+//        Log.d("채팅액티비티"," 1")
+//
+//        if (chatRoomIdx != null && type != null && from != null && to != null && body != null && sendTime != null) {
+//            Log.d("채팅액티비티", "2")
+//            updateMessage(chatRoomIdx, type, from, to, body, sendTime)
+//        }
+//        super.onNewIntent(intent)
+//    }
+//
+//    fun updateMessage(roomIdx: String, type: String, from: Int, to: Int, body: String, sendTime: Long) {
+//        Log.d("채팅액티비티", "3")
+//        val chattingMessage = MessageData(roomIdx, type, from, to, body, sendTime)
+//        addChat(chattingMessage)
+//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+//    }
 }

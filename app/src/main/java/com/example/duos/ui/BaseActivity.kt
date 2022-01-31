@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
+import com.example.duos.ApplicationClass
 import com.jakewharton.threetenabp.AndroidThreeTen
 
 abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater) -> T): AppCompatActivity(){
@@ -48,6 +49,18 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
         val intent = Intent(this, activity)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    fun progressON(){
+        ApplicationClass.getInstance().progressON(this, null)
+    }
+
+    fun progressON(message: String){
+        ApplicationClass.getInstance().progressON(this, message)
+    }
+
+    fun progressOFF(){
+        ApplicationClass.getInstance().progressOFF()
     }
 
 //    // 키보드 숨기기

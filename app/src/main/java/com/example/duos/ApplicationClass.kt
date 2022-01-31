@@ -1,8 +1,16 @@
 package com.example.duos
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.ColorDrawable
+import android.text.TextUtils
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatDialog
 import com.example.duos.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,6 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
+
+
+
     companion object{
         const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
@@ -21,10 +32,19 @@ class ApplicationClass : Application() {
 
         lateinit var mSharedPreferences: SharedPreferences
         lateinit var retrofit: Retrofit
+
+        lateinit var baseApplication: ApplicationClass
+        lateinit var progressDialog: AppCompatDialog
+
+        fun getInstance(): ApplicationClass {
+            return baseApplication
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
+
+        baseApplication = this
 
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
@@ -39,5 +59,43 @@ class ApplicationClass : Application() {
             .build()
 
         mSharedPreferences = applicationContext.getSharedPreferences(TAG, Context.MODE_PRIVATE)
+    }
+
+    fun progressON(activity: Activity?, message: String?) {
+        if (activity == null || activity.isFinishing) {
+            return
+        }
+        if (progressDialog != null && progressDialog.isShowing()) {
+            //progressSET(message)
+        } else {
+            progressDialog = AppCompatDialog(activity)
+            progressDialog.setCancelable(false)
+            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            progressDialog.setContentView(R.layout.progress_loading)
+            progressDialog.show()
+        }
+        val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
+        val frameAnimation = img_loading_frame?.background as AnimationDrawable
+        img_loading_frame.post { frameAnimation.start() }
+//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
+//        if (!TextUtils.isEmpty(message)) {
+//            tv_progress_message.text = message
+//        }
+    }
+
+//    fun progressSET(message: String?) {
+//        if (progressDialog == null || !progressDialog.isShowing()) {
+//            return
+//        }
+//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
+//        if (!TextUtils.isEmpty(message)) {
+//            tv_progress_message.text = message
+//        }
+//    }
+
+    fun progressOFF() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss()
+        }
     }
 }

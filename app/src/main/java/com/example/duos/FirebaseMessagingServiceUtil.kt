@@ -67,7 +67,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
             Log.d("알림 확인", "1")
             if (title != null && messageBody != null) {
                 Log.d("알림 확인", "2")
-                sendNotification("MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
+                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
             }
         }
         // TODO
@@ -130,7 +130,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
      */
 
     // 채팅 메세지를 디바이스에 알려주는 함수
-    private fun sendNotification(type: String, from: String, to:String, messageBody: String, sendTime: Long) {  // 보낸사람, 받는사람의 인덱스와 메세지 본문, 메세지 type, chatRoomIdx??
+    private fun sendNotification(chatRoomIdx: String, type: String, from: String, to:String, messageBody: String, sendTime: Long) {  // 보낸사람, 받는사람의 인덱스와 메세지 본문, 메세지 type, chatRoomIdx??
         Log.d("노티", messageBody)
         //
 
@@ -146,6 +146,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
 //        bundle.putString("messageBody", messageBody)
 //        bundle.putLong("sendTime", sendTime)
 
+        intent.putExtra("chatRoomIdx", chatRoomIdx)
         intent.putExtra("type", type)
         intent.putExtra("from", from)
         intent.putExtra("to", to)

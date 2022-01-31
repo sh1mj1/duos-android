@@ -1,4 +1,4 @@
-package com.example.duos.data.remote.chatList
+package com.example.duos.data.remote.chat.chatList
 
 import retrofit2.Call
 import retrofit2.http.GET
