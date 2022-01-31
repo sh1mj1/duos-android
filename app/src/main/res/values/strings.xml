@@ -125,10 +125,10 @@
     <string name="partner_filter_female">여성</string>
     <string name="partner_filter_careless">무관</string>
     <string name="partner_filter_age">연령</string>
-    <string name="partner_filter_age_min">20</string>
+    <string name="partner_filter_age_min">10</string>
     <string name="partner_filter_age_unit">대</string>
-    <string name="partner_filter_age_min_bottom">20대</string>
-    <string name="partner_filter_age_set_min">20</string>
+    <string name="partner_filter_age_min_bottom">10대</string>
+    <string name="partner_filter_age_set_min">10</string>
     <string name="partner_filter_age_set_max">40</string>
     <string name="partner_filter_age_max">60</string>
     <string name="partner_filter_age_max_bottom">60대</string>
@@ -140,6 +140,7 @@
     <string name="partner_filter_ball_capacity_max_bottom">10년</string>
 
     <string-array name="partner_filter_age_array">
+        <item>10대</item>
         <item>20대</item>
         <item>30대</item>
         <item>40대</item>

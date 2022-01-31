@@ -29,7 +29,8 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
         Log.d("채팅방 생성한 user의 userIdx", thisUserIdx.toString())
         Log.d("채팅방 생성: 상대 user의 userIdx", targetUserIdx.toString())
-        ChatService.createChatRoom(this, thisUserIdx, targetUserIdx)
+        ChatService.setCreateChatRoomView(this)
+        ChatService.createChatRoom(thisUserIdx, targetUserIdx)
     }
 
     private fun startChattingActivity(){

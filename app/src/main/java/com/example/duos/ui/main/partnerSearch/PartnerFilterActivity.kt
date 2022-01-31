@@ -14,7 +14,7 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         val ageRangeSeekbar = binding.partnerFilterAgeRangeSb
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
 
-        ageRangeSeekbar.setProgress(20f,60f)
+        ageRangeSeekbar.setProgress(10f,60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
 
         ageRangeSeekbar.setOnRangeChangedListener(object: OnRangeChangedListener {
@@ -85,7 +85,7 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         binding.partnerFilterInitiateBtn.setOnClickListener {
             // 초기화 버튼 시 각 항목 입력값 초기화
 
-            ageRangeSeekbar.setProgress(20f,60f)
+            ageRangeSeekbar.setProgress(10f,60f)
             ballCapacityRangeSeekBar.setProgress(0f, 10f)
         }
 
