@@ -23,14 +23,17 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
         binding.partnerProfileChattingBtn.setOnClickListener {
             createRoom()
         }
+
+        binding.partnerProfileBackIv.setOnClickListener {
+            finish()
+        }
     }
 
     fun createRoom(){
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
         Log.d("채팅방 생성한 user의 userIdx", thisUserIdx.toString())
         Log.d("채팅방 생성: 상대 user의 userIdx", targetUserIdx.toString())
-        ChatService.setCreateChatRoomView(this)
-        ChatService.createChatRoom(thisUserIdx, targetUserIdx)
+        ChatService.createChatRoom(this, thisUserIdx, targetUserIdx)
     }
 
     private fun startChattingActivity(){

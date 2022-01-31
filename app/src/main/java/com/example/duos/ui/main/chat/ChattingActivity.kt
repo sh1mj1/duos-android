@@ -1,6 +1,8 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
@@ -17,14 +19,16 @@ import android.text.TextWatcher
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.duos.R
 import com.example.duos.data.entities.MessageData
+import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.ui.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate) {
+class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
     //lateinit var binding: ActivityChattingBinding
     var roomIdx: Int = 0
     var userId: String = "tennis01"
@@ -35,74 +39,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        //binding = ActivityChattingBinding.inflate(layoutInflater)
-//        //setContentView(binding.root)
-//
-//        chattingEt = binding.chattingEt
-//        chattingRV = binding.chattingMessagesRv
-//
-//        var sendBtn: ImageView = binding.chattingSendBtn
-//
-//        chattingRV.setHasFixedSize(true)
-//        layoutManager = LinearLayoutManager(this)
-//        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
-//        chattingRV.setLayoutManager(layoutManager)
-//        chattingRV.setItemAnimator(DefaultItemAnimator())
-//        chattingMessagesRVAdapter = ChattingMessagesRVAdapter()
-//        chattingRV.setAdapter(chattingMessagesRVAdapter)
-//
-//        // chatting test code
-//        var chattingMessage = MessageData("DATE", userId, roomIdx.toString(),"2022년 01월 21일", System.currentTimeMillis())
-//        addChat(chattingMessage)
-//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//
-//        chattingMessage = MessageData("MESSAGE", partnerId, userId,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
-//        addChat(chattingMessage)
-//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//
-//
-//        // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
-//        chattingEt.addTextChangedListener(object: TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                if(chattingEt.length() > 0){
-//                    sendBtn.isClickable = true
-//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
-//                } else{
-//                    sendBtn.isClickable = false
-//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_gray)
-//                }
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//
-//            }
-//        })
-//
-////        chattingEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-////            override fun onFocusChange(view: View, hasFocus: Boolean) {
-////                if (hasFocus || !chattingEt.text.equals("")) {
-////                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
-////                } else {
-////                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_gray)
-////                }
-////            }
-////        })
-//        sendBtn.setOnClickListener{
-//                v -> sendMessage(v)
-//        }
-//
-//        binding.chattingMakePlanBtn.setOnClickListener ({
-//            val intent = Intent(this, MakePlanActivity::class.java)
-//            startActivity(intent)
-//        })
-//    }
 
     // 리사이클러뷰에 채팅 추가
     private fun addChat(data: MessageData) {
@@ -131,26 +67,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
     }
 
-    private fun sendMessage(view: View) {
-        Log.d(
-            "MESSAGE", MessageData(
-                "957cfc80-481c-4ae4-88a0-25a9599dd511",
-                "MESSAGE",
-                thisUserIdx, targetUserIdx,
-                chattingEt.text.toString(),
-                System.currentTimeMillis()
-            ).toString()
-        )
-        chattingMessagesRVAdapter.addItem(
-            MessageItem(
-                userId,
-                chattingEt.text.toString(),
-                toDate(System.currentTimeMillis()),
-                ChatType.RIGHT_MESSAGE
-            )
-        )
-        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-        chattingEt.setText("")
+    private fun postSendMessage() {
+
+
+        val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
+            thisUserIdx, targetUserIdx, chattingEt.text.toString())
+
+        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
     }
 
     // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
@@ -213,7 +136,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            }
 //        })
         sendBtn.setOnClickListener{
-                v -> sendMessage(v)
+            postSendMessage()
+            sendMessage()
         }
 
         binding.chattingMakePlanBtn.setOnClickListener ({
@@ -224,6 +148,46 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         binding.chattingBackIv.setOnClickListener {
             finish()
         }
+    }
+
+    fun startLoadingProgress(){
+        Log.d("로딩중","채팅 메세지 보내기 api")
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+    }
+
+    fun sendMessage(){
+        Log.d(
+            "MESSAGE", MessageData(
+                "957cfc80-481c-4ae4-88a0-25a9599dd511",
+                "MESSAGE",
+                thisUserIdx, targetUserIdx,
+                chattingEt.text.toString(),
+                System.currentTimeMillis()
+            ).toString()
+        )
+
+        chattingMessagesRVAdapter.addItem(
+            MessageItem(
+                userId,
+                chattingEt.text.toString(),
+                toDate(System.currentTimeMillis()),
+                ChatType.RIGHT_MESSAGE
+            )
+        )
+        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+        chattingEt.setText("")
+    }
+
+    override fun onSendMessageLoading() {
+        startLoadingProgress()
+    }
+
+    override fun onSendMessageSuccess() {
+        Log.d("채팅 메세지 보내기 POST", "성공")
+    }
+
+    override fun onSendMessageFailure(code: Int, message: String) {
+        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
 
 //    override fun onNewIntent(intent: Intent?) {
