@@ -23,7 +23,7 @@ import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.ui.main.chat.ChatListView
 
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView {
+class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
     /**
      * Called when message is received.
@@ -78,7 +78,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView {
 //        }
 
         if (remoteMessage.notification != null) {
-            ChatListService.chatList(this, 0)
+//            ChatListService.chatList(this, 0) // get 가능 확인함
             val body = remoteMessage.notification!!.body
             Log.d(TAG, "Notification Body: $body")
             val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(
@@ -250,14 +250,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView {
     companion object {
 
         private const val TAG = "MyFirebaseMsgService"
-    }
-
-    override fun onGetChatListSuccess(chatList: List<ChatListItem>) {
-        Log.d("get after fcm",chatList[0].lastMessage)
-    }
-
-    override fun onGetChatListFailure(code: Int, message: String) {
-        Log.d("get after fcm failed","code: $code, message: $message")
     }
 }
 
