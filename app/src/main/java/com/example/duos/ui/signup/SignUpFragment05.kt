@@ -3,6 +3,7 @@ package com.example.duos.ui.signup
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,6 +33,15 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val CAMERA_PERMISSION_REQUEST = 100
+    lateinit var signupNextBtnListener: SignUpNextBtnInterface
+    lateinit var mContext: SignUpActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is SignUpActivity) {
+            mContext = context
+        }
+    }
 
     // 멀티퍼미션 카메라1
     val requiredPermissions1 = arrayOf(
@@ -51,6 +61,10 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
 
     override fun initAfterBinding() {
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "05"
+        signupNextBtnListener = mContext
+
+        // skip 테스트 버튼
+        binding.signup05SkipBtn.setOnClickListener {  signupNextBtnListener.onNextBtnEnable()  }
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 

@@ -126,15 +126,46 @@
     <string name="partner_filter_female">여성</string>
     <string name="partner_filter_careless">무관</string>
     <string name="partner_filter_age">연령</string>
-    <string name="partner_filter_age_min">20대</string>
-    <string name="partner_filter_age_set_min">20대</string>
-    <string name="partner_filter_age_set_max">40대</string>
-    <string name="partner_filter_age_max">60대</string>
+    <string name="partner_filter_age_min">20</string>
+    <string name="partner_filter_age_unit">대</string>
+    <string name="partner_filter_age_min_bottom">20대</string>
+    <string name="partner_filter_age_set_min">20</string>
+    <string name="partner_filter_age_set_max">40</string>
+    <string name="partner_filter_age_max">60</string>
+    <string name="partner_filter_age_max_bottom">60대</string>
+    <string name="partner_filter_ball_capacity_min">0</string>
+    <string name="partner_filter_ball_capacity_min_bottom">0개월</string>
+    <string name="partner_filter_ball_capacity_set_min">0개월</string>
+    <string name="partner_filter_ball_capacity_set_max">10</string>
+    <string name="partner_filter_ball_capacity_max">10</string>
+    <string name="partner_filter_ball_capacity_max_bottom">10년</string>
+
+    <string-array name="partner_filter_age_array">
+        <item>20대</item>
+        <item>30대</item>
+        <item>40대</item>
+        <item>50대</item>
+        <item>60대</item>
+    </string-array>
+
     <string name="partner_filter_ball_capability">구력</string>
-    <string name="partner_filter_ball_capability_year_min">0개월</string>
-    <string name="partner_filter_ball_capability_year_max">10년</string>
-    <string name="partner_filter_ball_capability_year_set_min">1년</string>
-    <string name="partner_filter_ball_capability_year_set_max">3년</string>
+    <string name="partner_filter_ball_capability_year_min_bottom">0개월</string>
+    <string name="partner_filter_ball_capability_year_max_bottom">10년</string>
+
+    <string-array name="partner_filter_ball_capability_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
     <string name="partner_filter_apply">적용하기</string>
 
 
@@ -320,6 +351,12 @@
     <string name="my_page_customer_service_center">고객센터</string>
     <string name="my_page_set">설정</string>
     <string name="my_page_home_phone_last_num">****</string>
+
+<!--    푸시 알림 테스트-->
+
+    <string name="firebase_notification_channel_id_testS">심지훈 푸시 알림 테스트</string>
+    <string name="fcm_message">심지훈 FCM_기본 메시지</string>
+    <string name="msg_token_fmt">반갑습니다. ~~ 님</string>
 
 
 </resources>

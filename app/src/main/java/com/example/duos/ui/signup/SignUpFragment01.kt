@@ -14,15 +14,12 @@ import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup01Binding
 import com.example.duos.utils.SignUpInfoViewModel
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 
 import android.text.Editable
 
 import android.text.TextWatcher
 import android.util.TypedValue
-import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.duos.data.remote.signUp.SignUpService
 import java.util.regex.Pattern
 import kotlin.concurrent.timer
@@ -32,7 +29,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
     lateinit var binding: FragmentSignup01Binding
     var savedState: Bundle? = null
     lateinit var mContext: SignUpActivity
-    lateinit var birthNextBtnListener: SignUpNextBtnInterface
+    lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var onGoingNextListener: SignUpGoNextInterface
     lateinit var viewModel: SignUpInfoViewModel
 
@@ -50,7 +47,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignup01Binding.inflate(inflater, container, false)
-        birthNextBtnListener = mContext
+        signupNextBtnListener = mContext
         onGoingNextListener = mContext
         viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "01"
@@ -75,7 +72,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         savedState = null
 
         // skip 테스트 버튼
-        binding.signup01SkipBtn.setOnClickListener {onSignUpVerifyAuthNumSuccess()   }
+        binding.signup01SkipBtn.setOnClickListener { signupNextBtnListener.onNextBtnEnable() }
 
         return binding.root
     }
@@ -97,11 +94,11 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                 if (matcher.matches()) {
                     this.viewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
                         if (it2.length == 6) {
-                            birthNextBtnListener.onNextBtnEnable()
-                        } else birthNextBtnListener.onNextBtnUnable()
+                            signupNextBtnListener.onNextBtnEnable()
+                        } else signupNextBtnListener.onNextBtnUnable()
                     })
-                } else birthNextBtnListener.onNextBtnUnable()
-            } else birthNextBtnListener.onNextBtnUnable()
+                } else signupNextBtnListener.onNextBtnUnable()
+            } else signupNextBtnListener.onNextBtnUnable()
         })
     }
 
@@ -162,7 +159,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
     private fun editTextOnFocus() {
         binding.signup01PhoneNumberEt.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
+            View.OnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     if (binding.signup01PhoneNumberEt.text?.length == 13) {
                         binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE

@@ -12,6 +12,9 @@ class SignUpInfoViewModel : ViewModel() {
     var birthYear = MutableLiveData<Int>() // 년
     var birthMonth = MutableLiveData<Int>() // 월
     var birthDay = MutableLiveData<Int>() // 일
+    var setNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setGender: MutableLiveData<Boolean> = MutableLiveData(false)
+    var setBirth : MutableLiveData<Boolean> = MutableLiveData(false)
     var locationCate = MutableLiveData<Int>()
     var location = MutableLiveData<Int>()
     var locationCateName = MutableLiveData<String>()

@@ -1,9 +1,13 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,9 +20,10 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
+class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>, val deleteClickListener: DeleteClickListener) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
     private lateinit var dialogBuilder: CustomDialog.Builder
     private lateinit var context: Context
+    private lateinit var deleteBtnTv: TextView
 
     interface ChatListItemClickListener{
         fun onItemClick(chatListItem: ChatListItem)
@@ -38,7 +43,22 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(chatList[position])
-        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(chatList[position]) }
+        holder.itemView.setOnClickListener {
+            mItemClickListener.onItemClick(chatList[position])
+            Log.d("포지션", position.toString())
+        }
+        deleteBtnTv.setOnClickListener {
+            val isClamped = deleteClickListener.getIsClamped(holder)
+            if(isClamped){
+                Log.d("isClamped", "true")
+                showDialog(it.context, holder.layoutPosition)
+                dialogBuilder.show()
+            }else{
+                Log.d("isClamped", "false")
+                deleteClickListener.onDeleteClick()
+
+            }
+        }
     }
 
     override fun getItemCount(): Int = chatList.size
@@ -56,10 +76,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
             binding.chatListUserIdTv.text = chatListItem.chatRoomName
             Glide.with(context).load(chatListItem.chatRoomImg).apply(RequestOptions().circleCrop()).into(binding.chatListProfileIv)
 
-            binding.chatListDeleteBtn.setOnClickListener {
-                showDialog(it.context, this.layoutPosition)
-                dialogBuilder.show()
-            }
+            deleteBtnTv = binding.chatListDeleteBtn
         }
     }
 
@@ -67,6 +84,7 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
     fun removeData(position: Int) {
         chatList.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, chatList.size)
     }
 
     fun showDialog(context: Context, position: Int){
@@ -90,23 +108,6 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
             })
     }
 
-    fun formatDateTime(localDateTime: String): String{
-        // 마지막 채팅 온 시간 formatting
-        //var lastUpdatedAt = chatListData.lastUpdatedAt
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-        val dateTime = LocalDateTime.parse(localDateTime, formatter).toString()
-        //var date = LocalDate.parse(lastUpdatedAt, formatter)
-        //val time = LocalTime.parse(lastUpdatedAt, formatter)
-
-        var lastUpdatedAt = localDateTime.format(
-            DateTimeFormatter.ofPattern("a HH:mm").withLocale(
-                Locale.forLanguageTag("ko")))
-        //val pattern = DateTimeFormatter.ofPattern("a hh:mm")
-        //val lastUpdatedAt = LocalDateTime.parse(localDateTime, pattern).toString()
-        Log.d("after formatting", lastUpdatedAt)
-        return lastUpdatedAt
-    }
-
     @Throws(Exception::class)
     fun getFormattedDateTime(dateTime: String):String {
         // 대상 날짜로 LocalDateTime 만들기
@@ -128,5 +129,10 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>) : Recycle
         println(time)
 
         return time
+    }
+
+    interface DeleteClickListener{
+        fun getIsClamped(viewHolder: RecyclerView.ViewHolder):Boolean
+        fun onDeleteClick()
     }
 }
