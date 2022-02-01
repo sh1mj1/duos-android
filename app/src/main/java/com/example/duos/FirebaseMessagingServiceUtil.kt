@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -16,8 +17,13 @@ import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.main.chat.ChattingActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import androidx.core.app.NotificationManagerCompat
+import com.example.duos.data.entities.ChatListItem
+import com.example.duos.data.remote.chat.chatList.ChatListService
+import com.example.duos.ui.main.chat.ChatListView
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
+
+class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView {
 
     /**
      * Called when message is received.
@@ -58,17 +64,42 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         }
 
         // 메시지에 notification payload가 포함되어있는지 확인
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-            val title = it.title
-            val messageBody = it.body
-            val time = it.eventTime //null값을 받아옴..
+//        remoteMessage.notification?.let {
+//            Log.d(TAG, "Message Notification Body: ${it.body}")
+//            val title = it.title
+//            val messageBody = it.body
+//            val time = it.eventTime //null값을 받아옴..
+//
+//            Log.d("알림 확인", "1")
+//            if (title != null && messageBody != null) {
+//                Log.d("알림 확인", "2")
+//                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
+//            }
+//        }
 
-            Log.d("알림 확인", "1")
-            if (title != null && messageBody != null) {
-                Log.d("알림 확인", "2")
-                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
-            }
+        if (remoteMessage.notification != null) {
+            ChatListService.chatList(this, 0)
+            val body = remoteMessage.notification!!.body
+            Log.d(TAG, "Notification Body: $body")
+            val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(
+                applicationContext
+            )
+                .setSmallIcon(R.mipmap.ic_duos_round) // 알림 영역에 노출 될 아이콘.
+                .setContentTitle(getString(R.string.app_name)) // 알림 영역에 노출 될 타이틀
+                .setContentText(body) // Firebase Console 에서 사용자가 전달한 메시지내용
+            val notificationManagerCompat = NotificationManagerCompat.from(
+                applicationContext
+            )
+            remoteMessage.notification!!.eventTime
+            notificationManagerCompat.notify(0x1001, notificationBuilder.build())
+        }
+
+        val body = remoteMessage.data.get("message")
+
+        if(remoteMessage.data != null){
+            Log.d("데이터메세지", remoteMessage.data.toString())
+        }else{
+            Log.d("데이터메세지", "is null")
         }
         // TODO
         // 또한 수신된 FCM 메시지의 결과로 사용자 자신의 알림을 생성하려면 여기서 시작해야 합니다. 아래 sendNotification 방법을 참조하십시오.
@@ -219,6 +250,14 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
     companion object {
 
         private const val TAG = "MyFirebaseMsgService"
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatListItem>) {
+        Log.d("get after fcm",chatList[0].lastMessage)
+    }
+
+    override fun onGetChatListFailure(code: Int, message: String) {
+        Log.d("get after fcm failed","code: $code, message: $message")
     }
 }
 

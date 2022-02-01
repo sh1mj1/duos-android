@@ -21,6 +21,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.duos.R
+import com.example.duos.data.entities.ChatListItem
 import com.example.duos.data.entities.MessageData
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.ui.BaseActivity
@@ -30,6 +31,7 @@ import java.util.*
 
 class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
     //lateinit var binding: ActivityChattingBinding
+    private var chatListDatas = ArrayList<ChatListItem>()
     var roomIdx: Int = 0
     var userId: String = "tennis01"
     var partnerId: String = "djeikd0620"
@@ -67,15 +69,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
     }
 
-    private fun postSendMessage() {
-
-
-        val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
-            thisUserIdx, targetUserIdx, chattingEt.text.toString())
-
-        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
-    }
-
     // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
     private fun toDate(currentMiliis: Long): String {
         return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
@@ -103,6 +96,33 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingMessage = MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", targetUserIdx, thisUserIdx,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
         addChat(chattingMessage)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+
+        // 날짜 바뀌면 "2022년 01월 21일" 이런식으로 뜨게 하는거 eventTime이 바뀌면 해당 인덱스에 추가하는거 해보다가 말음
+//        chatListDatas.apply {
+//            add(MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "DATE", thisUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis())
+//            add(MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "Message", targetUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis()))
+//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+//        }
+//        for (i: Int in 0..chatListDatas.size-1){
+//            val dateTime = getFormattedDateTime(chatListDatas[i].lastUpdatedAt)
+//            val nextDateTime = getFormattedDateTime(chatListDatas[i].lastUpdatedAt)
+//            if(dateTime != nextDateTime){
+//
+//            }
+//        }
 
 
         // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
@@ -153,6 +173,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     fun startLoadingProgress(){
         Log.d("로딩중","채팅 메세지 보내기 api")
         Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+    }
+
+    private fun postSendMessage() {
+        val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
+            thisUserIdx, targetUserIdx, chattingEt.text.toString())
+
+        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
     }
 
     fun sendMessage(){
