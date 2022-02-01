@@ -58,17 +58,19 @@ class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<Recommend
         fun bind(recommendedPartner : RecommendedPartner){
 
             Glide.with(context).load(recommendedPartner.profileImg).into(binding.partnerSearchRecommendedPartnerIv)
-            binding.partnerSearchRecommendedPartnerLocationTv.text = recommendedPartner.location
-            binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = recommendedPartner.ballCapacity
+            var location = recommendedPartner.locationCategory + " " + recommendedPartner.locationName
+            binding.partnerSearchRecommendedPartnerLocationTv.text = location
+            binding.partnerSearchRecommendedPartnerBallCapabilityTv.text = "구력 " + recommendedPartner.ballCapacity
             binding.partnerSearchRecommendedPartnerIdTv.text = recommendedPartner.id
 
-            // age값으로 나이대 계산
-            var age = recommendedPartner.age
-            var ageRange = ""
-            if (age != null) {
-                ageRange = (round(age.toFloat()/10)*10).roundToInt().toString() + "대"
-            }
-            binding.partnerSearchRecommendedPartnerAgeTv.text = ageRange
+//              서버에서 이미 변환되어서 와서 주석처리
+//            // age값으로 나이대 계산
+//            var age = recommendedPartner.age
+//            var ageRange = ""
+//            if (age != null) {
+//                ageRange = (round(age.toFloat()/10)*10).roundToInt().toString() + "대"
+//            }
+            binding.partnerSearchRecommendedPartnerAgeTv.text = recommendedPartner.age
             binding.partnerSearchRecommendedPartnerStarRatingTv.text = recommendedPartner.starRating.toString()
             binding.partnerSearchRecommendedPartnerReviewCountTv.text = recommendedPartner.reviewCount.toString()
         }
