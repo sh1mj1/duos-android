@@ -88,7 +88,12 @@
             android:name=".ui.main.chat.ChattingActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="FCM_EXE_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.main.chat.MakePlanActivity"

@@ -21,6 +21,10 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.duos.data.entities.ChatListItem
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.ui.main.chat.ChatListView
+import android.app.Application
+
+
+
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
@@ -48,7 +52,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        Log.d(TAG, "메세지수신 From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
@@ -101,6 +105,16 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
         }else{
             Log.d("데이터메세지", "is null")
         }
+
+        Log.d(
+            "Application.APPTAG",
+            "myFirebaseMessagingService - onMessageReceived - message: $remoteMessage"
+        )
+
+//        val dialogIntent = Intent(this, ChattingActivity::class.java)
+//        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//        dialogIntent.putExtra("msg", remoteMessage)
+//        startActivity(dialogIntent)
         // TODO
         // 또한 수신된 FCM 메시지의 결과로 사용자 자신의 알림을 생성하려면 여기서 시작해야 합니다. 아래 sendNotification 방법을 참조하십시오.
 
