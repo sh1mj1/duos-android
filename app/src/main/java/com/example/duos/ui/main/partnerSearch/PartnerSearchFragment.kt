@@ -92,7 +92,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
-        PartnerSearchService.partnerSearchData(this, 2)
+        PartnerSearchService.partnerSearchData(this, 1)
 
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
