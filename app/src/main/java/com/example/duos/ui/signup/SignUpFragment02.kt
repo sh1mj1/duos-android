@@ -55,6 +55,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         signupNextBtnListener = mContext
         viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
 
+
         binding.signup02BirthEt.setOnClickListener {
             birthNextBtnListener.onNextBtnChanged(true)
             birthNumberPicker()
@@ -65,7 +66,6 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
             savedState = savedInstanceState.getBundle("savedState")
         }
         else {
-            Log.d("저장된 것","없음")
             Log.d("텍스트",binding.signup02NickNameEt.text.toString())
         }
         if (savedState != null) {
@@ -124,11 +124,15 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
                         this.viewModel.setBirth.observe(requireActivity(), { it3 ->
                             if (it3) {
                                 signupNextBtnListener.onNextBtnEnable()
-                            } else signupNextBtnListener.onNextBtnUnable()
+                                viewModel.signUp02Avail.value = true
+                            } else {signupNextBtnListener.onNextBtnUnable()
+                                viewModel.signUp02Avail.value = false}
                         })
-                    } else signupNextBtnListener.onNextBtnUnable()
+                    } else {signupNextBtnListener.onNextBtnUnable()
+                        viewModel.signUp02Avail.value = false}
                 })
-            } else signupNextBtnListener.onNextBtnUnable()
+            } else { signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp02Avail.value = false}
         })
     }
 

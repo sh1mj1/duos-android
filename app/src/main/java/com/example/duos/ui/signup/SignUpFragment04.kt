@@ -31,6 +31,8 @@ class SignUpFragment04() : BaseFragment<FragmentSignup04Binding>(FragmentSignup0
 
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "04"
         signupNextBtnListener = mContext
+        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+
 
         for (i in 1..14) {
             var btnId: Int = resources.getIdentifier(
@@ -55,7 +57,9 @@ class SignUpFragment04() : BaseFragment<FragmentSignup04Binding>(FragmentSignup0
         viewModel.experience.observe(this, Observer {
             if (it.isNotEmpty()){
                 signupNextBtnListener.onNextBtnEnable()
-            } else signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp04Avail.value = true
+            } else {signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp04Avail.value = false}
         })
     }
 

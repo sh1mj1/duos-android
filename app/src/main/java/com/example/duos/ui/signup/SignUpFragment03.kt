@@ -14,6 +14,7 @@ import com.example.duos.utils.SignUpInfoViewModel
 class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup03Binding::inflate) {
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var mContext: SignUpActivity
+    lateinit var viewModel: SignUpInfoViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -25,6 +26,7 @@ class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup0
     override fun initAfterBinding() {
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "03"
         signupNextBtnListener = mContext
+        val viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
 
         binding.signup03LinearLayoutLl.setOnClickListener {
             val dialog = LocationDialogFragment()
@@ -36,7 +38,7 @@ class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup0
             }
         }
 
-        val viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+
         viewModel.locationDialogShowing.observe(this, Observer {
             if (it){
                 binding.signup03LocationTextTv.text = viewModel.locationCateName.value + " " +
@@ -47,8 +49,10 @@ class SignUpFragment03() : BaseFragment<FragmentSignup03Binding>(FragmentSignup0
         viewModel.locationName.observe(this, Observer {
             if (it.isNotEmpty()){
                 signupNextBtnListener.onNextBtnEnable()
-            } else signupNextBtnListener.onNextBtnUnable()
-        })
+                viewModel.signUp03Avail.value = true
+            } else {signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp03Avail.value = false}
+            })
 
     }
 

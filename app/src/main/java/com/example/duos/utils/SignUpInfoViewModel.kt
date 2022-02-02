@@ -1,5 +1,6 @@
 package com.example.duos.utils
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -7,6 +8,12 @@ class SignUpInfoViewModel : ViewModel() {
 
     var phoneNumber = MutableLiveData<String>()
     var phoneNumberVerifying = MutableLiveData<String>()
+    var signUp01Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+    var signUp02Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+    var signUp03Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+    var signUp04Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+    var signUp05Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+
     var nickName = MutableLiveData<String>()
     var gender = MutableLiveData<String>()
     var birthYear = MutableLiveData<Int>() // 년
@@ -21,7 +28,7 @@ class SignUpInfoViewModel : ViewModel() {
     var locationName = MutableLiveData<String>()
     var locationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
     var experience = MutableLiveData<String>()
-    var profileImg = MutableLiveData<Int>()
+    var profileImg = MutableLiveData<Bitmap>()
     var introduce = MutableLiveData<String>()
 
 }

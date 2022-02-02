@@ -82,6 +82,10 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
 
+        if (viewModel.signUp01Avail.value == true){
+            signupNextBtnListener.onNextBtnEnable()
+        }
+
         editTextOnChanged()
         editTextOnFocus()
 
@@ -95,10 +99,14 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                     this.viewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
                         if (it2.length == 6) {
                             signupNextBtnListener.onNextBtnEnable()
-                        } else signupNextBtnListener.onNextBtnUnable()
+                            viewModel.signUp01Avail.value = true
+                        } else{ signupNextBtnListener.onNextBtnUnable()
+                            viewModel.signUp01Avail.value = false}
                     })
-                } else signupNextBtnListener.onNextBtnUnable()
-            } else signupNextBtnListener.onNextBtnUnable()
+                } else {signupNextBtnListener.onNextBtnUnable()
+                    viewModel.signUp01Avail.value = false}
+            } else {signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp01Avail.value = false}
         })
     }
 
