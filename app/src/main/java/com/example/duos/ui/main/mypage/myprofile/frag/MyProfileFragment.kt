@@ -1,6 +1,12 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
+import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,25 +41,16 @@ class MyProfileFragment : Fragment(), ProfileListView {
 //    lateinit var compositeDisposable: CompositeDisposable    // 메모리 누수 방지?
 
 
-
     override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
-        Glide.with(binding.myProfileImgIv.context)
-            .load(myProfile.profileInfo.profileImgUrl)
-            .into(binding.myProfileImgIv)
-        binding.myNicknameTv.text = myProfile.profileInfo.nickname
-        binding.myGenerationTv.text = myProfile.profileInfo.age
-        binding.myLocationTv.text = myProfile.profileInfo.location
-        binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString()
-        binding.myIntroductionTv.text = myProfile.profileInfo.introduction
-        binding.careerYearNumTv.text = myProfile.profileInfo.experience
-        binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()
-        binding.playingReviewCountTv.text = myProfile.profileInfo.reviewCount.toString()
+
+        setMyProfileInfo(myProfile)
+        setExperienceView()
 
         myProfileReviewDatas.addAll(myProfile.reviews)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
+
+        // 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
         val profileReviewRVAdapter = ProfileReviewRVAdapter(myProfileReviewDatas)
-        // 리사이클러뷰에 어댑터 연결
         binding.playingReviewContentRv.adapter = profileReviewRVAdapter
-        //레이아웃 매니저 설정
         binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         profileReviewRVAdapter.clickPlayerReviewListener(
@@ -68,8 +65,7 @@ class MyProfileFragment : Fragment(), ProfileListView {
                             }
                         })
                     fragmentTransaction.addToBackStack(null)
-                    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
-                    fragmentTransaction.commit()
+                    fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
 
                     // 상단 텍스트 변경
                     (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
@@ -90,8 +86,7 @@ class MyProfileFragment : Fragment(), ProfileListView {
                 })
 
             fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
-            // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
-            fragmentTransaction.commit()
+            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
 
             // 상단 텍스트 변경
             val reviewCount = binding.playingReviewCountTv.text
@@ -101,8 +96,48 @@ class MyProfileFragment : Fragment(), ProfileListView {
 
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun setMyProfileInfo(myProfile: MyProfileResult) {
+        Glide.with(binding.myProfileImgIv.context)
+            .load(myProfile.profileInfo.profileImgUrl)
+            .into(binding.myProfileImgIv)
+        binding.myNicknameTv.text = myProfile.profileInfo.nickname
+        binding.myGenerationTv.text = myProfile.profileInfo.age
+        binding.myLocationTv.text = myProfile.profileInfo.location
+        binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString()
+        val myGradeRate = binding.myGradeNumTv.text.toString()
+        binding.myIntroductionTv.text = myProfile.profileInfo.introduction
+        binding.careerYearNumTv.text = myProfile.profileInfo.experience
+        binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()
+        binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
+//        binding.myGradeRb.rating = myProfile.profileInfo.rating!!               ///////////////////
+        binding.myGradeRb.rating = myGradeRate.toFloat()
+    }
+
+    private fun setExperienceView() {
+        val textExperience = binding.careerYearNumTv
+        // String 문자열 데이터 취득
+        val textExperienceData: String = textExperience.text.toString()
+        // SpannableStringBuilder 타입으로 변환
+        val textExperienceBuilder = SpannableStringBuilder(textExperienceData)
+        // index=0 에 해당하는 문자열(0)에 볼드체, 크기 적용
+        val boldSpanEx = StyleSpan(Typeface.BOLD)
+        textExperienceBuilder.setSpan(boldSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val sizeBigSpanEx = RelativeSizeSpan(1.56f)
+        textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        // TextView에 적용
+        textExperience.text = textExperienceBuilder
+
+        // API의 reviewCount의 View -> 위에서 하면 되지 않을까
+//        val textReviewCount = binding.playingReviewCountTv
+//        var textReviewCountData : String = textReviewCount.text.toString()
+//        textReviewCountData = "후기($textReviewCountData)"
+//        binding.playingReviewCountTv.text = textReviewCountData
+
+    }
+
     override fun onGetMyProfileInfoFailure(code: Int, message: String) {
-        Toast.makeText(context,"sdf",Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
     }
 
 }

@@ -49,10 +49,13 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<MyPr
                 .load(myProfileReviewItem.writerProfileImgUrl)
                 .into(binding.profileImgIv)
             binding.playerGradeTv.text = myProfileReviewItem.rating.toString()          /*rating*/
+//            binding.playerGradeRb.rating = binding.playerGradeTv.text
+//            binding.playerGradeRb.rating = myProfileReviewItem.rating!!             /* 이게 왜 non_Null 이여야 하는지... */
+            var playerGradeRate = binding.playerGradeTv.text.toString()
+            binding.playerGradeRb.rating = playerGradeRate.toFloat()
             binding.reviewDateTv.text = myProfileReviewItem.date                        /*date*/
             binding.reviewContentTv.text = myProfileReviewItem.reviewContent            /*reviewContent*/
 
-            //TODO : rating 에 있는 실수형 데이터를 저기 rating bar 에 binding 시켜서 별 보이게 하면 될듯.
 
         }
     }
