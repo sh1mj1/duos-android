@@ -1,66 +1,74 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
-import com.example.duos.data.entities.PlayerProfileInfo
+import com.example.duos.data.entities.MyProfileReviewItem
 import com.example.duos.databinding.FragmentEveryReviewBinding
-import com.example.duos.databinding.FragmentPlayerBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
 class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEveryReviewBinding::inflate) {
 
-    private var reviewDatas = ArrayList<PlayerProfileInfo>()
+    private var reviewDatas = ArrayList<MyProfileReviewItem>()
     override fun initAfterBinding() {
 
         reviewDatas.apply {
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_1",
+                MyProfileReviewItem(
+                    0,
+                    0,
+                    "00",
+                    "gg",
+                    1.0f,
+                    "11.1.1",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "3.0",
-                    "koko0311_2",
+                MyProfileReviewItem(
+                    1,
+                    1,
+                    "01",
+                    "gg",
+                    1.1f,
+                    "22.2.2",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "4.0",
-                    "koko0311_3",
+                MyProfileReviewItem(
+                    1,
+                    1,
+                    "01",
+                    "gg",
+                    1.1f,
+                    "22.2.2",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_4",
+                MyProfileReviewItem(
+                    0,
+                    0,
+                    "00",
+                    "gg",
+                    1.0f,
+                    "11.1.1",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
 
         }
 
-        val profileNickname = arguments?.getString("nickname")
-        val profileIntroduction = arguments?.getString("introduction")
+//        val profileNickname = arguments?.getString("nickname")
+//        val profileIntroduction = arguments?.getString("introduction")
 
-        binding.playerNicknameTv.text = profileNickname
+//        binding.playerNicknameTv.text = profileNickname
         // 나머지 바인딩
         //실제로는 여기서 API에서 받아온 Idx 값에 따른 데이터들을 받아오면 된다.
         // 일단 더미 데이터로 recyclerView에 넣어두자
@@ -78,13 +86,11 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         // 리사이클러뷰 아이템 클릭 리스너 -> 여기서 만약 내가 작성한 후기를 누른다면 PlayerFragment가 아니라 MyFragment로 이동해야.
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
-                override fun onItemClick(playerProfileInfo: PlayerProfileInfo) {
+                override fun onItemClick(myProfileReviewItem: MyProfileReviewItem) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                             arguments = Bundle().apply {
-                                putString("nickname", playerProfileInfo.profileNickname)
-                                putString("introduction", playerProfileInfo.introduction)
-                                putInt("coverImg", playerProfileInfo.profileImg!!)
+
                             }
 
                         })
@@ -101,7 +107,6 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
                     (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
                 }
             })
-
 
 
     }

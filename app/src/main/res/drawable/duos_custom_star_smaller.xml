@@ -3,14 +3,15 @@
 
     <item
         android:id="@android:id/background"
-        android:drawable="@drawable/ic_star_empty" />
+        android:drawable="@drawable/star_empty_smaller" />
+<!--    이거 사이즈 Figma 에서 x4 배 다운로드 후 0.17 배-->
 
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/ic_star_empty" />
+        android:drawable="@drawable/star_empty_smaller" />
 
     <item
         android:id="@android:id/progress"
-        android:drawable="@drawable/ic_star_fill" />
+        android:drawable="@drawable/star_fill_smaller" />
 
 </layer-list>

@@ -3,15 +3,16 @@ package com.example.duos.ui.main.mypage.myprofile
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.PlayerProfileInfo
+import com.bumptech.glide.Glide
+import com.example.duos.data.entities.MyProfileReviewItem
 import com.example.duos.databinding.MyPlayingReviewItemBinding
 
 // 어댑터의 parameter : 데이터리스트. 이 어댑터의 ViewHolder 상속받기
-class ProfileReviewRVAdapter(private val playerProfileInfoList: ArrayList<PlayerProfileInfo>) :
+class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<MyProfileReviewItem>) :
     RecyclerView.Adapter<ProfileReviewRVAdapter.ViewHolder>() {
 
     interface PlayerReviewItemClickListener {
-        fun onItemClick(player: PlayerProfileInfo)
+        fun onItemClick(myProfileReviewItem: MyProfileReviewItem)
     }
 
     //  리스너 객체를 전달받는 함수와 리스터 객체를 저장할 변수
@@ -24,10 +25,7 @@ class ProfileReviewRVAdapter(private val playerProfileInfoList: ArrayList<Player
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // ViewHolder 생성. (아이템 뷰 객체를 binding해서 뷰 홀더에 던져줌)
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ProfileReviewRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileReviewRVAdapter.ViewHolder {
         val binding: MyPlayingReviewItemBinding =
             MyPlayingReviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -35,25 +33,30 @@ class ProfileReviewRVAdapter(private val playerProfileInfoList: ArrayList<Player
 
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
     override fun onBindViewHolder(holder: ProfileReviewRVAdapter.ViewHolder, position: Int) {
-        holder.bind(playerProfileInfoList[position])
-
-        holder.itemView.setOnClickListener{mItemClickListener.onItemClick(playerProfileInfoList[position])}
+        holder.bind(myProfileReviewItemList[position])
+        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
     }
 
     // 데이터 리스트의 크기
-    override fun getItemCount(): Int = playerProfileInfoList.size
+    override fun getItemCount(): Int = myProfileReviewItemList.size
 
     // 내부클래스 ViewHolder. bind 메서드 정의(리사이클러뷰의 아이템에 데이터리스트의 데이터 연결)
     inner class ViewHolder(val binding: MyPlayingReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(playerProfileInfo: PlayerProfileInfo) {
-            binding.profileImgIv.setImageResource(playerProfileInfo.profileImg!!)
-            binding.playerGradeTv.text = playerProfileInfo.playerGrade
-            binding.playerReviewNicknameTv.text = playerProfileInfo.profileNickname
-            binding.reviewContentTv.text = playerProfileInfo.review_content_tv
-            // 여기에서 별의 갯수도 설정을 해주는 코드를 추가해주어야 되
+        fun bind(myProfileReviewItem: MyProfileReviewItem) {
+            binding.playerReviewNicknameTv.text = myProfileReviewItem.writerNickname    /*writerNickname*/
+            Glide.with(binding.profileImgIv.context)                                    /*writerProfileImgUrl*/
+                .load(myProfileReviewItem.writerProfileImgUrl)
+                .into(binding.profileImgIv)
+            binding.playerGradeTv.text = myProfileReviewItem.rating.toString()          /*rating*/
+//            binding.playerGradeRb.rating = binding.playerGradeTv.text
+//            binding.playerGradeRb.rating = myProfileReviewItem.rating!!             /* 이게 왜 non_Null 이여야 하는지... */
+            var playerGradeRate = binding.playerGradeTv.text.toString()
+            binding.playerGradeRb.rating = playerGradeRate.toFloat()
+            binding.reviewDateTv.text = myProfileReviewItem.date                        /*date*/
+            binding.reviewContentTv.text = myProfileReviewItem.reviewContent            /*reviewContent*/
+
+
         }
     }
 }
-
-

@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
-import com.example.duos.data.entities.PlayerProfileInfo
+import com.example.duos.data.entities.MyProfileReviewItem
 import com.example.duos.databinding.FragmentPlayerBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
@@ -14,7 +14,7 @@ import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 
 class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate) {
 
-    private var reviewDatas = ArrayList<PlayerProfileInfo>()
+    private var reviewDatas = ArrayList<MyProfileReviewItem>()
 
     override fun initAfterBinding() {
 
@@ -32,34 +32,46 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         // 더미데이터 (리뷰) 넣기
         reviewDatas.apply {
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_1",
+                MyProfileReviewItem(
+                    0,
+                    0,
+                    "00",
+                    "gg",
+                    1.0f,
+                    "11.1.1",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "3.0",
-                    "koko0311_2",
+                MyProfileReviewItem(
+                    1,
+                    1,
+                    "01",
+                    "gg",
+                    1.1f,
+                    "22.2.2",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "4.0",
-                    "koko0311_3",
+                MyProfileReviewItem(
+                    1,
+                    1,
+                    "01",
+                    "gg",
+                    1.1f,
+                    "22.2.2",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
             add(
-                PlayerProfileInfo(
-                    R.drawable.tennis_racket_img_4,
-                    "5.0",
-                    "koko0311_4",
+                MyProfileReviewItem(
+                    0,
+                    0,
+                    "00",
+                    "gg",
+                    1.0f,
+                    "11.1.1",
                     "처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라 처음 뵀는데 어색하지 않고, 즐겁게 플레이 했습니다. 같은 동네에 사시는 분이라"
                 )
             )
@@ -79,13 +91,10 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         // 리사이클러뷰 아이템 클릭 리스너 : 또 다른 플레이어 프로필로 이동
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
-                override fun onItemClick(player: PlayerProfileInfo) {
+                override fun onItemClick(myProfileReviewItem: MyProfileReviewItem) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                             arguments = Bundle().apply {
-                                putString("nickname", player.profileNickname)
-                                putString("introduction", player.introduction)
-                                putInt("coverImg", player.profileImg!!)
 
                             }
                         })
@@ -113,7 +122,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 //                        TODO: 넘길 데이터
                         // 해당 회원의 Idx 값을 받아서 API 파싱해서 받는 곳에서 받으면 될듯.
                         // 일단은 BackStack 테스트 하기 위해서 하나만 넣어두자
-                        putString("nickname", profileNickname)
+
 //                        putInt("coverImg", playerProfiㅣleInfo.profileImg!!)
 
                     }

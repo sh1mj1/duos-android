@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,6 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.ChatListItem
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
+import com.example.duos.ui.main.friendList.RecommendFriendListRVAdapter
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.Period
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClickListener {
