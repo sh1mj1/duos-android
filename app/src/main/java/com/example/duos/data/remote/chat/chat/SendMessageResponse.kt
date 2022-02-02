@@ -1,7 +1,8 @@
 package com.example.duos.data.remote.chat.chat
 
 import com.google.gson.annotations.SerializedName
-import org.threeten.bp.LocalDateTime
+import java.time.LocalDateTime
+
 
 data class SendMessageResultData(
     @SerializedName("chatMessageIdx") val chatMessageIdx: String,

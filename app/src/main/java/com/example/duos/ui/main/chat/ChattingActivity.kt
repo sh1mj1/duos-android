@@ -17,7 +17,6 @@ import android.util.Log
 import android.text.Editable
 import android.text.TextWatcher
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.duos.R
@@ -25,8 +24,14 @@ import com.example.duos.data.entities.ChatListItem
 import com.example.duos.data.entities.MessageData
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.ui.BaseActivity
+import com.google.firebase.messaging.Constants
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
+//import java.util.*
 
 
 class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
@@ -43,26 +48,43 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingEt: EditText
 
     // 리사이클러뷰에 채팅 추가
-    private fun addChat(data: MessageData) {
+//    private fun addChat(data: MessageData) {
+//        this.runOnUiThread {
+//
+//            if (data.type.equals("DATE")) {    //
+//                chattingMessagesRVAdapter.addItem(
+//                    MessageItem(
+//                        userId,
+//                        data.messageBody,
+//                        toDate(data.sendTime),
+//                        ChatType.CENTER_MESSAGE
+//                    )
+//                )
+//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+//            } else {
+//                chattingMessagesRVAdapter.addItem(
+//                    MessageItem(
+//                        userId,
+//                        data.messageBody,
+//                        toDate(data.sendTime),
+//                        ChatType.LEFT_MESSAGE
+//                    )
+//                )
+//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+//            }
+//        }
+//    }
+
+    private fun addChatItem(senderId: String, body: String, sentAt:String, type: String) {
         this.runOnUiThread {
-            if (data.type.equals("DATE")) {    //
+            if (type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(
-                        userId,
-                        data.message,
-                        toDate(data.sendTime),
-                        ChatType.CENTER_MESSAGE
-                    )
+                    MessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             } else {
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(
-                        userId,
-                        data.message,
-                        toDate(data.sendTime),
-                        ChatType.LEFT_MESSAGE
-                    )
+                    MessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             }
@@ -71,6 +93,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
     private fun toDate(currentMiliis: Long): String {
+
+        if(currentMiliis != null){
+
+        }
         return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
     }
 
@@ -89,13 +115,15 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // chatting test code
-        var chattingMessage = MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "DATE", thisUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis())
-        addChat(chattingMessage)
+        var currentTime = toDate(System.currentTimeMillis())
+
+        addChatItem("userId", "2021년 01월 21일", currentTime, "DATE")
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
-        chattingMessage = MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", targetUserIdx, thisUserIdx,"상대방이 보낸 메세지입니다.", System.currentTimeMillis())
-        addChat(chattingMessage)
+        addChatItem("senderId", "상대방이 보낸 메세지입니다.", currentTime, "MESSAGE")
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+
+         getFCMIntent()
 
         // 날짜 바뀌면 "2022년 01월 21일" 이런식으로 뜨게 하는거 eventTime이 바뀌면 해당 인덱스에 추가하는거 해보다가 말음
 //        chatListDatas.apply {
@@ -168,6 +196,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         binding.chattingBackIv.setOnClickListener {
             finish()
         }
+
+
     }
 
     fun startLoadingProgress(){
@@ -179,17 +209,17 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
 
-        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
+        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.messageBody, messageData.type, messageData.chatRoomIdx)
     }
 
     fun sendMessage(){
+        var sendTime = System.currentTimeMillis()
         Log.d(
             "MESSAGE", MessageData(
                 "957cfc80-481c-4ae4-88a0-25a9599dd511",
                 "MESSAGE",
                 thisUserIdx, targetUserIdx,
-                chattingEt.text.toString(),
-                System.currentTimeMillis()
+                chattingEt.text.toString()
             ).toString()
         )
 
@@ -197,7 +227,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             MessageItem(
                 userId,
                 chattingEt.text.toString(),
-                toDate(System.currentTimeMillis()),
+                toDate(sendTime),
                 ChatType.RIGHT_MESSAGE
             )
         )
@@ -218,32 +248,125 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
 //    override fun onNewIntent(intent: Intent?) {
-////        var bundle = intent?.extras
-////        val type = bundle?.getString("type")
-////        val from = bundle?.getString("from")
-////        val to = bundle?.getString("to")
-////        val body = bundle?.getString("messageBody")
-////        val sendTime = bundle?.getLong("sendTime")
-//        val chatRoomIdx = intent?.getStringExtra("chatRoomIdx")
-//        val type = intent?.getStringExtra("type")
-//        val from = intent?.getStringExtra("from")
-//        val to = intent?.getStringExtra("to")
-//        val body = intent?.getStringExtra("messageBody")
-//        val sendTime = intent?.getLongExtra("sendTime", 0)
-//
-//        Log.d("채팅액티비티"," 1")
-//
-//        if (chatRoomIdx != null && type != null && from != null && to != null && body != null && sendTime != null) {
-//            Log.d("채팅액티비티", "2")
-//            updateMessage(chatRoomIdx, type, from, to, body, sendTime)
+////        getFCMIntent()
+//        if (intent == null){
+//            Log.d("인텐트","is null")
 //        }
+//
+//        var bundle = intent?.extras
+//        val chatRoomIdx = (bundle?.getString("chatRoomIdx")?:"null").toString()
+//        val type= (bundle?.getString("type")?:"MESSAGE").toString()
+//        val body = bundle?.getString("body").toString()
+//        val senderIdx = bundle?.getString("senderIdx").toString()
+//        var sentAt = bundle?.getString("sentAt").toString()
+//        val senderId = bundle?.getString("senderId").toString()
+//        sentAt = getFormattedDateTime(sentAt)
+//
+////        val chatRoomIdx = intent?.getStringExtra("chatRoomIdx")?:"null"
+////        val type = intent?.getStringExtra("type")?:"MESSAGE"
+////        val body = intent?.getStringExtra("body")?:"null"
+////        val senderIdx = (intent?.getStringExtra("senderIdx")?:"null").toInt()
+////        var sentAt = intent?.getStringExtra("sentAt")?:"null"
+////        val senderId = intent?.getStringExtra("senderId")?:"null"
+////        sentAt = getFormattedDateTime(sentAt)
+//
+//        Log.d("포그라운드-알림페이로드"," 1")
+//        addChatItem(senderId, body, sentAt, type)
+//
 //        super.onNewIntent(intent)
 //    }
-//
-//    fun updateMessage(roomIdx: String, type: String, from: Int, to: Int, body: String, sendTime: Long) {
-//        Log.d("채팅액티비티", "3")
-//        val chattingMessage = MessageData(roomIdx, type, from, to, body, sendTime)
-//        addChat(chattingMessage)
+
+    override fun onNewIntent(intent: Intent?) {
+        if (intent == null){
+            Log.d("채팅화면일때 인텐트","is null")
+        }
+
+        Log.d("채팅화면일때", "1")
+        var bundle = intent?.extras
+        if(bundle != null){
+            Log.d("채팅화면일때", "2")
+            val senderId = bundle.getString("senderId").toString()
+            val body = bundle.getString("body")
+            var senderIdx = bundle.getString("senderIdx")?.toInt()
+            var chatRoomIdx = bundle.getString("chatRoomIdx")
+            //var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }
+            var currentTime = toDate(System.currentTimeMillis())
+
+            if (senderId != null && body != null && currentTime != null) {
+                Log.d("채팅화면일때", "3")
+                addChatItem(senderId, body, currentTime, "MESSAGE")
+            }else{
+                Log.d("채팅화면일때", "3 - null 존재")
+            }
+//            if (chatRoomIdx != null && senderIdx != null && body != null && sendTime != null) {
+//                Log.d("채팅액티비티", "3")
+//                updateMessage(chatRoomIdx, "MESSAGE", senderIdx, thisUserIdx, body, sendTime)
+//            }else{
+//                Log.d("채팅액티비티", "3 - null 존재")
+//            }
+        }else{
+            Log.d("채팅화면일때", "2-error")
+        }
+
+        super.onNewIntent(intent)
+    }
+
+//    fun updateMessage(senderId: String, body: String, sentAt: String, type: String) {
+//        Log.d("채팅액티비티", "updateMessage")
+//        addChatItem(senderId, body, sentAt, type)
 //        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 //    }
+
+    fun getFCMIntent(){
+        // chatRoomIdx만 받도록 수정 (여기서 데이터 받을필요 없이 chatRoomIdx로 이전 채팅 데이터 api 호출하게 하면 됨)
+        Log.d("FCM인텐트", "1")
+        var bundle = intent?.extras
+        if(bundle != null){
+            Log.d("FCM인텐트", "2")
+            val senderId = bundle.getString("senderId").toString()
+            val body = bundle.getString("body")
+            var senderIdx = bundle.getString("senderIdx")?.toInt()
+            var chatRoomIdx = bundle.getString("chatRoomIdx")
+            //var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }
+            var currentTime = toDate(System.currentTimeMillis())
+
+            if (senderId != null && body != null && currentTime != null) {
+                Log.d("FCM인텐트", "3")
+                addChatItem(senderId, body, currentTime, "MESSAGE")
+            }else{
+                Log.d("FCM인텐트", "3 - null 존재")
+            }
+//            if (chatRoomIdx != null && senderIdx != null && body != null && sendTime != null) {
+//                Log.d("채팅액티비티", "3")
+//                updateMessage(chatRoomIdx, "MESSAGE", senderIdx, thisUserIdx, body, sendTime)
+//            }else{
+//                Log.d("채팅액티비티", "3 - null 존재")
+//            }
+        }else{
+            Log.d("FCM인텐트", "2-error")
+        }
+    }
+
+    @Throws(Exception::class)
+    fun getFormattedDateTime(dateTime: String):String {
+        // 대상 날짜로 LocalDateTime 만들기
+        var parsedDateTimeArray = dateTime.split(".")
+        var parsedDateTime = parsedDateTimeArray[0]
+
+        val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
+
+        // LocalDateTime에서 필요한 내용 필요한 형식으로 뽑기
+//        val yyyyMMdd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+//        val yyyy = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy"))
+//        val MM = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("MM"))
+//        val dd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("dd"))
+        val time = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("a hh:mm"))
+//        println(yyyyMMdd)
+//        println(yyyy)
+//        println(MM)
+//        println(dd)
+        println(time)
+
+        return time
+    }
 }

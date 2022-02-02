@@ -90,7 +90,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="FCM_EXE_ACTIVITY" />
+                <action android:name="CHATTING_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -98,7 +98,12 @@
         <activity
             android:name=".ui.main.chat.MakePlanActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="MAKE_PLAN_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!--        마이 페이지 B 파트     -->
         <activity

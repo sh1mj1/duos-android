@@ -22,9 +22,10 @@ import com.example.duos.data.entities.ChatListItem
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.ui.main.chat.ChatListView
 import android.app.Application
+import android.content.ComponentName
 
-
-
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningTaskInfo
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
@@ -83,6 +84,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         if (remoteMessage.notification != null) {
 //            ChatListService.chatList(this, 0) // get 가능 확인함
+
             val body = remoteMessage.notification!!.body
             Log.d(TAG, "Notification Body: $body")
             val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(
@@ -100,8 +102,23 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         val body = remoteMessage.data.get("message")
 
+        //
+
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val info = manager.getRunningTasks(1)
+        val componentName = info[0].topActivity
+        val ActivityName = componentName!!.shortClassName.substring(1)
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
+            val messageData = remoteMessage.data
+
+            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
+                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
+                messageData.get("sentAt").toString(), messageData.get("title").toString())
+//            val intent = Intent(this, ChattingActivity::class.java)
+//            intent.putExtra("chatRoomIdx", remoteMessage.data.get("chatRoomIdx"))
+            Log.d("발신자", remoteMessage.data.get("title").toString())
+//            startActivity(intent)
         }else{
             Log.d("데이터메세지", "is null")
         }
@@ -173,6 +190,65 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
      * @param messageBody FCM message body received.
      * FCM 메시지 본문이 수신되었습니다.
      */
+
+    private fun sendMessageData(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
+        Log.d("노티", body)
+        //
+
+        val intent = Intent(this, ChattingActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("from", from)
+//        bundle.putString("to", to)
+//        bundle.putString("messageBody", messageBody)
+//        bundle.putLong("sendTime", sendTime)
+
+//        bundle.putString("chatRoomIdx", chatRoomIdx)
+//        bundle.putString("type", type)
+//        bundle.putString("body", body)
+//        bundle.putString("senderIdx", senderIdx)
+//        bundle.putString("sentAt", sentAt)
+//        bundle.putString("senderId", senderId)
+
+        intent.putExtra("chatRoomIdx", chatRoomIdx)
+        intent.putExtra("type", type)
+        intent.putExtra("body", body)
+        intent.putExtra("senderIdx", senderIdx)
+        intent.putExtra("sentAt", sentAt)
+        intent.putExtra("senderId", senderId)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelId = getString(R.string.firebase_notification_channel_id_testS)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.splash_duos_logo)
+            .setContentTitle(senderId)
+            .setContentText(body)
+            .setExtras(bundle)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 안드로이드 오레오 알림 채널이 필요.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
 
     // 채팅 메세지를 디바이스에 알려주는 함수
     private fun sendNotification(chatRoomIdx: String, type: String, from: String, to:String, messageBody: String, sendTime: Long) {  // 보낸사람, 받는사람의 인덱스와 메세지 본문, 메세지 type, chatRoomIdx??

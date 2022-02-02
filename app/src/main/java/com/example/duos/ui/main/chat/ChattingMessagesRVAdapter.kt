@@ -72,7 +72,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     class CenterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentText: TextView
         fun setItem(item: MessageItem) {
-            contentText.setText(item.content)
+            contentText.setText(item.body)
         }
 
         init {
@@ -85,9 +85,9 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         var contentText: TextView
         var sendTimeText: TextView
         fun setItem(item: MessageItem) {
-            nameText.setText(item.from)
-            contentText.setText(item.content)
-            sendTimeText.setText(item.sendTime)
+            nameText.setText(item.senderId)
+            contentText.setText(item.body)
+            sendTimeText.setText(item.sentAt)
         }
 
         init {
@@ -101,8 +101,8 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         var contentText: TextView
         var sendTimeText: TextView
         fun setItem(item: MessageItem) {
-            contentText.setText(item.content)
-            sendTimeText.setText(item.sendTime)
+            contentText.setText(item.body)
+            sendTimeText.setText(item.sentAt)
         }
 
         init {
