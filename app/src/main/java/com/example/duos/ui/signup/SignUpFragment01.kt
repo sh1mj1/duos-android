@@ -29,9 +29,10 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
     lateinit var binding: FragmentSignup01Binding
     var savedState: Bundle? = null
     lateinit var mContext: SignUpActivity
-    lateinit var birthNextBtnListener: SignUpNextBtnInterface
-    lateinit var onGoingNextListener : SignUpGoNextInterface
-    lateinit var sharedViewModel: SignUpInfoViewModel
+    lateinit var signupNextBtnListener: SignUpNextBtnInterface
+    lateinit var onGoingNextListener: SignUpGoNextInterface
+    lateinit var viewModel: SignUpInfoViewModel
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,29 +47,32 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignup01Binding.inflate(inflater, container, false)
-        birthNextBtnListener = mContext
+        signupNextBtnListener = mContext
         onGoingNextListener = mContext
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "01"
         binding.signup01PhoneNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
 
-//            if (savedInstanceState != null && savedState == null) {
-//                savedState = savedInstanceState.getBundle("savedState")
-//            }
-//            if (savedState != null) {
-//                binding.signup01PhoneNumberCheckIconIv.visibility = View.VISIBLE
-//                binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_done_ic)
-//                binding.signup01PhoneNumberVerifyingBtn.visibility = View.GONE
-//                binding.signup01PhoneNumberLayout.isEndIconVisible = false
-//                binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
-//
-//                val param =
-//                    binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
-//                param.marginEnd = 20.toDp(requireContext())
-//                binding.signup01ConstraintLayout01Cl.layoutParams = param
-//            }
-//            savedState = null;
+        if (savedInstanceState != null && savedState == null) {
+            savedState = savedInstanceState.getBundle("savedState")
+        }
+        if (savedState != null) {
+            binding.signup01PhoneNumberCheckIconIv.visibility = View.VISIBLE
+            binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
+            binding.signup01PhoneNumberVerifyingBtn.visibility = View.GONE
+            binding.signup01PhoneNumberLayout.isEndIconVisible = false
+            binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
+
+            val param =
+                binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
+            param.marginEnd = 20.toDp(requireContext())
+            binding.signup01ConstraintLayout01Cl.layoutParams = param
+        }
+        savedState = null
+
+        // skip 테스트 버튼
+        binding.signup01SkipBtn.setOnClickListener { signupNextBtnListener.onNextBtnEnable() }
 
         return binding.root
     }
@@ -76,28 +80,33 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel =
-            ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
         binding.viewmodel = viewModel
+
+        if (viewModel.signUp01Avail.value == true){
+            signupNextBtnListener.onNextBtnEnable()
+        }
 
         editTextOnChanged()
         editTextOnFocus()
+
         binding.signup01PhoneNumberVerifyingBtn.setOnClickListener { verifyingBtnOnClick() }
 
-
-        sharedViewModel.phoneNumber.observe(requireActivity(), {
+        this.viewModel.phoneNumber.observe(requireActivity(), {
             val pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
             val matcher = pattern.matcher(it);
             if (it.length == 13) {
                 if (matcher.matches()) {
-                    sharedViewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
+                    this.viewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
                         if (it2.length == 6) {
-                            birthNextBtnListener.onNextBtnEnable()
-                        } else birthNextBtnListener.onNextBtnUnable()
+                            signupNextBtnListener.onNextBtnEnable()
+                            viewModel.signUp01Avail.value = true
+                        } else{ signupNextBtnListener.onNextBtnUnable()
+                            viewModel.signUp01Avail.value = false}
                     })
-                } else birthNextBtnListener.onNextBtnUnable()
-            } else birthNextBtnListener.onNextBtnUnable()
+                } else {signupNextBtnListener.onNextBtnUnable()
+                    viewModel.signUp01Avail.value = false}
+            } else {signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp01Avail.value = false}
         })
     }
 
@@ -106,7 +115,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 if (binding.signup01PhoneNumberEt.text?.length!! < 13) {
-                    binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_ic)
+                    binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check)
                     val param =
                         binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
                     param.marginEnd = 100.toDp(requireContext())
@@ -130,7 +139,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                     val pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
                     val matcher = pattern.matcher(editable);
                     if (matcher.matches()) {
-                        binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_done_ic)
+                        binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
                         binding.signup01PhoneNumberVerifyingBtn.isEnabled = true
                         binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
                         binding.signup01PhoneNumberVerifyingBtn.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
@@ -142,7 +151,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                         )
                     }
                 } else {
-                    binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.signup_phone_verifying_check_ic)
+                    binding.signup01PhoneNumberCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check)
                     binding.signup01PhoneNumberVerifyingBtn.isEnabled = false
                     binding.signup01PhoneNumberVerifyingBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
                     binding.signup01PhoneNumberVerifyingBtn.setTextColor(
@@ -158,7 +167,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
     private fun editTextOnFocus() {
         binding.signup01PhoneNumberEt.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
+            View.OnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     if (binding.signup01PhoneNumberEt.text?.length == 13) {
                         binding.signup01PhoneVerifyingNoticeTv.visibility = View.INVISIBLE
@@ -212,7 +221,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
     private fun verifyingBtnOnClick() {
         val regex = Regex("[^A-Za-z0-9]")//Regex를 활용하여 특수문자 없애주기
         val phoneNumber = regex.replace(binding.signup01PhoneNumberEt.text.toString(), "")
-        Log.d("휴대전화",phoneNumber)
+        Log.d("휴대전화", phoneNumber)
         SignUpService.signUpCreateAuthNum(this, phoneNumber)
     }
 
@@ -259,6 +268,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
     override fun onSignUpVerifyAuthNumFailure(code: Int, message: String) {
         // 인증번호 확인 실패
+        binding.signup01PhoneVerifyingErrorTv.visibility = View.VISIBLE
         binding.signup01PhoneVerifyingErrorTv.text = message
     }
 

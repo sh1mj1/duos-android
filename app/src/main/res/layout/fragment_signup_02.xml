@@ -14,8 +14,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/signup_02_root_constraint_layout_cl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:id="@+id/signup_02_nick_name_tv"
@@ -29,68 +30,83 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/signup_02_nick_name_et"
-            android:layout_width="180dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="20dp"
-            android:background="@null"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/signup_nick_name_hint"
-            android:text="@={viewmodel.nickName}"
-            android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
-            android:maxLength="10"
-            android:paddingStart="2dp"
-            android:textColor="@color/nero"
-            android:textColorHint="@color/dim_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv" />
-
-        <ImageView
-            android:id="@+id/signup_02_nick_name_line_iv"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/signup_unselected_line"
-            app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_duplicate_btn"
-            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et" />
-
-        <ImageView
-            android:id="@+id/signup_02_nick_name_line_done_iv"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/signup_unselected_line"
-            android:visibility="gone"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signup_02_constraint_layout_01_cl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/edt_underline_unselected"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/signup_02_nick_name_tv"
-            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_et" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_tv">
 
-        <ImageView
-            android:id="@+id/signup_02_nick_name_check_iv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/signup_phone_verifying_check_ic"
-            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"
-            app:layout_constraintEnd_toEndOf="@id/signup_02_nick_name_line_iv"
-            app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_02_nick_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:animateLayoutChanges="false"
+                android:paddingTop="10dp"
+                app:boxBackgroundMode="none"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:errorEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/signup_02_nick_name_erase_iv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="9dp"
-            android:src="@drawable/signup_phone_verifying_erase_ic"
-            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_et"
-            app:layout_constraintEnd_toStartOf="@id/signup_02_nick_name_check_iv"
-            app:layout_constraintTop_toTopOf="@id/signup_02_nick_name_et" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signup_02_nick_name_et"
+                    style="@style/styleTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:hint="@string/signup_nick_name_hint"
+                    android:inputType="textNoSuggestions"
+                    android:maxLength="10"
+                    android:paddingStart="2dp"
+                    android:singleLine="true"
+                    android:text="@={viewmodel.nickName}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dim_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/signup_02_nick_name_check_icon_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_signup_phone_verifying_check_done"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/signup_02_nick_name_error_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_nick_name_error"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/signup_02_constraint_layout_01_cl"
+            app:layout_constraintTop_toBottomOf="@id/signup_02_constraint_layout_01_cl"/>
+
 
 
         <!--    한번 누르면 사라지는 버튼-->
@@ -104,7 +120,7 @@
             android:text="@string/signup_nick_name_duplicate"
             android:textColor="@color/dark_gray_A"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/signup_02_nick_name_line_iv"
+            app:layout_constraintBottom_toBottomOf="@id/signup_02_constraint_layout_01_cl"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
@@ -117,7 +133,7 @@
             android:text="@string/signup_sex"
             android:textColor="@color/dark_gray_B4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_02_nick_name_line_iv" />
+            app:layout_constraintTop_toBottomOf="@id/signup_02_constraint_layout_01_cl" />
 
         <com.example.duos.ToggleButtonGroupTableLayout
             android:id="@+id/signup_02_sex_toggle_button_group_ll"

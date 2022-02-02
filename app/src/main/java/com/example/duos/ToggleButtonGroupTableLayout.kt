@@ -19,7 +19,7 @@ import com.example.duos.ui.signup.SignUpActivity
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
     lateinit var radioBtnListener: ToggleButtonInterface
-    lateinit var getContext: Context
+    lateinit var signupContext: Context
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -31,7 +31,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
      */
     constructor(context: Context?) : super(context) {
         if (context is SignUpActivity) {
-            getContext = context
+            signupContext = context
         }
     }
 
@@ -44,7 +44,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         attrs
     ) {
         if (context is SignUpActivity) {
-            getContext = context
+            signupContext = context
         }
 
     }
@@ -60,7 +60,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
 
         if (v.context is SignUpActivity){
-            radioBtnListener = getContext as SignUpActivity
+            radioBtnListener = signupContext as SignUpActivity
             (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.text as String)
         }
 

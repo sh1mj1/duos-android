@@ -1,6 +1,10 @@
 package com.example.duos.ui.signup
 
 import android.content.Intent
+import android.graphics.Rect
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.FragmentManager
 import com.example.duos.R
 
 import com.example.duos.databinding.ActivitySignupBinding
@@ -9,123 +13,110 @@ import com.example.duos.ui.main.MainActivity
 import com.example.duos.ToggleButtonInterface
 
 
-class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate), SignUpBirthNextBtnInterface ,
+class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate),
+    SignUpBirthNextBtnInterface,
     ToggleButtonInterface, SignUpNextBtnInterface, SignUpGoNextInterface {
 
-    var checkBtn : Boolean = true
+    private var checkBtn: Boolean = true
 
     override fun initAfterBinding() {
 
-        supportFragmentManager.beginTransaction().replace(R.id.signup_fragment_container_fc, SignUpFragment01())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.signup_fragment_container_fc, SignUpFragment01())
             .commitAllowingStateLoss()
 
         binding.signupNextBtn.setOnClickListener {
-            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
                 // 인증번호 인증하기
                 (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment01).verifyAuthNum()
-                //
             }
 
-            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02){
-                if (checkBtn){
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02) {
+                if (checkBtn) {
                     initNavController()
-                } else{
+                } else {
                     onNextBtnChanged(false)
                     (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment02).setBirth()
                 }
+            } else {
+                initNavController()
             }
 
         }
         binding.signupBackArrowIv.setOnClickListener {
-            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
                 finish()
-            }
-            else{
-                this.supportFragmentManager.beginTransaction().remove(supportFragmentManager.fragments[0]).commit()
-                this.supportFragmentManager.popBackStack()
+            } else {
+                onBackPressed()
             }
 
         }
     }
 
-    private fun initNavController(){
+    private fun initNavController() {
 
         supportFragmentManager.run {
-            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01){
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
                     .addToBackStack(null)
+                    .add(R.id.signup_fragment_container_fc, SignUpFragment02())
                     .commit()
+                onNextBtnUnable()
             }
-            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02){
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02) {
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, SignUpFragment03())
                     .addToBackStack(null)
+                    .add(R.id.signup_fragment_container_fc, SignUpFragment03())
                     .commit()
+                onNextBtnUnable()
             }
-            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment03){
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment03) {
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, SignUpFragment04())
                     .addToBackStack(null)
+                    .add(R.id.signup_fragment_container_fc, SignUpFragment04())
                     .commit()
+                onNextBtnUnable()
             }
-            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment04){
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment04) {
                 beginTransaction()
-                    .replace(R.id.signup_fragment_container_fc, SignUpFragment05())
                     .addToBackStack(null)
+                    .add(R.id.signup_fragment_container_fc, SignUpFragment05())
                     .commit()
+                onNextBtnUnable()
             }
-            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05){
-                val intent: Intent = Intent(
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05) {
+                val intent = Intent(
                     findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
-                    MainActivity::class.java)
-                findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()?.startActivity(intent)
+                    MainActivity::class.java
+                )
+                findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()
+                    ?.startActivity(intent)
+
             }
         }
     }
 
-    private fun signUp() {
-//        if (binding.signUpIdEt.text.toString()
-//                .isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()
-//        ) {
-//            Toast.makeText(this, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        if (binding.signUpNameEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "이름 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        if (binding.signUpPasswordEt.text.toString() != binding.signUpPasswordCheckEt.text.toString()) {
-//            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        AuthService.signUp(this, getUser())
-    }
-
-
-    override fun onNextBtnChanged(boolean: Boolean){
+    override fun onNextBtnChanged(boolean: Boolean) {
         // 다음 -> 완료로 다시 바꾸기
-        if (boolean){
+        if (boolean) {
             binding.signupNextBtn.isEnabled = true
-            binding.signupNextBtn.setText(getText(R.string.signup_next_btn_02))
+            binding.signupNextBtn.text = getText(R.string.signup_next_btn_02)
             binding.signupNextBtn.setTextColor(getColor(R.color.white))
-            binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
+            binding.signupNextBtn.background =
+                getDrawable(R.drawable.signup_next_btn_done_rectangular)
             checkBtn = false
         }
         // 완료 -> 다음으로 바꾸기
-        else{
+        else {
             binding.signupNextBtn.isEnabled = false
-            binding.signupNextBtn.setText(getText(R.string.signup_next_btn))
+            binding.signupNextBtn.text = getText(R.string.signup_next_btn)
             binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
             binding.signupNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
             checkBtn = true
         }
     }
 
-    override fun onNextBtnEnable(){
+    override fun onNextBtnEnable() {
         binding.signupNextBtn.isEnabled = true
         binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
         binding.signupNextBtn.setTextColor(getColor(R.color.white))
@@ -139,10 +130,9 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
 
     override fun setRadiobutton(radioButton: String) {
         val fragment = supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc)
-        if(fragment is SignUpFragment02){
+        if (fragment is SignUpFragment02) {
             fragment.setRadioButton(radioButton)
-        }
-        else if (fragment is SignUpFragment04){
+        } else if (fragment is SignUpFragment04) {
             fragment.setRadioButton(radioButton)
         }
     }
@@ -177,5 +167,29 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>(ActivitySignupBinding:
 //        }
 //    }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else
+            super.onBackPressed()
+        onNextBtnEnable()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
 }
