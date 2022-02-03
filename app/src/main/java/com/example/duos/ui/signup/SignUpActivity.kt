@@ -38,7 +38,12 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                     onNextBtnChanged(false)
                     (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment02).setBirth()
                 }
-            } else {
+            }
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05){
+                // 회원가입 전체 정보 post 하기
+                (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment05).signUpPost()
+            }
+            else {
                 initNavController()
             }
 

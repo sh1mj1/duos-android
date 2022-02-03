@@ -117,11 +117,7 @@ object SignUpService {
         })
     }
 
-    fun signUpReqeust(
-        signUpRequestView: SignUpRequestView,
-        mFile: MultipartBody.Part,
-        userInfo: SignUpRequestInfo
-    ) {
+    fun signUpReqeust(signUpRequestView: SignUpRequestView, mFile: MultipartBody.Part, userInfo: SignUpRequestInfo) {
         val signUpRequestService = retrofit.create(SignUpRetrofitInterface::class.java)
 
         signUpRequestService.signUpRequest(mFile, userInfo).enqueue(object :

@@ -25,9 +25,18 @@ import com.example.duos.databinding.FragmentSignup05Binding
 import com.example.duos.ui.BaseFragment
 import java.io.File
 import android.graphics.Matrix
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.utils.SignUpInfoViewModel
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+
+import okhttp3.RequestBody
+
+import okhttp3.MultipartBody
+import okhttp3.MultipartBody.Part.Companion.createFormData
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup05Binding::inflate) {
@@ -39,7 +48,7 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var mContext: SignUpActivity
     lateinit var viewModel: SignUpInfoViewModel
-    var profileImg: Bitmap? = null
+    var profileBitmap: Bitmap? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -321,8 +330,8 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
                 if (resultCode == RESULT_OK) {
                     // data : Intent 안에 사진 정보가 들어감
                     val bitmap = data?.getParcelableExtra<Bitmap>("data")
-                    profileImg = bitmap!!
-                    viewModel.profileImg.value = profileImg
+                    profileBitmap = bitmap!!
+                    viewModel.profileImg.value = profileBitmap
                     binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
                     binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
                 }
@@ -338,8 +347,8 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
                     )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
                     val bitmap2 = resizeBitmap(1024, bitmap)
                     val bitmap3 = rotateBitmap(bitmap2, degree)
-                    profileImg = bitmap3
-                    viewModel.profileImg.value = profileImg
+                    profileBitmap = bitmap3
+                    viewModel.profileImg.value = profileBitmap
                     binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap3)
 //                    // 사진 파일 삭제한다.
 //                    val file = File(contentUri.path)
@@ -358,8 +367,8 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
                             val source =
                                 ImageDecoder.createSource(requireActivity().contentResolver, uri)
                             val bitmap = ImageDecoder.decodeBitmap(source)
-                            profileImg = bitmap
-                            viewModel.profileImg.value = profileImg
+                            profileBitmap = bitmap
+                            viewModel.profileImg.value = profileBitmap
                             binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
                         } else {
                             val cursor =
@@ -371,8 +380,8 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
                                 val source = cursor.getString(index)
                                 // 이미지 생성
                                 val bitmap = BitmapFactory.decodeFile(source)
-                                profileImg = bitmap
-                                viewModel.profileImg.value = profileImg
+                                profileBitmap = bitmap
+                                viewModel.profileImg.value = profileBitmap
                                 binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
                             }
                         }
@@ -430,5 +439,23 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
         return bitmap2
     }
 
+    fun signUpPost(){
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val mFile = profileBitmap?.let { bitmapToFile(it,"mFile.jpg") }
+        val requestBody: RequestBody =
+           byteArrayOutputStream.toByteArray()
+                .toRequestBody("image/jpg".toMediaTypeOrNull())
+        val uploadFile: MultipartBody.Part = createFormData("mFile", mFile?.name, requestBody)
+    }
+
+    fun bitmapToFile(bitmap: Bitmap, name: String): File{
+        var file = File(name)
+        var out: OutputStream? = null
+        try{ file.createNewFile()
+            out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out) // 80으로 되어있었음
+        }finally{ out?.close() }
+        return file
+    }
 
 }
