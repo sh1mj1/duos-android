@@ -1,7 +1,10 @@
 package com.example.duos.data.remote.auth
 
+import com.example.duos.utils.NetworkModule
+
 
 object AuthService {
+//    val retrofit = NetworkModule.getRetrofit()
     //    fun signUp(signUpView: SignUp01View ,user: User) {
 //        val authService = retrofit.create(AuthRetrofitInterface::class.java)
 //

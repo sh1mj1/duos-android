@@ -9,6 +9,7 @@ import com.example.duos.ui.signup.SignUpCreateAuthNumView
 import com.example.duos.ui.signup.SignUpNickNameView
 import com.example.duos.ui.signup.SignUpRequestView
 import com.example.duos.ui.signup.SignUpVerifyAuthNumView
+import com.example.duos.utils.NetworkModule
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +17,7 @@ import retrofit2.Response
 import retrofit2.http.Multipart
 
 object SignUpService {
+    val retrofit = NetworkModule.getRetrofit()
     fun signUpCreateAuthNum(signUpCreateAuthNumView: SignUpCreateAuthNumView, phoneNumber: String) {
         val signUpCreateAuthNumService = retrofit.create(SignUpRetrofitInterface::class.java)
 
