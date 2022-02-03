@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.duos.data.entities.MessageItem
+import com.example.duos.data.entities.chat.ChatMessage
 import com.example.duos.data.entities.ChatType
 
 import android.util.Log
@@ -20,11 +20,10 @@ import android.text.TextWatcher
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.duos.R
-import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.entities.MessageData
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.ui.BaseActivity
-import com.google.firebase.messaging.Constants
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
@@ -36,7 +35,7 @@ import kotlin.collections.ArrayList
 
 class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
     //lateinit var binding: ActivityChattingBinding
-    private var chatListDatas = ArrayList<ChatListItem>()
+    private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
     var userId: String = "tennis01"
     var partnerId: String = "djeikd0620"
@@ -79,12 +78,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         this.runOnUiThread {
             if (type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
+                    ChatMessage(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             } else {
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
+                    ChatMessage(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             }
@@ -206,7 +205,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     private fun postSendMessage() {
-        val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
+        val messageData = sendMessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
 
         ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
@@ -215,7 +214,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     fun sendMessage(){
         var sendTime = System.currentTimeMillis()
         Log.d(
-            "MESSAGE", MessageData(
+            "MESSAGE", sendMessageData(
                 "957cfc80-481c-4ae4-88a0-25a9599dd511",
                 "MESSAGE",
                 thisUserIdx, targetUserIdx,
@@ -224,7 +223,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         )
 
         chattingMessagesRVAdapter.addItem(
-            MessageItem(
+            ChatMessage(
                 userId,
                 chattingEt.text.toString(),
                 toDate(sendTime),

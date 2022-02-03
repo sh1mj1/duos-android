@@ -9,7 +9,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -18,14 +17,8 @@ import com.example.duos.ui.main.chat.ChattingActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import androidx.core.app.NotificationManagerCompat
-import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.remote.chat.chatList.ChatListService
-import com.example.duos.ui.main.chat.ChatListView
-import android.app.Application
-import android.content.ComponentName
 
 import android.app.ActivityManager
-import android.app.ActivityManager.RunningTaskInfo
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(){

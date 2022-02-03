@@ -3,7 +3,7 @@ package com.example.duos.ui.main.chat
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.MessageItem
+import com.example.duos.data.entities.chat.ChatMessage
 
 import com.example.duos.data.entities.ChatType
 
@@ -17,7 +17,7 @@ import com.example.duos.R
 
 
 class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var chattingMessage : ArrayList<MessageItem> = ArrayList<MessageItem>()
+    private var chattingMessage : ArrayList<ChatMessage> = ArrayList<ChatMessage>()
     lateinit var context : Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -39,29 +39,29 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         if (viewHolder is CenterViewHolder) {
-            val item: MessageItem = chattingMessage.get(position)
+            val item: ChatMessage = chattingMessage.get(position)
             (viewHolder as CenterViewHolder).setItem(item)
         } else if (viewHolder is LeftViewHolder) {
-            val item: MessageItem = chattingMessage.get(position)
+            val item: ChatMessage = chattingMessage.get(position)
             (viewHolder as LeftViewHolder).setItem(item)
         } else { // if (viewHolder instanceof RightViewHolder) {
-            val item: MessageItem = chattingMessage.get(position)
+            val item: ChatMessage = chattingMessage.get(position)
             (viewHolder as RightViewHolder).setItem(item)
         }
     }
 
     override fun getItemCount(): Int = chattingMessage.size
 
-    fun addItem(item: MessageItem) {
+    fun addItem(item: ChatMessage) {
         chattingMessage.add(item)
         notifyDataSetChanged()
     }
 
-    fun setItems(items: ArrayList<MessageItem>) {
+    fun setItems(items: ArrayList<ChatMessage>) {
         chattingMessage = items
     }
 
-    fun getItem(position: Int): MessageItem {
+    fun getItem(position: Int): ChatMessage {
         return chattingMessage.get(position)
     }
 
@@ -71,7 +71,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 
     class CenterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentText: TextView
-        fun setItem(item: MessageItem) {
+        fun setItem(item: ChatMessage) {
             contentText.setText(item.body)
         }
 
@@ -84,7 +84,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         var nameText: TextView
         var contentText: TextView
         var sendTimeText: TextView
-        fun setItem(item: MessageItem) {
+        fun setItem(item: ChatMessage) {
             nameText.setText(item.senderId)
             contentText.setText(item.body)
             sendTimeText.setText(item.sentAt)
@@ -100,7 +100,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     class RightViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentText: TextView
         var sendTimeText: TextView
-        fun setItem(item: MessageItem) {
+        fun setItem(item: ChatMessage) {
             contentText.setText(item.body)
             sendTimeText.setText(item.sentAt)
         }

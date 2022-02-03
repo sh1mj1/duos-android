@@ -1,20 +1,11 @@
 package com.example.duos.ui.main.chat
 
-import android.content.Intent
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
-import com.example.duos.data.entities.ChatListItem
-import java.lang.Float.min
 
 class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter): ItemTouchHelper.Callback() {
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정하기 위한 변수들

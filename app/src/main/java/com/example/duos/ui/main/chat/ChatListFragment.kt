@@ -6,27 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.ChatListItem
+import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
-import com.example.duos.ui.main.friendList.RecommendFriendListRVAdapter
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
-import org.threeten.bp.Period
-import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClickListener {
     lateinit var binding : FragmentChatListBinding
-    private var chatListDatas = ArrayList<ChatListItem>()
+    private var chatListDatas = ArrayList<ChatRoom>()
     private lateinit var chatListRv: RecyclerView
     private lateinit var chatListRVAdapter: ChatListRVAdapter
     lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
@@ -79,16 +71,18 @@ class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClic
 
     }
 
-    override fun onGetChatListSuccess(chatList: List<ChatListItem>) {
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
 
         chatListDatas.clear()
         chatListDatas.addAll(chatList)
+
+
 
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
-            override fun onItemClick(chatListItem: ChatListItem) {
+            override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
                 startActivity(intent)
             }
