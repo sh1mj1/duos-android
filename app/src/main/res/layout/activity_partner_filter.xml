@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id="@+id/chatting_back_iv"
+        android:id="@+id/partner_filter_back_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -14,12 +14,12 @@
         android:src="@drawable/ic_back_30"/>
 
     <TextView
-        android:id="@+id/chatting_title_tv"
+        android:id="@+id/partner_filter_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/chatting_back_iv"
-        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
-        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
+        app:layout_constraintStart_toEndOf="@id/partner_filter_back_iv"
+        app:layout_constraintTop_toTopOf="@id/partner_filter_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/partner_filter_back_iv"
         android:layout_marginStart="11dp"
         android:text="@string/partner_filter_title"
         android:textSize="19sp"
@@ -27,12 +27,12 @@
         android:fontFamily="@font/applesdgothicneoregular"/>
 
     <TextView
-        android:id="@+id/chatting_make_plan_btn"
+        android:id="@+id/partner_filter_initiate_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/chatting_back_iv"
-        app:layout_constraintBottom_toBottomOf="@id/chatting_back_iv"
+        app:layout_constraintTop_toTopOf="@id/partner_filter_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/partner_filter_back_iv"
         android:layout_marginEnd="16dp"
         android:text="@string/partner_filter_init"
         android:textSize="13sp"
@@ -44,7 +44,7 @@
         style="@style/Light_gray_Divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chatting_back_iv"
+        app:layout_constraintTop_toBottomOf="@+id/partner_filter_back_iv"
         android:layout_marginTop="12dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,7 +95,7 @@
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="7dp"
-                    android:src="@drawable/signup_local_arrow_ic"
+                    android:src="@drawable/ic_signup_local_arrow"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"/>
 
@@ -248,10 +248,24 @@
                 android:fontFamily="@font/applesdgothicneoregular"/>
 
             <TextView
-                android:id="@+id/partner_filter_age_to_tv"
+                android:id="@+id/partner_filter_age_min_unit_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 app:layout_constraintStart_toEndOf="@id/partner_filter_age_min_tv"
+                app:layout_constraintTop_toTopOf="@id/partner_filter_age_tv"
+                app:layout_constraintBottom_toBottomOf="@id/partner_filter_age_tv"
+                android:text="@string/partner_filter_age_unit"
+                android:textSize="13sp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@color/primary"
+                android:fontFamily="@font/applesdgothicneoregular"/>
+
+            <TextView
+                android:id="@+id/partner_filter_age_to_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                app:layout_constraintStart_toEndOf="@id/partner_filter_age_min_unit_tv"
                 app:layout_constraintTop_toTopOf="@id/partner_filter_age_tv"
                 app:layout_constraintBottom_toBottomOf="@id/partner_filter_age_tv"
                 android:text=" ~ "
@@ -275,40 +289,95 @@
                 android:textColor="@color/primary"
                 android:fontFamily="@font/applesdgothicneoregular"/>
 
-<!--            <com.google.android.material.slider.RangeSlider-->
-<!--                android:id="@+id/partner_filter_age_rs"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/partner_filter_age_tv"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:valueFrom="20"-->
-<!--                android:valueTo="60"-->
-<!--                android:stepSize="10"-->
-<!--                app:trackColor="@color/primary"-->
-<!--                app:trackColorInactive="@color/color_10"-->
-<!--                app:thumbColor="@color/white"-->
-<!--                app:thumbStrokeColor="@color/color_02"/>-->
+            <TextView
+                android:id="@+id/partner_filter_age_max_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                app:layout_constraintStart_toEndOf="@id/partner_filter_age_max_tv"
+                app:layout_constraintTop_toTopOf="@id/partner_filter_age_tv"
+                app:layout_constraintBottom_toBottomOf="@id/partner_filter_age_tv"
+                android:text="@string/partner_filter_age_unit"
+                android:textSize="13sp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@color/primary"
+                android:fontFamily="@font/applesdgothicneoregular"/>
 
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+            <com.jaygoo.widget.RangeSeekBar
                 android:id="@+id/partner_filter_age_range_sb"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="0dp"
+                android:layout_height="50dp"
                 app:layout_constraintTop_toBottomOf="@id/partner_filter_age_tv"
+                app:layout_constraintStart_toStartOf="@id/partner_filter_age_tv"
+                app:layout_constraintEnd_toEndOf="@id/partner_filter_age_tv"
+                app:rsb_gravity="bottom"
+                app:rsb_mode="range"
+                app:rsb_progress_color="@color/primary"
+                app:rsb_thumb_drawable="@drawable/age_range_thumb"
+                app:rsb_min="10"
+                app:rsb_max="60"
+                app:rsb_min_interval="0"
+                app:rsb_tick_mark_mode="other"
+                app:rsb_steps="5"
+                app:rsb_step_auto_bonding="true"
+                app:rsb_step_height="2dp"
+                app:rsb_step_width="2dp"
+                app:rsb_step_color="@color/transparent"/>
+            
+            <TextView
+                android:id="@+id/partner_filter_age_min_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/partner_filter_age_range_sb"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="2dp"
+                android:text="@string/partner_filter_age_min_bottom"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:fontFamily="@font/applesdgothicneoregular"/>
+
+            <TextView
+                android:id="@+id/partner_filter_age_max_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/partner_filter_age_range_sb"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                app:corner_radius="0"
-                app:min_value="20"
-                app:max_value="60"
-                app:bar_color="@color/grainsboro_E"
-                app:steps="10"
-                app:bar_highlight_color="@color/primary"
-                app:left_thumb_image="@drawable/seekbar_thumb_img"
-                app:right_thumb_image="@drawable/seekbar_thumb_img"
-                app:data_type="_integer"/>
+                android:layout_marginEnd="2dp"
+                android:text="@string/partner_filter_age_max_bottom"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:fontFamily="@font/applesdgothicneoregular"/>
+            
+<!-- indicator(10의 단위 위에 위치할때마다 위에 표시해줌), tick_mark_text는 각 step 위에 항상 떠있는거-->
+<!--            <com.jaygoo.widget.RangeSeekBar-->
+<!--                android:id="@+id/partner_filter_age_range_sb"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/partner_filter_age_tv"-->
+<!--                app:layout_constraintStart_toStartOf="@id/partner_filter_age_tv"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/partner_filter_age_tv"-->
+<!--                app:rsb_gravity="bottom"-->
+<!--                app:rsb_mode="range"-->
+<!--                app:rsb_progress_color="@color/primary"-->
+<!--                app:rsb_thumb_drawable="@drawable/age_range_thumb"-->
+<!--                app:rsb_min="20"-->
+<!--                app:rsb_max="60"-->
+<!--                app:rsb_min_interval="0"-->
+<!--                app:rsb_tick_mark_mode="other"-->
+<!--                app:rsb_steps="4"-->
+<!--                app:rsb_step_auto_bonding="true"-->
+<!--                app:rsb_step_height="2dp"-->
+<!--                app:rsb_step_width="2dp"-->
+<!--                app:rsb_step_color="@color/primary_70"-->
+<!--                app:rsb_indicator_background_color="@color/transparent"-->
+<!--                app:rsb_indicator_text_color="@color/primary"-->
+<!--                app:rsb_indicator_show_mode="showWhenTouch"-->
+<!--                app:rsb_indicator_text_size="11sp"-->
+<!--                app:rsb_tick_mark_text_size="11sp"-->
+<!--                app:rsb_tick_mark_text_array="@array/partner_filter_age_array"-->
+<!--                app:rsb_tick_mark_text_margin="20dp"/>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -341,10 +410,10 @@
                 app:layout_constraintTop_toTopOf="@id/partner_filter_ball_capability_tv"
                 app:layout_constraintBottom_toBottomOf="@id/partner_filter_ball_capability_tv"
                 android:layout_marginStart="23dp"
-                android:text="@string/partner_filter_ball_capability_year_min"
                 android:textSize="13sp"
                 android:textAlignment="center"
                 android:gravity="center"
+                android:text="@string/partner_filter_ball_capability_year_min_bottom"
                 android:textColor="@color/primary"
                 android:fontFamily="@font/applesdgothicneoregular"/>
 
@@ -369,46 +438,71 @@
                 app:layout_constraintStart_toEndOf="@id/partner_filter_ball_capability_to_tv"
                 app:layout_constraintTop_toTopOf="@id/partner_filter_ball_capability_tv"
                 app:layout_constraintBottom_toBottomOf="@id/partner_filter_ball_capability_tv"
-                android:text="@string/partner_filter_age_max"
+                android:text="@string/partner_filter_ball_capability_year_max_bottom"
                 android:textSize="13sp"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:textColor="@color/primary"
                 android:fontFamily="@font/applesdgothicneoregular"/>
 
-            <!--            <com.google.android.material.slider.RangeSlider-->
-            <!--                android:id="@+id/partner_filter_age_rs"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/partner_filter_age_tv"-->
-            <!--                android:layout_marginTop="8dp"-->
-            <!--                android:valueFrom="20"-->
-            <!--                android:valueTo="60"-->
-            <!--                android:stepSize="10"-->
-            <!--                app:trackColor="@color/primary"-->
-            <!--                app:trackColorInactive="@color/color_10"-->
-            <!--                app:thumbColor="@color/white"-->
-            <!--                app:thumbStrokeColor="@color/color_02"/>-->
-
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+            <com.jaygoo.widget.RangeSeekBar
+                android:id="@+id/partner_filter_ball_capability_range_sb"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="0dp"
+                android:layout_height="50dp"
                 app:layout_constraintTop_toBottomOf="@id/partner_filter_ball_capability_tv"
+                app:layout_constraintStart_toStartOf="@id/partner_filter_ball_capability_tv"
+                app:layout_constraintEnd_toEndOf="@id/partner_filter_ball_capability_tv"
+                app:rsb_gravity="bottom"
+                app:rsb_mode="range"
+                app:rsb_progress_color="@color/primary"
+                app:rsb_thumb_drawable="@drawable/age_range_thumb"
+                app:rsb_min="0"
+                app:rsb_max="10"
+                app:rsb_min_interval="0"
+                app:rsb_tick_mark_mode="other"
+                app:rsb_steps="10"
+                app:rsb_step_auto_bonding="true"
+                app:rsb_step_height="2dp"
+                app:rsb_step_width="2dp"
+                app:rsb_step_color="@color/transparent"/>
+
+            <TextView
+                android:id="@+id/partner_filter_ball_capability_min_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/partner_filter_ball_capability_range_sb"
                 app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/partner_filter_ball_capability_year_min_bottom"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:fontFamily="@font/applesdgothicneoregular"/>
+
+            <!-- '1년' textView의 marginStart를 기기 width에 따라 다르게 줘야 함......-->
+<!--            <TextView-->
+<!--                android:id="@+id/partner_filter_ball_capability_1year_bottom_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="34dp"-->
+<!--                android:gravity="center"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/partner_filter_ball_capability_range_sb"-->
+<!--                app:layout_constraintStart_toEndOf="@id/partner_filter_ball_capability_min_bottom_tv"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:text="@string/partner_filter_ball_capability_year_min_bottom"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="11sp"-->
+<!--                android:fontFamily="@font/applesdgothicneoregular"/>-->
+
+            <TextView
+                android:id="@+id/partner_filter_ball_capability_max_bottom_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/partner_filter_ball_capability_range_sb"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                app:corner_radius="0"
-                app:min_value="0"
-                app:max_value="10"
-                app:bar_color="@color/grainsboro_E"
-                app:steps="1"
-                app:bar_highlight_color="@color/primary"
-                app:left_thumb_image="@drawable/seekbar_thumb_img"
-                app:right_thumb_image="@drawable/seekbar_thumb_img"
-                app:data_type="_integer"/>
+                android:text="@string/partner_filter_ball_capability_year_max_bottom"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:fontFamily="@font/applesdgothicneoregular"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -425,8 +519,8 @@
         android:fontFamily="@font/applesdgothicneoregular"
         android:textAlignment="center"
         android:gravity="center"
-        android:enabled="false"
-        android:clickable="false"
+        android:enabled="true"
+        android:clickable="true"
         android:background="@color/primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

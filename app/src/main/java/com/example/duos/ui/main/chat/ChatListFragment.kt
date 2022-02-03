@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.entities.RecommendedFriend
-import com.example.duos.data.remote.chatList.ChatListService
+import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
 import com.example.duos.ui.main.friendList.RecommendFriendListRVAdapter
 import org.threeten.bp.LocalDate
@@ -25,9 +24,13 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatListFragment() : Fragment(), ChatListView {
-    lateinit var binding: FragmentChatListBinding
+class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClickListener {
+    lateinit var binding : FragmentChatListBinding
     private var chatListDatas = ArrayList<ChatListItem>()
+    private lateinit var chatListRv: RecyclerView
+    private lateinit var chatListRVAdapter: ChatListRVAdapter
+    lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
+    private lateinit var mContext:Context
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +38,11 @@ class ChatListFragment() : Fragment(), ChatListView {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentChatListBinding.inflate(inflater, container, false)
+
+        chatListRv = binding.chatListRv
+        chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
+        chatListRv.adapter = chatListRVAdapter
 
         ChatListService.chatList(this, 0)
 //        chatListDatas.apply {
@@ -67,30 +75,31 @@ class ChatListFragment() : Fragment(), ChatListView {
         super.onResume()
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView(){
 
     }
 
     override fun onGetChatListSuccess(chatList: List<ChatListItem>) {
 
+        chatListDatas.clear()
         chatListDatas.addAll(chatList)
 
-        var chatListRVAdapter = ChatListRVAdapter(chatListDatas)
-
-        var chatListRv = binding.chatListRv
+        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        chatListRVAdapter.setChatListItemClickListener(object : ChatListRVAdapter.ChatListItemClickListener {
+        chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatListItem: ChatListItem) {
                 val intent = Intent(activity, ChattingActivity::class.java)
                 startActivity(intent)
             }
         })
 
-        chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
 
-        val swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
-            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
+        swipeHelperCallback = ChatListItemTouchHelperCallback(chatListRVAdapter).apply {
+            if(mContext != null){
+                setClamp(resources.displayMetrics.widthPixels.toFloat()/4)
+            }
         }
         ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(chatListRv)
 
@@ -101,6 +110,21 @@ class ChatListFragment() : Fragment(), ChatListView {
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
+    override fun getIsClamped(viewHolder: RecyclerView.ViewHolder): Boolean {
+        return swipeHelperCallback.getTag(viewHolder)
+    }
+
+    override fun onDeleteClick() {
+        val intent = Intent(activity, ChattingActivity::class.java)
+        startActivity(intent)
+    }
+
 }

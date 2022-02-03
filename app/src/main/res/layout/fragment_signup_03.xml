@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
 
     <TextView
         android:id="@+id/signup_03_local_tv"
@@ -38,7 +40,7 @@
         <ImageView
             android:layout_width="10dp"
             android:layout_height="7dp"
-            android:src="@drawable/signup_local_arrow_ic"
+            android:src="@drawable/ic_signup_local_arrow"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"/>

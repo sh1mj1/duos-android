@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.chat
 
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -7,10 +8,12 @@ import android.graphics.RectF
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
+import com.example.duos.data.entities.ChatListItem
 import java.lang.Float.min
 
 class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter): ItemTouchHelper.Callback() {
@@ -27,7 +30,8 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
         // 드래그 방향 : 위, 아래 인식
         // 스와이프 방향 : 왼쪽, 오른쪽 인식
         // 설정 안 하고 싶으면 0
-        val swipe_flags = ItemTouchHelper.START // 왼쪽으로 스와이프 인식
+        val swipe_flags = ItemTouchHelper.START or ItemTouchHelper.END  // START: 왼쪽으로 스와이프 인식, END: 오른쪽으로 스와이프 인식
+
         return makeMovementFlags(0, swipe_flags)
     }
 
@@ -105,6 +109,8 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
     // swipe_view 반환 -> swipe_view만 이동할 수 있게 해줌
     private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(R.id.chat_list_item_layout)
 
+    private fun getDeleteBtnView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(R.id.chat_list_delete_btn)
+
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정
     private fun clampViewPositionHorizontal(
         dX: Float,
@@ -119,7 +125,7 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
             // 현재 swipe 중이면 swipe되는 영역 제한
             if (isCurrentlyActive)
             // 오른쪽 swipe일 때
-                if (dX < 0) dX/3 - clamp
+                if (dX < 0) dX/4 - clamp
                 // 왼쪽 swipe일 때
                 else dX - clamp
             // swipe 중이 아니면 고정시키기
@@ -135,7 +141,7 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
     // isClamped를 view의 tag로 관리
     // isClamped = true : 고정, false : 고정 해제
     private fun setTag(viewHolder: RecyclerView.ViewHolder, isClamped: Boolean) { viewHolder.itemView.tag = isClamped }
-    private fun getTag(viewHolder: RecyclerView.ViewHolder) : Boolean =  viewHolder.itemView.tag as? Boolean ?: false
+    fun getTag(viewHolder: RecyclerView.ViewHolder) : Boolean =  viewHolder.itemView.tag as? Boolean ?: false
 
 
     // view가 swipe 되었을 때 고정될 크기 설정
@@ -153,6 +159,5 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
             setTag(viewHolder, false)
             previousPosition = null
         }
-
     }
 }

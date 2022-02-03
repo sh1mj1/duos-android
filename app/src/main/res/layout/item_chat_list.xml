@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="@id/chat_list_item_layout"
         app:layout_constraintTop_toTopOf="@id/chat_list_item_layout"
         app:layout_constraintBottom_toBottomOf="@id/chat_list_item_layout"
-        android:weightSum="4">
+        android:weightSum="5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center"
-            android:layout_weight="3"/>
+            android:layout_weight="4"/>
 
     </LinearLayout>
 
@@ -49,6 +49,7 @@
             android:src="@drawable/chat_profile_img_1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +61,7 @@
             app:layout_constraintStart_toEndOf="@id/chat_list_profile_iv"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
             app:flow_wrapMode="chain">
             <TextView
                 android:id="@+id/chat_list_user_id_tv"

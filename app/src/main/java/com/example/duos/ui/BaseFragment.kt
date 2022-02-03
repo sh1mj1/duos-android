@@ -8,6 +8,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.example.duos.ApplicationClass
 import com.example.duos.utils.Inflate
 
 
@@ -43,5 +44,15 @@ abstract class BaseFragment<VB : ViewBinding>(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    fun progressON(){
+        ApplicationClass.getInstance().progressON(activity, null)
+    }
 
+    fun progressON(message: String){
+        ApplicationClass.getInstance().progressON(activity, message)
+    }
+
+    fun progressOFF(){
+        ApplicationClass.getInstance().progressOFF()
+    }
 }

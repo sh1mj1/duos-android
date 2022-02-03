@@ -73,9 +73,11 @@ class SplashActivity: AppCompatActivity(), SplashView {
 
     private fun initStatus(){
         binding.splashStartButtonBtn.setOnClickListener {
+            thread.interrupt()
             startActivity(Intent(this, SignUpActivity::class.java))
         }
         binding.splashGotoLoginText02Tv.setOnClickListener {
+            thread.interrupt()
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }

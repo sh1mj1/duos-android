@@ -22,11 +22,52 @@
         android:theme="@style/Theme.DUOS"
         android:usesCleartextTraffic="true">
 
+        <!--        안드로이드 8.0 이상 푸시 처리 추가 코드-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/splash_duos_logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primary" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/firebase_notification_channel_id_testS" />
+
+        <!--        FCM 등록 토큰이 생성되면 라이브러리는 식별자와 구성 데이터를 Firebase에 업로드한다.-->
+        <!--        토큰이 자동 생성되는 것을 방지하기 위해 애널리틱스 수집과 FCM 자동 초기화 사용 중지-->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
+
         <activity
             android:name="com.example.duos.ui.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.example.duos.ui.login.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="com.example.duos.ui.signup.SignUpActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.example.duos.ui.main.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,52 +76,61 @@
         </activity>
 
         <activity
-            android:name="com.example.duos.ui.login.LoginActivity"
-            android:exported="true" />
-
-        <activity
-            android:name="com.example.duos.ui.signup.SignUpActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name="com.example.duos.ui.main.MainActivity"
-            android:exported="true" />
-
-        <activity
             android:name=".ui.main.partnerSearch.PartnerFilterActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.main.partnerSearch.PartnerProfileActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.main.chat.ChattingActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="CHATTING_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.main.chat.MakePlanActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="MAKE_PLAN_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!--        마이 페이지 B 파트     -->
         <activity
             android:name=".ui.main.mypage.notion.NotionActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.main.mypage.setup.SetupActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.main.mypage.lastpromise.PreviousGameActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.main.mypage.customerservice.CustomerServiceActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.example.duos.ui.main.mypage.myprofile.MyProfileActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -92,6 +142,18 @@
                 android:resource="@xml/file_path" />
             <!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
         </provider>
+
+
+        <service
+            android:name=".FirebaseMessagingServiceUtil"
+            android:exported="true"
+            android:directBootAware="true">
+
+        <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
 
     </application>
 
