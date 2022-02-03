@@ -5,7 +5,7 @@ data class MessageData(
     var type: String = "",
     var senderIdx: Int = 0,   // from
     var receiverIdx: Int = 0, // to
-    var messageBody: String = ""
+    var message: String = ""
 //    ,
 //    var sendTime: Long = 0
 )

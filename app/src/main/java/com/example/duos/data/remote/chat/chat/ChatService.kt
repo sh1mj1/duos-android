@@ -2,16 +2,18 @@ package com.example.duos.data.remote.chat.chat
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.ApplicationClass.Companion.retrofit
 import com.example.duos.data.entities.ChatRoom
 import com.example.duos.data.entities.MessageData
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.chat.SendMessageView
+import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 
 object ChatService {
+    val retrofit = NetworkModule.getRetrofit()
     fun createChatRoom(createChatRoomView: CreateChatRoomView, thisUserIdx: Int, targetUserIdx: Int){
         val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
         val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)

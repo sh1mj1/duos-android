@@ -5,13 +5,15 @@ import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.ui.main.friendList.RecommendedFriendListView
 import com.example.duos.ui.main.friendList.StarredFriendListView
+import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 object FriendListService {
+    val retrofit = NetworkModule.getRetrofit()
     fun getStarredFriendList(starredFriendListView: StarredFriendListView, userIdx : Int) {
-        val friendListService = ApplicationClass.retrofit.create(FriendListRetrofitInterface::class.java)
+        val friendListService = retrofit.create(FriendListRetrofitInterface::class.java)
 
         friendListService.starredFriendList(userIdx).enqueue(object : Callback<StarredFriendResponse> {
             override fun onResponse(call: Call<StarredFriendResponse>, response: Response<StarredFriendResponse>) {
@@ -31,7 +33,7 @@ object FriendListService {
     }
 
     fun getRecommendedFriendList(recommendedFriendListView: RecommendedFriendListView, userIdx: Int){
-        val friendListService = ApplicationClass.retrofit.create(FriendListRetrofitInterface::class.java)
+        val friendListService = retrofit.create(FriendListRetrofitInterface::class.java)
 
 
         friendListService.recommendedFriendList(userIdx).enqueue(object : Callback<RecommendedFriendResponse> {

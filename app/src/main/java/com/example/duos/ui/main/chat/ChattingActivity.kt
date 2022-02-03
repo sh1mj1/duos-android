@@ -209,7 +209,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
 
-        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.messageBody, messageData.type, messageData.chatRoomIdx)
+        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
     }
 
     fun sendMessage(){
