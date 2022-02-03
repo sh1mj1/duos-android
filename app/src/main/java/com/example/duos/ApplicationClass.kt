@@ -40,7 +40,7 @@ class ApplicationClass : Application() {
 
         const val MY_PAGE_API = "api/mypage"
         const val MY_PROFILE_API = "api/mypage/myprofile"
-
+        const val EVERY_REVIEW_API="api/reviews"
 
     }
 
