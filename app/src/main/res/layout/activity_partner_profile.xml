@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chatting_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/partner_profile_back_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/ic_back_30"/>
+
+    <TextView
+        android:id="@+id/partner_profile_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/partner_profile_back_iv"
+        app:layout_constraintTop_toTopOf="@id/partner_profile_back_iv"
+        app:layout_constraintBottom_toBottomOf="@id/partner_profile_back_iv"
+        android:layout_marginStart="11dp"
+        android:text="@string/partner_profile_title"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/applesdgothicneoregular"/>
+
+    <View
+        android:id="@+id/partner_profile_top_divider"
+        style="@style/Light_gray_Divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/partner_profile_back_iv"
+        android:layout_marginTop="12dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/partner_profile_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/chatting_send_box_bg"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/partner_profile_like_layout"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/chatting_send_box_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp">
+            <ImageView
+                android:id="@+id/partner_profile_like_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/last_recommend_friend_list_like_ic"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/partner_profile_chatting_btn"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:background="@color/primary"
+            app:layout_constraintStart_toEndOf="@id/partner_profile_like_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/partner_profile_like_layout"
+            app:layout_constraintBottom_toBottomOf="@id/partner_profile_like_layout"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/partner_profile_chatting"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/partner_profile_fragment_container_fc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/partner_profile_top_divider"
+        app:layout_constraintBottom_toTopOf="@id/partner_profile_bottom_layout"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_weight="1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

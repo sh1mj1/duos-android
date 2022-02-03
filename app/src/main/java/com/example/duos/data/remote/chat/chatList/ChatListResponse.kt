@@ -1,4 +1,4 @@
-package com.example.duos.data.remote.chatList
+package com.example.duos.data.remote.chat.chatList
 
 import com.example.duos.data.entities.ChatListItem
 import com.google.gson.annotations.SerializedName

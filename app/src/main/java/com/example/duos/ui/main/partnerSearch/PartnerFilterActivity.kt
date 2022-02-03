@@ -14,7 +14,7 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         val ageRangeSeekbar = binding.partnerFilterAgeRangeSb
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
 
-        ageRangeSeekbar.setProgress(20f,60f)
+        ageRangeSeekbar.setProgress(10f,60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
 
         ageRangeSeekbar.setOnRangeChangedListener(object: OnRangeChangedListener {
@@ -75,13 +75,23 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
             var ballCapacityMin = binding.partnerFilterBallCapabilityMinTv.text
             var ballCapacityMax = binding.partnerFilterBallCapabilityMaxTv.text
 
-            // 이 위치에서 파트너 찾기 GET을 하고, onSuccess에서 그 결과를 로컬에 저장하고
-            // PartnerSearchFragment에서는 계속 GET해오는 것이 아니라 로컬에 저장되어있던 정보들을 load 해줘야 할 듯 (인터넷이 연결되어있지 않을 때도 메인화면이 보일 수 있게)
+
 
             // 파트너 찾기 - 매칭 화면으로 이동
             //val intent = Intent(this, MakePlanActivity::class.java)
             startActivity(Intent(this, MainActivity::class.java))
         })
+
+        binding.partnerFilterInitiateBtn.setOnClickListener {
+            // 초기화 버튼 시 각 항목 입력값 초기화
+
+            ageRangeSeekbar.setProgress(10f,60f)
+            ballCapacityRangeSeekBar.setProgress(0f, 10f)
+        }
+
+        binding.partnerFilterBackIv.setOnClickListener{
+            finish()
+        }
     }
 
 // indicator(10의 단위 위에 위치할때마다 위에 표시해줌)

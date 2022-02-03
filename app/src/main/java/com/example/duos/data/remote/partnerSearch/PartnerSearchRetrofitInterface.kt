@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PartnerSearchRetrofitInterface {
-    @GET("/test/search/partner")
+    @GET("/api/partners")
     fun partnerSearchDataList(
         @Query("userIdx") userIdx: Int
     ): Call<PartnerSearchDataResponse>

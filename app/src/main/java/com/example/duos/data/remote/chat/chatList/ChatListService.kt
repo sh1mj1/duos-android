@@ -1,4 +1,4 @@
-package com.example.duos.data.remote.chatList
+package com.example.duos.data.remote.chat.chatList
 
 import android.util.Log
 import com.example.duos.ApplicationClass

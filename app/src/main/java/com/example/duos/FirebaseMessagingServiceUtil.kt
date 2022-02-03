@@ -7,15 +7,28 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.main.chat.ChattingActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import androidx.core.app.NotificationManagerCompat
+import com.example.duos.data.entities.ChatListItem
+import com.example.duos.data.remote.chat.chatList.ChatListService
+import com.example.duos.ui.main.chat.ChatListView
+import android.app.Application
+import android.content.ComponentName
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningTaskInfo
+
+
+class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
     /**
      * Called when message is received.
@@ -24,6 +37,11 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
     // [START receive_message]
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // [START_EXCLUDE]
+
+        // onMessageReceived는 백그라운드 상태일 때 데이터 페이로드가 포함되어있지 않고 알림 페이로드만 포함하고 있다면(알림 메세지라면) 호출되지 않음.
+        // 백그라운드에서 수신된 알림 페이로드, 데이터 페이로드 둘 다 포함한 메세지의 경우도 호출되지 않음.
+        // 이 경우 알림은 기기의 작업 표시줄로 전송되고 데이터 페이로드는 런처 활동의 인텐트 부가 정보로 전송된다고 써있는데 무슨말인지 완벽하게는 모르겠다..
+
         /*메시지 데이터 메시지와 알림 메시지에는 두 가지 유형
          데이터 메시지는 onMessageReceived에서 처리됨 앱이 포그라운드인지 백그라운드인지 여부를 나타냄.
          데이터 메시지는 전통적으로 GCM과 함께 사용되는 유형. 알림 메시지는 앱이 포그라운드에 있을 때 onMessageReceived에서만 수신됨.
@@ -35,7 +53,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        Log.d(TAG, "메세지수신 From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
@@ -51,9 +69,69 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         }
 
         // 메시지에 notification payload가 포함되어있는지 확인
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
+//        remoteMessage.notification?.let {
+//            Log.d(TAG, "Message Notification Body: ${it.body}")
+//            val title = it.title
+//            val messageBody = it.body
+//            val time = it.eventTime //null값을 받아옴..
+//
+//            Log.d("알림 확인", "1")
+//            if (title != null && messageBody != null) {
+//                Log.d("알림 확인", "2")
+//                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
+//            }
+//        }
+
+        if (remoteMessage.notification != null) {
+//            ChatListService.chatList(this, 0) // get 가능 확인함
+
+            val body = remoteMessage.notification!!.body
+            Log.d(TAG, "Notification Body: $body")
+            val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(
+                applicationContext
+            )
+                .setSmallIcon(R.mipmap.ic_duos_round) // 알림 영역에 노출 될 아이콘.
+                .setContentTitle(getString(R.string.app_name)) // 알림 영역에 노출 될 타이틀
+                .setContentText(body) // Firebase Console 에서 사용자가 전달한 메시지내용
+            val notificationManagerCompat = NotificationManagerCompat.from(
+                applicationContext
+            )
+            remoteMessage.notification!!.eventTime
+            notificationManagerCompat.notify(0x1001, notificationBuilder.build())
         }
+
+        val body = remoteMessage.data.get("message")
+
+        //
+
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val info = manager.getRunningTasks(1)
+        val componentName = info[0].topActivity
+        val ActivityName = componentName!!.shortClassName.substring(1)
+        if(remoteMessage.data != null){
+            Log.d("데이터메세지", remoteMessage.data.toString())
+            val messageData = remoteMessage.data
+
+            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
+                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
+                messageData.get("sentAt").toString(), messageData.get("title").toString())
+//            val intent = Intent(this, ChattingActivity::class.java)
+//            intent.putExtra("chatRoomIdx", remoteMessage.data.get("chatRoomIdx"))
+            Log.d("발신자", remoteMessage.data.get("title").toString())
+//            startActivity(intent)
+        }else{
+            Log.d("데이터메세지", "is null")
+        }
+
+        Log.d(
+            "Application.APPTAG",
+            "myFirebaseMessagingService - onMessageReceived - message: $remoteMessage"
+        )
+
+//        val dialogIntent = Intent(this, ChattingActivity::class.java)
+//        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//        dialogIntent.putExtra("msg", remoteMessage)
+//        startActivity(dialogIntent)
         // TODO
         // 또한 수신된 FCM 메시지의 결과로 사용자 자신의 알림을 생성하려면 여기서 시작해야 합니다. 아래 sendNotification 방법을 참조하십시오.
 
@@ -67,7 +145,14 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
         //이 응용 프로그램 인스턴스로 메시지를 보내거나 서버 측에서 이 응용 프로그램 "구독" -> 알림을 관리하려면 앱 서버로 FCM 등록 토큰을 보내십시오.
-        sendRegistrationToServer(token)
+
+        // 토큰 정보는 사용자 정보와 함께 서버에 보내야 하므로
+        // 토큰이 업데이트됐을 때 바로가 아니라
+        // onNewToken에서는 sharedPreference에 토큰값이 있는지 확인하고,
+        // 있으면 토큰이 바꼈다는 말이므로 토큰을 sharedPreference에 저장해뒀다가 로그인액티비티에서 회원정보 보낼 때 서버에 전달.. 회원정보 보내는 api와는 별개여야 좋을듯?
+        // 없으면
+
+       //sendRegistrationToServer(token)
     }
     // [END on_new_token]
 
@@ -97,12 +182,128 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
+
+
     /**
      * Create and show a simple notification containing the received FCM message.
      * 수신된 FCM 메시지가 포함된 간단한 알림을 만들고 표시
      * @param messageBody FCM message body received.
      * FCM 메시지 본문이 수신되었습니다.
      */
+
+    private fun sendMessageData(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
+        Log.d("노티", body)
+        //
+
+        val intent = Intent(this, ChattingActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("from", from)
+//        bundle.putString("to", to)
+//        bundle.putString("messageBody", messageBody)
+//        bundle.putLong("sendTime", sendTime)
+
+//        bundle.putString("chatRoomIdx", chatRoomIdx)
+//        bundle.putString("type", type)
+//        bundle.putString("body", body)
+//        bundle.putString("senderIdx", senderIdx)
+//        bundle.putString("sentAt", sentAt)
+//        bundle.putString("senderId", senderId)
+
+        intent.putExtra("chatRoomIdx", chatRoomIdx)
+        intent.putExtra("type", type)
+        intent.putExtra("body", body)
+        intent.putExtra("senderIdx", senderIdx)
+        intent.putExtra("sentAt", sentAt)
+        intent.putExtra("senderId", senderId)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelId = getString(R.string.firebase_notification_channel_id_testS)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.splash_duos_logo)
+            .setContentTitle(senderId)
+            .setContentText(body)
+            .setExtras(bundle)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 안드로이드 오레오 알림 채널이 필요.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
+    // 채팅 메세지를 디바이스에 알려주는 함수
+    private fun sendNotification(chatRoomIdx: String, type: String, from: String, to:String, messageBody: String, sendTime: Long) {  // 보낸사람, 받는사람의 인덱스와 메세지 본문, 메세지 type, chatRoomIdx??
+        Log.d("노티", messageBody)
+        //
+
+        val intent = Intent(this, ChattingActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+//        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("from", from)
+//        bundle.putString("to", to)
+//        bundle.putString("messageBody", messageBody)
+//        bundle.putLong("sendTime", sendTime)
+
+        intent.putExtra("chatRoomIdx", chatRoomIdx)
+        intent.putExtra("type", type)
+        intent.putExtra("from", from)
+        intent.putExtra("to", to)
+        intent.putExtra("messageBody", messageBody)
+        intent.putExtra("sendTime", sendTime)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_ONE_SHOT)
+
+        val channelId = getString(R.string.firebase_notification_channel_id_testS)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.splash_duos_logo)
+            .setContentTitle(from)
+            .setContentText(messageBody)
+//            .setExtras(bundle)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 안드로이드 오레오 알림 채널이 필요.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
     private fun sendNotification(messageBody: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
