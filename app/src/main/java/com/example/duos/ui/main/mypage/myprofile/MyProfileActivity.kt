@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.mypage.myprofile
 
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.ui.BaseActivity
@@ -17,6 +18,8 @@ class MyProfileActivity :
         supportFragmentManager.beginTransaction()
             .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
             .commitAllowingStateLoss()
+
+
 
 
         binding.editMyProfileTv.setOnClickListener {

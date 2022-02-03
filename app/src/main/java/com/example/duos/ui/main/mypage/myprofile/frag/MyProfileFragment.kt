@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,8 @@ class MyProfileFragment : Fragment(), ProfileListView {
 
         MyProfileService.myProfileInfo(this, 1)
         // 클릭리스너
+
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
         return binding.root
     }
 //    lateinit var compositeDisposable: CompositeDisposable    // 메모리 누수 방지?
@@ -70,6 +73,7 @@ class MyProfileFragment : Fragment(), ProfileListView {
                     // 상단 텍스트 변경
                     (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
                     (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
+                    (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
                 }
             })
 

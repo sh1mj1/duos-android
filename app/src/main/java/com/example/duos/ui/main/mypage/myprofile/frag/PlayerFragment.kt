@@ -3,6 +3,7 @@ package com.example.duos.ui.main.mypage.myprofile.frag
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
@@ -19,6 +20,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     override fun initAfterBinding() {
 
         // arguments로 이전 프래그먼트에서 데이터 받아오고 뷰에 연동하는 부분
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
 
         val playerNickname = arguments?.getString("nickname")
         val playerIntroduction = arguments?.getString("introduction")
@@ -139,6 +141,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
             val reviewCount = binding.playerPlayingReviewCountTv.text
             (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewCount.toString()
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
+            // 하단
+
         }
 
 
