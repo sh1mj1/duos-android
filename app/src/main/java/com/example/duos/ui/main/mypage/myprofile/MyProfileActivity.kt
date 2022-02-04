@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.mypage.myprofile
 
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.ui.BaseActivity

@@ -3,8 +3,6 @@ package com.example.duos.data.entities
 import com.google.gson.annotations.SerializedName
 
 data class MyProfileInfoItem(
-
-//    @SerializedName("profileInfo") var profileInfo: Object, // 이게 있어야 하나..?
     @SerializedName("userIdx") var userIdx: Int? = null,
     @SerializedName("profileImgUrl") var profileImgUrl: String = "",
     @SerializedName("nickname") var nickname: String = "",

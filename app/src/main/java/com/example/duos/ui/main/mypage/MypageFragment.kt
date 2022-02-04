@@ -25,7 +25,10 @@ import com.example.duos.ui.main.mypage.setup.SetupActivity
 
 class MypageFragment() : Fragment(), MyPageItemView {
 
-    companion object { private const val TAG: String = "MyPageService" }
+    companion object {
+        private const val TAG: String = "MyPageService"
+    }
+
     lateinit var binding: FragmentMypageBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
@@ -68,11 +71,10 @@ class MypageFragment() : Fragment(), MyPageItemView {
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
         Log.d(TAG, "onGetMyPageItemSuccess")
         binding.myProfileHomeNicknameTv.text = myPageInfo.nickname
-        val phoneNumberView = "010 1234 1234"
-        if (myPageInfo.phoneNumber.length >= 10) {
-            val phoneNumberView = myPageInfo.phoneNumber.substring(0, 9)
+        var phoneNumberView = myPageInfo.phoneNumber
+        if (phoneNumberView.length >= 9) {
+            phoneNumberView = phoneNumberView.substring(0, 9)
         }
-//        val phoneNumberView = myPageItem.phoneNumber.let { it.substring(0,9) }
         binding.myProfileHomePhoneNumberFirstTv.text = phoneNumberView
         binding.myProfileHomeCareerYearNumTv.text = myPageInfo.experience
         binding.myProfileHomeCareerPlayedNumTv.text = myPageInfo.gamesCount.toString()

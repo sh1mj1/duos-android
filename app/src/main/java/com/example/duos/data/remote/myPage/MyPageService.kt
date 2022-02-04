@@ -3,7 +3,6 @@ package com.example.duos.data.remote.myPage
 import android.util.Log
 import com.example.duos.ApplicationClass
 import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
-import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,11 +11,10 @@ import retrofit2.Response
 // 싱글턴
 object MyPageService {
     private const val TAG: String = "MyPageService"
-    val retrofit = NetworkModule.getRetrofit()
 //    lateinit var myPageDatas : MyPageItem
 
     fun getUserPage(myPageItemView: MyPageItemView, userIdx: Int) {
-        val myPageService = retrofit.create(MyPageRetrofitInterface::class.java)
+        val myPageService = ApplicationClass.retrofit.create(MyPageRetrofitInterface::class.java)
 
         myPageService.getUserPage(userIdx).enqueue(object : Callback<MyPageResponse> {
             override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
@@ -57,6 +55,5 @@ object MyPageService {
 
 
 }
-
 
 
