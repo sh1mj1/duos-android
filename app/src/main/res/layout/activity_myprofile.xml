@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
     tools:context=".ui.main.mypage.myprofile.MyProfileActivity">
 
     <!--상단 나의 프로필 바-->
@@ -77,6 +76,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--    FragmentContainer 부분-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/my_profile_fragment_sv"
         android:layout_width="match_parent"

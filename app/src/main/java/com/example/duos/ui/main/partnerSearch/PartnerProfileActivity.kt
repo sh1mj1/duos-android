@@ -4,27 +4,32 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.duos.R
 import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.databinding.ActivityPartnerProfileBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.CreateChatRoomView
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 
-class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(ActivityPartnerProfileBinding::inflate), CreateChatRoomView{
+class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyprofileBinding::inflate), CreateChatRoomView{
     var thisUserIdx = 102
     var targetUserIdx = 76
 
     override fun initAfterBinding() {
-        supportFragmentManager.beginTransaction().replace(R.id.partner_profile_fragment_container_fc, PartnerProfileFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment())
             .commitAllowingStateLoss()
 
         binding.partnerProfileChattingBtn.setOnClickListener {
             createRoom()
         }
 
-        binding.partnerProfileBackIv.setOnClickListener {
+        binding.topLeftArrowIv.setOnClickListener {
             finish()
         }
     }
