@@ -92,85 +92,57 @@
             app:layout_goneMarginStart="12dp"
             app:layout_goneMarginTop="27dp" />
 
-        <LinearLayout
-            android:id="@+id/player_place_ll"
-            android:layout_width="93dp"
+        <ImageView
+            android:id="@+id/player_location_iv"
+            android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
+            android:src="@drawable/ic_pin_location_fill"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/player_nickname_tv">
+            app:layout_constraintTop_toBottomOf="@+id/player_nickname_tv" />
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_pin_location_fill"
-
-                />
-
-            <TextView
-                android:layout_width="75dp"
-                android:layout_height="18dp"
-                android:fontFamily="@font/applesdgothicneoregular"
-                android:gravity="center_horizontal|bottom"
-                android:letterSpacing="0.04"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/my_profile_my_location"
-                android:textColor="@color/primary"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/player_grade_ll"
-            android:layout_width="109dp"
+        <TextView
+            android:id="@+id/player_location_tv"
+            android:layout_width="75dp"
             android:layout_height="18dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:gravity="center_horizontal|bottom"
+            android:letterSpacing="0.04"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/my_profile_my_location"
+            android:textColor="@color/primary"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@+id/player_location_iv"
+            app:layout_constraintTop_toTopOf="@+id/player_location_iv" />
+
+        <RatingBar
+            android:id="@+id/profile_grade_rb"
+            style="@style/duos_custom_star_small"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="26dp"
-            android:layout_marginTop="14dp"
-            app:layout_constraintStart_toEndOf="@id/player_place_ll"
-            app:layout_constraintTop_toBottomOf="@+id/player_nickname_tv">
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="0.1"
+            app:layout_constraintBottom_toBottomOf="@+id/player_location_tv"
+            app:layout_constraintStart_toEndOf="@+id/player_location_tv"
+            app:layout_constraintTop_toTopOf="@+id/player_location_tv" />
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="1dp"
-                android:src="@drawable/ic_star_fill" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="1dp"
-                android:src="@drawable/ic_star_fill" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="1dp"
-                android:src="@drawable/ic_star_fill" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="1dp"
-                android:src="@drawable/ic_star_fill" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_star_fill" />
-
-            <TextView
-                android:id="@+id/player_grade_num_tv"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|bottom"
-                android:letterSpacing="0.04"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/my_profile_my_grade"
-                android:textSize="13sp" />
-
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/profile_grade_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:letterSpacing="0.05"
+            android:text="5.0"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_grade_rb"
+            app:layout_constraintStart_toEndOf="@+id/profile_grade_rb"
+            app:layout_constraintTop_toTopOf="@+id/profile_grade_rb" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playing_review_content_rv"
@@ -181,7 +153,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/player_place_ll" />
+            app:layout_constraintTop_toBottomOf="@+id/player_location_tv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

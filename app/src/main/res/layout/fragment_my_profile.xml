@@ -40,13 +40,14 @@
             android:layout_marginTop="27dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center_horizontal|top"
-            android:text="@string/my_profile_my_nickname"
+
             android:textAlignment="center"
             android:textColor="@color/nero"
             android:textSize="25sp"
             app:layout_constraintEnd_toStartOf="@+id/my_generation_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv" />
+<!--            android:text="@string/my_profile_my_nickname"-->
 
 
         <TextView
@@ -114,33 +115,6 @@
             app:layout_constraintStart_toEndOf="@+id/my_place_iv"
             app:layout_constraintTop_toTopOf="@+id/my_place_iv" />
 
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/my_place_ll"-->
-        <!--            android:layout_width="93dp"-->
-        <!--            android:layout_height="18dp"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="14dp"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/my_nickname_tv">-->
-
-        <!--            <ImageView-->
-        <!--                android:layout_width="18dp"-->
-        <!--                android:layout_height="18dp"-->
-        <!--                android:src="@drawable/ic_pin_location_fill"-->
-        <!--                />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/my_location_tv"-->
-        <!--                android:layout_width="75dp"-->
-        <!--                android:layout_height="18dp"-->
-        <!--                android:fontFamily="@font/applesdgothicneoregular"-->
-        <!--                android:gravity="center_horizontal|bottom"-->
-        <!--                android:letterSpacing="0.04"-->
-        <!--                android:lineSpacingExtra="0sp"-->
-        <!--                android:text="@string/my_profile_my_location"-->
-        <!--                android:textColor="@color/primary"-->
-        <!--                android:textSize="13sp" />-->
-        <!--        </LinearLayout>-->
 
         <RatingBar
             android:id="@+id/my_grade_rb"
@@ -180,12 +154,12 @@
             android:layout_marginEnd="16dp"
             android:gravity="top"
             android:lineSpacingExtra="3sp"
-            android:text="@string/my_profile_my_introduction"
             android:textSize="11sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_place_iv" />
+<!--        android:text="@string/my_profile_my_introduction"-->
 
         <!--구력, 게임 수, 구분선    -->
         <View

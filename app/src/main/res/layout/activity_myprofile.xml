@@ -111,11 +111,11 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
-            android:id="@+id/player_islike_dimension_iv"
+            android:id="@+id/player_is_starred_iv"
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_islike_switcher"
+            android:src="@drawable/ic_islike_false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/partner_profile_chatting_btn"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/player_islike_dimension_iv"
+            app:layout_constraintStart_toEndOf="@+id/player_is_starred_iv"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,35 +20,37 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.MyProfileResult
-import com.example.duos.data.entities.MyProfileReviewItem
+import com.example.duos.data.entities.PartnerProfileReviewItem
 import com.example.duos.data.remote.myProfile.MyProfileService
 import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
+import com.google.gson.Gson
 
 class MyProfileFragment : Fragment(), ProfileListView {
     val TAG: String = "MyProfileFragment"
-    private var myProfileReviewDatas = ArrayList<MyProfileReviewItem>()
-
+    private var myProfileReviewDatas = ArrayList<PartnerProfileReviewItem>()
     lateinit var binding: FragmentMyProfileBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         Log.d(TAG, "Start_MypageFragment")
 
+        //TODO userIdx에 어떤 값이 들어갈지
         MyProfileService.myProfileInfo(this, 1)
-        // 클릭리스너
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
+        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
         return binding.root
     }
-//    lateinit var compositeDisposable: CompositeDisposable    // 메모리 누수 방지?
 
 
     override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
 
-        setMyProfileInfo(myProfile)
+        setMyProfileInfo(myProfile) // 위쪽 데이터 설정
         setExperienceView()
 
+        myProfileReviewDatas.clear()
         myProfileReviewDatas.addAll(myProfile.reviews)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
         // 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
@@ -56,12 +58,13 @@ class MyProfileFragment : Fragment(), ProfileListView {
         binding.playingReviewContentRv.adapter = profileReviewRVAdapter
         binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        /* 다른 회원 프로필로 이동*/
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
-                override fun onItemClick(myProfileReviewItem: MyProfileReviewItem) {
+                override fun onItemClick(myProfileReviewItem: PartnerProfileReviewItem) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-//                            Log.d(TAG,"나의 프로필 페이지에서 PartnerPage로 이동")
+                            Log.d(TAG,"MyProfileFrag -> PlayerFrag")
                             arguments = Bundle().apply {
                                 // TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동해야되 그 Idx 는 Intent 로 전달해도될 듯???
 
@@ -83,8 +86,11 @@ class MyProfileFragment : Fragment(), ProfileListView {
             val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                     arguments = Bundle().apply {
+                        val gson = Gson()
+                        val profileJson = gson.toJson(myProfile.profileInfo)
+                        putString("profile", profileJson)
+//                        putString("profileInfo", myProfile.profileInfo.nickname)
 
-                        // TODO:  해당 회원의 Idx 값을 받아서 API 파싱해서 받는 곳에서 받으면 될듯.
                     }
 
                 })
@@ -109,13 +115,11 @@ class MyProfileFragment : Fragment(), ProfileListView {
         binding.myGenerationTv.text = myProfile.profileInfo.age
         binding.myLocationTv.text = myProfile.profileInfo.location
         binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString()
-        val myGradeRate = binding.myGradeNumTv.text.toString()
+        binding.myGradeRb.rating = myProfile.profileInfo.rating!!
         binding.myIntroductionTv.text = myProfile.profileInfo.introduction
         binding.careerYearNumTv.text = myProfile.profileInfo.experience
         binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()
         binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
-//        binding.myGradeRb.rating = myProfile.profileInfo.rating!!               ///////////////////
-        binding.myGradeRb.rating = myGradeRate.toFloat()
     }
 
     private fun setExperienceView() {

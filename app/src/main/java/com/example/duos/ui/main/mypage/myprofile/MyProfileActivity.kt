@@ -20,8 +20,6 @@ class MyProfileActivity :
             .commitAllowingStateLoss()
 
 
-
-
         binding.editMyProfileTv.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, EditProfileFragment())

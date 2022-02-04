@@ -7,14 +7,11 @@ import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
-
 
 object MyProfileService {
     val retrofit = NetworkModule.getRetrofit()
     fun myProfileInfo(profileListView: ProfileListView, userIdx: Int) {
         val myProfileService = retrofit.create(MyProfileRetrofitInterface::class.java)
-
 
         myProfileService.myProfile(userIdx).enqueue(object : Callback<MyProfileResponse> {
             override fun onResponse(call: Call<MyProfileResponse>, response: Response<MyProfileResponse>) {
@@ -22,7 +19,6 @@ object MyProfileService {
                 when (resp.code) {
                     1000 -> {
                         resp.result.let { profileListView.onGetMyProfileInfoSuccess(it) }
-
                     }
                     else -> profileListView.onGetMyProfileInfoFailure(resp.code, resp.message)
                 }
