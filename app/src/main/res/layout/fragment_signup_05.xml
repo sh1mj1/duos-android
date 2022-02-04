@@ -84,7 +84,7 @@
             android:background="@drawable/signup_profile_introduce_rectangular"
             app:layout_constraintTop_toBottomOf="@id/signup_05_introduce_tv">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_05_introduce_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -10,6 +10,7 @@ import com.example.duos.ui.signup.SignUpNickNameView
 import com.example.duos.ui.signup.SignUpRequestView
 import com.example.duos.ui.signup.SignUpVerifyAuthNumView
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -117,7 +118,7 @@ object SignUpService {
         })
     }
 
-    fun signUpReqeust(signUpRequestView: SignUpRequestView, mFile: MultipartBody.Part, userInfo: SignUpRequestInfo) {
+    fun signUpReqeust(signUpRequestView: SignUpRequestView, mFile: MultipartBody.Part?, userInfo: RequestBody) {
         val signUpRequestService = retrofit.create(SignUpRetrofitInterface::class.java)
 
         signUpRequestService.signUpRequest(mFile, userInfo).enqueue(object :

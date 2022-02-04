@@ -68,11 +68,14 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                 binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
             param.marginEnd = 20.toDp(requireContext())
             binding.signup01ConstraintLayout01Cl.layoutParams = param
+        } else{
+            viewModel.phoneNumber.value = ""
+            signupNextBtnListener.onNextBtnUnable()
         }
         savedState = null
 
         // skip 테스트 버튼
-        binding.signup01SkipBtn.setOnClickListener { signupNextBtnListener.onNextBtnEnable() }
+        binding.signup01SkipBtn.setOnClickListener { onGoingNextListener.onGoingNext() }
 
         return binding.root
     }
@@ -91,10 +94,10 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
         binding.signup01PhoneNumberVerifyingBtn.setOnClickListener { verifyingBtnOnClick() }
 
-        this.viewModel.phoneNumber.observe(requireActivity(), {
+        this.viewModel.phoneNumber.observe(viewLifecycleOwner, {
             val pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
             val matcher = pattern.matcher(it);
-            if (it.length == 13) {
+            if (it!!.length == 13) {
                 if (matcher.matches()) {
                     this.viewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
                         if (it2.length == 6) {

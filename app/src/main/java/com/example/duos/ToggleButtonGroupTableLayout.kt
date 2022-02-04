@@ -61,7 +61,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
         if (v.context is SignUpActivity){
             radioBtnListener = signupContext as SignUpActivity
-            (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.text as String)
+            (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.tag.toString())
         }
 
 //        val viewModel = ViewModelProvider(mcontext as ViewModelStoreOwner).get(SignUpInfoViewModel::class.java)

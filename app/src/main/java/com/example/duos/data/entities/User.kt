@@ -1,5 +1,6 @@
 package com.example.duos.data.entities
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,13 +11,13 @@ import com.google.gson.annotations.SerializedName
 data class User(
     var phoneNumber : String? = null,
     @PrimaryKey var nickName : String,
-    var gender : String? = null,
+    var gender : Int? = null,
     var birthYear : Int? = null,
     var birthMonth : Int? = null,
     var birthDay : Int? = null,
     var locationCate : Int? = null,
     var location : Int? = null,
-    var experience : String? = null,
-    var profileImg : Int? = null,
+    var experience : Int? = null,
+    var profileImg : Bitmap? = null,
     var introduce: String? = null
 )

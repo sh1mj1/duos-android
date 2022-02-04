@@ -25,23 +25,41 @@ import com.example.duos.databinding.FragmentSignup05Binding
 import com.example.duos.ui.BaseFragment
 import java.io.File
 import android.graphics.Matrix
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.duos.ApplicationClass
+import com.example.duos.data.remote.signUp.SignUpService
+import com.example.duos.databinding.FragmentSignup04Binding
 import com.example.duos.utils.SignUpInfoViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
-
 import okhttp3.RequestBody
-
 import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
+import okio.BufferedSink
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.util.regex.Pattern
 
 
-class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup05Binding::inflate) {
+class SignUpFragment05() : Fragment(), SignUpRequestView {
 
     lateinit var contentUri: Uri
+    lateinit var binding: FragmentSignup05Binding
+    lateinit var onGoingNextListener: SignUpGoNextInterface
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val CAMERA_PERMISSION_REQUEST = 100
@@ -49,6 +67,7 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
     lateinit var mContext: SignUpActivity
     lateinit var viewModel: SignUpInfoViewModel
     var profileBitmap: Bitmap? = null
+    var savedState: Bundle? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -72,13 +91,61 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
     )
     val multiplePermissionsCode2 = 300
 
-
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSignup05Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "05"
         signupNextBtnListener = mContext
+        onGoingNextListener = mContext
         viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
 
-        signupNextBtnListener.onNextBtnEnable()
+        if (savedInstanceState != null && savedState == null) {
+            savedState = savedInstanceState.getBundle("savedState")
+        }
+        if (savedState != null) {
+            Log.d("ㅎㅇ", "저장")
+        } else {
+            Log.d("ㅎㅇ", "저장X")
+            signupNextBtnListener.onNextBtnUnable()
+        }
+        savedState = null
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        this.viewModel.profileImg.observe(viewLifecycleOwner, {
+            if (it != null) {
+                Log.d("ㅎㅇ", "프사")
+                if (binding.signup05IntroduceEt.text?.length!! > 0){
+                    signupNextBtnListener.onNextBtnEnable()
+                } else signupNextBtnListener.onNextBtnUnable()
+            }
+            else signupNextBtnListener.onNextBtnUnable()
+        })
+
+
+        binding.signup05IntroduceEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (s!!.isNotEmpty()){
+                    viewModel.profileImg.observe(viewLifecycleOwner, {
+                        if (it!= null){
+                            signupNextBtnListener.onNextBtnEnable()
+                        } else signupNextBtnListener.onNextBtnUnable()
+                    })
+                }else signupNextBtnListener.onNextBtnUnable()
+            }
+        })
+
+
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
@@ -215,12 +282,12 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
                     })
             dialogBuilder.create().show()
 
-
             // 갤러리에서 선택
 
-
         }
+
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -439,23 +506,131 @@ class SignUpFragment05() : BaseFragment<FragmentSignup05Binding>(FragmentSignup0
         return bitmap2
     }
 
-    fun signUpPost(){
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val mFile = profileBitmap?.let { bitmapToFile(it,"mFile.jpg") }
-        val requestBody: RequestBody =
-           byteArrayOutputStream.toByteArray()
-                .toRequestBody("image/jpg".toMediaTypeOrNull())
-        val uploadFile: MultipartBody.Part = createFormData("mFile", mFile?.name, requestBody)
+    fun signUpPost() {
+//        val byteArrayOutputStream = ByteArrayOutputStream()
+//        val mFile = profileBitmap?.let { bitmapToFile(it,"mFile.jpg") }
+//        val requestBody: RequestBody =
+//            byteArrayOutputStream.toByteArray()
+//                .toRequestBody("image/jpg".toMediaTypeOrNull())
+//        val uploadFile: MultipartBody.Part = createFormData("mFile", mFile?.name, requestBody)
+
+        val bitmapRequestBody = profileBitmap?.let { BitmapRequestBody(it) }
+        val bitmapMultipartBody: MultipartBody.Part? =
+            if (bitmapRequestBody == null) null
+            else createFormData("mFile", "mFile", bitmapRequestBody)
+
+        FirebaseApp.initializeApp(requireContext())
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(
+                    ApplicationClass.TAG,
+                    "Fetching FCM registration token failed",
+                    task.exception
+                )
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token // FCM 등록 토큰 get
+            val token = task.result
+
+            Log.d("token", token!!)
+//
+//            val userInfo = SignUpRequestInfo(
+//                viewModel.phoneNumber.value.toString(),
+//                viewModel.nickName.value.toString(),
+//                viewModel.birthYear.value.toString() + "-" + viewModel.birthMonth.value.toString().padStart(2,'0')
+//                        + "-" + viewModel.birthDay.value.toString().padStart(2, '0'),
+//                viewModel.gender.value!!,
+//                viewModel.location.value!!,
+//                viewModel.experience.value!!,
+//                binding.signup05IntroduceEt.text.toString(),
+//                token!!
+//            )
+
+            val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+            val json = JSONObject()
+            val regex = Regex("[^A-Za-z0-9]")//Regex를 활용하여 특수문자 없애주기
+            val phoneNumber = regex.replace(viewModel.phoneNumber.value.toString(), "")
+
+            json.put("phoneNumber", phoneNumber)
+            json.put("nickname", viewModel.nickName.value.toString())
+            json.put(
+                "birthDate",
+                viewModel.birthYear.value.toString() + "-" + viewModel.birthMonth.value.toString()
+                    .padStart(2, '0')
+                        + "-" + viewModel.birthDay.value.toString().padStart(2, '0')
+            )
+            json.put("gender", viewModel.gender.value)
+            json.put("locationIdx", viewModel.location.value)
+            json.put("experienceIdx", viewModel.experience.value)
+            json.put("introduction", binding.signup05IntroduceEt.text.toString())
+            json.put("fcmToken", token)
+
+            Log.d(
+                "확인", phoneNumber + " " + viewModel.nickName.value.toString() + " " +
+                        viewModel.birthYear.value.toString() + "-" + viewModel.birthMonth.value.toString()
+                    .padStart(2, '0')
+                        + "-" + viewModel.birthDay.value.toString()
+                    .padStart(2, '0') + " " + viewModel.gender.value
+                        + " " + viewModel.location.value + " " + viewModel.experience.value + " " + binding.signup05IntroduceEt.text.toString() +
+                        " " + token
+            )
+
+            val userInfo = json.toString().toRequestBody(JSON)
+            SignUpService.signUpReqeust(this, bitmapMultipartBody, userInfo)
+        })
+
+
     }
 
-    fun bitmapToFile(bitmap: Bitmap, name: String): File{
-        var file = File(name)
+    inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
+        override fun contentType(): MediaType = "image/jpeg".toMediaType()
+        override fun writeTo(sink: BufferedSink) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
+        }
+    }
+//
+//    private fun getFcmToken() : String? {
+//        var token : String? = null
+//        // fcm 등록토큰 받아오기
+//        FirebaseApp.initializeApp(requireContext())
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(ApplicationClass.TAG, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//
+//            // Get new FCM registration token // FCM 등록 토큰 get
+//            token = task.result
+//
+//            Log.d("token",token!!)
+//        })
+//        return token
+//    }
+
+    fun bitmapToFile(bitmap: Bitmap, name: String): File {
+        val fileDir = context?.filesDir
+        var file = File(fileDir, "$name.jpg")
         var out: OutputStream? = null
-        try{ file.createNewFile()
+        try {
             out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out) // 80으로 되어있었음
-        }finally{ out?.close() }
+        } finally {
+            out?.close()
+        }
         return file
+    }
+
+    override fun onSignUpRequestSuccess() {
+        Log.d("success", "hi")
+        onGoingNextListener.onGoingNext()
+    }
+
+    override fun onSignUpRequestFailure(code: Int, message: String) {
+        when (code){
+            5025 ->Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 }
