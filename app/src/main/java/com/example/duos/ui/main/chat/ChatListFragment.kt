@@ -12,31 +12,31 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
+import com.example.duos.ui.BaseFragment
 import kotlin.collections.ArrayList
 
-class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClickListener {
-    lateinit var binding : FragmentChatListBinding
+class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::inflate), ChatListView, ChatListRVAdapter.DeleteClickListener {
+    // BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate)
+    //lateinit var binding : FragmentChatListBinding
     private var chatListDatas = ArrayList<ChatRoom>()
     private lateinit var chatListRv: RecyclerView
     private lateinit var chatListRVAdapter: ChatListRVAdapter
     lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
     private lateinit var mContext:Context
+    lateinit var chatDB: ChatDatabase
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentChatListBinding.inflate(inflater, container, false)
-
+    override fun initAfterBinding() {
         chatListRv = binding.chatListRv
         chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        ChatListService.chatList(this, 0)
+        
+
+        ChatListService.chatList(this, 76)
 //        chatListDatas.apply {
 //            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
 //            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
@@ -56,8 +56,42 @@ class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClic
 //            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
 //        }
         initRecyclerView()
-        return binding.root
     }
+
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        binding = FragmentChatListBinding.inflate(inflater, container, false)
+//
+//        chatListRv = binding.chatListRv
+//        chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+//        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
+//        chatListRv.adapter = chatListRVAdapter
+//
+//        ChatListService.chatList(this, 76)
+////        chatListDatas.apply {
+////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
+////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
+////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
+////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
+////        }
+//        initRecyclerView()
+//        return binding.root
+//    }
 
     companion object {
         fun newInstance(): ChatListFragment = ChatListFragment()
@@ -76,7 +110,7 @@ class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClic
         chatListDatas.clear()
         chatListDatas.addAll(chatList)
 
-
+        chatDB = ChatDatabase.getInstance(requireContext())!!
 
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
@@ -120,5 +154,4 @@ class ChatListFragment(): Fragment(), ChatListView, ChatListRVAdapter.DeleteClic
         val intent = Intent(activity, ChattingActivity::class.java)
         startActivity(intent)
     }
-
 }

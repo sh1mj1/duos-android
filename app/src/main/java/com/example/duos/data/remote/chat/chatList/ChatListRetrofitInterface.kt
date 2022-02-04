@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ChatListRetrofitInterface {
-    @GET("/test/chat/list")
+    @GET("/api/chat/rooms")
     fun chatList(@Query("userIdx") userIdx : Int
     ): Call<ChatListResponse>
 }
