@@ -3,6 +3,7 @@ package com.example.duos.ui.main.chat
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
     private lateinit var mContext:Context
     lateinit var chatDB: ChatDatabase
+    val userIdx = 76
 
     override fun initAfterBinding() {
         chatListRv = binding.chatListRv
@@ -34,9 +36,17 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        
+        chatDB = ChatDatabase.getInstance(requireContext())!!
 
-        ChatListService.chatList(this, 76)
+        if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
+            ChatListService.chatList(this, userIdx)
+            Log.d("인터넷 연결 확인", "CONNECTED")
+        } else {    // 인터넷 연결 안돼있을 때
+            Log.d("인터넷 연결 확인", "DISCONNECTED")
+            chatListDatas.clear()
+            chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())
+        }
+
 //        chatListDatas.apply {
 //            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
 //            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
@@ -102,16 +112,6 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     }
 
     private fun initRecyclerView(){
-
-    }
-
-    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
-
-        chatListDatas.clear()
-        chatListDatas.addAll(chatList)
-
-        chatDB = ChatDatabase.getInstance(requireContext())!!
-
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
@@ -135,6 +135,30 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             swipeHelperCallback.removePreviousClamp(chatListRv)
             false
         }
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
+
+        chatListDatas.clear()
+
+        var chatListGotten = chatList   // 서버에서 불러온 채팅방 목록
+
+        var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
+        var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+        if(!chatListUpdated.isEmpty()){
+            for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
+                chatDB.chatRoomDao().insert(chatListUpdated[i])
+            }
+            Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
+        }else{
+            Log.d("업데이트된 채팅방 확인", "없음")
+        }
+
+        chatListDatas.addAll(chatListGotten)    // 서버에서 불러온 채팅방을 리사이클러뷰에 그대로 띄워주기 위해 chatListDatas에 담음
+
+        Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
+
+        initRecyclerView()
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {

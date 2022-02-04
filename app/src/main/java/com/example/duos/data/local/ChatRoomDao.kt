@@ -1,6 +1,7 @@
 package com.example.duos.data.local
 
 import androidx.room.*
+import com.example.duos.data.entities.chat.ChatMessage
 import com.example.duos.data.entities.chat.ChatRoom
 
 @Dao
