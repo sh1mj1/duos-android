@@ -33,7 +33,7 @@ class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyp
             finish()
         }
     }
-
+    /*  아래 희주님이 작성하신 코드                 */
     fun createRoom(){
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
         Log.d("채팅방 생성한 user의 userIdx", thisUserIdx.toString())
