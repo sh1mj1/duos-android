@@ -98,21 +98,21 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
 
-        // fcm 등록토큰 받아오기
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token // FCM 등록 토큰 get
-            val token = task.result
-
-            // Log and toast
-            //val msg = getString(R.string.msg_token_fmt, token)
-            //Log.d(TAG, msg)
-            Log.d("토큰 확인", token)
-            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
-        })
+//        // fcm 등록토큰 받아오기
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//
+//            // Get new FCM registration token // FCM 등록 토큰 get
+//            val token = task.result
+//
+//            // Log and toast
+//            //val msg = getString(R.string.msg_token_fmt, token)
+//            //Log.d(TAG, msg)
+//            Log.d("토큰 확인", token)
+//            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+//        })
     }
 }
