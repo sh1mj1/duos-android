@@ -24,3 +24,20 @@ fun saveFriendListDialogNotShowing(boolean: Boolean){
 fun getFriendListDiaglogNotShowing() : Boolean =
     mSharedPreferences.getBoolean("friendListDialogNotShowing", false)
 
+fun saveCheckUserAppliedPartnerFilterMoreThanOnce(boolean: Boolean){
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("checkUserAppliedPartnerFilterMoreThanOnce", boolean)
+    editor.apply()
+}
+
+fun getCheckUserAppliedPartnerFilterMoreThanOnce() : Boolean =
+    mSharedPreferences.getBoolean("checkUserAppliedPartnerFilterMoreThanOnce", false)
+
+fun saveLastUpdatedDate(lastUpdatedDate: String){
+    val editor = mSharedPreferences.edit()
+    editor.putString("lastUpdatedDate", lastUpdatedDate)
+    editor.apply()
+}
+
+fun getLastUpdatedDate() : String =
+    mSharedPreferences.getString("lastUpdatedDate", "1998-10-10").toString()

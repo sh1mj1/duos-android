@@ -1,10 +1,14 @@
 package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
+import com.example.duos.data.local.RecommendedPartnerDatabase
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
+import com.example.duos.utils.saveCheckUserAppliedPartnerFilterMoreThanOnce
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 
@@ -75,10 +79,39 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
             var ballCapacityMin = binding.partnerFilterBallCapabilityMinTv.text
             var ballCapacityMax = binding.partnerFilterBallCapabilityMaxTv.text
 
+            // 필터 적용 한 적이 한 번이라도 있는지 체크하고, 없으면 sharedPreference 변수인 checkUserAppliedPartnerFilterMoreThanOnce = true로 바꾸기
+            if(!getCheckUserAppliedPartnerFilterMoreThanOnce()){
+                Log.d("PartnerFilterActivity", "이 사용자는 가입 후 파트너 추천 필터 기능을 사용한 적이 없음")
+                saveCheckUserAppliedPartnerFilterMoreThanOnce(true)
+            }else{
+                Log.d("PartnerFilterActivity", "이 사용자는 가입 후 파트너 추천 필터 기능을 적어도 한 번 이상 사용함")
+            }
+
+            // 필터 적용 파트너 추천 api 호출 - 해야돼...
 
 
-            // 파트너 찾기 - 매칭 화면으로 이동
-            //val intent = Intent(this, MakePlanActivity::class.java)
+            //수
+
+            //정
+
+            //필
+
+            //요
+
+
+            // api 데이터를 룸디비에 저장 - 수정 필요
+
+//            val recommendedPartnerDB = RecommendedPartnerDatabase.getInstance(this)!!
+            //수
+//            recommendedPartnerDB.recommendedPartnerDao().deleteAll()
+            //정
+//            for(i: Int in 0..api로받은리스트크기-1)
+            //필
+//            recommendedPartnerDB.recommendedPartnerDao().insert()   // insert 파라미터로 api로받은 리스트[i]
+            //요
+//            Log.d("PartnerFilterActivity:", "필터적용 후 파트너 추천 api로 받은 리스트 룸DB에 잘 저장되었는지 확인"+recommendedPartnerDB.recommendedPartnerDao().getRecommendedPartnerList())
+
+                // 파트너 찾기 - 매칭 화면으로 이동
             startActivity(Intent(this, MainActivity::class.java))
         })
 

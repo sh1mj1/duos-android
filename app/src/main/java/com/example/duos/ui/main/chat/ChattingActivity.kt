@@ -37,10 +37,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     //lateinit var binding: ActivityChattingBinding
     private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
-    var userId: String = "tennis01"
-    var partnerId: String = "djeikd0620"
-    var thisUserIdx = 76
-    var targetUserIdx = 110
+    var userId: String = "tennis01"     // 룸디비에서 userIdx로 userId(=userNickname) 조회하도록 수정 필요
+    var partnerId: String = "djeikd0620"    // 인텐트로 넘겨받은 partnerIdx로 룸디비에서 partnerID(=chatRoomName) 가져오도록 수정 필요
+    var thisUserIdx = 76    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
+    var targetUserIdx = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
     private var layoutManager: LayoutManager? = null
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
