@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.duos.data.entities.chat.ChatMessage
 import com.example.duos.data.entities.ChatType
 
 import android.util.Log
@@ -20,6 +19,7 @@ import android.text.TextWatcher
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.duos.R
+import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.remote.chat.chat.ChatService
@@ -78,12 +78,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         this.runOnUiThread {
             if (type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
-                    ChatMessage(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             } else {
                 chattingMessagesRVAdapter.addItem(
-                    ChatMessage(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             }
@@ -218,7 +218,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         )
 
         chattingMessagesRVAdapter.addItem(
-            ChatMessage(
+            ChatMessageItem(
                 userId,
                 chattingEt.text.toString(),
                 toDate(sendTime),
@@ -339,7 +339,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //                Log.d("채팅액티비티", "3 - null 존재")
 //            }
         }else{
-            Log.d("FCM인텐트", "2-error")
+            Log.d("FCM인텐트", "받아올 번들 없음")
         }
     }
 

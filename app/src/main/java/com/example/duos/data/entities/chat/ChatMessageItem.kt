@@ -3,8 +3,8 @@ package com.example.duos.data.entities.chat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "ChatMessageTable")
-data class ChatMessage(
+@Entity(tableName = "ChatMessageItemTable")
+data class ChatMessageItem(
     var senderId : String,
     var body : String,
     var sentAt : String,
