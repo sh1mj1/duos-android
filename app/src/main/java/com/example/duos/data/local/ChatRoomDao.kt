@@ -16,4 +16,8 @@ interface ChatRoomDao {
 
     @Query("SELECT * FROM ChatRoomTable")
     fun getChatRoomList(): List<ChatRoom>
+
+    @Query("SELECT chatRoomIdx FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getChatRoomIdx(chatRoomIdx: String): String
+
 }
