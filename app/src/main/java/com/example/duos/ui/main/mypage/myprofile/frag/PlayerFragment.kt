@@ -27,6 +27,7 @@ import com.example.duos.databinding.FragmentPlayerBinding
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
+import com.google.gson.Gson
 
 class PlayerFragment : Fragment(), PartnerProfileListView {
     val TAG: String = "PlayerFragment"
@@ -83,7 +84,8 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
                     .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                         Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
                         arguments = Bundle().apply {
-                            //TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동해야되 그 Idx 는 Intent 로 전달해도될 듯???
+                            /*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
+                            putInt("thisIdx", partnerProfileReviewItem.writerIdx!!)
                         }
                     })
                 fragmentTransaction.addToBackStack(null)
@@ -99,6 +101,11 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
 //                        val gson = Gson()
 //                        val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
 //                        putString("profile", profileJson)
+                        val gson = Gson()
+                        val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
+                        putString("profile", profileJson)
+
+
                     }
                 })
             fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
