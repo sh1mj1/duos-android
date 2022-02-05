@@ -18,8 +18,8 @@ import com.example.duos.data.remote.myPage.MyPageService
 import com.example.duos.databinding.FragmentMypageBinding
 import com.example.duos.ui.main.mypage.customerservice.CustomerServiceActivity
 import com.example.duos.ui.main.mypage.lastpromise.PreviousGameActivity
-import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.notion.NotionActivity
 import com.example.duos.ui.main.mypage.setup.SetupActivity
 
