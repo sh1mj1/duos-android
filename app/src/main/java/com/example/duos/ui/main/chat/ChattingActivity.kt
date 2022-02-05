@@ -199,11 +199,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     }
 
-    fun startLoadingProgress(){
-        Log.d("로딩중","채팅 메세지 보내기 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
-
     private fun postSendMessage() {
         val messageData = sendMessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
@@ -235,7 +230,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onSendMessageLoading() {
-        startLoadingProgress()
+        progressON()
+        Log.d("로딩중","채팅 메세지 보내기 api")
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
     }
 
     override fun onSendMessageSuccess() {

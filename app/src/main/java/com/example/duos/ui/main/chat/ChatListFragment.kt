@@ -107,10 +107,6 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         fun newInstance(): ChatListFragment = ChatListFragment()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initRecyclerView(){
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter

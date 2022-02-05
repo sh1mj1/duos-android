@@ -3,6 +3,8 @@ package com.example.duos.ui.main.partnerSearch
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -39,6 +41,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
     }
 
+    override fun onGetPartnerSearchDataLoading() {
+        progressON()
+        Log.d("로딩중","파트너 추천 api")
+        //Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+    }
+
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
         //        recommendedPartnerDatas.apply {
 //            // 서울시 마포구로 필터링됐을 떄를 가정
@@ -56,6 +64,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //        }
 
         Log.d("get_recommendedPartnerList","ongetSuccess")
+        progressOFF()
 
         val userNickName = partnerSearchData.userNickname
 
@@ -92,11 +101,21 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
-        PartnerSearchService.partnerSearchData(this, 5)
+        partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
+            override fun onItemClick(recommendedPartner: RecommendedPartner) {
+                // 파트너 세부 화면으로 이동
+                Log.d("그리드","itemClick")
+                var intent = Intent(activity, PartnerProfileActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
+        PartnerSearchService.partnerSearchData(this, 2)
 
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
+
 
 //        // fcm 등록토큰 받아오기
 //        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->

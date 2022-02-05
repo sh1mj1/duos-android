@@ -17,6 +17,8 @@ object ChatService {
         val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
         val createChatRoomRequestInfo = CreateChatRoomData(thisUserIdx, targetUserIdx)
 
+        createChatRoomView.onCreateChatRoomLoading()
+
         createChatRoomService.createChatRoom(createChatRoomRequestInfo).enqueue(object :
             Callback<CreateChatRoomResponse>
         {

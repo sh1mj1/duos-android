@@ -68,15 +68,23 @@ class ApplicationClass : Application() {
         if (activity == null || activity.isFinishing) {
             return
         }
-        if (progressDialog != null && progressDialog.isShowing()) {
-            //progressSET(message)
-        } else {
-            progressDialog = AppCompatDialog(activity)
-            progressDialog.setCancelable(false)
-            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            progressDialog.setContentView(R.layout.progress_loading)
-            progressDialog.show()
-        }
+
+        progressDialog = AppCompatDialog(activity)
+        progressDialog.setCancelable(false)
+        progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.setContentView(R.layout.progress_loading)
+        progressDialog.show()
+
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            //progressSET(message)
+//        } else {
+//            progressDialog = AppCompatDialog(activity)
+//            progressDialog.setCancelable(false)
+//            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//            progressDialog.setContentView(R.layout.progress_loading)
+//            progressDialog.show()
+//        }
+
         val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
         val frameAnimation = img_loading_frame?.background as AnimationDrawable
         img_loading_frame.post { frameAnimation.start() }
