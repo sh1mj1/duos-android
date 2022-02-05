@@ -28,23 +28,19 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun initAfterBinding() {
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.signup_fragment_container_fc, SignUpFragment01())
+            .replace(R.id.signup_fragment_container_fc, SignUpFragment00())
             .commitAllowingStateLoss()
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
         binding.signupNextBtn.setOnClickListener {
             if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
-                // 인증번호 인증하기
-                Log.d("ㅎㅇ","6")
                 (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment01).verifyAuthNum()
             }
 
             else if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment02) {
                 if (checkBtn) {
-                    Log.d("ㅎㅇ","1")
                     initNavController()
                 } else {
-                    Log.d("ㅎㅇ","2")
                     onNextBtnChanged(false)
                     (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment02).setBirth()
                 }
@@ -54,13 +50,12 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) as SignUpFragment05).signUpPost()
             }
             else {
-                Log.d("ㅎㅇ","5")
                 initNavController()
             }
 
         }
         binding.signupBackArrowIv.setOnClickListener {
-            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
+            if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment00) {
                 finish()
             } else {
                 onBackPressed()
@@ -72,6 +67,13 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     private fun initNavController() {
 
         supportFragmentManager.run {
+            if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment00) {
+                beginTransaction()
+                    .replace(R.id.signup_fragment_container_fc, SignUpFragment01())
+                    .addToBackStack(null)
+                    .commit()
+                onNextBtnUnable()
+            }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
                 beginTransaction()
                     .replace(R.id.signup_fragment_container_fc, SignUpFragment02())
@@ -120,7 +122,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun onNextBtnChanged(boolean: Boolean) {
         // 다음 -> 완료로 다시 바꾸기
         if (boolean) {
-            Log.d("ㅎㅇ","4")
             binding.signupNextBtn.isEnabled = true
             binding.signupNextBtn.text = getText(R.string.signup_next_btn_02)
             binding.signupNextBtn.setTextColor(getColor(R.color.white))
@@ -130,7 +131,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         }
         // 완료 -> 다음으로 바꾸기
         else {
-            Log.d("ㅎㅇ","3")
             binding.signupNextBtn.isEnabled = false
             binding.signupNextBtn.text = getText(R.string.signup_next_btn)
             binding.signupNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)

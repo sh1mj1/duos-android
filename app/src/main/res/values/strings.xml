@@ -24,6 +24,11 @@
 
     <!-- 회원가입 -->
     <string name="signup">회원가입&#160;</string>
+    <string name="signup_agreement_title">듀오스 약관 동의</string>
+    <string name="signup_agreement_detail">듀오스 서비스 이용을 위하여\n약관 동의가 필요합니다.</string>
+    <string name="signup_agreement_all">모두 동의합니다</string>
+    <string name="signup_agreement_essential_01">(필수) 듀오스 이용약관</string>
+    <string name="signup_agreement_essential_02">(필수) 듀오스 개인정보 수집 및 이용동의</string>
     <string name="signup_phone_number">휴대전화</string>
     <string name="signup_phone_number_hint"><font size="16">010-0000-0000</font></string>
     <string name="signup_phone_verifying">인증번호</string>

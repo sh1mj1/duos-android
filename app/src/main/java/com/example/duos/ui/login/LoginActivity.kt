@@ -55,12 +55,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                 if (matcher.matches()) {
                     this.viewModel.loginPhoneNumberVerifying.observe(this, { it2 ->
                         if (it2.length == 6) {
-                            binding.loginNextBtn.isEnabled = true
-                        } else binding.loginNextBtn.isEnabled = false
+                            onNextBtnEnable()
+                        } else onNextBtnUnable()
 
                     })
-                } else binding.loginNextBtn.isEnabled = false
-            } else binding.loginNextBtn.isEnabled = false
+                } else onNextBtnUnable()
+            } else onNextBtnUnable()
         })
 
         binding.loginPhoneNumberEt.addTextChangedListener(object : TextWatcher {
@@ -262,4 +262,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         binding.loginPhoneVerifyingErrorTv.text = message
     }
 
+    fun onNextBtnEnable() {
+        binding.loginNextBtn.isEnabled = true
+        binding.loginNextBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
+        binding.loginNextBtn.setTextColor(getColor(R.color.white))
+    }
+
+    fun onNextBtnUnable() {
+        binding.loginNextBtn.isEnabled = false
+        binding.loginNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
+        binding.loginNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
+    }
 }

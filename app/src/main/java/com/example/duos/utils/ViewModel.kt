@@ -13,6 +13,9 @@ class ViewModel : ViewModel() {
     var signUp02Avail : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUp03Avail : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUp04Avail : MutableLiveData<Boolean> = MutableLiveData(false)
+    var agreementAll : MutableLiveData<Boolean> = MutableLiveData(false)
+    var agreementEssential01 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var agreementEssential02 : MutableLiveData<Boolean> = MutableLiveData(false)
 
     var nickName = MutableLiveData<String?>()
     var gender = MutableLiveData<Int?>()

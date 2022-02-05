@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/signup_00_duos_logo_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="37dp"
+        android:fontFamily="@font/robotoblack"
+        android:text="@string/splash_duos_logo"
+        android:textColor="@color/dark_cyan"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_00_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/applesdgothicneoregular"
+        android:text="@string/signup_agreement_title"
+        android:textColor="@color/nero"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/signup_00_duos_logo_tv"
+        app:layout_constraintTop_toBottomOf="@id/signup_00_duos_logo_tv"/>
+
+    <TextView
+        android:id="@+id/signup_00_detail_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/applesdgothicneoregular"
+        android:text="@string/signup_agreement_detail"
+        android:textColor="@color/nero"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/signup_00_duos_logo_tv"
+        app:layout_constraintTop_toBottomOf="@id/signup_00_title_tv"/>
+    
+    <ImageView
+        android:id="@+id/signup_agreement_line_01"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/signup_agreement_line"
+        app:layout_constraintTop_toBottomOf="@id/signup_00_detail_tv"/>
+    
+    <CheckBox
+        android:id="@+id/signup_00_checkbox_01_cb"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/signup_agreement_check_box_custom"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_agreement_line_01"
+        app:layout_constraintTop_toBottomOf="@id/signup_agreement_line_01"/>
+    
+    <TextView
+        android:id="@+id/signup_00_agreement_all_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/signup_agreement_all"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/signup_00_checkbox_01_cb"
+        app:layout_constraintStart_toEndOf="@id/signup_00_checkbox_01_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_00_checkbox_01_cb"/>
+
+    <ImageView
+        android:id="@+id/signup_agreement_line_02"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/signup_agreement_line"
+        app:layout_constraintTop_toBottomOf="@id/signup_00_agreement_all_tv"/>
+
+
+    <CheckBox
+        android:id="@+id/signup_00_checkbox_02_cb"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/signup_agreement_check_box_custom"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_agreement_line_02"
+        app:layout_constraintTop_toBottomOf="@id/signup_agreement_line_02"/>
+
+    <TextView
+        android:id="@+id/signup_00_agreement_detail_01_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/signup_agreement_essential_01"
+        android:textColor="@color/nero"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/signup_00_checkbox_02_cb"
+        app:layout_constraintStart_toEndOf="@id/signup_00_checkbox_02_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_00_checkbox_02_cb"/>
+
+    <ImageView
+        android:id="@+id/signup_00_agreement_detail_01_arrow_iv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="7dp"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@id/signup_00_checkbox_02_cb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_00_checkbox_02_cb"/>
+
+
+    <CheckBox
+        android:id="@+id/signup_00_checkbox_03_cb"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_agreement_check_box_custom"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_00_checkbox_02_cb"
+        app:layout_constraintTop_toBottomOf="@id/signup_00_checkbox_02_cb"/>
+
+    <TextView
+        android:id="@+id/signup_00_agreement_detail_02_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/signup_agreement_essential_02"
+        android:textColor="@color/nero"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/signup_00_checkbox_03_cb"
+        app:layout_constraintStart_toEndOf="@id/signup_00_checkbox_03_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_00_checkbox_03_cb"/>
+
+    <ImageView
+        android:id="@+id/signup_00_agreement_detail_02_arrow_iv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="7dp"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@id/signup_00_checkbox_03_cb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_00_checkbox_03_cb"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
