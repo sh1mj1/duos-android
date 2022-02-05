@@ -64,7 +64,7 @@ class EveryReviewFragment : Fragment(), EveryReviewsItemView {
                 val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                     .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                         arguments = Bundle().apply {
-
+                            putInt("thisIdx", everyReveiwsItem.writerIdx!!)
                         }
 
                     })

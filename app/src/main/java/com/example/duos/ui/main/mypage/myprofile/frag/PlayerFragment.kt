@@ -98,14 +98,9 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
             val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                     arguments = Bundle().apply {
-//                        val gson = Gson()
-//                        val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
-//                        putString("profile", profileJson)
                         val gson = Gson()
                         val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
                         putString("profile", profileJson)
-
-
                     }
                 })
             fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장

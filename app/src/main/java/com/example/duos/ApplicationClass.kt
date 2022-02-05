@@ -80,21 +80,9 @@ class ApplicationClass : Application() {
         val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
         val frameAnimation = img_loading_frame?.background as AnimationDrawable
         img_loading_frame.post { frameAnimation.start() }
-//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
-//        if (!TextUtils.isEmpty(message)) {
-//            tv_progress_message.text = message
-//        }
+
     }
 
-//    fun progressSET(message: String?) {
-//        if (progressDialog == null || !progressDialog.isShowing()) {
-//            return
-//        }
-//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
-//        if (!TextUtils.isEmpty(message)) {
-//            tv_progress_message.text = message
-//        }
-//    }
 
     fun progressOFF() {
         if (progressDialog != null && progressDialog.isShowing()) {

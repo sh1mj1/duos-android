@@ -23,7 +23,6 @@ class PartnerProfileReviewRVAdapter(private val partnerProfileReviewItemList: Ar
     fun clickPlayerReviewListener(itemClickListener: PlayerReviewItemClickListener) {
         mItemClickListener = itemClickListener
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // ViewHolder 생성. (아이템 뷰 객체를 binding해서 뷰 홀더에 던져줌)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerProfileReviewRVAdapter.ViewHolder {
