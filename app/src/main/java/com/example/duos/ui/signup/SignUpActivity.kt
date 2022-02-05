@@ -6,24 +6,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 
 import com.example.duos.databinding.ActivitySignupBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.MainActivity
 import com.example.duos.ToggleButtonInterface
 import com.example.duos.data.entities.User
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.ui.login.LoginActivity
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 
 
 class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate),
     SignUpBirthNextBtnInterface,
     ToggleButtonInterface, SignUpNextBtnInterface, SignUpGoNextInterface {
 
+    lateinit var viewModel: ViewModel
     private var checkBtn: Boolean = true
 
     override fun initAfterBinding() {
@@ -32,6 +31,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             .replace(R.id.signup_fragment_container_fc, SignUpFragment01())
             .commitAllowingStateLoss()
 
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
         binding.signupNextBtn.setOnClickListener {
             if (supportFragmentManager.findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment01) {
                 // 인증번호 인증하기
@@ -101,10 +101,15 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 onNextBtnUnable()
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05) {
+
+                // roomDB 에 저장
+                    saveRoomDB()
+
                 val intent = Intent(
                     findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
                     LoginActivity::class.java
                 )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()
                     ?.startActivity(intent)
 
@@ -159,31 +164,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         initNavController()
     }
 
-    override fun onStop() {
-        super.onStop()
-//         roomDB 에 회원가입 정보 모두 저장
-        val viewModel = ViewModelProvider(this).get(SignUpInfoViewModel::class.java)
-
-        val user : User
-        user = User(viewModel.phoneNumber.value,
-        viewModel.nickName.value!!,
-        viewModel.gender.value,
-        viewModel.birthYear.value,
-        viewModel.birthMonth.value,
-        viewModel.birthDay.value,
-        viewModel.locationCate.value,
-        viewModel.location.value,
-        viewModel.experience.value,
-        viewModel.profileImg.value,
-        viewModel.introduce.value)
-
-        val roomDB = UserDatabase.getInstance(this)!!
-        if (viewModel.nickName.value?.let { roomDB.userDao().getUser(it) } == null){
-            roomDB.userDao().insert(user)
-        } else{
-            roomDB.userDao().update(user)
-        }
-    }
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
@@ -218,5 +198,25 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     }
 
 
-
+    fun saveRoomDB(){
+        val regex = Regex("[^A-Za-z0-9]")//Regex를 활용하여 특수문자 없애주기
+        val phoneNumber = regex.replace(viewModel.phoneNumber.value.toString(), "")
+        val db = UserDatabase.getInstance(applicationContext)
+        var user = User(
+            phoneNumber,
+            viewModel.nickName.value!!,
+            viewModel.gender.value,
+            viewModel.birthYear.value.toString() + "-" + viewModel.birthMonth.value.toString()
+                .padStart(2, '0')
+                    + "-" + viewModel.birthDay.value.toString().padStart(2, '0'),
+            viewModel.locationCate.value,
+            viewModel.location.value,
+            viewModel.experience.value,
+            viewModel.profileImg.value,
+            viewModel.introduce.value,
+            null
+        )
+        db!!.userDao().insert(user)
+        Log.d("roomdb","저장성공")
+    }
 }

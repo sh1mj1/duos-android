@@ -7,22 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
-import com.example.duos.databinding.FragmentSignup02Binding
 import com.example.duos.databinding.FragmentSignup03Binding
-import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 
 class SignUpFragment03() : Fragment() {
     lateinit var binding: FragmentSignup03Binding
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var mContext: SignUpActivity
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
     var savedState: Bundle? = null
     var locationText: TextView? = null
 
@@ -42,7 +39,7 @@ class SignUpFragment03() : Fragment() {
         binding = FragmentSignup03Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "03"
         signupNextBtnListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         return binding.root
     }

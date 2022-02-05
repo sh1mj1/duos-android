@@ -9,19 +9,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup04Binding
-import com.example.duos.ui.BaseFragment
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.duos.databinding.FragmentSignup03Binding
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 
 
 class SignUpFragment04() : Fragment() {
 
     lateinit var binding: FragmentSignup04Binding
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var mContext: SignUpActivity
     var savedState: Bundle? = null
@@ -41,7 +39,7 @@ class SignUpFragment04() : Fragment() {
         binding = FragmentSignup04Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "04"
         signupNextBtnListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         return binding.root
     }
@@ -80,7 +78,7 @@ class SignUpFragment04() : Fragment() {
             btn.tag = i.toString()
         }
 
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         binding.viewmodel = viewModel
 
         viewModel.experience.observe(viewLifecycleOwner, Observer {

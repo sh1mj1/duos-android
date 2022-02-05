@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.FragmentSignup02Binding
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 import java.time.LocalDate
 
 import java.util.regex.Pattern
@@ -34,7 +34,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
     lateinit var npYear: NumberPicker
     lateinit var npMonth: NumberPicker
     lateinit var npDay: NumberPicker
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
     var checkStore : Boolean = false
     lateinit var today: LocalDate
     var todayYear: Int = 0
@@ -56,7 +56,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
         birthNextBtnListener = mContext
         signupNextBtnListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         return binding.root
     }

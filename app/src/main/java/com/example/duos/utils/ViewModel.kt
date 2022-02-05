@@ -4,15 +4,15 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SignUpInfoViewModel : ViewModel() {
+class ViewModel : ViewModel() {
 
+    // signup
     var phoneNumber = MutableLiveData<String?>()
     var phoneNumberVerifying = MutableLiveData<String>()
     var signUp01Avail : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUp02Avail : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUp03Avail : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUp04Avail : MutableLiveData<Boolean> = MutableLiveData(false)
-    var signUp05Avail : MutableLiveData<Boolean> = MutableLiveData(false)
 
     var nickName = MutableLiveData<String?>()
     var gender = MutableLiveData<Int?>()
@@ -30,5 +30,9 @@ class SignUpInfoViewModel : ViewModel() {
     var experience = MutableLiveData<Int?>()
     var profileImg = MutableLiveData<Bitmap?>()
     var introduce = MutableLiveData<String?>()
+
+    // login
+    var loginPhoneNumber = MutableLiveData<String?>()
+    var loginPhoneNumberVerifying = MutableLiveData<String>()
 
 }

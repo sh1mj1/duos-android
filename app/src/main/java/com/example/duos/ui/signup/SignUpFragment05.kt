@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup05Binding
-import com.example.duos.ui.BaseFragment
 import java.io.File
 import android.graphics.Matrix
 import android.os.Bundle
@@ -35,8 +34,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.ApplicationClass
 import com.example.duos.data.remote.signUp.SignUpService
-import com.example.duos.databinding.FragmentSignup04Binding
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
@@ -49,10 +47,6 @@ import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
 import okio.BufferedSink
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.io.OutputStream
-import java.util.regex.Pattern
 
 
 class SignUpFragment05() : Fragment(), SignUpRequestView {
@@ -65,7 +59,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
     val CAMERA_PERMISSION_REQUEST = 100
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var mContext: SignUpActivity
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
     var profileBitmap: Bitmap? = null
     var savedState: Bundle? = null
 
@@ -100,7 +94,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "05"
         signupNextBtnListener = mContext
         onGoingNextListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         if (savedInstanceState != null && savedState == null) {
             savedState = savedInstanceState.getBundle("savedState")
@@ -118,38 +112,24 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.viewmodel = viewModel
 
         this.viewModel.profileImg.observe(viewLifecycleOwner, {
             if (it != null) {
-                Log.d("ㅎㅇ", "프사")
-                if (binding.signup05IntroduceEt.text?.length!! > 0){
-                    signupNextBtnListener.onNextBtnEnable()
-                } else signupNextBtnListener.onNextBtnUnable()
-            }
-            else signupNextBtnListener.onNextBtnUnable()
-        })
-
-
-        binding.signup05IntroduceEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                if (s!!.isNotEmpty()){
-                    viewModel.profileImg.observe(viewLifecycleOwner, {
-                        if (it!= null){
+                this.viewModel.introduce.observe(viewLifecycleOwner, { it2 ->
+                    if (it2 != null) {
+                        if (it2.isNotEmpty())
                             signupNextBtnListener.onNextBtnEnable()
-                        } else signupNextBtnListener.onNextBtnUnable()
-                    })
-                }else signupNextBtnListener.onNextBtnUnable()
-            }
+                        else signupNextBtnListener.onNextBtnUnable()
+                    }
+                })
+            } else signupNextBtnListener.onNextBtnUnable()
         })
-
 
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
-        binding.signup05ProfileImageBackgroundIv.setOnClickListener {
+        binding.signup05ProfileImageBackgroundIv.setOnClickListener{
 
             val dialogBuilder = AlertDialog.Builder(activity)
             dialogBuilder.setTitle(R.string.upload_pic_dialog_title)
@@ -471,7 +451,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
     }
 
     // 이미지의 회전 각도값을 구하기
-    // 11버전 이상부터 달라짐 (외부저장소 보안 때문에)
+// 11버전 이상부터 달라짐 (외부저장소 보안 때문에)
     fun getDegree(uri: Uri, source: String): Float {
         var exif: ExifInterface? = null
 
@@ -589,46 +569,18 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
         }
     }
-//
-//    private fun getFcmToken() : String? {
-//        var token : String? = null
-//        // fcm 등록토큰 받아오기
-//        FirebaseApp.initializeApp(requireContext())
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(ApplicationClass.TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token // FCM 등록 토큰 get
-//            token = task.result
-//
-//            Log.d("token",token!!)
-//        })
-//        return token
-//    }
-
-    fun bitmapToFile(bitmap: Bitmap, name: String): File {
-        val fileDir = context?.filesDir
-        var file = File(fileDir, "$name.jpg")
-        var out: OutputStream? = null
-        try {
-            out = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out) // 80으로 되어있었음
-        } finally {
-            out?.close()
-        }
-        return file
-    }
 
     override fun onSignUpRequestSuccess() {
         Log.d("success", "hi")
+        //         roomDB 에 회원가입 정보 모두 저장
+        val viewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
         onGoingNextListener.onGoingNext()
     }
 
     override fun onSignUpRequestFailure(code: Int, message: String) {
-        when (code){
-            5025 ->Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        when (code) {
+            5025 -> Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
 
     }

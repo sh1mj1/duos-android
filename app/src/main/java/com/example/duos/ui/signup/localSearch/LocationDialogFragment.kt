@@ -1,12 +1,8 @@
 package com.example.duos.ui.signup.localSearch
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.data.entities.LocationCategoryList
 import com.example.duos.data.entities.LocationList
-import com.example.duos.data.entities.StarredFriend
 import com.example.duos.data.remote.localList.LocationService
 import com.example.duos.databinding.SignupLocalDialogBinding
-import com.example.duos.ui.main.chat.ChatListRVAdapter
-import com.example.duos.ui.main.friendList.StarredFriendListRVAdapter
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 
 class LocationDialogFragment() : DialogFragment(), LocationView {
 
@@ -62,7 +55,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         }
         binding.locationOkBtn.setOnClickListener {
             this.dismiss()
-            val viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+            val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
             viewModel.locationCate.value = myLocationCategory.locationCategoryIdx
             viewModel.locationCateName.value = myLocationCategory.locationCategoryName
             viewModel.location.value = myLocation.locationIdx
