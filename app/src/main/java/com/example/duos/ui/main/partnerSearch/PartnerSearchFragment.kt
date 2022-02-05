@@ -1,32 +1,19 @@
 package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.duos.ApplicationClass.Companion.TAG
-import com.example.duos.R
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
-import com.example.duos.databinding.FragmentSignup03Binding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -40,8 +27,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
+         // 서울시 마포구로 필터링됐을 떄를 가정
         //        recommendedPartnerDatas.apply {
-//            // 서울시 마포구로 필터링됐을 떄를 가정
 //            // FLO clone coding 211110자 커밋 참고했음
 //            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
 //            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
@@ -76,7 +63,11 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
                 Log.d("그리드","itemClick")
-                var intent = Intent(activity, PartnerProfileActivity::class.java)
+                var intent = Intent(activity, MyProfileActivity::class.java)
+                intent.apply {
+                    this.putExtra("partnerSearchToPlayer", true)
+                    this.putExtra("partnerUserIdx", 2)
+                }
                 startActivity(intent)
             }
         })
@@ -92,7 +83,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
-        PartnerSearchService.partnerSearchData(this, 5)
+        PartnerSearchService.partnerSearchData(this, 10)
 
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))

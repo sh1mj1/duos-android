@@ -14,7 +14,6 @@ import com.example.duos.databinding.ActivityPartnerProfileBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.CreateChatRoomView
-import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 
 class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyprofileBinding::inflate), CreateChatRoomView{
@@ -33,7 +32,7 @@ class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyp
             finish()
         }
     }
-    /*  아래 희주님이 작성하신 코드                 */
+
     fun createRoom(){
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
         Log.d("채팅방 생성한 user의 userIdx", thisUserIdx.toString())

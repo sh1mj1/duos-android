@@ -35,18 +35,31 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
     private var partnerProfileReviewDatas = ArrayList<ReviewResDto>()
     private var profileGenderInt: Int = 0
     lateinit var profileGenderString: String
+
     private var isStarred: Boolean = false
+    var thisIdx : Int = 0
+    var partnerUserIdx : Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPlayerBinding.inflate(inflater, container, false)
         Log.d(TAG, "Start_PlayerFragment")
 
-        //TODO userIdx와 partnerIdx에 어떤 값이 들어갈지
-        PartnerProfileService.partnerProfileInfo(this, 1, 2)
+        thisIdx = requireArguments().getInt("thisIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
+
+        partnerUserIdx = requireArguments().getInt("partnerUserIdx")    /* From PartnerProfile? partnerUserIdx */
+        Log.d(TAG, "MyProfile OR PlayerProfiel -> Here : ${thisIdx.toString()}     PartnerSearch -> Here : ${partnerUserIdx.toString()}")
+
+        if(thisIdx == 0){thisIdx = partnerUserIdx}      /* 만약 From MyProfile Or PlayerProfile 이 아니면 From PartnerProfile 임
+                                                            그렇다면 thisIdx ->  partnerIdx 아래 thisIdx 넣기 */
+        //TODO : userIdx : RoomDB에 저장된 Idx 값, partnerUserIdx : 이전 Frag에서 Bundle로 받기
+        PartnerProfileService.partnerProfileInfo(this, 1, thisIdx)
+
         Log.d(TAG, "Create Retrofit")
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
+
         return binding.root
     }
 

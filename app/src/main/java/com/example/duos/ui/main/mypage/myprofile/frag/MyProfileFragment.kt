@@ -35,7 +35,6 @@ class MyProfileFragment : Fragment(), ProfileListView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         Log.d(TAG, "Start_MypageFragment")
-
         //TODO userIdx에 어떤 값이 들어갈지
         MyProfileService.myProfileInfo(this, 1)
 
@@ -43,8 +42,6 @@ class MyProfileFragment : Fragment(), ProfileListView {
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
         return binding.root
     }
-
-
     override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
 
         setMyProfileInfo(myProfile) // 위쪽 데이터 설정
