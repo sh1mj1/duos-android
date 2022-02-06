@@ -33,6 +33,9 @@ fun saveCheckUserAppliedPartnerFilterMoreThanOnce(boolean: Boolean){
 fun getCheckUserAppliedPartnerFilterMoreThanOnce() : Boolean =
     mSharedPreferences.getBoolean("checkUserAppliedPartnerFilterMoreThanOnce", false)
 
+
+// 필터 적용을 한번도 한 적이 없는 사용자의 경우, 매일 자정 파트너 추천(필터적용전) api를 호출하기 위해
+// 마지막으로 api 호출한 날짜를 기억해서 현재 날짜와 다르면 api 호출한다. 같으면 재호출 안하고 룸디비의 목록 그대로 가져옴
 fun saveLastUpdatedDate(lastUpdatedDate: String){
     val editor = mSharedPreferences.edit()
     editor.putString("lastUpdatedDate", lastUpdatedDate)
