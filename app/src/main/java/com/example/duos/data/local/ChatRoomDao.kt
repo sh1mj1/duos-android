@@ -1,5 +1,6 @@
 package com.example.duos.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.duos.data.entities.chat.ChatRoom
 
@@ -20,4 +21,9 @@ interface ChatRoomDao {
     @Query("SELECT chatRoomIdx FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
     fun getChatRoomIdx(chatRoomIdx: String): String
 
+    @Query("SELECT * FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getChatRoom(chatRoomIdx: String): ChatRoom
+
+    @Query("UPDATE ChatRoomTable SET isAppointmentExist = :isAppointmentExist WHERE chatRoomIdx = :chatRoomIdx")
+    fun updateAppointmentExist(chatRoomIdx: String, isAppointmentExist : Boolean)
 }

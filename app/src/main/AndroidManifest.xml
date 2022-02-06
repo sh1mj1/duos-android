@@ -103,10 +103,15 @@
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="MAKE_PLAN_ACTIVITY" />
+                <action android:name="APPOINTMENT_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.main.chat.appointment.AppointmentInfoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
         <!--        마이 페이지 B 파트     -->
         <activity

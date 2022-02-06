@@ -18,14 +18,20 @@ import android.text.TextWatcher
 
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.entities.chat.sendMessageData
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.appointment.AppointmentActivity
+import com.example.duos.ui.main.chat.appointment.AppointmentExistView
+import com.example.duos.ui.main.chat.appointment.AppointmentInfoActivity
+import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -36,7 +42,7 @@ import kotlin.collections.ArrayList
 //import java.util.*
 
 
-class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
+class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView {
     //lateinit var binding: ActivityChattingBinding
     private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
@@ -45,9 +51,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     var thisUserIdx = 76    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
     var targetUserIdx = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
     private var layoutManager: LayoutManager? = null
+    lateinit var chatRoomIdx : String
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
+    lateinit var chatDB: ChatDatabase
+    lateinit var viewModel: ViewModel
 
     // 리사이클러뷰에 채팅 추가
 //    private fun addChat(data: MessageData) {
@@ -77,32 +86,21 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //        }
 //    }
 
-    private fun addChatItem(senderId: String, body: String, sentAt:String, type: String) {
-        this.runOnUiThread {
-            if (type.equals("DATE")) {    //
-                chattingMessagesRVAdapter.addItem(
-                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
-                )
-                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-            } else {
-                chattingMessagesRVAdapter.addItem(
-                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
-                )
-                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-            }
-        }
-    }
 
-    // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
-    private fun toDate(currentMiliis: Long): String {
-
-        if(currentMiliis != null){
-
-        }
-        return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
-    }
 
     override fun initAfterBinding() {
+
+        val intent = intent
+        chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+        chatDB = ChatDatabase.getInstance(this)!!
+        val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
+
+        // 약속 여부 받아오기
+        // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
+        AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
+
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
 
@@ -191,15 +189,50 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
 
         binding.chattingMakePlanBtn.setOnClickListener ({
-            val intent = Intent(this, AppointmentActivity::class.java)
-            startActivity(intent)
+
+            if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
+                // 약속현황 보기
+                val intent = Intent(this, AppointmentInfoActivity::class.java)
+                startActivity(intent)
+            }
+            else {
+                // 약속 잡기
+                val intent = Intent(this, AppointmentActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
+                startActivity(intent)
+            }
+
         })
 
         binding.chattingBackIv.setOnClickListener {
             finish()
         }
 
+    }
 
+    private fun addChatItem(senderId: String, body: String, sentAt:String, type: String) {
+        this.runOnUiThread {
+            if (type.equals("DATE")) {    //
+                chattingMessagesRVAdapter.addItem(
+                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
+                )
+                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+            } else {
+                chattingMessagesRVAdapter.addItem(
+                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
+                )
+                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+            }
+        }
+    }
+
+    // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
+    private fun toDate(currentMiliis: Long): String {
+
+        if(currentMiliis != null){
+
+        }
+        return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
     }
 
     private fun postSendMessage() {
@@ -367,5 +400,40 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         println(time)
 
         return time
+    }
+
+    override fun onAppointmentExistSuccess(appointmentIdx: Int) {
+        Log.d("약속여부 성공",appointmentIdx.toString())
+        if (appointmentIdx == -1){
+            // 약속 없음
+            setAppointmentBtnNotExist()
+            chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+        } else {
+            // 약속 존재함
+            setAppointmentBtnExist()
+            chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+        }
+    }
+
+    override fun onAppointmentExistFailure(code: Int, message: String) {
+        Log.d("약속 여부 받아오기 실패", code.toString() + " : " + message)
+    }
+
+    fun setAppointmentBtnExist(){
+        binding.chattingMakePlanBtn.background = getDrawable(R.drawable.unchecked_check_box)
+        binding.chattingMakePlanBtn.setTextColor(
+            ContextCompat.getColor(
+            applicationContext,
+            R.color.dark_gray_B4
+        ))
+    }
+
+    fun setAppointmentBtnNotExist(){
+        binding.chattingMakePlanBtn.background = getDrawable(R.drawable.selected_btn)
+        binding.chattingMakePlanBtn.setTextColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.primary
+            ))
     }
 }
