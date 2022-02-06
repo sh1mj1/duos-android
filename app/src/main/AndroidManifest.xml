@@ -98,7 +98,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.chat.MakePlanActivity"
+            android:name=".ui.main.chat.appointment.AppointmentActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
