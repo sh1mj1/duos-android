@@ -288,10 +288,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val body = bundle.getString("body")
             var senderIdx = bundle.getString("senderIdx")?.toInt()
             var chatRoomIdx = bundle.getString("chatRoomIdx")
+            var type = bundle.getString("type")
             //var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }
             var currentTime = toDate(System.currentTimeMillis())
 
-            if (senderId != null && body != null && currentTime != null) {
+            if (senderId != null && body != null && currentTime != null && type != null) {
                 Log.d("채팅화면일때", "3")
                 addChatItem(senderId, body, currentTime, "MESSAGE")
             }else{

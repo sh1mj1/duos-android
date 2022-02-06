@@ -109,9 +109,18 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
                 messageData.get("body").toString(), messageData.get("senderIdx").toString(),
                 messageData.get("sentAt").toString(), messageData.get("title").toString())
 //            val intent = Intent(this, ChattingActivity::class.java)
+
+            val intent = Intent(this, ChattingActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
+            intent.putExtra("type", messageData.get("type").toString())
+            intent.putExtra("body", messageData.get("body").toString())
+            intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
+            intent.putExtra("sentAt", messageData.get("sentAt").toString())
+            intent.putExtra("senderId",  messageData.get("title").toString())
 //            intent.putExtra("chatRoomIdx", remoteMessage.data.get("chatRoomIdx"))
             Log.d("발신자", remoteMessage.data.get("title").toString())
-//            startActivity(intent)
+            startActivity(intent)
         }else{
             Log.d("데이터메세지", "is null")
         }
@@ -190,7 +199,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         val intent = Intent(this, ChattingActivity::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val bundle = Bundle()
 //        bundle.putString("type", type)
@@ -269,7 +278,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         val channelId = getString(R.string.firebase_notification_channel_id_testS)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -329,6 +338,8 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
+
 
     companion object {
 

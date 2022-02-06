@@ -166,7 +166,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             var formattedTodayDate = dateFormatter.format(todayDate)
 
             if(getLastUpdatedDate().equals(formattedTodayDate)){    // 오늘 파트너 추천을 받은 적이 있는지 확인하고 있다면 룸디비에서 데이터 가져옴
-                Log.d("파트너 추천 받은ㅇ 적 있음", getLastUpdatedDate())
+                Log.d("파트너 추천 받은 적 있음", getLastUpdatedDate())
                 recommendedPartnerDatas.clear()
                 var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
                 recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
@@ -193,21 +193,21 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         }
 
 
-//        // fcm 등록토큰 받아오기
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token // FCM 등록 토큰 get
-//            val token = task.result
-//
-//            // Log and toast
-//            //val msg = getString(R.string.msg_token_fmt, token)
-//            //Log.d(TAG, msg)
-//            Log.d("토큰 확인", token)
-//            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
-//        })
+        // fcm 등록토큰 받아오기
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token // FCM 등록 토큰 get
+            val token = task.result
+
+            // Log and toast
+            //val msg = getString(R.string.msg_token_fmt, token)
+            //Log.d(TAG, msg)
+            Log.d("토큰 확인", token)
+            //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
+        })
     }
 }
