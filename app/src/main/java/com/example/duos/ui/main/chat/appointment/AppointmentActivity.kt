@@ -24,6 +24,9 @@ import java.util.*
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 import kotlinx.coroutines.selects.select
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppointmentBinding::inflate), MakeAppointmentView {
 
@@ -105,7 +108,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         timePicker.setIs24HourView(true)
         selectedHour = timePicker.hour
         selectedMinute = timePicker.minute
-        appointmentTime = selectedDate.year.toString() + "-" + selectedDate.month.toString() + "-" + selectedDate.day.toString() + " " + selectedHour.toString() + ":" + selectedMinute.toString() + ":00"
+        appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
 
         calendar.setOnDateChangedListener(object: OnDateSelectedListener{
             override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
@@ -114,7 +117,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("selectedDate", selectedDate.toString())
                 val eventDecorator = EventDecorator(this@AppointmentActivity, selectedDate)
                 calendar.addDecorator(eventDecorator)
-                appointmentTime = selectedDate.year.toString() + "-" + selectedDate.month.toString() + "-" + selectedDate.day.toString() + " " + selectedHour.toString() + ":" + selectedMinute.toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
@@ -125,7 +128,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 selectedMinute = timePicker.minute
                 Log.d("selectedHour", selectedHour.toString())
                 Log.d("selectedMinute", selectedMinute.toString())
-                appointmentTime = selectedDate.year.toString() + "-" + selectedDate.month.toString() + "-" + selectedDate.day.toString() + " " + selectedHour.toString() + ":" + selectedMinute.toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
