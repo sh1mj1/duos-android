@@ -9,15 +9,12 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.data.local.UserDatabase
-import com.example.duos.data.remote.auth.Auth
 import com.example.duos.data.remote.login.LoginService
 import com.example.duos.data.remote.login.LoginVerifyAuthNumResultData
-import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.ActivityLoginBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
@@ -25,9 +22,10 @@ import com.example.duos.ui.splash.SplashActivity
 import com.example.duos.utils.ViewModel
 import java.util.regex.Pattern
 import kotlin.concurrent.timer
-import android.content.SharedPreferences
+import com.example.duos.data.entities.User
 import com.example.duos.utils.saveJwt
 import com.example.duos.utils.saveRefreshJwt
+import com.example.duos.utils.saveUserIdx
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
@@ -239,13 +237,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 
     override fun onLoginVerifyAuthNumSuccess(result : LoginVerifyAuthNumResultData) {
         // 인증번호 확인 성공!
-        // 사용자 정보 및 jwt토큰 저장
-        val db = UserDatabase.getInstance(applicationContext)
-        val user = db!!.userDao().getUser(result.nickname)
-        user.userIdx = result.userIdx
-        Log.d("user",user.toString())
-        db!!.userDao().update(user)
+        // 사용자 정보 roomDB 에 저장 or 업데이트
+        // jwt토큰 sharedpreference 에 저장
+        Log.d("user", result.toString())
 
+        val db = UserDatabase.getInstance(applicationContext)
+        var user = db!!.userDao().getUser(result.userIdx)
+        if (user != null){
+            user = setUser(result)
+            db!!.userDao().update(user)
+        } else{
+            user = setUser(result)
+            db!!.userDao().insert(user)
+        }
+
+        saveUserIdx(result.userIdx)
         saveJwt(result.jwtAccessToken)
         saveRefreshJwt(result.jwtRefreshToken)
 
@@ -272,5 +278,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         binding.loginNextBtn.isEnabled = false
         binding.loginNextBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
         binding.loginNextBtn.setTextColor(getColor(R.color.dark_gray_B0))
+    }
+
+    fun setUser(result : LoginVerifyAuthNumResultData) : User{
+        var user = User(
+            result.phoneNumber,
+            result.nickname,
+            result.gender,
+            result.birthDate,
+            result.locationIdx,
+            result.experienceIdx,
+            result.profilePhotoUrl,
+            result.introduction,
+            result.userIdx
+        )
+        return user
     }
 }

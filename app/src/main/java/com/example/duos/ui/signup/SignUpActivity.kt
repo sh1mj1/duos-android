@@ -104,9 +104,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             }
             if (findFragmentById(R.id.signup_fragment_container_fc) is SignUpFragment05) {
 
-                // roomDB 에 저장
-                    saveRoomDB()
-
                 val intent = Intent(
                     findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
                     LoginActivity::class.java
@@ -198,25 +195,5 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     }
 
 
-    fun saveRoomDB(){
-        val regex = Regex("[^A-Za-z0-9]")//Regex를 활용하여 특수문자 없애주기
-        val phoneNumber = regex.replace(viewModel.phoneNumber.value.toString(), "")
-        val db = UserDatabase.getInstance(applicationContext)
-        var user = User(
-            phoneNumber,
-            viewModel.nickName.value!!,
-            viewModel.gender.value,
-            viewModel.birthYear.value.toString() + "-" + viewModel.birthMonth.value.toString()
-                .padStart(2, '0')
-                    + "-" + viewModel.birthDay.value.toString().padStart(2, '0'),
-            viewModel.locationCate.value,
-            viewModel.location.value,
-            viewModel.experience.value,
-            viewModel.profileImg.value,
-            viewModel.introduce.value,
-            null
-        )
-        db!!.userDao().insert(user)
-        Log.d("roomdb","저장성공")
-    }
+
 }
