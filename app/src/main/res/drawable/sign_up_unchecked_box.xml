@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/friend_list_dialog_unchecked_box"
+        ></item>
+
+    <item
+        android:drawable="@drawable/sign_up_check_icon" />
+
+
+</layer-list>

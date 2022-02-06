@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.duos.utils.SignUpInfoViewModel" />
+            type="com.example.duos.utils.ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

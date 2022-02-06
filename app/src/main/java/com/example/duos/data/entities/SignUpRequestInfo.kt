@@ -9,5 +9,6 @@ data class SignUpRequestInfo(
     @SerializedName("gender") var gender : Int,
     @SerializedName("locationIdx") var locationIdx : Int,
     @SerializedName("experienceIdx") var experienceIdx : Int,
-    @SerializedName("introduction") var introduction : String
+    @SerializedName("introduction") var introduction : String,
+    @SerializedName("fcmToken") var fcmToken : String
 )

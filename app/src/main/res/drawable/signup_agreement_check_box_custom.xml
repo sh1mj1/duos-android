@@ -1,0 +1,8 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 체크박스 해제 상태 -->
+    <item android:drawable="@drawable/sign_up_unchecked_box"
+        android:state_checked="false"/>
+    <!-- 체크박스 선택 상태 -->
+    <item android:drawable="@drawable/friend_list_dialog_checked_box_"
+        android:state_checked="true"/>
+</selector>

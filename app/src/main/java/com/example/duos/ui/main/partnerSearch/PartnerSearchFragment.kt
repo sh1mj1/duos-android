@@ -89,7 +89,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
 
-        // fcm 등록토큰 받아오기
+        // fcm 등록f토큰 받아오기
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
