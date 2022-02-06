@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.mypage.lastpromise.PreviousGameFragment">
+    tools:context=".ui.main.mypage.appointment.AppointmentFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

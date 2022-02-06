@@ -7,15 +7,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-// 싱글턴
 object EveryReviewsService {
     private const val TAG: String = "EveryReviewsService"
     val retrofit = NetworkModule.getRetrofit()
 
     fun getEveryReviews(everyReviewsItemView: EveryReviewsItemView, userIdx: Int) {
         val everyReviewsService = retrofit.create(EveryReviewsRetrofitInterface::class.java)
-        Log.d(TAG, "fun getEveryReviews")
         everyReviewsService.getEveryReviews(userIdx).enqueue(object : Callback<EveryReviewsResponse> {
             override fun onResponse(call: Call<EveryReviewsResponse>, response: Response<EveryReviewsResponse>) {
                 Log.d(TAG, "onResponse")
@@ -38,6 +35,7 @@ object EveryReviewsService {
 
             override fun onFailure(call: Call<EveryReviewsResponse>, t: Throwable) {
                 Log.d("${TAG}/API-ERROR", t.message.toString())
+                everyReviewsItemView.onGetEveryReviewsItemFailure(400, "네트워크 오류 발생")
             }
 
         })

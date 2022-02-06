@@ -4,118 +4,149 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="126dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/rectangler_dropshadow_png_later"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/partner_profile_review_item_list_null_cl"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="126dp"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/profile_img_cv"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="9dp"
-        app:cardCornerRadius="17dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="리뷰가 없어요!!! 다른 회원과 약속을 잡고, 경기를 해보세요!!"-->
+<!--            android:textSize="15sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/partner_profile_review_item_list_non_null_cl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <ImageView
-            android:id="@+id/profile_img_iv"
+            android:layout_width="match_parent"
+            android:layout_height="126dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/rectangler_dropshadow_png_later"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profile_img_cv"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:src="@drawable/tennis_racket_img_4" />
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="9dp"
+            app:cardCornerRadius="17dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/profile_img_iv"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/tennis_racket_img_4" />
 
-    <RatingBar
-        android:id="@+id/player_grade_rb"
-        style="@style/duos_custom_star_smaller"
-        android:layout_width="wrap_content"
-        android:layout_height="11dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:rating="3"
-        android:stepSize="1"
-        app:layout_constraintStart_toEndOf="@+id/profile_img_cv"
-        app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
+
+        <RatingBar
+            android:id="@+id/player_grade_rb"
+            style="@style/duos_custom_star_smaller"
+            android:layout_width="wrap_content"
+            android:layout_height="11dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="1"
+            app:layout_constraintStart_toEndOf="@+id/profile_img_cv"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/player_grade_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:letterSpacing="0.05"
-        android:text="@string/item_playing_review_grade"
-        android:textColor="@color/nero"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/player_grade_rb"
-        app:layout_constraintTop_toTopOf="@+id/player_grade_rb" />
+        <TextView
+            android:id="@+id/player_grade_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:letterSpacing="0.05"
+            android:text="@string/item_playing_review_grade"
+            android:textColor="@color/nero"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/player_grade_rb"
+            app:layout_constraintTop_toTopOf="@+id/player_grade_rb" />
 
-    <TextView
-        android:id="@+id/player_review_nickname_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:letterSpacing="0.05"
-        android:maxLines="2"
-        android:text="@string/item_playing_review_Nickname"
-        android:textColor="@color/nero"
-        android:textSize="11sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@+id/player_grade_rb"
-        app:layout_constraintTop_toBottomOf="@+id/player_grade_rb" />
-    <!--        app:layout_constraintEnd_toStartOf="@+id/review_date_tv"-->
-    <!--        app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+        <TextView
+            android:id="@+id/player_review_nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:letterSpacing="0.05"
+            android:maxLines="2"
+            android:text="@string/item_playing_review_Nickname"
+            android:textColor="@color/nero"
+            android:textSize="11sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@+id/player_grade_rb"
+            app:layout_constraintTop_toBottomOf="@+id/player_grade_rb" />
+        <!--        app:layout_constraintEnd_toStartOf="@+id/review_date_tv"-->
+        <!--        app:layout_constraintHorizontal_chainStyle="spread_inside"-->
 
-    <TextView
-        android:id="@+id/review_date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="12dp"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:letterSpacing="0.05"
-        android:text="@string/item_playing_review_date"
-        android:textColor="@color/dark_gray_A"
-        android:textSize="11sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--        app:layout_constraintStart_toEndOf="@+id/player_review_nickname_tv"-->
+        <TextView
+            android:id="@+id/review_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:letterSpacing="0.05"
+            android:text="@string/item_playing_review_date"
+            android:textColor="@color/dark_gray_A"
+            android:textSize="11sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--        app:layout_constraintStart_toEndOf="@+id/player_review_nickname_tv"-->
 
-    <TextView
-        android:id="@+id/review_content_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="32dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/applesdgothicneoregular"
-        android:letterSpacing="0.05"
+        <TextView
+            android:id="@+id/review_content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="32dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:letterSpacing="0.05"
 
-        android:maxLines="2"
-        android:text="@string/item_playing_review_content"
-        android:textColor="@color/grey"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/player_review_nickname_tv" />
+            android:maxLines="2"
+            android:text="@string/item_playing_review_content"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/player_review_nickname_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

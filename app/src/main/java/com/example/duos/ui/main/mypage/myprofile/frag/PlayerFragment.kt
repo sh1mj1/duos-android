@@ -8,14 +8,10 @@ import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -24,25 +20,24 @@ import com.example.duos.data.entities.PartnerResDto
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.data.remote.partnerProfile.PartnerProfileService
 import com.example.duos.databinding.FragmentPlayerBinding
+import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
 import com.google.gson.Gson
 
-class PlayerFragment : Fragment(), PartnerProfileListView {
+class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate), PartnerProfileListView {
     val TAG: String = "PlayerFragment"
-    lateinit var binding: FragmentPlayerBinding
 
     private var partnerProfileReviewDatas = ArrayList<ReviewResDto>()
     private var profileGenderInt: Int = 0
     lateinit var profileGenderString: String
 
     private var isStarred: Boolean = false
-    var thisIdx : Int = 0
-    var partnerUserIdx : Int = 0
+    var thisIdx: Int = 0
+    var partnerUserIdx: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+    override fun initAfterBinding() {
         Log.d(TAG, "Start_PlayerFragment")
 
         thisIdx = requireArguments().getInt("thisIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
@@ -50,7 +45,9 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
         partnerUserIdx = requireArguments().getInt("partnerUserIdx")    /* From PartnerProfile? partnerUserIdx */
         Log.d(TAG, "MyProfile OR PlayerProfiel -> Here : ${thisIdx.toString()}     PartnerSearch -> Here : ${partnerUserIdx.toString()}")
 
-        if(thisIdx == 0){thisIdx = partnerUserIdx}      /* 만약 From MyProfile Or PlayerProfile 이 아니면 From PartnerProfile 임
+        if (thisIdx == 0) {
+            thisIdx = partnerUserIdx
+        }      /* 만약 From MyProfile Or PlayerProfile 이 아니면 From PartnerProfile 임
                                                             그렇다면 thisIdx ->  partnerIdx 아래 thisIdx 넣기 */
         //TODO : userIdx : RoomDB에 저장된 Idx 값, partnerUserIdx : 이전 Frag에서 Bundle로 받기
         PartnerProfileService.partnerProfileInfo(this, 1, thisIdx)
@@ -60,24 +57,39 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
         (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
-
-        return binding.root
     }
 
     override fun onGetProfileInfoSuccess(partnerResDto: PartnerResDto) {
-
         setPartnerProfileInfo(partnerResDto) // 위쪽 프로필 데이터 설정
         setExperienceView()     // 구력 관련 글씨체 적용
 
         partnerProfileReviewDatas.clear()
-        partnerProfileReviewDatas.addAll(listOf(partnerResDto.reviewResDto))   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
+        partnerProfileReviewDatas.addAll(partnerResDto.reviewResDto)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
-        // 리사이클러븅 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
+        // 리사이클러뷰 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
+        val profileReviewRVAdapter = initRecyclerView()
+
+        /* 다른 회원 프로필로 이동*/
+        goPlayerProfile(profileReviewRVAdapter)
+
+        /* 해당 회원의 모든 후기 보기 페이지로 이동*/
+        goEveryReview(partnerResDto)
+    }
+
+    override fun onGetProfileInfoFailure(code: Int, message: String) {
+        TODO("Not yet implemented")
+    }
+
+    private fun initRecyclerView(): PartnerProfileReviewRVAdapter {
         val profileReviewRVAdapter = PartnerProfileReviewRVAdapter(partnerProfileReviewDatas)
         binding.playingReviewContentRv.adapter = profileReviewRVAdapter
         binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        return profileReviewRVAdapter
+    }
 
-        /* 다른 회원 프로필로 이동*/
+
+    /* 다른 회원 프로필로 이동*/
+    private fun goPlayerProfile(profileReviewRVAdapter: PartnerProfileReviewRVAdapter) {
         profileReviewRVAdapter.clickPlayerReviewListener(object : PartnerProfileReviewRVAdapter.PlayerReviewItemClickListener {
             override fun onItemClick(partnerProfileReviewItem: ReviewResDto) {
                 val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
@@ -92,8 +104,11 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
                 fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
             }
         })
-        /* 해당 회원의 모든 후기 보기 페이지로 이동*/
-        binding.playingReviewContentRv.setOnClickListener {
+    }
+
+    /* 해당 회원의 모든 후기 보기 페이지로 이동*/
+    private fun goEveryReview(partnerResDto: PartnerResDto) {
+        binding.playerPlayingReviewCountTv.setOnClickListener {
             val profileNickname = binding.playerNicknameTv.text.toString()
             val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
@@ -111,7 +126,6 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
 
         }
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -159,9 +173,13 @@ class PlayerFragment : Fragment(), PartnerProfileListView {
         textExperience.text = textExperienceBuilder
     }
 
-    override fun onGetProfileInfoFailure(code: Int, message: String) {
-        Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
-    }
-
-
 }
+
+
+
+
+
+
+
+
+

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.mypage.lastpromise.PreviousGameReviewFragment">
+    tools:context=".ui.main.mypage.appointment.AppointmentReviewFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_cl"

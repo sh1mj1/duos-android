@@ -65,7 +65,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 Log.d("그리드","itemClick")
                 var intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
-                    this.putExtra("partnerSearchToPlayer", true)
+                    this.putExtra("isFromSearch", true)
                     this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
                 }
                 startActivity(intent)

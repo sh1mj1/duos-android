@@ -43,6 +43,7 @@ class ApplicationClass : Application() {
         const val MY_PROFILE_API = "api/mypage/myprofile"
         const val EVERY_REVIEW_API="api/reviews"
         const val PARTNER_PROFILE_API = "api/partners/profile"
+        const val APPOINTMENT_PAI = "api/appointments"
     }
 
     override fun onCreate() {
