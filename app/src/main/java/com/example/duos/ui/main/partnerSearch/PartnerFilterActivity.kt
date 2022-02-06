@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.duos.R
 import com.example.duos.ToggleButtonInterface
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
@@ -13,7 +14,8 @@ import com.example.duos.utils.ViewModel
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 
-class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate),
+class PartnerFilterActivity :
+    BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate),
     ToggleButtonInterface {
 
     lateinit var viewModel: ViewModel
@@ -21,18 +23,26 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
 
         val ageRangeSeekbar = binding.partnerFilterAgeRangeSb
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(ViewModel::class.java)
 
 
-        ageRangeSeekbar.setProgress(10f,60f)
+        ageRangeSeekbar.setProgress(10f, 60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
 
-        ageRangeSeekbar.setOnRangeChangedListener(object: OnRangeChangedListener {
-            override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
-                if(leftValue.toInt() % 10 == 0){
+        ageRangeSeekbar.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(
+                view: RangeSeekBar?,
+                leftValue: Float,
+                rightValue: Float,
+                isFromUser: Boolean
+            ) {
+                if (leftValue.toInt() % 10 == 0) {
                     binding.partnerFilterAgeMinTv.text = leftValue.toInt().toString()
                 }
-                if(rightValue.toInt() % 10 == 0){
+                if (rightValue.toInt() % 10 == 0) {
                     binding.partnerFilterAgeMaxTv.text = rightValue.toInt().toString()
                 }
 //                changeSeekBarIndicator(rangeSeekbar.leftSeekBar, leftValue)
@@ -48,23 +58,30 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
             }
         })
 
-        ballCapacityRangeSeekBar.setOnRangeChangedListener(object: OnRangeChangedListener{
-            override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
+        ballCapacityRangeSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(
+                view: RangeSeekBar?,
+                leftValue: Float,
+                rightValue: Float,
+                isFromUser: Boolean
+            ) {
 
-                if(leftValue.toInt() % 1 == 0){
+                if (leftValue.toInt() % 1 == 0) {
                     var leftUnit = "년"
-                    if(leftValue < 1f){     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
+                    if (leftValue < 1f) {     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
                         leftUnit = "개월"
                     }
-                    binding.partnerFilterBallCapabilityMinTv.text = leftValue.toInt().toString() + leftUnit
+                    binding.partnerFilterBallCapabilityMinTv.text =
+                        leftValue.toInt().toString() + leftUnit
                 }
 
-                if(rightValue.toInt() % 1 == 0){
+                if (rightValue.toInt() % 1 == 0) {
                     var rightUnit = "년"
-                    if(rightValue < 1f){
+                    if (rightValue < 1f) {
                         rightUnit = "개월"
                     }
-                    binding.partnerFilterBallCapabilityMaxTv.text = rightValue.toInt().toString() + rightUnit
+                    binding.partnerFilterBallCapabilityMaxTv.text =
+                        rightValue.toInt().toString() + rightUnit
                 }
             }
 
@@ -77,13 +94,15 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
             }
         })
 
-        binding.partnerFilterApplyTv.setOnClickListener ({
-            var location : Int = viewModel.partnerLocation.value!!
-            var gender : Int = viewModel.partnerGender.value!!
-            var ageMin: Int  = binding.partnerFilterAgeMinTv.text.toString().toInt()
-            var ageMax : Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
-            var ballCapacityMin: Int  = binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
-            var ballCapacityMax: Int  = binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
+        binding.partnerFilterApplyTv.setOnClickListener({
+//            var location: Int = viewModel.partnerLocation.value!!
+//            var gender: Int = viewModel.partnerGender.value!!
+//            var ageMin: Int = binding.partnerFilterAgeMinTv.text.toString().toInt()
+//            var ageMax: Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
+//            var ballCapacityMin: Int =
+//                binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
+//            var ballCapacityMax: Int =
+//                binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
 
 
             // 파트너 찾기 - 매칭 화면으로 이동
@@ -93,11 +112,18 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
 
         binding.partnerFilterInitiateBtn.setOnClickListener {
             // 초기화 버튼 시 각 항목 입력값 초기화
-            ageRangeSeekbar.setProgress(10f,60f)
+            binding.partnerFilterManBtn.isChecked = false
+            binding.partnerFilterWomanBtn.isChecked = false
+            binding.partnerFilterCarelessBtn.isChecked = false
+            binding.partnerFilterLocationTextTv.text = getString(R.string.signup_local_set)
+            viewModel.partnerGender.value = null
+            viewModel.partnerLocation.value = null
+            viewModel.partnerGender.value = null
+            ageRangeSeekbar.setProgress(10f, 60f)
             ballCapacityRangeSeekBar.setProgress(0f, 10f)
         }
 
-        binding.partnerFilterBackIv.setOnClickListener{
+        binding.partnerFilterBackIv.setOnClickListener {
             finish()
         }
 
@@ -113,15 +139,39 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
 
         viewModel.partnerLocationDialogShowing.observe(this, Observer {
             if (it) {
-                binding.partnerFilterLocationTextTv.text = viewModel.partnerLocationCateName.value + " " +
-                        viewModel.partnerLocationName.value
+                binding.partnerFilterLocationTextTv.text =
+                    viewModel.partnerLocationCateName.value + " " +
+                            viewModel.partnerLocationName.value
             }
         })
+
+//        viewModel.partnerGender.observe(this, Observer {
+//            if (it != null){
+//                viewModel.partnerLocation.observe(this, Observer {
+//                    if (it!= null){
+//                        setApplyBtnEnable()
+//                    } else setApplyBtnUnable()
+//                })
+//            } else setApplyBtnUnable()
+//        })
     }
 
-    override fun setRadiobutton(tag: String){
+    override fun setRadiobutton(tag: String) {
         viewModel.partnerGender.value = tag.toInt()
     }
+
+    fun setApplyBtnEnable(){
+        binding.partnerFilterApplyTv.isEnabled = true
+        binding.partnerFilterApplyTv.background = getDrawable(R.color.primary)
+        binding.partnerFilterApplyTv.setTextColor(getColor(R.color.white))
+    }
+
+    fun setApplyBtnUnable(){
+        binding.partnerFilterApplyTv.isEnabled = false
+        binding.partnerFilterApplyTv.background = getDrawable(R.color.white_smoke_E)
+        binding.partnerFilterApplyTv.setTextColor(getColor(R.color.dark_gray_B0))
+    }
+
 
 // indicator(10의 단위 위에 위치할때마다 위에 표시해줌)
 //    private fun changeSeekBarIndicator(seekbar: SeekBar, value: Float){
