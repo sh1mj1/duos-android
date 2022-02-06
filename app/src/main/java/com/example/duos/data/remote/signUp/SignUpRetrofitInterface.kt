@@ -4,6 +4,7 @@ package com.example.duos.data.remote.signUp
 import com.example.duos.data.entities.PhoneAuthNum
 import com.example.duos.data.entities.SignUpRequestInfo
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -23,7 +24,7 @@ interface SignUpRetrofitInterface {
     @Multipart
     @POST("api/signup")
     fun signUpRequest(
-        @Part("mFile") profileImg : MultipartBody.Part,
-        @Part("createUserReqDTO") signUpRequestInfo : SignUpRequestInfo
+        @Part profileImg : MultipartBody.Part?,
+        @Part("createUserReqDTO") signUpRequestInfo : RequestBody
     ): Call<SignUpRequestResponse>
 }

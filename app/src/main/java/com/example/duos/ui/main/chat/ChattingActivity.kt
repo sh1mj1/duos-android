@@ -23,7 +23,10 @@ import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
+import com.example.duos.ui.main.chat.appointment.AppointmentActivity
+import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
@@ -188,7 +191,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
 
         binding.chattingMakePlanBtn.setOnClickListener ({
-            val intent = Intent(this, MakePlanActivity::class.java)
+            val intent = Intent(this, AppointmentActivity::class.java)
             startActivity(intent)
         })
 

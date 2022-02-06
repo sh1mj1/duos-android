@@ -17,7 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.FragmentSignup02Binding
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
+import java.time.LocalDate
 
 import java.util.regex.Pattern
 
@@ -33,10 +34,12 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
     lateinit var npYear: NumberPicker
     lateinit var npMonth: NumberPicker
     lateinit var npDay: NumberPicker
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
+    var checkStore : Boolean = false
+    lateinit var today: LocalDate
+    var todayYear: Int = 0
 
     override fun onAttach(context: Context) {
-        Log.d("ㅎㅇ","onAttach")
         super.onAttach(context)
         if (context is SignUpActivity) {
             mContext = context
@@ -48,96 +51,123 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("ㅎㅇ","onCreateView")
+        Log.d("ㅎㅇ", "onCreateView")
         binding = FragmentSignup02Binding.inflate(inflater, container, false)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "02"
         birthNextBtnListener = mContext
         signupNextBtnListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
+        return binding.root
+    }
 
-        binding.signup02BirthEt.setOnClickListener {
-            birthNextBtnListener.onNextBtnChanged(true)
-            birthNumberPicker()
-        }
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("ㅎㅇ", "onviewcreated")
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewmodel = viewModel
 
         birthTextView = binding.signup02BirthEt
         if (savedInstanceState != null && savedState == null) {
             savedState = savedInstanceState.getBundle("savedState")
         }
-        else {
-            Log.d("텍스트",binding.signup02NickNameEt.text.toString())
-        }
         if (savedState != null) {
-            birthTextView!!.text = savedState!!.getCharSequence("birth");
+            Log.d("ㅎㅇ", "저장")
+            checkStore = true
+            binding.signup02NickNameDuplicateBtn.isEnabled = false
+            binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+            binding.signup02NickNameDuplicateBtn.setTextColor(
+                ContextCompat.getColor(
+                    mContext,
+                    R.color.dark_gray_A
+                )
+            )
+            birthTextView!!.text = savedState!!.getCharSequence("birth")
+            Log.d("ㅎㅇ", "복구다함")
+        }
+        else {
+            Log.d("ㅎㅇ", "저장X")
+            viewModel.nickName.value = ""
+            viewModel.setBirth.value = false
+            viewModel.setGender.value = false
+            viewModel.setNickname.value = false
+            signupNextBtnListener.onNextBtnUnable()
+
         }
         savedState = null
 
-        return binding.root
-    }
+          binding.signup02BirthEt.setOnClickListener {
+            birthNextBtnListener.onNextBtnChanged(true)
+            birthNumberPicker()
+        }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("ㅎㅇ","onviewcreated")
-        super.onViewCreated(view, savedInstanceState)
-        binding.viewmodel = viewModel
-
-        this.viewModel.nickName.observe(requireActivity(), {
+        this.viewModel.nickName.observe(viewLifecycleOwner, {
             val pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"
-            if (it.isNotEmpty()) {
-                binding.signup02NickNameLayout.isEndIconVisible = true
-                if (!Pattern.matches(pattern, it.toString()) or (it.length < 2)) {
-                    binding.signup02NickNameErrorTv.visibility = View.VISIBLE
-                    binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
-                    binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
-                    binding.signup02NickNameDuplicateBtn.isEnabled = false
-                    binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
-                    binding.signup02NickNameDuplicateBtn.setTextColor(
-                        ContextCompat.getColor(
-                            mContext,
-                            R.color.dark_gray_A
+            if (!checkStore) {
+                if (it!!.isNotEmpty()) {
+                    binding.signup02NickNameLayout.isEndIconVisible = true
+                    if (!Pattern.matches(pattern, it.toString()) or (it.length < 2)) {
+                        binding.signup02NickNameErrorTv.visibility = View.VISIBLE
+                        binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
+                        binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+                        binding.signup02NickNameDuplicateBtn.isEnabled = false
+                        binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+                        binding.signup02NickNameDuplicateBtn.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.dark_gray_A
+                            )
                         )
-                    )
-                } else {
-                    binding.signup02NickNameErrorTv.visibility = View.INVISIBLE
-                    binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
-                    binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
-                    binding.signup02NickNameDuplicateBtn.isEnabled = true
-                    binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
-                    binding.signup02NickNameDuplicateBtn.setTextColor(
-                        ContextCompat.getColor(
-                            mContext,
-                            R.color.primary
+                    } else {
+                        binding.signup02NickNameErrorTv.visibility = View.INVISIBLE
+                        binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
+                        binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
+                        binding.signup02NickNameDuplicateBtn.isEnabled = true
+                        binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+                        binding.signup02NickNameDuplicateBtn.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.primary
+                            )
                         )
-                    )
+                    }
                 }
             }
+            checkStore = false
         })
 
         binding.signup02NickNameDuplicateBtn.setOnClickListener {
             SignUpService.signUpNickNameDuplicate(this, binding.signup02NickNameEt.text.toString())
         }
 
-        this.viewModel.setNickname.observe(requireActivity(), {
+        this.viewModel.setNickname.observe(viewLifecycleOwner, {
             if (it) {
-                this.viewModel.setGender.observe(requireActivity(), { it2 ->
+                this.viewModel.setGender.observe(viewLifecycleOwner, { it2 ->
                     if (it2) {
-                        this.viewModel.setBirth.observe(requireActivity(), { it3 ->
+                        this.viewModel.setBirth.observe(viewLifecycleOwner, { it3 ->
                             if (it3) {
                                 signupNextBtnListener.onNextBtnEnable()
                                 viewModel.signUp02Avail.value = true
-                            } else {signupNextBtnListener.onNextBtnUnable()
-                                viewModel.signUp02Avail.value = false}
+                            } else {
+                                signupNextBtnListener.onNextBtnUnable()
+                                viewModel.signUp02Avail.value = false
+                            }
                         })
-                    } else {signupNextBtnListener.onNextBtnUnable()
-                        viewModel.signUp02Avail.value = false}
+                    } else {
+                        signupNextBtnListener.onNextBtnUnable()
+                        viewModel.signUp02Avail.value = false
+                    }
                 })
-            } else { signupNextBtnListener.onNextBtnUnable()
-                viewModel.signUp02Avail.value = false}
+            } else {
+                signupNextBtnListener.onNextBtnUnable()
+                viewModel.signUp02Avail.value = false
+            }
         })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("ondestroyview", "ㅎㅇ")
         savedState = saveState()
         birthTextView = null
     }
@@ -151,6 +181,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("onsave", "ㅎㅇ")
         super.onSaveInstanceState(outState)
         outState.putBundle(
             "savedState",
@@ -158,6 +189,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun birthNumberPicker() {
 
         binding.signup02NumberPickerLinearLayoutLl.visibility = View.VISIBLE
@@ -191,7 +223,11 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         var monthList = ArrayList<String>()
         var dateList = ArrayList<String>()
 
-        for (i: Int in 2022 downTo 1922)
+        today = LocalDate.now()
+        todayYear = today.year
+
+
+        for (i: Int in todayYear-1 downTo todayYear-101)
             yearList.add(i.toString() + "년")
 
         for (i: Int in 1..12)
@@ -225,19 +261,20 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
     }
 
     fun setBirth() {
-        viewModel.birthYear.value = 2022 - npYear.value + 1
+        viewModel.birthYear.value = todayYear - npYear.value
+        Log.d("년도",(todayYear - npYear.value).toString())
         viewModel.birthMonth.value = npMonth.value
         viewModel.birthDay.value = npDay.value
 
         binding.signup02BirthEt.text =
-            ((2022 - npYear.value + 1).toString() + "년 " + npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
+            ((todayYear - npYear.value).toString() + "년 " + npMonth.value.toString() + "월 " + npDay.value.toString() + " 일 ")
         binding.signup02NumberPickerLinearLayoutLl.visibility = View.GONE
 
         viewModel.setBirth.value = true
     }
 
-    fun setRadioButton(radioButton: String) {
-        viewModel.gender.value = radioButton
+    fun setRadioButton(tag: Int) {
+        viewModel.gender.value = tag
         viewModel.setGender.value = true
     }
 
@@ -267,5 +304,6 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
             )
         )
     }
+
 
 }

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup01Binding
-import com.example.duos.utils.SignUpInfoViewModel
+import com.example.duos.utils.ViewModel
 import android.content.Context
 
 import android.text.Editable
@@ -31,7 +31,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
     lateinit var mContext: SignUpActivity
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var onGoingNextListener: SignUpGoNextInterface
-    lateinit var viewModel: SignUpInfoViewModel
+    lateinit var viewModel: ViewModel
 
 
     override fun onAttach(context: Context) {
@@ -49,7 +49,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
         binding = FragmentSignup01Binding.inflate(inflater, container, false)
         signupNextBtnListener = mContext
         onGoingNextListener = mContext
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         requireActivity().findViewById<TextView>(R.id.signup_process_tv).text = "01"
         binding.signup01PhoneNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
@@ -68,11 +68,14 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
                 binding.signup01ConstraintLayout01Cl.layoutParams as ViewGroup.MarginLayoutParams
             param.marginEnd = 20.toDp(requireContext())
             binding.signup01ConstraintLayout01Cl.layoutParams = param
+        } else{
+            viewModel.phoneNumber.value = ""
+            signupNextBtnListener.onNextBtnUnable()
         }
         savedState = null
 
         // skip 테스트 버튼
-        binding.signup01SkipBtn.setOnClickListener { signupNextBtnListener.onNextBtnEnable() }
+        binding.signup01SkipBtn.setOnClickListener { onGoingNextListener.onGoingNext() }
 
         return binding.root
     }
@@ -91,12 +94,14 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 
         binding.signup01PhoneNumberVerifyingBtn.setOnClickListener { verifyingBtnOnClick() }
 
-        this.viewModel.phoneNumber.observe(requireActivity(), {
+        this.viewModel.phoneNumber.observe(viewLifecycleOwner, {
+            Log.d("폰","observe")
             val pattern = Pattern.compile("\\d{3}-\\d{4}-\\d{4}");
             val matcher = pattern.matcher(it);
-            if (it.length == 13) {
+            if (it!!.length == 13) {
                 if (matcher.matches()) {
                     this.viewModel.phoneNumberVerifying.observe(requireActivity(), { it2 ->
+                        Log.d("폰인증","observe")
                         if (it2.length == 6) {
                             signupNextBtnListener.onNextBtnEnable()
                             viewModel.signUp01Avail.value = true

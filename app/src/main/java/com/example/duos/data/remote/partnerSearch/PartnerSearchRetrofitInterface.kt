@@ -9,4 +9,15 @@ interface PartnerSearchRetrofitInterface {
     fun partnerSearchDataList(
         @Query("userIdx") userIdx: Int
     ): Call<PartnerSearchDataResponse>
+
+    @GET("/api/partners/search")
+    fun partnerSearchFilterDataList(
+        @Query("userIdx") userIdx: Int,
+        @Query("gender") gender: Int,
+        @Query("ageStart") ageStart : Int,
+        @Query("ageEnd") ageEnd : Int,
+        @Query("experienceStart") experienceStart : Int,
+        @Query("experienceEnd") experienceEnd : Int,
+        @Query("locationIdx") locationIdx : Int
+    )
 }

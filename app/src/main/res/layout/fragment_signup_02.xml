@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="com.example.duos.utils.SignUpInfoViewModel" />
+            type="com.example.duos.utils.ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -160,6 +160,7 @@
                     android:includeFontPadding="false"
                     android:minHeight="0dp"
                     android:text="@string/signup_sex_man"
+                    android:tag="1"
                     android:textAlignment="center"
                     android:textColor="@drawable/btn_text_color_selector"
                     android:textSize="15sp" />
@@ -178,6 +179,7 @@
                     android:includeFontPadding="false"
                     android:minHeight="0dp"
                     android:text="@string/signup_sex_woman"
+                    android:tag="2"
                     android:textAlignment="center"
                     android:textColor="@drawable/btn_text_color_selector"
                     android:textSize="15sp" />

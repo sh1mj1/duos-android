@@ -85,6 +85,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/partner_filter_location_text_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signup_local_set"
@@ -150,6 +151,7 @@
                         android:layout_height="42dp"
                         android:layout_weight="1"
                         android:text="@string/partner_filter_male"
+                        android:tag="1"
                         android:textSize="15sp"
                         android:background="@drawable/btn_color_selector"
                         android:textColor="@drawable/btn_text_color_selector"
@@ -169,6 +171,7 @@
                         android:background="@drawable/btn_color_selector"
                         android:layout_marginStart="8dp"
                         android:text="@string/partner_filter_female"
+                        android:tag="2"
                         android:textSize="15sp"
                         android:textColor="@drawable/btn_text_color_selector"
                         android:textAlignment="center"
@@ -189,6 +192,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/btn_color_selector"
                         android:text="@string/partner_filter_careless"
+                        android:tag="0"
                         android:textSize="15sp"
                         android:textColor="@drawable/btn_text_color_selector"
                         android:textAlignment="center"

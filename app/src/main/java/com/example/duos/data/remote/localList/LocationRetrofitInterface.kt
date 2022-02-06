@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface LocationRetrofitInterface {
-    @GET("/test/location/list")
+    @GET("/api/locations")
     fun locationList(): Call<LocationResponse>
 }

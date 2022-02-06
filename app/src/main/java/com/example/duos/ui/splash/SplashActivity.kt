@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.duos.databinding.ActivitySplashBinding
 import com.example.duos.ui.login.LoginActivity
+import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.signup.SignUpActivity
+import com.example.duos.utils.getAccessToken
+import com.example.duos.utils.saveJwt
 
 class SplashActivity: AppCompatActivity(), SplashView {
 
@@ -22,6 +25,8 @@ class SplashActivity: AppCompatActivity(), SplashView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
+
+        autoLogin()
 
         setContentView(binding.root)
         initViewpager()
@@ -83,7 +88,12 @@ class SplashActivity: AppCompatActivity(), SplashView {
     }
 
     private fun autoLogin() {
-
+        if (getAccessToken() != null){
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
     }
 
     override fun onAutoLoginLoading() {
