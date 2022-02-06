@@ -2,17 +2,27 @@ package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.duos.ToggleButtonInterface
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.signup.localSearch.LocationDialogFragment
+import com.example.duos.utils.ViewModel
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 
-class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate) {
+class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate),
+    ToggleButtonInterface {
+
+    lateinit var viewModel: ViewModel
     override fun initAfterBinding() {
 
         val ageRangeSeekbar = binding.partnerFilterAgeRangeSb
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
+
 
         ageRangeSeekbar.setProgress(10f,60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
@@ -68,13 +78,12 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         })
 
         binding.partnerFilterApplyTv.setOnClickListener ({
-            var location = "지역 받아와~"
-            var gender = "성별 받아와~"
-            var ageMin = binding.partnerFilterAgeMinTv.text
-            var ageMax = binding.partnerFilterAgeMaxTv.text
-            var ballCapacityMin = binding.partnerFilterBallCapabilityMinTv.text
-            var ballCapacityMax = binding.partnerFilterBallCapabilityMaxTv.text
-
+            var location : Int = viewModel.partnerLocation.value!!
+            var gender : Int = viewModel.partnerGender.value!!
+            var ageMin: Int  = binding.partnerFilterAgeMinTv.text.toString().toInt()
+            var ageMax : Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
+            var ballCapacityMin: Int  = binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
+            var ballCapacityMax: Int  = binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
 
 
             // 파트너 찾기 - 매칭 화면으로 이동
@@ -84,7 +93,6 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
 
         binding.partnerFilterInitiateBtn.setOnClickListener {
             // 초기화 버튼 시 각 항목 입력값 초기화
-
             ageRangeSeekbar.setProgress(10f,60f)
             ballCapacityRangeSeekBar.setProgress(0f, 10f)
         }
@@ -92,6 +100,27 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         binding.partnerFilterBackIv.setOnClickListener{
             finish()
         }
+
+        binding.partnerFilterLocationSelectLayout.setOnClickListener {
+            val dialog = LocationDialogFragment()
+            supportFragmentManager?.let { fragmentManager ->
+                dialog.show(
+                    fragmentManager,
+                    "지역 선택"
+                )
+            }
+        }
+
+        viewModel.partnerLocationDialogShowing.observe(this, Observer {
+            if (it) {
+                binding.partnerFilterLocationTextTv.text = viewModel.partnerLocationCateName.value + " " +
+                        viewModel.partnerLocationName.value
+            }
+        })
+    }
+
+    override fun setRadiobutton(tag: String){
+        viewModel.partnerGender.value = tag.toInt()
     }
 
 // indicator(10의 단위 위에 위치할때마다 위에 표시해줌)
