@@ -19,6 +19,12 @@ import com.google.firebase.messaging.RemoteMessage
 import androidx.core.app.NotificationManagerCompat
 
 import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo
+import android.app.ActivityManager.RunningTaskInfo
+import android.content.ComponentName
+
+
+
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
@@ -95,32 +101,43 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
         val body = remoteMessage.data.get("message")
 
-        //
-
-        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        val info = manager.getRunningTasks(1)
-        val componentName = info[0].topActivity
-        val ActivityName = componentName!!.shortClassName.substring(1)
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
             val messageData = remoteMessage.data
 
-            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
-                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
-                messageData.get("sentAt").toString(), messageData.get("title").toString())
-//            val intent = Intent(this, ChattingActivity::class.java)
+//            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
+//                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
+//                messageData.get("sentAt").toString(), messageData.get("title").toString())
 
-            val intent = Intent(this, ChattingActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
-            intent.putExtra("type", messageData.get("type").toString())
-            intent.putExtra("body", messageData.get("body").toString())
-            intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
-            intent.putExtra("sentAt", messageData.get("sentAt").toString())
-            intent.putExtra("senderId",  messageData.get("title").toString())
-//            intent.putExtra("chatRoomIdx", remoteMessage.data.get("chatRoomIdx"))
-            Log.d("발신자", remoteMessage.data.get("title").toString())
-            startActivity(intent)
+
+
+            val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+            val componentName: ComponentName?
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                componentName = manager.appTasks[0].taskInfo.topActivity
+            }else{
+                componentName = manager.getRunningTasks(1)[0].topActivity
+            }
+            val ActivityName = componentName!!.shortClassName.substring(0)
+            Log.d("현재액티비티이름", ActivityName)
+
+
+            if(ActivityName.contains("ChattingActivity")){
+                Log.d("현재 채팅액티비티","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
+                val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
+                intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
+                intent.putExtra("type", messageData.get("type").toString())
+                intent.putExtra("body", messageData.get("body").toString())
+                intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
+                intent.putExtra("sentAt", messageData.get("sentAt").toString())
+                intent.putExtra("senderId",  messageData.get("title").toString())
+                Log.d("발신자", remoteMessage.data.get("title").toString())
+                startActivity(intent)
+            } else{
+                Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
+                sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
+            }
         }else{
             Log.d("데이터메세지", "is null")
         }
@@ -129,11 +146,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
             "Application.APPTAG",
             "myFirebaseMessagingService - onMessageReceived - message: $remoteMessage"
         )
-
-//        val dialogIntent = Intent(this, ChattingActivity::class.java)
-//        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        dialogIntent.putExtra("msg", remoteMessage)
-//        startActivity(dialogIntent)
         // TODO
         // 또한 수신된 FCM 메시지의 결과로 사용자 자신의 알림을 생성하려면 여기서 시작해야 합니다. 아래 sendNotification 방법을 참조하십시오.
 
@@ -193,34 +205,10 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
      * FCM 메시지 본문이 수신되었습니다.
      */
 
-    private fun sendMessageData(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
-        Log.d("노티", body)
-        //
-
+    private fun sendMessageData(body: String, senderId: String, chatRoomIdx: String){
         val intent = Intent(this, ChattingActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-        val bundle = Bundle()
-//        bundle.putString("type", type)
-//        bundle.putString("from", from)
-//        bundle.putString("to", to)
-//        bundle.putString("messageBody", messageBody)
-//        bundle.putLong("sendTime", sendTime)
-
-//        bundle.putString("chatRoomIdx", chatRoomIdx)
-//        bundle.putString("type", type)
-//        bundle.putString("body", body)
-//        bundle.putString("senderIdx", senderIdx)
-//        bundle.putString("sentAt", sentAt)
-//        bundle.putString("senderId", senderId)
-
-        intent.putExtra("chatRoomIdx", chatRoomIdx)
-        intent.putExtra("type", type)
-        intent.putExtra("body", body)
-        intent.putExtra("senderIdx", senderIdx)
-        intent.putExtra("sentAt", sentAt)
-        intent.putExtra("senderId", senderId)
+        intent.putExtra("chatRoomIdx",chatRoomIdx)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -232,7 +220,59 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
             .setSmallIcon(R.drawable.splash_duos_logo)
             .setContentTitle(senderId)
             .setContentText(body)
-            .setExtras(bundle)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 안드로이드 오레오 알림 채널이 필요.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
+    fun isForeground(context: Context): Boolean {
+
+        // Get the Activity Manager
+        val manager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+
+        // Get a list of running tasks, we are only interested in the last one,
+        // the top most so we give a 1 as parameter so we only get the topmost.
+        val task = manager.runningAppProcesses
+
+        // Get the info we need for comparison.
+        val componentInfo = task[0].importanceReasonComponent
+
+        // Check if it matches our package name. // If not then our app is not on the foreground.
+        return if (componentInfo.packageName == context.packageName) true else false
+    }
+
+    private fun sendMessageData(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
+        Log.d("노티", body)
+        //
+
+        val intent = Intent(this, ChattingActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelId = getString(R.string.firebase_notification_channel_id_testS)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.splash_duos_logo)
+            .setContentTitle(senderId)
+            .setContentText(body)
+//            .setExtras(bundle)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)

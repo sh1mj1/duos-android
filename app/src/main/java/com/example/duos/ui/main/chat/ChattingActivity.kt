@@ -17,6 +17,7 @@ import android.text.Editable
 import android.text.TextWatcher
 
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatMessageItem
@@ -48,6 +49,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
+    lateinit var chatRoomName: TextView
+    var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
 
     // 리사이클러뷰에 채팅 추가
 //    private fun addChat(data: MessageData) {
@@ -102,9 +105,21 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
     }
 
+    override fun onStart() {
+        super.onStart()
+        // 사용자가 백그라운드에서 돌아왔을 때 호출됨
+        // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
+        // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
+        getFCMIntent()
+        Log.d("생명주기","onStart")
+    }
+
     override fun initAfterBinding() {
+        Log.d("생명주기","onCreate(initAfterBinding)")
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
+        chatRoomName = binding.chattingTitlePartnerIdTv
+        chatRoomName.text = "duos1999" // ChatListFragment에서 인텐트로 받아와 띄우도록 수정해야 함
 
         var sendBtn: ImageView = binding.chattingSendBtn
 
@@ -124,8 +139,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         addChatItem("senderId", "상대방이 보낸 메세지입니다.", currentTime, "MESSAGE")
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-
-         getFCMIntent()
 
         // 날짜 바뀌면 "2022년 01월 21일" 이런식으로 뜨게 하는거 eventTime이 바뀌면 해당 인덱스에 추가하는거 해보다가 말음
 //        chatListDatas.apply {
@@ -203,7 +216,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     private fun postSendMessage() {
-        val messageData = sendMessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
+        val messageData = sendMessageData(chatRoomIdx, "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
 
         ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
@@ -213,7 +226,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         var sendTime = System.currentTimeMillis()
         Log.d(
             "MESSAGE", sendMessageData(
-                "957cfc80-481c-4ae4-88a0-25a9599dd511",
+                chatRoomIdx,
                 "MESSAGE",
                 thisUserIdx, targetUserIdx,
                 chattingEt.text.toString()
@@ -235,45 +248,16 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     override fun onSendMessageLoading() {
         progressON()
         Log.d("로딩중","채팅 메세지 보내기 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
     }
 
     override fun onSendMessageSuccess() {
         Log.d("채팅 메세지 보내기 POST", "성공")
+        progressOFF()
     }
 
     override fun onSendMessageFailure(code: Int, message: String) {
         Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
-
-//    override fun onNewIntent(intent: Intent?) {
-////        getFCMIntent()
-//        if (intent == null){
-//            Log.d("인텐트","is null")
-//        }
-//
-//        var bundle = intent?.extras
-//        val chatRoomIdx = (bundle?.getString("chatRoomIdx")?:"null").toString()
-//        val type= (bundle?.getString("type")?:"MESSAGE").toString()
-//        val body = bundle?.getString("body").toString()
-//        val senderIdx = bundle?.getString("senderIdx").toString()
-//        var sentAt = bundle?.getString("sentAt").toString()
-//        val senderId = bundle?.getString("senderId").toString()
-//        sentAt = getFormattedDateTime(sentAt)
-//
-////        val chatRoomIdx = intent?.getStringExtra("chatRoomIdx")?:"null"
-////        val type = intent?.getStringExtra("type")?:"MESSAGE"
-////        val body = intent?.getStringExtra("body")?:"null"
-////        val senderIdx = (intent?.getStringExtra("senderIdx")?:"null").toInt()
-////        var sentAt = intent?.getStringExtra("sentAt")?:"null"
-////        val senderId = intent?.getStringExtra("senderId")?:"null"
-////        sentAt = getFormattedDateTime(sentAt)
-//
-//        Log.d("포그라운드-알림페이로드"," 1")
-//        addChatItem(senderId, body, sentAt, type)
-//
-//        super.onNewIntent(intent)
-//    }
 
     override fun onNewIntent(intent: Intent?) {
         if (intent == null){
@@ -284,25 +268,23 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         var bundle = intent?.extras
         if(bundle != null){
             Log.d("채팅화면일때", "2")
-            val senderId = bundle.getString("senderId").toString()
+            val senderId = bundle.getString("senderId")
             val body = bundle.getString("body")
-            var senderIdx = bundle.getString("senderIdx")?.toInt()
-            var chatRoomIdx = bundle.getString("chatRoomIdx")
             var type = bundle.getString("type")
-            //var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }
-            var currentTime = toDate(System.currentTimeMillis())
+            var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
+            //var currentTime = toDate(System.currentTimeMillis())
 
-            if (senderId != null && body != null && currentTime != null && type != null) {
-                Log.d("채팅화면일때", "3")
-                addChatItem(senderId, body, currentTime, "MESSAGE")
-            }else{
+            if (!senderId.isNullOrEmpty() && !body.isNullOrEmpty() && !sendTime.isNullOrEmpty() && type.equals("MESSAGE")) {
+                // 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 누르면 onMessageReceived를 거치지 않고 onNewIntent가 호출되고 senderId가 null으로 와서
+                    // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
+                    // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
+               Log.d("채팅화면일때", "3")
+                Log.d("발신자 아이디", senderId)
+                addChatItem(senderId, body, sendTime, "MESSAGE")
+            }else{  // 채팅화면을 마지막으로 백그라운드로 전환했다가 푸시알림을 통해 다시 왔을 때 여기로 옴, onStart에서 api 호출해줄 것이므로 비워두면 됨
                 Log.d("채팅화면일때", "3 - null 존재")
+                Log.d("sendTime 확인", sendTime)
             }
-//            if (chatRoomIdx != null && senderIdx != null && body != null && sendTime != null) {
-//                Log.d("채팅액티비티", "3")
-//                updateMessage(chatRoomIdx, "MESSAGE", senderIdx, thisUserIdx, body, sendTime)
-//            }else{
-//                Log.d("채팅액티비티", "3 - null 존재")
 //            }
         }else{
             Log.d("채팅화면일때", "2-error")
@@ -311,30 +293,19 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         super.onNewIntent(intent)
     }
 
-//    fun updateMessage(senderId: String, body: String, sentAt: String, type: String) {
-//        Log.d("채팅액티비티", "updateMessage")
-//        addChatItem(senderId, body, sentAt, type)
-//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//    }
-
     fun getFCMIntent(){
         // chatRoomIdx만 받도록 수정 (여기서 데이터 받을필요 없이 chatRoomIdx로 이전 채팅 데이터 api 호출하게 하면 됨)
         Log.d("FCM인텐트", "1")
         var bundle = intent?.extras
         if(bundle != null){
-            Log.d("FCM인텐트", "2")
-            val senderId = bundle.getString("senderId").toString()
-            val body = bundle.getString("body")
-            var senderIdx = bundle.getString("senderIdx")?.toInt()
-            var chatRoomIdx = bundle.getString("chatRoomIdx")
-            //var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }
-            var currentTime = toDate(System.currentTimeMillis())
-
-            if (senderId != null && body != null && currentTime != null) {
-                Log.d("FCM인텐트", "3")
-                addChatItem(senderId, body, currentTime, "MESSAGE")
+            var chatRoomIdx = bundle.getString("chatRoomIdx").toString()
+            Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")
+            Log.d("chatRoomIdx is", chatRoomIdx)
+            if (!chatRoomIdx.isNullOrEmpty()) {
+                Log.d("FCM인텐트", "3 - chatRoomIdx를 받아옴")
+                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
             }else{
-                Log.d("FCM인텐트", "3 - null 존재")
+                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
             }
 //            if (chatRoomIdx != null && senderIdx != null && body != null && sendTime != null) {
 //                Log.d("채팅액티비티", "3")
@@ -343,17 +314,22 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //                Log.d("채팅액티비티", "3 - null 존재")
 //            }
         }else{
-            Log.d("FCM인텐트", "받아올 번들 없음")
+            Log.d("FCM인텐트", "푸시알림을 통해 채팅화면으로 온 것이 아님, 혹은 ")
+            // ChatListFragment에서 인텐트로 온 chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
+            // 포그라운드에서 온 경우 인텐트를 받음
         }
     }
 
     @Throws(Exception::class)
     fun getFormattedDateTime(dateTime: String):String {
         // 대상 날짜로 LocalDateTime 만들기
+        Log.d("채팅메세지수신시간포매팅 1",dateTime)
         var parsedDateTimeArray = dateTime.split(".")
         var parsedDateTime = parsedDateTimeArray[0]
+        Log.d("채팅메세지수신시간포매팅 2", parsedDateTime)
 
         val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
+        Log.d("채팅메세지수신시간포매팅 3", parsedLocalDateTime.toString())
 
         // LocalDateTime에서 필요한 내용 필요한 형식으로 뽑기
 //        val yyyyMMdd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -365,7 +341,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //        println(yyyy)
 //        println(MM)
 //        println(dd)
-        println(time)
+        Log.d("채팅메세지수신시간포매팅 4",time)
 
         return time
     }

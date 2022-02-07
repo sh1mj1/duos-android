@@ -61,3 +61,12 @@ fun saveLastUpdatedDate(lastUpdatedDate: String){
 
 fun getLastUpdatedDate() : String =
     mSharedPreferences.getString("lastUpdatedDate", "1998-10-10").toString()
+
+fun saveCurrentChatRoomIdx(currentChatRoomIdx: String){
+    val editor = mSharedPreferences.edit()
+    editor.putString("currentChatRoomIdx", currentChatRoomIdx)
+    editor.apply()
+}
+
+fun getCurrentChatRoomIdx(): String =
+    mSharedPreferences.getString("currentChatRoomIdx", "").toString()
