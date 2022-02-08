@@ -64,7 +64,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     }
 
     override fun onGetAppointmentFailure(code: Int, message: String) {
-        Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, " $TAG onGetAppointmentFailure",Toast.LENGTH_LONG).show()
     }
 
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {

@@ -1,6 +1,7 @@
 package com.example.duos.data.remote.appointment
 
 import android.util.Log
+import android.widget.Toast
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.data.entities.appointment.AppointmentListView
 import com.example.duos.utils.NetworkModule
@@ -27,6 +28,7 @@ object AppointmentService {
             override fun onFailure(call: Call<AppointmentResponse>, t: Throwable) {
                 Log.d("$TAG/API-ERROR", t.message.toString())
                 appointmentListView.onGetAppointmentFailure(400, "네트워크 오류 발생")
+
 
             }
         })

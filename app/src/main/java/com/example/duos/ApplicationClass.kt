@@ -20,8 +20,9 @@ import java.util.concurrent.TimeUnit
 // Retrofit을 호출하기 위한 Creator( API를 바로 호출할 수 있도록 설정해주는 클래스)
 class ApplicationClass : Application() {
     companion object{
-        const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Access Token Key
-        const val X_REFRESH_TOKEN: String = "X-REFRESH_TOKEN"       // JWT Refresh Token Key
+        const val X_ACCESS_TOKEN: String = "jwtAccessToken"         // JWT Access Token Key
+        const val X_REFRESH_TOKEN: String = "jwtRefreshToken"       // JWT Refresh Token Key
+        const val USER_IDX: String = "userIdx"       // JWT Refresh Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
         const val TEST_ACCESS_TOKEN : String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
@@ -69,19 +70,29 @@ class ApplicationClass : Application() {
         mSharedPreferences = applicationContext.getSharedPreferences(TAG, Context.MODE_PRIVATE)
     }
 
+    fun context(): Context = applicationContext
+
     fun progressON(activity: Activity?, message: String?) {
         if (activity == null || activity.isFinishing) {
             return
         }
-        if (progressDialog != null && progressDialog.isShowing()) {
-            //progressSET(message)
-        } else {
-            progressDialog = AppCompatDialog(activity)
-            progressDialog.setCancelable(false)
-            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            progressDialog.setContentView(R.layout.progress_loading)
-            progressDialog.show()
-        }
+
+        progressDialog = AppCompatDialog(activity)
+        progressDialog.setCancelable(false)
+        progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.setContentView(R.layout.progress_loading)
+        progressDialog.show()
+
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            //progressSET(message)
+//        } else {
+//            progressDialog = AppCompatDialog(activity)
+//            progressDialog.setCancelable(false)
+//            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//            progressDialog.setContentView(R.layout.progress_loading)
+//            progressDialog.show()
+//        }
+
         val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
         val frameAnimation = img_loading_frame?.background as AnimationDrawable
         img_loading_frame.post { frameAnimation.start() }

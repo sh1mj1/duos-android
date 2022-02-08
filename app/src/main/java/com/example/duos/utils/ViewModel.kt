@@ -38,4 +38,12 @@ class ViewModel : ViewModel() {
     var loginPhoneNumber = MutableLiveData<String?>()
     var loginPhoneNumberVerifying = MutableLiveData<String>()
 
+    // partnerFilter
+    var partnerLocationCate = MutableLiveData<Int?>()
+    var partnerLocation = MutableLiveData<Int?>()
+    var partnerLocationCateName = MutableLiveData<String?>()
+    var partnerLocationName = MutableLiveData<String?>()
+    var partnerLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
+    var partnerGender = MutableLiveData<Int?>()
+
 }

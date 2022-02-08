@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import com.example.duos.R
 import com.example.duos.databinding.FragmentFriendListDialogBinding
-import com.example.duos.databinding.SignupLocalDialogBinding
 import com.example.duos.utils.saveFriendListDialogNotShowing
 
 class FriendListDialogFragment : DialogFragment() {

@@ -1,6 +1,6 @@
-package com.example.duos.data.entities
+package com.example.duos.data.entities.chat
 
-data class MessageData(
+data class sendMessageData(
     var chatRoomIdx: String = "",
     var type: String = "",
     var senderIdx: Int = 0,   // from

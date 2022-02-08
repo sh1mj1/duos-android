@@ -14,27 +14,32 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.data.entities.LocationCategoryList
 import com.example.duos.data.entities.LocationList
 import com.example.duos.data.remote.localList.LocationService
-import com.example.duos.databinding.SignupLocalDialogBinding
+import com.example.duos.databinding.FragmentLocationDialogBinding
+import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
+import com.example.duos.ui.signup.SignUpActivity
 import com.example.duos.utils.ViewModel
 
 class LocationDialogFragment() : DialogFragment(), LocationView {
 
-    lateinit var locationList : List<LocationList>
+    lateinit var locationList: List<LocationList>
     lateinit var myLocationCategory: LocationCategoryList
     lateinit var myLocation: LocationList
-    private lateinit var binding: SignupLocalDialogBinding
+    private lateinit var binding: FragmentLocationDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = SignupLocalDialogBinding.inflate(inflater, container, false)
+        binding = FragmentLocationDialogBinding.inflate(inflater, container, false)
 
-        binding.locationCategoryListRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.locationCategoryListRc.adapter = LocationCategoryRVAdapter(ArrayList<LocationCategoryList>())
+        binding.locationCategoryListRc.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.locationCategoryListRc.adapter =
+            LocationCategoryRVAdapter(ArrayList<LocationCategoryList>())
 
-        binding.locationListRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.locationListRc.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.locationListRc.adapter = LocationRVAdapter(ArrayList<LocationList>())
 
         LocationService.getLocationList(this)
@@ -54,13 +59,23 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
             this.dismiss()
         }
         binding.locationOkBtn.setOnClickListener {
-            this.dismiss()
-            val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
-            viewModel.locationCate.value = myLocationCategory.locationCategoryIdx
-            viewModel.locationCateName.value = myLocationCategory.locationCategoryName
-            viewModel.location.value = myLocation.locationIdx
-            viewModel.locationName.value = myLocation.locationName
-            viewModel.locationDialogShowing.value = true
+            if (requireActivity() is SignUpActivity) {
+                this.dismiss()
+                val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
+                viewModel.locationCate.value = myLocationCategory.locationCategoryIdx
+                viewModel.locationCateName.value = myLocationCategory.locationCategoryName
+                viewModel.location.value = myLocation.locationIdx
+                viewModel.locationName.value = myLocation.locationName
+                viewModel.locationDialogShowing.value = true
+            } else if (requireActivity() is PartnerFilterActivity){
+                this.dismiss()
+                val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
+                viewModel.partnerLocationCate.value = myLocationCategory.locationCategoryIdx
+                viewModel.partnerLocationCateName.value = myLocationCategory.locationCategoryName
+                viewModel.partnerLocation.value = myLocation.locationIdx
+                viewModel.partnerLocationName.value = myLocation.locationName
+                viewModel.partnerLocationDialogShowing.value = true
+            }
         }
     }
 
@@ -69,7 +84,8 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         binding.locationCategoryListRc.adapter = locationCategoryRVAdapter
         myLocationCategory = locationCategoryList[0]
 
-        locationCategoryRVAdapter.setMyItemClickListener(object : LocationCategoryRVAdapter.MyItemClickListener{
+        locationCategoryRVAdapter.setMyItemClickListener(object :
+            LocationCategoryRVAdapter.MyItemClickListener {
 
             override fun onSetLocationList(locationCategory: LocationCategoryList) {
                 myLocationCategory = locationCategory
@@ -92,26 +108,26 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         Toast.makeText(requireContext(), "code : $code , message : $message", Toast.LENGTH_SHORT)
     }
 
-    fun setLocalList(cateIdx : Int){
+    fun setLocalList(cateIdx: Int) {
 
         // category 에 해당하는 시/구/군을 보여준다.
         val filteredLocationList = ArrayList<LocationList>()
-        for (location in locationList){
-            if(location.locationCategoryIdx == cateIdx)
+        for (location in locationList) {
+            if (location.locationCategoryIdx == cateIdx)
                 filteredLocationList.add(location);
         }
 
         val locationRVAdapter = LocationRVAdapter(filteredLocationList)
         binding.locationListRc.adapter = locationRVAdapter
 
-        locationRVAdapter.setMyItemClickListener(object : LocationRVAdapter.MyItemClickListener{
+        locationRVAdapter.setMyItemClickListener(object : LocationRVAdapter.MyItemClickListener {
             override fun onChooseLocation(location: LocationList) {
                 myLocation = location
             }
         })
     }
 
-    fun filter(){
+    fun filter() {
 
     }
 

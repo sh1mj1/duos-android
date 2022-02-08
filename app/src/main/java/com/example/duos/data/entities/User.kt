@@ -8,13 +8,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "UserTable")
 data class User(
     var phoneNumber : String? = null,
-    @PrimaryKey var nickName : String,
+    var nickName : String,
     var gender : Int? = null,
     var birth: String? = null,
-    var locationCate : Int? = null,
     var location : Int? = null,
     var experience : Int? = null,
-    var profileImg : Bitmap? = null,
+    var profileImg : String? = null,
     var introduce: String? = null,
-    var userIdx : Int? = null
+    @PrimaryKey var userIdx : Int? = null
 )

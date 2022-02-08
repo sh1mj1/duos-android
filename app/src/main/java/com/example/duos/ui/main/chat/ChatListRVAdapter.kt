@@ -1,32 +1,27 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.duos.CustomDialog
-import com.example.duos.data.entities.ChatListItem
+import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.databinding.ItemChatListBinding
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>, val deleteClickListener: DeleteClickListener) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
+class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteClickListener: DeleteClickListener) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
     private lateinit var dialogBuilder: CustomDialog.Builder
     private lateinit var context: Context
     private lateinit var deleteBtnTv: TextView
 
     interface ChatListItemClickListener{
-        fun onItemClick(chatListItem: ChatListItem)
+        fun onItemClick(chatRoom: ChatRoom)
     }
 
     private lateinit var mItemClickListener: ChatListItemClickListener
@@ -64,17 +59,17 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatListItem>, val delet
     override fun getItemCount(): Int = chatList.size
 
     inner class ViewHolder(val binding: ItemChatListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(chatListItem : ChatListItem){
+        fun bind(chatRoom : ChatRoom){
 //            binding.chatListProfileIv.setImageResource(chatListItem.profileImg!!)
 //            binding.chatListUserIdTv.text = chatListItem.id
 //            binding.chatListChatPreviewTv.text = chatListItem.contentPreview
 //            binding.chatListChatMessageTime.text = chatListItem.messageTime
 
-            val messageTime = getFormattedDateTime(chatListItem.lastUpdatedAt)
+            val messageTime = getFormattedDateTime(chatRoom.lastUpdatedAt)
             binding.chatListChatMessageTime.text = messageTime
-            binding.chatListChatPreviewTv.text = chatListItem.lastMessage
-            binding.chatListUserIdTv.text = chatListItem.chatRoomName
-            Glide.with(context).load(chatListItem.chatRoomImg).apply(RequestOptions().circleCrop()).into(binding.chatListProfileIv)
+            binding.chatListChatPreviewTv.text = chatRoom.lastMessage
+            binding.chatListUserIdTv.text = chatRoom.chatRoomName
+            Glide.with(context).load(chatRoom.chatRoomImg).apply(RequestOptions().circleCrop()).into(binding.chatListProfileIv)
 
             deleteBtnTv = binding.chatListDeleteBtn
         }

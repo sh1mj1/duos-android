@@ -1,20 +1,39 @@
 package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
+import com.example.duos.data.local.RecommendedPartnerDatabase
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.duos.R
+import com.example.duos.ToggleButtonInterface
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
+import com.example.duos.utils.saveCheckUserAppliedPartnerFilterMoreThanOnce
+import com.example.duos.ui.signup.localSearch.LocationDialogFragment
+import com.example.duos.utils.ViewModel
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 
-class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate) {
+class PartnerFilterActivity :
+    BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate),
+    ToggleButtonInterface {
+
+    lateinit var viewModel: ViewModel
     override fun initAfterBinding() {
 
         val ageRangeSeekbar = binding.partnerFilterAgeRangeSb
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(ViewModel::class.java)
 
-        ageRangeSeekbar.setProgress(10f,60f)
+
+        ageRangeSeekbar.setProgress(10f, 60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
 
         ageRangeSeekbar.setOnRangeChangedListener(object: OnRangeChangedListener {
@@ -49,12 +68,13 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
                     binding.partnerFilterBallCapabilityMinTv.text = leftValue.toInt().toString() + leftUnit
                 }
 
-                if(rightValue.toInt() % 1 == 0){
+                if (rightValue.toInt() % 1 == 0) {
                     var rightUnit = "년"
-                    if(rightValue < 1f){
+                    if (rightValue < 1f) {
                         rightUnit = "개월"
                     }
-                    binding.partnerFilterBallCapabilityMaxTv.text = rightValue.toInt().toString() + rightUnit
+                    binding.partnerFilterBallCapabilityMaxTv.text =
+                        rightValue.toInt().toString() + rightUnit
                 }
             }
 
@@ -68,31 +88,112 @@ class PartnerFilterActivity: BaseActivity<ActivityPartnerFilterBinding>(Activity
         })
 
         binding.partnerFilterApplyTv.setOnClickListener ({
-            var location = "지역 받아와~"
-            var gender = "성별 받아와~"
-            var ageMin = binding.partnerFilterAgeMinTv.text
-            var ageMax = binding.partnerFilterAgeMaxTv.text
-            var ballCapacityMin = binding.partnerFilterBallCapabilityMinTv.text
-            var ballCapacityMax = binding.partnerFilterBallCapabilityMaxTv.text
+            //            var location: Int = viewModel.partnerLocation.value!!
+//            var gender: Int = viewModel.partnerGender.value!!
+//            var ageMin: Int = binding.partnerFilterAgeMinTv.text.toString().toInt()
+//            var ageMax: Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
+//            var ballCapacityMin: Int =
+//                binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
+//            var ballCapacityMax: Int =
+//                binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
+
+            // 필터 적용 한 적이 한 번이라도 있는지 체크하고, 없으면 sharedPreference 변수인 checkUserAppliedPartnerFilterMoreThanOnce = true로 바꾸기
+            if(!getCheckUserAppliedPartnerFilterMoreThanOnce()){
+                Log.d("PartnerFilterActivity", "이 사용자는 가입 후 파트너 추천 필터 기능을 사용한 적이 없음")
+                saveCheckUserAppliedPartnerFilterMoreThanOnce(true)
+            }else{
+                Log.d("PartnerFilterActivity", "이 사용자는 가입 후 파트너 추천 필터 기능을 적어도 한 번 이상 사용함")
+            }
+
+            // 필터 적용 파트너 추천 api 호출 - 해야돼...
 
 
+            //수
 
-            // 파트너 찾기 - 매칭 화면으로 이동
-            //val intent = Intent(this, MakePlanActivity::class.java)
+            //정
+
+            //필
+
+            //요
+
+            // api 데이터를 룸디비에 저장 - 수정 필요
+
+//            val recommendedPartnerDB = RecommendedPartnerDatabase.getInstance(this)!!
+            //수
+//            recommendedPartnerDB.recommendedPartnerDao().deleteAll()
+            //정
+//            for(i: Int in 0..api로받은리스트크기-1)
+            //필
+//            recommendedPartnerDB.recommendedPartnerDao().insert()   // insert 파라미터로 api로받은 리스트[i]
+            //요
+//            Log.d("PartnerFilterActivity:", "필터적용 후 파트너 추천 api로 받은 리스트 룸DB에 잘 저장되었는지 확인"+recommendedPartnerDB.recommendedPartnerDao().getRecommendedPartnerList())
+
+                // 파트너 찾기 - 매칭 화면으로 이동
             startActivity(Intent(this, MainActivity::class.java))
         })
 
         binding.partnerFilterInitiateBtn.setOnClickListener {
             // 초기화 버튼 시 각 항목 입력값 초기화
-
-            ageRangeSeekbar.setProgress(10f,60f)
+            binding.partnerFilterManBtn.isChecked = false
+            binding.partnerFilterWomanBtn.isChecked = false
+            binding.partnerFilterCarelessBtn.isChecked = false
+            binding.partnerFilterLocationTextTv.text = getString(R.string.signup_local_set)
+            viewModel.partnerGender.value = null
+            viewModel.partnerLocation.value = null
+            viewModel.partnerGender.value = null
+            ageRangeSeekbar.setProgress(10f, 60f)
             ballCapacityRangeSeekBar.setProgress(0f, 10f)
         }
 
-        binding.partnerFilterBackIv.setOnClickListener{
+        binding.partnerFilterBackIv.setOnClickListener {
             finish()
         }
+
+        binding.partnerFilterLocationSelectLayout.setOnClickListener {
+            val dialog = LocationDialogFragment()
+            supportFragmentManager?.let { fragmentManager ->
+                dialog.show(
+                    fragmentManager,
+                    "지역 선택"
+                )
+            }
+        }
+
+        viewModel.partnerLocationDialogShowing.observe(this, Observer {
+            if (it) {
+                binding.partnerFilterLocationTextTv.text =
+                    viewModel.partnerLocationCateName.value + " " +
+                            viewModel.partnerLocationName.value
+            }
+        })
+
+//        viewModel.partnerGender.observe(this, Observer {
+//            if (it != null){
+//                viewModel.partnerLocation.observe(this, Observer {
+//                    if (it!= null){
+//                        setApplyBtnEnable()
+//                    } else setApplyBtnUnable()
+//                })
+//            } else setApplyBtnUnable()
+//        })
     }
+
+    override fun setRadiobutton(tag: String) {
+        viewModel.partnerGender.value = tag.toInt()
+    }
+
+    fun setApplyBtnEnable(){
+        binding.partnerFilterApplyTv.isEnabled = true
+        binding.partnerFilterApplyTv.background = getDrawable(R.color.primary)
+        binding.partnerFilterApplyTv.setTextColor(getColor(R.color.white))
+    }
+
+    fun setApplyBtnUnable(){
+        binding.partnerFilterApplyTv.isEnabled = false
+        binding.partnerFilterApplyTv.background = getDrawable(R.color.white_smoke_E)
+        binding.partnerFilterApplyTv.setTextColor(getColor(R.color.dark_gray_B0))
+    }
+
 
 // indicator(10의 단위 위에 위치할때마다 위에 표시해줌)
 //    private fun changeSeekBarIndicator(seekbar: SeekBar, value: Float){

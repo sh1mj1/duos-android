@@ -2,23 +2,24 @@ package com.example.duos.data.remote.chat.chat
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.ChatRoom
-import com.example.duos.data.entities.MessageData
+import com.example.duos.data.entities.chat.CreateChatRoomData
+import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.chat.SendMessageView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 object ChatService {
     val retrofit = NetworkModule.getRetrofit()
     fun createChatRoom(createChatRoomView: CreateChatRoomView, thisUserIdx: Int, targetUserIdx: Int){
         val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
-        val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
+        val createChatRoomRequestInfo = CreateChatRoomData(thisUserIdx, targetUserIdx)
 
-        createChatRoomService.createChatRoom(chatRoom).enqueue(object :
+        createChatRoomView.onCreateChatRoomLoading()
+
+        createChatRoomService.createChatRoom(createChatRoomRequestInfo).enqueue(object :
             Callback<CreateChatRoomResponse>
         {
             override fun onResponse(
@@ -45,7 +46,7 @@ object ChatService {
 
     fun sendMessage(sendMessageView: SendMessageView, receiverIdx: Int, senderIdx: Int, message: String, type: String, chatRoomIdx: String){
         val sendMessageService = retrofit.create(ChatRetrofitInterface::class.java)
-        val message = MessageData(chatRoomIdx, type, senderIdx, receiverIdx, message)
+        val message = sendMessageData(chatRoomIdx, type, senderIdx, receiverIdx, message)
 
         sendMessageService.sendMessage(message).enqueue(object: Callback<SendMessageResponse>{
             override fun onResponse(

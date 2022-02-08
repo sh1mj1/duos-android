@@ -14,12 +14,15 @@ import android.widget.TableLayout
 import android.os.Bundle
 
 import android.os.Parcelable
+import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
+import okhttp3.internal.parseCookie
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
     lateinit var radioBtnListener: ToggleButtonInterface
     lateinit var signupContext: Context
+    lateinit var partnerFilterContext: Context
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -33,6 +36,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         if (context is SignUpActivity) {
             signupContext = context
         }
+        else if (context is PartnerFilterActivity){
+            partnerFilterContext = context
+        }
     }
 
     /**
@@ -45,6 +51,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
     ) {
         if (context is SignUpActivity) {
             signupContext = context
+        }
+        else if (context is PartnerFilterActivity){
+            partnerFilterContext = context
         }
 
     }
@@ -63,9 +72,11 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
             radioBtnListener = signupContext as SignUpActivity
             (radioBtnListener as SignUpActivity).setRadiobutton(activeRadioButton!!.tag.toString())
         }
+        else if (v.context is PartnerFilterActivity){
+            radioBtnListener = partnerFilterContext as PartnerFilterActivity
+            (radioBtnListener as PartnerFilterActivity).setRadiobutton(activeRadioButton!!.tag.toString())
+        }
 
-//        val viewModel = ViewModelProvider(mcontext as ViewModelStoreOwner).get(SignUpInfoViewModel::class.java)
-//        viewModel.setGender(activeRadioButton!!.text.toString())
 
     }
 

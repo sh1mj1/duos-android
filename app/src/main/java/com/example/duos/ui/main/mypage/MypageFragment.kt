@@ -7,6 +7,7 @@ import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.MyPageInfo
 import com.example.duos.data.remote.myPage.MyPageService
@@ -26,7 +27,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     override fun initAfterBinding() {
         Log.d(TAG, "Start_MypageFragment")
 
-        MyPageService.getUserPage(this, 2)
+        MyPageService.getUserPage(this, 1)
         // 클릭리스너
         initClickListener()
 
@@ -91,6 +92,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     override fun onGetMyPageItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
+        Toast.makeText(context, "$TAG , onGetMyPageItemFailure",Toast.LENGTH_LONG)
     }
 
 }

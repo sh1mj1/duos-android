@@ -1,9 +1,9 @@
-package com.example.duos.ui.main.chat
+package com.example.duos.ui.main.chat.appointment
 
 import android.util.Log
 import android.widget.TimePicker
 import com.example.duos.R
-import com.example.duos.databinding.ActivityMakePlanBinding
+import com.example.duos.databinding.ActivityAppointmentBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.calendarDecorators.EventDecorator
 import com.example.duos.ui.main.chat.calendarDecorators.MinMaxDecorator
@@ -16,7 +16,7 @@ import java.util.*
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 
-class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBinding::inflate) {
+class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppointmentBinding::inflate) {
     override fun initAfterBinding() {
 
         var selectedDate: CalendarDay = CalendarDay.today()
@@ -69,7 +69,7 @@ class MakePlanActivity: BaseActivity<ActivityMakePlanBinding>(ActivityMakePlanBi
                 calendar.removeDecorator(todayDecorator)    // 이전에 클릭했던 날짜의 decorator 삭제
                 selectedDate = calendar.selectedDate
                 Log.d("selectedDate", selectedDate.toString())
-                val eventDecorator = EventDecorator(this@MakePlanActivity, selectedDate)
+                val eventDecorator = EventDecorator(this@AppointmentActivity, selectedDate)
                 calendar.addDecorator(eventDecorator)
             }
         })

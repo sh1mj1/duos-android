@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.duos.data.entities.MessageItem
 import com.example.duos.data.entities.ChatType
 
 import android.util.Log
@@ -20,11 +19,14 @@ import android.text.TextWatcher
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.duos.R
-import com.example.duos.data.entities.ChatListItem
-import com.example.duos.data.entities.MessageData
+import com.example.duos.data.entities.chat.ChatMessageItem
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
-import com.google.firebase.messaging.Constants
+import com.example.duos.ui.main.chat.appointment.AppointmentActivity
+import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
@@ -36,12 +38,12 @@ import kotlin.collections.ArrayList
 
 class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView {
     //lateinit var binding: ActivityChattingBinding
-    private var chatListDatas = ArrayList<ChatListItem>()
+    private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
-    var userId: String = "tennis01"
-    var partnerId: String = "djeikd0620"
-    var thisUserIdx = 76
-    var targetUserIdx = 110
+    var userId: String = "tennis01"     // 룸디비에서 userIdx로 userId(=userNickname) 조회하도록 수정 필요
+    var partnerId: String = "djeikd0620"    // 인텐트로 넘겨받은 partnerIdx로 룸디비에서 partnerID(=chatRoomName) 가져오도록 수정 필요
+    var thisUserIdx = 76    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
+    var targetUserIdx = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
     private var layoutManager: LayoutManager? = null
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
     lateinit var chattingRV: RecyclerView
@@ -79,12 +81,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         this.runOnUiThread {
             if (type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             } else {
                 chattingMessagesRVAdapter.addItem(
-                    MessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             }
@@ -189,7 +191,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
 
         binding.chattingMakePlanBtn.setOnClickListener ({
-            val intent = Intent(this, MakePlanActivity::class.java)
+            val intent = Intent(this, AppointmentActivity::class.java)
             startActivity(intent)
         })
 
@@ -200,13 +202,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     }
 
-    fun startLoadingProgress(){
-        Log.d("로딩중","채팅 메세지 보내기 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
-
     private fun postSendMessage() {
-        val messageData = MessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
+        val messageData = sendMessageData("9af55ffe-17cc-45e9-bc28-a674e6a9785b", "MESSAGE",
             thisUserIdx, targetUserIdx, chattingEt.text.toString())
 
         ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
@@ -215,7 +212,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     fun sendMessage(){
         var sendTime = System.currentTimeMillis()
         Log.d(
-            "MESSAGE", MessageData(
+            "MESSAGE", sendMessageData(
                 "957cfc80-481c-4ae4-88a0-25a9599dd511",
                 "MESSAGE",
                 thisUserIdx, targetUserIdx,
@@ -224,7 +221,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         )
 
         chattingMessagesRVAdapter.addItem(
-            MessageItem(
+            ChatMessageItem(
                 userId,
                 chattingEt.text.toString(),
                 toDate(sendTime),
@@ -236,7 +233,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onSendMessageLoading() {
-        startLoadingProgress()
+        progressON()
+        Log.d("로딩중","채팅 메세지 보내기 api")
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
     }
 
     override fun onSendMessageSuccess() {
@@ -343,7 +342,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //                Log.d("채팅액티비티", "3 - null 존재")
 //            }
         }else{
-            Log.d("FCM인텐트", "2-error")
+            Log.d("FCM인텐트", "받아올 번들 없음")
         }
     }
 

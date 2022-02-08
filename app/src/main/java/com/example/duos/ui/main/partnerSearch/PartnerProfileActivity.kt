@@ -16,19 +16,19 @@ import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 
-class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyprofileBinding::inflate), CreateChatRoomView{
+class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(ActivityPartnerProfileBinding::inflate), CreateChatRoomView{
     var thisUserIdx = 102
     var targetUserIdx = 76
 
     override fun initAfterBinding() {
-        supportFragmentManager.beginTransaction().replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.partner_profile_fragment_container_fc, PartnerProfileFragment())
             .commitAllowingStateLoss()
 
         binding.partnerProfileChattingBtn.setOnClickListener {
             createRoom()
         }
 
-        binding.topLeftArrowIv.setOnClickListener {
+        binding.partnerProfileBackIv.setOnClickListener {
             finish()
         }
     }
@@ -45,13 +45,10 @@ class PartnerProfileActivity: BaseActivity<ActivityMyprofileBinding>(ActivityMyp
         startActivity(intent)
     }
 
-    fun startLoadingProgress(){
+    override fun onCreateChatRoomLoading() {
+        progressON()
         Log.d("로딩중","채팅방 생성 api")
         Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
-
-    override fun onCreateChatRoomLoading() {
-        startLoadingProgress()
     }
 
     override fun onCreateChatRoomSuccess() {
