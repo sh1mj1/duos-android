@@ -28,6 +28,7 @@ import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.appointment.AppointmentActivity
 import com.example.duos.utils.getUserIdx
+import com.example.duos.utils.saveCurrentChatRoomIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
@@ -116,6 +117,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun initAfterBinding() {
         Log.d("생명주기","onCreate(initAfterBinding)")
+        saveCurrentChatRoomIdx(chatRoomIdx)
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
@@ -344,5 +346,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         Log.d("채팅메세지수신시간포매팅 4",time)
 
         return time
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("생명주기","onDestroy")
+        saveCurrentChatRoomIdx("")
     }
 }

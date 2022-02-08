@@ -22,9 +22,7 @@ import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.ActivityManager.RunningTaskInfo
 import android.content.ComponentName
-
-
-
+import com.example.duos.utils.getCurrentChatRoomIdx
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
@@ -123,17 +121,23 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 
 
             if(ActivityName.contains("ChattingActivity")){
-                Log.d("현재 채팅액티비티","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
-                val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
-                intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
-                intent.putExtra("type", messageData.get("type").toString())
-                intent.putExtra("body", messageData.get("body").toString())
-                intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
-                intent.putExtra("sentAt", messageData.get("sentAt").toString())
-                intent.putExtra("senderId",  messageData.get("title").toString())
-                Log.d("발신자", remoteMessage.data.get("title").toString())
-                startActivity(intent)
+                if(getCurrentChatRoomIdx().equals(messageData.get("chatRoomIdx").toString())){  //
+                    Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
+                    val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
+                    intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
+                    intent.putExtra("type", messageData.get("type").toString())
+                    intent.putExtra("body", messageData.get("body").toString())
+                    intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
+                    intent.putExtra("sentAt", messageData.get("sentAt").toString())
+                    intent.putExtra("senderId",  messageData.get("title").toString())
+                    Log.d("발신자", remoteMessage.data.get("title").toString())
+                    startActivity(intent)
+                } else{
+                    Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
+                    sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
+                }
+
             } else{
                 Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
                 sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
@@ -146,7 +150,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
             "Application.APPTAG",
             "myFirebaseMessagingService - onMessageReceived - message: $remoteMessage"
         )
-        // TODO
         // 또한 수신된 FCM 메시지의 결과로 사용자 자신의 알림을 생성하려면 여기서 시작해야 합니다. 아래 sendNotification 방법을 참조하십시오.
 
     }
