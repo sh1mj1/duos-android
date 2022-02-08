@@ -46,4 +46,7 @@ class ViewModel : ViewModel() {
     var partnerLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
     var partnerGender = MutableLiveData<Int?>()
 
+    // Appointment
+    var isAppointmentExist : MutableLiveData<Boolean> = MutableLiveData(false)
+
 }

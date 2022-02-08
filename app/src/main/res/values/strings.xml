@@ -197,6 +197,8 @@
     <string name="make_plan_title">약속잡기</string>
     <string name="make_plan_time">시간</string>
     <string name="make_plan_confirm">약속잡기</string>
+    <string name="edit_plan_title">약속수정</string>
+    <string name="edit_plan_confirm">적용하기</string>
 
     <string name="plan_info_title">약속(</string>
     <string name="plan_info_title_id">djeikd0620</string>

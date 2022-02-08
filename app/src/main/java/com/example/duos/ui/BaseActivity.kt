@@ -86,4 +86,5 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
             return connectivityManager.activeNetworkInfo?.isConnected ?: false
         }
     }
+
 }
