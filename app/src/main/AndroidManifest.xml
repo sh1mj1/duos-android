@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!--    저장소 접근 권한-->
-    
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
@@ -46,9 +46,9 @@
         <activity
             android:name="com.example.duos.ui.splash.SplashActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:windowSoftInputMode="adjustResize">
 
 
         </activity>
@@ -57,13 +57,14 @@
             android:name="com.example.duos.ui.login.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="com.example.duos.ui.signup.SignUpActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
         </activity>
 
         <activity
@@ -81,17 +82,18 @@
         <activity
             android:name=".ui.main.partnerSearch.PartnerFilterActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.main.partnerSearch.PartnerProfileActivity"
+        <activity
+            android:name=".ui.main.partnerSearch.PartnerProfileActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.chat.ChattingActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="CHATTING_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -112,28 +114,28 @@
         <activity
             android:name=".ui.main.mypage.notion.NotionActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.mypage.setup.SetupActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.mypage.appointment.AppointmentActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.main.mypage.customerservice.CustomerServiceActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.duos.ui.main.mypage.myprofile.MyProfileActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -149,10 +151,10 @@
 
         <service
             android:name=".FirebaseMessagingServiceUtil"
-            android:exported="true"
-            android:directBootAware="true">
+            android:directBootAware="true"
+            android:exported="true">
 
-        <intent-filter>
+            <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>

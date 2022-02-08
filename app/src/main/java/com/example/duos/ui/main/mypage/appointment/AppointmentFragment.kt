@@ -54,11 +54,14 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
             i++
         }
 
-        // 어댑터 설정
+        // Set Previous RV Adapter
         val previousGameReviewRVAdapter = initPreviousRecyclerView()
+        // Set More Previous RV Adapter
         val morePreviousGameReviewRVAdapter = initMorePreviousRecyclerView()
 
+        // Set Previous RV ClickListener
         previousGameClickListener(previousGameReviewRVAdapter)
+        // Set More Previous RV ClickListener
         morePreviousGameClickListener(morePreviousGameReviewRVAdapter)
 
     }
@@ -67,6 +70,7 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
     }
 
+    // Set Previous RV
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {
         val previousGameReviewRVAdapter = PreviousGameReviewRVAdapter(previousPlayerData)
         binding.notYetWriteReviewPlayerlistRv.adapter = previousGameReviewRVAdapter
@@ -74,6 +78,8 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         return previousGameReviewRVAdapter
     }
+
+    // Set More Previous RV
     private fun initMorePreviousRecyclerView(): MorePreviousGameReviewRVAdapter {
         val morePreviousGameReviewRVAdapter =
             MorePreviousGameReviewRVAdapter(morePreviousPlayerDatas)
@@ -83,6 +89,7 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         return morePreviousGameReviewRVAdapter
     }
 
+    // Set Previous RV ClickListener
     private fun previousGameClickListener(previousGameReviewRVAdapter: PreviousGameReviewRVAdapter) {
         previousGameReviewRVAdapter.previousReviewItemClickListener(object :
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
@@ -97,6 +104,7 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
 
             }
 
+            // Click WriteReview
             override fun onWriteBtnClick(appointmentItem: AppointmentResDto) {  /* 후기 작성 클릭!*/
                 val fragmentTransaction: FragmentTransaction =
                     (context as AppointmentActivity).supportFragmentManager.beginTransaction().replace(
@@ -115,6 +123,7 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         })
     }
 
+    // Set More Previous RV ClickListener
     private fun morePreviousGameClickListener(morePreviousGameReviewRVAdapter: MorePreviousGameReviewRVAdapter) {
         morePreviousGameReviewRVAdapter.morePreviousItemClickListener(object :
             MorePreviousGameReviewRVAdapter.MorePreiousPlayerItemclickListener {
@@ -132,6 +141,4 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         })
     }
 
-
-    
 }

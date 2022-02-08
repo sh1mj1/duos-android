@@ -11,16 +11,6 @@ data class AppointmentResDto(
     @SerializedName("reviewed") var reviewed : Boolean= false
     )
 
-data class PreviousPlayerData(
-    var userIdx: Int? = null,
-    var appointmentIdx: Int? = null,
-    var nickname :String = "",
-    var profilePhotoUrl: String = "",
-    var appointmentTime: String = "",
-    var reviewed: Boolean = false
-
-
-)
 /*
 
   ㄴuserIdx	int

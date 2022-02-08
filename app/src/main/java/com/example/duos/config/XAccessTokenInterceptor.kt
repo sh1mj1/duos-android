@@ -1,5 +1,6 @@
 package com.example.duos.config
 
+import android.util.Log
 import com.example.duos.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.example.duos.utils.getJwt
 import okhttp3.Interceptor
@@ -15,6 +16,7 @@ class XAccessTokenInterceptor: Interceptor {
         jwtToken?.let{
             builder.addHeader(X_ACCESS_TOKEN, jwtToken)
         }
+
 
         return chain.proceed(builder.build())
     }

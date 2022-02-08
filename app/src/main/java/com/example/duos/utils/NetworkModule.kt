@@ -1,5 +1,6 @@
 package com.example.duos.utils
 
+import android.util.Log
 import com.example.duos.ApplicationClass.Companion.BASE_URL
 import com.example.duos.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
@@ -21,9 +22,6 @@ object NetworkModule {
             .client(client) //Logger 세팅
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-
-
 
 
 

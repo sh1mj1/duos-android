@@ -2,11 +2,9 @@ package com.example.duos.ui.main.mypage.myprofile
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.duos.data.entities.PartnerProfileReviewItem
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.databinding.MyPlayingReviewItemBinding
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter.ViewHolder

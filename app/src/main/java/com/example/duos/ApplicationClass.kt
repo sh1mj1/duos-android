@@ -24,6 +24,8 @@ class ApplicationClass : Application() {
         const val X_REFRESH_TOKEN: String = "X-REFRESH_TOKEN"       // JWT Refresh Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
+        const val TEST_ACCESS_TOKEN : String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
+
 
         const val DEV_URL: String = "https://duos.co.kr/"       // 테스트 서버 주소
         const val PROD_URL: String = "https://api.template.com/"    // 실서버 주소
@@ -43,7 +45,8 @@ class ApplicationClass : Application() {
         const val MY_PROFILE_API = "api/mypage/myprofile"
         const val EVERY_REVIEW_API="api/reviews"
         const val PARTNER_PROFILE_API = "api/partners/profile"
-        const val APPOINTMENT_PAI = "api/appointments"
+        const val APPOINTMENT_API = "api/appointments"
+        const val REVIEW_API = "api/reviews"
     }
 
     override fun onCreate() {
