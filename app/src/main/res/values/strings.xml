@@ -369,5 +369,6 @@
     <string name="fcm_message">심지훈 FCM_기본 메시지</string>
     <string name="msg_token_fmt">반갑습니다. ~~ 님</string>
 
+    <string name = "text_nickname_blank">___________________</string>
 
 </resources>

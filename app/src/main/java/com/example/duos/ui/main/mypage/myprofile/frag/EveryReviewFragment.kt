@@ -43,7 +43,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         setInit(profile)
 
         // userIdx 에 내 사용자 인덱스가 들어갈 수도, 파트너의 Idx 가 들어갈 수도
-        EveryReviewsService.getEveryReviews(this, 1)
+        EveryReviewsService.getEveryReviews(this, 186)
     }
 
     override fun onGetEveryReviewsItemSuccess(everyReviewsResponse: EveryReviewsResponse) {

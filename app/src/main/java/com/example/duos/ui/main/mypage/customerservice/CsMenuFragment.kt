@@ -11,7 +11,9 @@ import com.example.duos.ui.BaseFragment
 class CsMenuFragment : BaseFragment<FragmentCsMenuBinding>(FragmentCsMenuBinding::inflate) {
 
     override fun initAfterBinding() {
-        TODO("Not yet implemented")
+
+
+
     }
 
 }

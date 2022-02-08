@@ -9,8 +9,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
 
-
-// 싱글턴
 object MyPageService {
     private const val TAG: String = "MyPageService"
 //    lateinit var myPageDatas : MyPageItem
@@ -27,12 +25,6 @@ val retrofit = NetworkModule.getRetrofit()
                     1000 -> {
                         resp.result.let {
                             myPageItemView.onGetMyPageItemSuccess(it)
-//                            myPageDatas.nickname = it.nickname
-//                            myPageDatas.phoneNumber = it.phoneNumber
-//                            myPageDatas.experience = it.experience
-//                            myPageDatas.gamesCount = it.gamesCount
-//                            val myNickname = it.nickname
-
                             Log.d(TAG, it.userIdx.toString()); Log.d(TAG, it.nickname)
                             Log.d(TAG, it.phoneNumber); Log.d(TAG, it.experience)
                             Log.d(TAG, it.gamesCount.toString())

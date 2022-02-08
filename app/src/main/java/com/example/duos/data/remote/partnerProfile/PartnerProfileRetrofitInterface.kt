@@ -11,7 +11,6 @@ import retrofit2.http.Query
 // https://duos.co.kr/api/partners/profile?userIdx={userIdx}&partnerIdx={partnerIdx}
 interface PartnerProfileRetrofitInterface {
 
-    @Headers(ApplicationClass.X_ACCESS_TOKEN)
     @GET(PARTNER_PROFILE_API)
     fun getPartnerProfile(
         @Query("userIdx") userIdx: Int,

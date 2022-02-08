@@ -11,6 +11,7 @@ import retrofit2.create
 
 object PartnerProfileService {
     val retrofit = NetworkModule.getRetrofit()
+    val TAG = "PartnerProfileService"
     fun partnerProfileInfo(partnerProfileListView: PartnerProfileListView, userIdx: Int, partnerIdx: Int){
         val partnerProfileService = retrofit.create(PartnerProfileRetrofitInterface::class.java)
         Log.d("PartnerProfileService", "CREATE_RETROFIT")
@@ -22,7 +23,9 @@ object PartnerProfileService {
                     1000 -> {
                         resp.result.let{
                             partnerProfileListView.onGetProfileInfoSuccess(it)
-                            Log.d("PartnerProfileService", it.partnerInfoDto.toString())
+                            Log.d(TAG, resp.toString())
+                            Log.d(TAG, "파트너 프로필 $resp.result.partnerInfoDto.toString()")
+                            Log.d(TAG, "파트너의 후기 $resp.result.reviewResDto.toString()")
                         }
                     }
                     else -> partnerProfileListView.onGetProfileInfoFailure(resp.code, resp.message)

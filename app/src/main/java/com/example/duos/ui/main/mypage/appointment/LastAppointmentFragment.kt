@@ -30,7 +30,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
 
     override fun initAfterBinding() {
-        AppointmentService.getAppointmentList(this, 1)
+        AppointmentService.getAppointmentList(this, 186)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

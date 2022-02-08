@@ -11,7 +11,6 @@ interface MyProfileRetrofitInterface {
 
     //https://duos.co.kr/api/mypage/myprofile?userIdx={userIdx}
 
-    @Headers(ApplicationClass.X_ACCESS_TOKEN)
     @GET(MY_PROFILE_API)
     fun myProfile(@Query("userIdx") userIdx: Int): Call<MyProfileResponse>
 

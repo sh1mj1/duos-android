@@ -15,6 +15,7 @@ class XAccessTokenInterceptor: Interceptor {
 
         jwtToken?.let{
             builder.addHeader(X_ACCESS_TOKEN, jwtToken)
+
         }
 
 

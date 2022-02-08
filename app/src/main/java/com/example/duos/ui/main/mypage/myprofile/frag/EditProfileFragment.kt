@@ -13,27 +13,25 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.duos.R
+import com.example.duos.data.entities.editProfile.EditProfileListView
+import com.example.duos.data.entities.editProfile.GetEditProfileResDto
+import com.example.duos.data.remote.editProfile.EditProfileService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.mypage.MypageFragment
 import java.io.File
 
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate) {
-
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate), EditProfileListView {
+    val TAG = "EditProfileFragment"
     lateinit var contentUri: Uri
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
@@ -55,6 +53,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     val multiplePermissionsCode2 = 300
 
     override fun initAfterBinding() {
+        Log.d(TAG, "Start_EditProfileFragment")
+
+        EditProfileService.getEditProfile(this, 186)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/
+
+
 
         for (i in 1..14) {
             var btnId: Int = resources.getIdentifier("edit_profile_table_" + i.toString() + "_btn", "id", requireActivity().packageName)
@@ -311,6 +314,26 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
     }
 
+
+
+    override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
+        binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
+//        binding.locationInfoEt.hint = getEditProfileResDto.existingProfileInfo.LOCATION
+        binding.contentIntroductionEt.hint = getEditProfileResDto.existingProfileInfo.introduction
+        Glide.with(binding.btnEditMyProfileImgIv.context)
+            .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
+            .into(binding.btnEditMyProfileImgIv)
+
+        binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx!!
+
+    }
+
+    override fun onGetEditItemFailure(code: Int, message: String) {
+        Log.d(TAG, "code: $code , message : $message ")
+        Toast.makeText(context, "$TAG , onGetEditItemFailure",Toast.LENGTH_LONG)
+
+    }
+
     // 사진의 사이즈를 조정하는 메서드
     fun resizeBitmap(targetWidth: Int, source: Bitmap): Bitmap {
         // 이미지 비율 계산
@@ -355,6 +378,5 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         val bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
         return bitmap2
     }
-
 
 }
