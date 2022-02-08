@@ -58,7 +58,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chattingRV: RecyclerView
     lateinit var chattingEt: EditText
     lateinit var chatRoomName: TextView
-    var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
+    //var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
     lateinit var chatDB: ChatDatabase
     lateinit var viewModel: ViewModel
 
@@ -126,10 +126,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun initAfterBinding() {
         Log.d("생명주기","onCreate(initAfterBinding)")
-        saveCurrentChatRoomIdx(chatRoomIdx)
+
 
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+        saveCurrentChatRoomIdx(chatRoomIdx)
         chatDB = ChatDatabase.getInstance(this)!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 

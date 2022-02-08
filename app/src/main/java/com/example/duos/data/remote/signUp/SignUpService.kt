@@ -18,7 +18,7 @@ import retrofit2.Response
 import retrofit2.http.Multipart
 
 object SignUpService {
-    val retrofit = NetworkModule.getRetrofit()
+    //val retrofit = NetworkModule.getRetrofit()
     fun signUpCreateAuthNum(signUpCreateAuthNumView: SignUpCreateAuthNumView, phoneNumber: String) {
         val signUpCreateAuthNumService = retrofit.create(SignUpRetrofitInterface::class.java)
 
