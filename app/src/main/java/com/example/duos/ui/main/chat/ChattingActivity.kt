@@ -235,6 +235,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             ).toString()
         )
 
+        // sendTime과 룸디비의 sentAt 확인해서 addItem 한번 더해주도록 수정 필요
+
         chattingMessagesRVAdapter.addItem(
             ChatMessageItem(
                 userId,
