@@ -9,28 +9,36 @@ import com.example.duos.data.entities.ChatType
 import android.view.LayoutInflater
 
 import android.view.View
+import android.widget.ImageView
 import java.util.ArrayList
 
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatMessageItem
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.local.ChatDatabase
 
 
-class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var chatMessageItem : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
     lateinit var context : Context
+    lateinit var chatDB: ChatDatabase
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
-        val context: Context = parent.getContext()
+        context = parent.getContext()
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        chatDB = ChatDatabase.getInstance(context)!!
 
         return if (viewType === ChatType.CENTER_MESSAGE) {
             view = inflater.inflate(R.layout.date_border, parent, false)
             CenterViewHolder(view)
         } else if (viewType === ChatType.LEFT_MESSAGE) {
             view = inflater.inflate(R.layout.received_message, parent, false)
-            LeftViewHolder(view)
+            LeftViewHolder(view, context, chatDB.chatRoomDao().getPartnerProfileImgUrl(chatRoomIdx))
         } else { // if (viewType == ChatItem.RIGHT_MESSAGE){
             view = inflater.inflate(R.layout.my_message, parent, false)
             RightViewHolder(view)
@@ -80,7 +88,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         }
     }
 
-    class LeftViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class LeftViewHolder(itemView: View, context: Context, partnerProfileImgUrl: String) : RecyclerView.ViewHolder(itemView) {
         var nameText: TextView
         var contentText: TextView
         var sendTimeText: TextView
@@ -94,6 +102,7 @@ class ChattingMessagesRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             nameText = itemView.findViewById(R.id.chatting_partner_id_tv)
             contentText = itemView.findViewById(R.id.chatting_received_message_body)
             sendTimeText = itemView.findViewById(R.id.chatting_received_message_time)
+            Glide.with(context).load(partnerProfileImgUrl).apply(RequestOptions().circleCrop()).into(itemView.findViewById(R.id.chatting_partner_profile_iv))
         }
     }
 

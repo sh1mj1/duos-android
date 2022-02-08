@@ -126,12 +126,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun initAfterBinding() {
         Log.d("생명주기","onCreate(initAfterBinding)")
-
+        chattingEt = binding.chattingEt
+        chattingRV = binding.chattingMessagesRv
+        chatRoomName = binding.chattingTitlePartnerIdTv
 
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+        chatRoomName.text = intent.getStringExtra("chatRoomName")!!
+
         saveCurrentChatRoomIdx(chatRoomIdx)
+
         chatDB = ChatDatabase.getInstance(this)!!
+
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
@@ -140,10 +146,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
         AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
 
-        chattingEt = binding.chattingEt
-        chattingRV = binding.chattingMessagesRv
-        chatRoomName = binding.chattingTitlePartnerIdTv
-        chatRoomName.text = "duos1999" // ChatListFragment에서 인텐트로 받아와 띄우도록 수정해야 함
+
 
         var sendBtn: ImageView = binding.chattingSendBtn
 
@@ -152,7 +155,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
         chattingRV.setLayoutManager(layoutManager)
         chattingRV.setItemAnimator(DefaultItemAnimator())
-        chattingMessagesRVAdapter = ChattingMessagesRVAdapter()
+        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // chatting test code
@@ -161,7 +164,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         addChatItem("userId", "2021년 01월 21일", currentTime, "DATE")
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
-        addChatItem("senderId", "상대방이 보낸 메세지입니다.", currentTime, "MESSAGE")
+        addChatItem(chatRoomName.text.toString(), "안녕하세요~^^", currentTime, "MESSAGE")
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
         // 날짜 바뀌면 "2022년 01월 21일" 이런식으로 뜨게 하는거 eventTime이 바뀌면 해당 인덱스에 추가하는거 해보다가 말음

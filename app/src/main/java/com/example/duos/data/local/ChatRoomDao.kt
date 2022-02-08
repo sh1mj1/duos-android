@@ -26,4 +26,7 @@ interface ChatRoomDao {
 
     @Query("UPDATE ChatRoomTable SET isAppointmentExist = :isAppointmentExist WHERE chatRoomIdx = :chatRoomIdx")
     fun updateAppointmentExist(chatRoomIdx: String, isAppointmentExist : Boolean)
+
+    @Query("SELECT chatRoomImg FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getPartnerProfileImgUrl(chatRoomIdx: String): String
 }
