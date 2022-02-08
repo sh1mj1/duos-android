@@ -25,6 +25,8 @@ class ApplicationClass : Application() {
         const val USER_IDX: String = "userIdx"       // JWT Refresh Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
+        const val TEST_ACCESS_TOKEN : String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
+
 
         const val DEV_URL: String = "https://duos.co.kr/"       // 테스트 서버 주소
         const val PROD_URL: String = "https://api.template.com/"    // 실서버 주소
@@ -44,6 +46,9 @@ class ApplicationClass : Application() {
         const val MY_PROFILE_API = "api/mypage/myprofile"
         const val EVERY_REVIEW_API="api/reviews"
         const val PARTNER_PROFILE_API = "api/partners/profile"
+        const val APPOINTMENT_API = "api/appointments"
+        const val REVIEW_API = "api/reviews"
+        const val EDIT_GET_API = "api/mypage/myprofile/previous"
     }
 
     override fun onCreate() {
@@ -92,21 +97,9 @@ class ApplicationClass : Application() {
         val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
         val frameAnimation = img_loading_frame?.background as AnimationDrawable
         img_loading_frame.post { frameAnimation.start() }
-//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
-//        if (!TextUtils.isEmpty(message)) {
-//            tv_progress_message.text = message
-//        }
+
     }
 
-//    fun progressSET(message: String?) {
-//        if (progressDialog == null || !progressDialog.isShowing()) {
-//            return
-//        }
-//        val tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message) as TextView
-//        if (!TextUtils.isEmpty(message)) {
-//            tv_progress_message.text = message
-//        }
-//    }
 
     fun progressOFF() {
         if (progressDialog != null && progressDialog.isShowing()) {

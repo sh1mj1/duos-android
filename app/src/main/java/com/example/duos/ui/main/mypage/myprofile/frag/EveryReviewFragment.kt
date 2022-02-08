@@ -18,21 +18,23 @@ import com.example.duos.data.entities.MyProfileInfoItem
 import com.example.duos.data.remote.everyReviews.EveryReviewsResponse
 import com.example.duos.data.remote.everyReviews.EveryReviewsService
 import com.example.duos.databinding.FragmentEveryReviewBinding
+import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.EveryReviewRVAdapter
 import com.example.duos.ui.main.mypage.myprofile.EveryReviewsItemView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.google.gson.Gson
 
-class EveryReviewFragment : Fragment(), EveryReviewsItemView {
-    val TAG: String = "MyProfileFragment"
+class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEveryReviewBinding::inflate), EveryReviewsItemView {
+
+    val TAG: String = "EveryReviewFragment"
     private var gson: Gson = Gson()
     private var everyReviewDatas = ArrayList<EveryReviewsItem>()
-    lateinit var binding: FragmentEveryReviewBinding
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentEveryReviewBinding.inflate(inflater, container, false)
+
+    override fun initAfterBinding() {
+
         Log.d(TAG, "Start_EveryReviewFragment")
 
-        // HomeFragment 에서 넘어온 데이터 받아오기 혹은 PlayerFragment에서 넘어온 데이터 받아오기 
+        // HomeFragment 에서 넘어온 데이터 받아오기 혹은 PlayerFragment에서 넘어온 데이터 받아오기
         // -> 조건문 사용해서 argument로 받아온 것의 key가 무엇인지 체크하고 그에 해당하는 argument를 gson.fromJsom으로 받기
         val profileData = arguments?.getString("profile")
         val profile = gson.fromJson(profileData, MyProfileInfoItem::class.java)
@@ -41,24 +43,27 @@ class EveryReviewFragment : Fragment(), EveryReviewsItemView {
         setInit(profile)
 
         // userIdx 에 내 사용자 인덱스가 들어갈 수도, 파트너의 Idx 가 들어갈 수도
-        EveryReviewsService.getEveryReviews(this, 1)
-
-        return binding.root
+        EveryReviewsService.getEveryReviews(this, 186)
     }
 
     override fun onGetEveryReviewsItemSuccess(everyReviewsResponse: EveryReviewsResponse) {
         everyReviewDatas.clear()
         everyReviewDatas.addAll(everyReviewsResponse.result)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
-        initRecyclerView()
+        // 리사이클러뷰 어댑터 연결
+        val everyReviewRVAdapter = initRecyclerView()
+
+        // 다른 PlayerProfile 로 이동
+        goPlayerProfile(everyReviewRVAdapter)
     }
 
-    private fun initRecyclerView() {
-        // 어댑터 연결
-        val everyReviewRVAdapter = EveryReviewRVAdapter(everyReviewDatas)
-        binding.playingReviewContentRv.adapter = everyReviewRVAdapter
-        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        // 어댑터 클릭 리스터
+    override fun onGetEveryReviewsItemFailure(code: Int, message: String) {
+        Toast.makeText(context, "GetEveryReviewItemFailure", Toast.LENGTH_LONG).show()
+
+    }
+
+    // 다른 PlayerProfile 로 이동
+    private fun goPlayerProfile(everyReviewRVAdapter: EveryReviewRVAdapter) {
         everyReviewRVAdapter.clickPlayerReviewListener(object : EveryReviewRVAdapter.EveryReviewItemClickListener {
             override fun onItemClick(everyReveiwsItem: EveryReviewsItem) {
                 val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
@@ -79,10 +84,14 @@ class EveryReviewFragment : Fragment(), EveryReviewsItemView {
         })
     }
 
-    override fun onGetEveryReviewsItemFailure(code: Int, message: String) {
-        Toast.makeText(context, "GetEveryReviewItemFailure", Toast.LENGTH_LONG).show()
-
+    // 리사이클러뷰 어댑터 연결
+    private fun initRecyclerView(): EveryReviewRVAdapter {
+        val everyReviewRVAdapter = EveryReviewRVAdapter(everyReviewDatas)
+        binding.playingReviewContentRv.adapter = everyReviewRVAdapter
+        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        return everyReviewRVAdapter
     }
+
 
     private fun setInit(profile: MyProfileInfoItem) {
         binding.playerNicknameTv.text = profile.nickname
@@ -97,5 +106,11 @@ class EveryReviewFragment : Fragment(), EveryReviewsItemView {
     }
 
 }
+
+
+
+
+
+
 
 

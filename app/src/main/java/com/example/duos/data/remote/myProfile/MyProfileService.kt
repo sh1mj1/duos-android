@@ -10,6 +10,7 @@ import retrofit2.Response
 
 object MyProfileService {
     val retrofit = NetworkModule.getRetrofit()
+    val TAG = "MyProfileService"
     fun myProfileInfo(profileListView: ProfileListView, userIdx: Int) {
         val myProfileService = retrofit.create(MyProfileRetrofitInterface::class.java)
 
@@ -19,6 +20,11 @@ object MyProfileService {
                 when (resp.code) {
                     1000 -> {
                         resp.result.let { profileListView.onGetMyProfileInfoSuccess(it) }
+                        Log.d(TAG, resp.toString())
+                        Log.d(TAG, resp.result.toString())
+
+                        Log.d(TAG, "내 프로필 정보 $resp.result.profileInfo.toString()")
+                        Log.d(TAG, "내게 쓴 후기 $resp.result.reviews.toString()")
                     }
                     else -> profileListView.onGetMyProfileInfoFailure(resp.code, resp.message)
                 }

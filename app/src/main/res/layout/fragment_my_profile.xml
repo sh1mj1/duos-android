@@ -40,7 +40,7 @@
             android:layout_marginTop="27dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center_horizontal|top"
-
+            android:text= "@string/text_nickname_blank"
             android:textAlignment="center"
             android:textColor="@color/nero"
             android:textSize="25sp"

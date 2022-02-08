@@ -20,4 +20,5 @@ interface UserDao {
     @Query("DELETE FROM UserTable") // 테이블에 들어있는 모든 값을 지워라
     fun clearAll()
 
+
 }

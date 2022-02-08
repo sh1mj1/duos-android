@@ -21,29 +21,36 @@ import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.MyProfileResult
 import com.example.duos.data.entities.PartnerProfileReviewItem
+import com.example.duos.data.entities.User
+import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.myProfile.MyProfileService
 import com.example.duos.databinding.FragmentMyProfileBinding
+import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
+import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 
-class MyProfileFragment : Fragment(), ProfileListView {
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate), ProfileListView {
     val TAG: String = "MyProfileFragment"
     private var myProfileReviewDatas = ArrayList<PartnerProfileReviewItem>()
-    lateinit var binding: FragmentMyProfileBinding
+    val userIdx = getUserIdx()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMyProfileBinding.inflate(inflater, container, false)
+    override fun initAfterBinding() {
+
         Log.d(TAG, "Start_MypageFragment")
+
+        Log.d(TAG, "현재 user의 userIdx : $userIdx")
         //TODO userIdx에 어떤 값이 들어갈지
-        MyProfileService.myProfileInfo(this, 1)
+        MyProfileService.myProfileInfo(this, userIdx!!)
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
-        return binding.root
-    }
-    override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
 
+
+    }
+
+    override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
         setMyProfileInfo(myProfile) // 위쪽 데이터 설정
         setExperienceView()
 
@@ -51,17 +58,86 @@ class MyProfileFragment : Fragment(), ProfileListView {
         myProfileReviewDatas.addAll(myProfile.reviews)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
         // 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
-        val profileReviewRVAdapter = ProfileReviewRVAdapter(myProfileReviewDatas)
-        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
-        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val profileReviewRVAdapter = initRecyclerView()
 
         /* 다른 회원 프로필로 이동*/
+        goPlayerProfile(profileReviewRVAdapter)
+
+        /* 나의 모든 후기 보기 페이지로 이동*/
+        goEveryReview(myProfile)
+    }
+
+    override fun onGetMyProfileInfoFailure(code: Int, message: String) {
+        Toast.makeText(context, "$TAG : onGetMyProfileInfoFailure", Toast.LENGTH_LONG).show()
+
+        // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        Log.d(TAG, "myProfileDB :  $myProfileDB")
+
+        Glide.with(binding.myProfileImgIv.context)
+            .load(myProfileDB.profileImg)
+            .into(binding.myProfileImgIv)
+        binding.myNicknameTv.text = myProfileDB.nickName
+        val genderStr = makeGenderIdxToStr(myProfileDB)
+        binding.mySexTv.text = genderStr
+        val locationStr = when(myProfileDB.location){
+            1 -> "서울시 마포구"
+            2 -> "서울시 동대문구"
+
+            else -> "부산 중구"
+        }
+        binding.myLocationTv.text = locationStr
+        binding.myIntroductionTv.text = myProfileDB.introduce
+
+
+
+
+    }
+
+    private fun makeGenderIdxToStr(myProfileDB: User): String {
+        val genderStr = when (myProfileDB.gender) {
+            1 -> "남"
+            else -> "여"
+        }
+        return genderStr
+    }
+
+    /* 나의 모든 후기 보기 페이지로 이동*/
+    private fun goEveryReview(myProfile: MyProfileResult) {
+        binding.playingReviewCountTv.setOnClickListener {
+            val profileNickname = binding.myNicknameTv.text.toString()
+            val fragmentTransaction: FragmentTransaction =
+                (context as MyProfileActivity).supportFragmentManager.beginTransaction()
+                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
+                        arguments = Bundle().apply {
+                            val gson = Gson()
+                            val profileJson = gson.toJson(myProfile.profileInfo)
+                            putString("profile", profileJson)
+                            //                        putString("profileInfo", myProfile.profileInfo.nickname)
+
+                        }
+
+                    })
+
+            fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
+            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
+
+            // 상단 텍스트 변경
+            val reviewCount = binding.playingReviewCountTv.text
+            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewCount.toString()
+            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
+        }
+    }
+
+    /* 다른 회원 프로필로 이동*/
+    private fun goPlayerProfile(profileReviewRVAdapter: ProfileReviewRVAdapter) {
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
                 override fun onItemClick(myProfileReviewItem: PartnerProfileReviewItem) {
                     val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
                         .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-                            Log.d(TAG,"MyProfileFrag -> PlayerFrag")
+                            Log.d(TAG, "MyProfileFrag -> PlayerFrag")
                             arguments = Bundle().apply {
                                 putInt("thisIdx", myProfileReviewItem.writerIdx!!)
                                 /*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동해야되 그 Idx 만 전달*/
@@ -77,31 +153,14 @@ class MyProfileFragment : Fragment(), ProfileListView {
                     (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
                 }
             })
+    }
 
-        /* 나의 모든 후기 보기 페이지로 이동*/
-        binding.playingReviewCountTv.setOnClickListener {
-            val profileNickname = binding.myNicknameTv.text.toString()
-            val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
-                    arguments = Bundle().apply {
-                        val gson = Gson()
-                        val profileJson = gson.toJson(myProfile.profileInfo)
-                        putString("profile", profileJson)
-//                        putString("profileInfo", myProfile.profileInfo.nickname)
-
-                    }
-
-                })
-
-            fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
-            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
-
-            // 상단 텍스트 변경
-            val reviewCount = binding.playingReviewCountTv.text
-            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewCount.toString()
-            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
-        }
-
+    // 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
+    private fun initRecyclerView(): ProfileReviewRVAdapter {
+        val profileReviewRVAdapter = ProfileReviewRVAdapter(myProfileReviewDatas)
+        binding.playingReviewContentRv.adapter = profileReviewRVAdapter
+        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        return profileReviewRVAdapter
     }
 
     @SuppressLint("SetTextI18n")
@@ -142,9 +201,14 @@ class MyProfileFragment : Fragment(), ProfileListView {
 
     }
 
-    override fun onGetMyProfileInfoFailure(code: Int, message: String) {
-        Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
-    }
-
 }
+
+
+
+
+
+
+
+
+
 

@@ -1,10 +1,6 @@
 package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,7 +29,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
     private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
-    var userIdx: Int = 76
+    var userIdx: Int = 1
     lateinit var recommendedPartnerDatabase: RecommendedPartnerDatabase
 
     companion object {
@@ -41,14 +37,14 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataLoading() {
-        progressON()
+//        progressON()
         Log.d("로딩중","파트너 추천 api")
         //Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
     }
 
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
+         // 서울시 마포구로 필터링됐을 떄를 가정
         //        recommendedPartnerDatas.apply {
-//            // 서울시 마포구로 필터링됐을 떄를 가정
 //            // FLO clone coding 211110자 커밋 참고했음
 //            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
 //            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
@@ -65,12 +61,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         Log.d("get_recommendedPartnerList","ongetSuccess")
         progressOFF()
 
-//        val userNickName = partnerSearchData.userNickname
-//
-//        Glide.with(this).load(partnerSearchData.userProfileImageUrl)
-//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-//
-//        binding.partnerSearchUserIdTv.text = userNickName
+        val userNickName = partnerSearchData.userNickname
 
         recommendedPartnerDatabase.recommendedPartnerDao().deleteAll()
         var recommendedPartnerList = partnerSearchData.recommendedPartnerList
@@ -92,7 +83,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 Log.d("그리드","itemClick")
                 var intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
-                    this.putExtra("partnerSearchToPlayer", true)
+                    this.putExtra("isFromSearch", true)
                     this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
                 }
                 startActivity(intent)
@@ -192,6 +183,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
 
+//        // fcm 등록f토큰 받아오기
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
 
         // fcm 등록토큰 받아오기
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->

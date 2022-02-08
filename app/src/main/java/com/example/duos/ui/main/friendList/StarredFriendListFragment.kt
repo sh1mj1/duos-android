@@ -11,7 +11,8 @@ import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.FriendListCountViewModel
 
-class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBinding>(FragmentStarredFriendListBinding::inflate), StarredFriendListView{
+class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBinding>
+    (FragmentStarredFriendListBinding::inflate), StarredFriendListView {
 
     private var friendListDatas = ArrayList<StarredFriend>()
     lateinit var mContext: MainActivity
@@ -27,13 +28,10 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
 
     override fun initAfterBinding() {
-
         binding.starredFriendListRecyclerviewRc.itemAnimator = null
         binding.starredFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.starredFriendListRecyclerviewRc.adapter = StarredFriendListRVAdapter(ArrayList<StarredFriend>())
         FriendListService.getStarredFriendList(this, 1)
-
-
     }
 
     override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
@@ -42,7 +40,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
         val starredFriendListRVAdapter = StarredFriendListRVAdapter(friendListDatas)
 
-        starredFriendListRVAdapter.setMyItemClickListener(object : StarredFriendListRVAdapter.MyItemClickListener{
+        starredFriendListRVAdapter.setMyItemClickListener(object : StarredFriendListRVAdapter.MyItemClickListener {
             override fun onDeleteFriend(friendId: String) {
                 // 찜한친구 목록에서 삭제
             }

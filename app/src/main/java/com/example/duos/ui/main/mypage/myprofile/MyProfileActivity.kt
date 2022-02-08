@@ -22,13 +22,14 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
 
     override fun initAfterBinding() {
         // PartnerSearchFragment 에서 넘어온 정보 받기
-        val isfromSearch =intent.getBooleanExtra("partnerSearchToPlayer", false)   /*// PartnerSearchFragment 에서 넘어왔다면 True 아니라면 기본값 fasle*/
+        val isFromSearch =intent.getBooleanExtra("isFromSearch", false)   /* PartnerSearchFragment 에서 넘어왔다면 True else> 기본값 false*/
+        val isFromAppointment = intent.getBooleanExtra("isFromAppointment", false) /* AppointmentFragment 에서 넘어왔다면 True else> 기본값 false*/
         val partnerUserIdx =intent.getIntExtra("partnerUserIdx", 0)
         /*TODO :위 thisIdx는 PartnerSearchFragment에서
             아이템 클릭시 해당 회원의 고유 인덱스 값이 들어가야 해. 0이 default지만 할당될 일 없음*/
-        Log.d("넘겨주기", "PartnerSearchFrag에서 옴? : ${isfromSearch.toString()} 파트너 userIdx는? :${partnerUserIdx.toString()}")
+        Log.d("넘겨주기", "PartnerSearchFrag에서 옴? : ${isFromSearch.toString()} 파트너 userIdx는? :${partnerUserIdx.toString()}")
 
-        if (isfromSearch) {    // 만약 PartnerSearchFrag 으로부터 이 액티비티가 호출되었다면
+        if (isFromSearch) {    /* 만약 PartnerSearchFrag 으로부터 이 액티비티가 호출되었다면 */
             val playerFragment = PlayerFragment()
             val bundle = Bundle()
             bundle.putInt("partnerUserIdx", partnerUserIdx)   // bundle로 PlayerFragment 에
@@ -36,7 +37,17 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
             supportFragmentManager.beginTransaction().replace(R.id.my_profile_into_fragment_container_fc, playerFragment)
                 .commitAllowingStateLoss()
 
-        } else {    // PartnerSearchFrag 으로부터 이 액티비티가 호출되지 않았다면 내 프로필로 이동
+        } else if(isFromAppointment){   /* 만약 AppointmentFrag 으로부터 이 액티비티가 호출되었다면 */
+
+            val playerFragment = PlayerFragment()
+            val bundle = Bundle()
+            bundle.putInt("partnerUserIdx", partnerUserIdx)
+            playerFragment.arguments = bundle
+            supportFragmentManager.beginTransaction().replace(R.id.my_profile_into_fragment_container_fc, playerFragment)
+                .commitAllowingStateLoss()
+
+        }
+        else {    // PartnerSearchFrag 으로부터 이 액티비티가 호출되지 않았다면 내 프로필로 이동
             supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
                 .commitAllowingStateLoss()

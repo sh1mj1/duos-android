@@ -255,6 +255,7 @@
     <string name="my_profile_review_counts">후기(97)</string>
     <string name="my_profile_do_chat">채팅하기</string>
 
+
     <string name="partner_profile_chatting">채팅하기</string>
 
 
@@ -313,6 +314,7 @@
     <string name="notion_error_code_date">2022.01.01</string>
 
     <!--    후기 작성하기-->
+    <string name="appointment_review_write_done">작성 완료</string>
     <string name="game_review_player_nickname">PLYAER명님과의 \n 테니스 경기 어떠셨나요?</string>
     <string name="game_review_complete">완료</string>
     <string name="previous_game_last_promise">지난 약속</string>
@@ -367,5 +369,6 @@
     <string name="fcm_message">심지훈 FCM_기본 메시지</string>
     <string name="msg_token_fmt">반갑습니다. ~~ 님</string>
 
+    <string name = "text_nickname_blank">___________________</string>
 
 </resources>

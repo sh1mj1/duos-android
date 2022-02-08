@@ -8,44 +8,30 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.duos.databinding.FragmentNotionBinding
+import com.example.duos.ui.BaseFragment
 
 
-class NotionFragment : Fragment() {
-
-    private var _binding: FragmentNotionBinding? = null
-    private val binding get() = _binding
+class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding::inflate) {
     private var notionshown = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentNotionBinding.inflate(inflater, container, false)
 
-
-        // 서비스 업데이트 공지사항 펼치기/펼치지 않기
-        binding!!.btnShowServiceUpdateCl.setOnClickListener {
-            if (notionshown == false) {
+    override fun initAfterBinding() {
+// 서비스 업데이트 공지사항 펼치기/펼치지 않기
+        binding.btnShowServiceUpdateCl.setOnClickListener {
+            if (!notionshown) {
                 notionshown = !notionshown
-                binding!!.notionInfoTv.visibility = VISIBLE
-                binding!!.btnShowServiceUpdateIv.visibility = GONE
-                binding!!.btnShownServiceUpdateIv.visibility = VISIBLE
+                binding.notionInfoTv.visibility = VISIBLE
+                binding.btnShowServiceUpdateIv.visibility = GONE
+                binding.btnShownServiceUpdateIv.visibility = VISIBLE
             } else {
                 notionshown = !notionshown
-                binding!!.notionInfoTv.visibility = GONE
-                binding!!.btnShowServiceUpdateIv.visibility = VISIBLE
-                binding!!.btnShownServiceUpdateIv.visibility = GONE
+                binding.notionInfoTv.visibility = GONE
+                binding.btnShowServiceUpdateIv.visibility = VISIBLE
+                binding.btnShownServiceUpdateIv.visibility = GONE
             }
         }
-
-
-
-
-
-
-        return binding!!.root
     }
 
 
 }
+
