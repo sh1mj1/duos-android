@@ -1,8 +1,6 @@
 package com.example.duos.ui.main.chat
 
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
@@ -33,7 +31,6 @@ import com.example.duos.ui.main.chat.appointment.AppointmentActivity
 import com.example.duos.ui.main.chat.appointment.AppointmentExistView
 import com.example.duos.ui.main.chat.appointment.AppointmentInfoActivity
 import com.example.duos.utils.ViewModel
-import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -51,7 +48,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     var userId: String = "tennis01"     // 룸디비에서 userIdx로 userId(=userNickname) 조회하도록 수정 필요
     var partnerId: String = "djeikd0620"    // 인텐트로 넘겨받은 partnerIdx로 룸디비에서 partnerID(=chatRoomName) 가져오도록 수정 필요
     var thisUserIdx = 76    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
-    var targetUserIdx = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
+    var partnerIdx: Int = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
     private var layoutManager: LayoutManager? = null
     lateinit var chatRoomIdx : String
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
@@ -61,34 +58,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     //var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
     lateinit var chatDB: ChatDatabase
     lateinit var viewModel: ViewModel
-
-    // 리사이클러뷰에 채팅 추가
-//    private fun addChat(data: MessageData) {
-//        this.runOnUiThread {
-//
-//            if (data.type.equals("DATE")) {    //
-//                chattingMessagesRVAdapter.addItem(
-//                    MessageItem(
-//                        userId,
-//                        data.messageBody,
-//                        toDate(data.sendTime),
-//                        ChatType.CENTER_MESSAGE
-//                    )
-//                )
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//            } else {
-//                chattingMessagesRVAdapter.addItem(
-//                    MessageItem(
-//                        userId,
-//                        data.messageBody,
-//                        toDate(data.sendTime),
-//                        ChatType.LEFT_MESSAGE
-//                    )
-//                )
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//            }
-//        }
-//    }
 
     private fun addChatItem(senderId: String, body: String, sentAt:String, type: String) {
         this.runOnUiThread {
@@ -133,6 +102,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
         chatRoomName.text = intent.getStringExtra("chatRoomName")!!
+        //partnerIdx = intent.getIntExtra("partnerIdx", 0)!!    // 나중에 주석 해제
 
         saveCurrentChatRoomIdx(chatRoomIdx)
 
@@ -255,7 +225,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     private fun postSendMessage() {
         val messageData = sendMessageData(chatRoomIdx, "MESSAGE",
-            thisUserIdx, targetUserIdx, chattingEt.text.toString())
+            thisUserIdx, partnerIdx, chattingEt.text.toString())
 
         ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
     }
@@ -266,7 +236,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             "MESSAGE", sendMessageData(
                 chatRoomIdx,
                 "MESSAGE",
-                thisUserIdx, targetUserIdx,
+                thisUserIdx, partnerIdx,
                 chattingEt.text.toString()
             ).toString()
         )
