@@ -25,14 +25,15 @@ import com.example.duos.ui.main.mypage.setup.SetupActivity
 import com.example.duos.utils.getUserIdx
 
 class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding::inflate), MyPageItemView {
+
     val TAG: String = "MyPageService"
 
     lateinit var myPageCareerStr: String
     val userIdx = getUserIdx()
 
     override fun initAfterBinding() {
-        Log.d(TAG, "Start_MypageFragment")
 
+        Log.d(TAG, "Start_MypageFragment")
         Log.d(TAG, "현재 user의 userIdx : $userIdx")
 
         MyPageService.getUserPage(this, userIdx!!)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/

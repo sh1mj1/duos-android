@@ -11,9 +11,9 @@ import retrofit2.create
 
 object MyPageService {
     private const val TAG: String = "MyPageService"
-//    lateinit var myPageDatas : MyPageItem
-val retrofit = NetworkModule.getRetrofit()
 
+    //    lateinit var myPageDatas : MyPageItem
+    val retrofit = NetworkModule.getRetrofit()
     fun getUserPage(myPageItemView: MyPageItemView, userIdx: Int) {
 //        val myPageService = NetworkModule.retrofit.create(MyPageRetrofitInterface::class.java)
         val myPageService = retrofit.create(MyPageRetrofitInterface::class.java)
