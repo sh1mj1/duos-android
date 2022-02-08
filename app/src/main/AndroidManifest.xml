@@ -50,7 +50,6 @@
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustResize">
 
-
         </activity>
 
         <activity
@@ -63,9 +62,7 @@
             android:name="com.example.duos.ui.signup.SignUpActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
             android:name="com.example.duos.ui.main.MainActivity"
@@ -76,6 +73,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
         </activity>
 
@@ -122,7 +120,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.main.mypage.appointment.AppointmentActivity"
+            android:name=".ui.main.mypage.appointment.LastAppointmentActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

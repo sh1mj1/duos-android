@@ -14,7 +14,7 @@ import com.example.duos.data.entities.appointment.AppointmentListView
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.data.remote.appointment.AppointmentResponse
 import com.example.duos.data.remote.appointment.AppointmentService
-import com.example.duos.databinding.FragmentAppointmentGameBinding
+import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.google.gson.Gson
@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.temporal.ChronoUnit
 
 
-class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(FragmentAppointmentGameBinding::inflate), AppointmentListView {
+class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), AppointmentListView {
     val TAG = "AppointmentFragment"
     private var previousPlayerData = ArrayList<AppointmentResDto>()
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
@@ -54,14 +54,11 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
             i++
         }
 
-        // Set Previous RV Adapter
+        // 어댑터 설정
         val previousGameReviewRVAdapter = initPreviousRecyclerView()
-        // Set More Previous RV Adapter
         val morePreviousGameReviewRVAdapter = initMorePreviousRecyclerView()
 
-        // Set Previous RV ClickListener
         previousGameClickListener(previousGameReviewRVAdapter)
-        // Set More Previous RV ClickListener
         morePreviousGameClickListener(morePreviousGameReviewRVAdapter)
 
     }
@@ -70,7 +67,6 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         Toast.makeText(context, "sdf", Toast.LENGTH_LONG).show()
     }
 
-    // Set Previous RV
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {
         val previousGameReviewRVAdapter = PreviousGameReviewRVAdapter(previousPlayerData)
         binding.notYetWriteReviewPlayerlistRv.adapter = previousGameReviewRVAdapter
@@ -78,8 +74,6 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         return previousGameReviewRVAdapter
     }
-
-    // Set More Previous RV
     private fun initMorePreviousRecyclerView(): MorePreviousGameReviewRVAdapter {
         val morePreviousGameReviewRVAdapter =
             MorePreviousGameReviewRVAdapter(morePreviousPlayerDatas)
@@ -89,7 +83,6 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         return morePreviousGameReviewRVAdapter
     }
 
-    // Set Previous RV ClickListener
     private fun previousGameClickListener(previousGameReviewRVAdapter: PreviousGameReviewRVAdapter) {
         previousGameReviewRVAdapter.previousReviewItemClickListener(object :
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
@@ -104,12 +97,11 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
 
             }
 
-            // Click WriteReview
             override fun onWriteBtnClick(appointmentItem: AppointmentResDto) {  /* 후기 작성 클릭!*/
                 val fragmentTransaction: FragmentTransaction =
-                    (context as AppointmentActivity).supportFragmentManager.beginTransaction().replace(
+                    (context as LastAppointmentActivity).supportFragmentManager.beginTransaction().replace(
                         R.id.previous_game_into_fragment_container_fc,
-                        AppointmentReviewFragment().apply {
+                        LastAppointmentReviewFragment().apply {
                             arguments = Bundle().apply {
                                 val gson = Gson()
                                 val profileJson = gson.toJson(appointmentItem)
@@ -118,12 +110,11 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
                         })
                 fragmentTransaction.addToBackStack(null)
                 fragmentTransaction.commit()
-                (context as AppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "후기 작성"
+                (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "후기 작성"
             }
         })
     }
 
-    // Set More Previous RV ClickListener
     private fun morePreviousGameClickListener(morePreviousGameReviewRVAdapter: MorePreviousGameReviewRVAdapter) {
         morePreviousGameReviewRVAdapter.morePreviousItemClickListener(object :
             MorePreviousGameReviewRVAdapter.MorePreiousPlayerItemclickListener {
@@ -141,4 +132,6 @@ class AppointmentFragment : BaseFragment<FragmentAppointmentGameBinding>(Fragmen
         })
     }
 
+
+    
 }

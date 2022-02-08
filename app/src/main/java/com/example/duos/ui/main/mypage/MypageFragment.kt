@@ -2,23 +2,18 @@ package com.example.duos.ui.main.mypage
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.MyPageInfo
 import com.example.duos.data.remote.myPage.MyPageService
 import com.example.duos.databinding.FragmentMypageBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.customerservice.CustomerServiceActivity
-import com.example.duos.ui.main.mypage.appointment.AppointmentActivity
+import com.example.duos.ui.main.mypage.appointment.LastAppointmentActivity
 import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.notion.NotionActivity
@@ -45,7 +40,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         }
         // 지난 약속 클릭 리스너
         binding.myPageLastAppointmentTextTv.setOnClickListener {
-            val intent = Intent(activity, AppointmentActivity::class.java)
+            val intent = Intent(activity, LastAppointmentActivity::class.java)
             startActivity(intent)
         }
         // 공지 사항 클릭 리스너

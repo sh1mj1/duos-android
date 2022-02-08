@@ -9,22 +9,20 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
-import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.data.entities.review.PostReviewResDto
 import com.example.duos.data.entities.review.ReviewListView
-import com.example.duos.data.entities.review.ReviewsReqDto
 import com.example.duos.data.remote.reviews.ReviewResponse
 import com.example.duos.data.remote.reviews.ReviewService
-import com.example.duos.databinding.FragmentAppointmentReviewBinding
+import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class AppointmentReviewFragment : BaseFragment<FragmentAppointmentReviewBinding>
-    (FragmentAppointmentReviewBinding::inflate), ReviewListView {
+class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReviewBinding>
+    (FragmentLastAppointmentReviewBinding::inflate), ReviewListView {
     val TAG: String = "AppointmentReviewFragment"
     private var gson: Gson = Gson()
 

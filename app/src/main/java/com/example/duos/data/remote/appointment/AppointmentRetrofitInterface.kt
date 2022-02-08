@@ -11,7 +11,6 @@ import retrofit2.http.Query
 
 interface AppointmentRetrofitInterface {
 
-    @Headers(X_ACCESS_TOKEN)
     @GET(APPOINTMENT_API)
     fun getAppointmentList(@Query("userIdx") userIdx: Int): Call<AppointmentResponse>
 
