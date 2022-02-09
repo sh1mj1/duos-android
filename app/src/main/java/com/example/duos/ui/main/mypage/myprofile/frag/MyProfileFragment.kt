@@ -39,8 +39,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     override fun initAfterBinding() {
 
         Log.d(TAG, "Start_MypageFragment")
-
         Log.d(TAG, "현재 user의 userIdx : $userIdx")
+
         //TODO userIdx에 어떤 값이 들어갈지
         MyProfileService.myProfileInfo(this, userIdx!!)
 

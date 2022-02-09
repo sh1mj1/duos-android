@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.duos.ApplicationClass
 import com.example.duos.data.entities.editProfile.EditProfilePutListView
 import com.example.duos.data.entities.editProfile.EditProfilePutReqDto
+import com.example.duos.data.local.UserDatabase
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ object EditProfilePutService {
                         resp.let {
                             editProfilePutListView.onPutEditProfileItemSuccess(it, resp.message)
                             Log.d(TAG, resp.toString())
+
                         }
                     }
                     else -> {

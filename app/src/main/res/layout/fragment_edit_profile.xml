@@ -49,7 +49,7 @@
                 <ImageView
                     android:id="@+id/btn_edit_myProfile_img_iv"
                     android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:background="@color/white_smoke_F"
                     android:scaleType="center"

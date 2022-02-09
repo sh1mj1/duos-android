@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.duos.ApplicationClass
+import com.example.duos.R
 import com.example.duos.utils.Inflate
 
 
@@ -48,23 +49,24 @@ abstract class BaseFragment<VB : ViewBinding>(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    fun progressON(){
+    fun progressON() {
         ApplicationClass.getInstance().progressON(activity, null)
     }
 
-    fun progressON(message: String){
+    fun progressON(message: String) {
         ApplicationClass.getInstance().progressON(activity, message)
     }
 
-    fun progressOFF(){
+    fun progressOFF() {
         ApplicationClass.getInstance().progressOFF()
     }
 
     fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw      = connectivityManager.activeNetwork ?: return false
+            val nw = connectivityManager.activeNetwork ?: return false
             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
 
             return when {
@@ -79,5 +81,11 @@ abstract class BaseFragment<VB : ViewBinding>(
         } else {
             return connectivityManager.activeNetworkInfo?.isConnected ?: false
         }
+    }
+
+    fun toLocationStr(index: Int): String? {
+        val array = resources.getStringArray(R.array.location_full_name)
+        return array[index]
+
     }
 }

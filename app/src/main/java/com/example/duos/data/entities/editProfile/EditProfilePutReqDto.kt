@@ -8,7 +8,7 @@ data class EditProfilePutReqDto(
     val gender: Int,
     val locationIdx: Int,
     val experienceIdx: Int ,
-    val introduction: String
+    val introbduction: String
 
 )
 //        phoneNumber: String,
