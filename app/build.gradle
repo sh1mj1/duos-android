@@ -5,6 +5,8 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+
+
 android {
     compileSdk 31
 
@@ -120,7 +122,8 @@ dependencies {
     // push implementation
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
 
-
+    kapt 'org.xerial:sqlite-jdbc:3.34.0'// m1 맥북 에러 대응
 
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
+
