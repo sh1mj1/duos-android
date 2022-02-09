@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -120,7 +121,8 @@ dependencies {
     // push implementation
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
 
-
+    // localdate
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }

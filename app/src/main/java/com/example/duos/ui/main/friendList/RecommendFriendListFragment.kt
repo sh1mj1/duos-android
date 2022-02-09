@@ -1,9 +1,10 @@
 package com.example.duos.ui.main.friendList
 
 
-import android.util.Log
+import android.os.Build
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.RecommendedFriend
@@ -12,9 +13,11 @@ import com.example.duos.data.remote.myFriendList.RecommendedFriendListOnDate
 import com.example.duos.databinding.FragmentRecommendFriendListBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.utils.getFriendListDiaglogNotShowing
+import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Period
-import org.threeten.bp.format.DateTimeFormatter
+
+
 
 
 class RecommendFriendListFragment() :
@@ -24,9 +27,10 @@ class RecommendFriendListFragment() :
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
 
     override fun initAfterBinding() {
-        FriendListService.getRecommendedFriendList(this, 1)
+        FriendListService.getRecommendedFriendList(this, getUserIdx()!!)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendedFriendListOnDate>) {
         if (!getFriendListDiaglogNotShowing()) {
             activity?.supportFragmentManager?.let { fragmentManager ->
@@ -36,15 +40,11 @@ class RecommendFriendListFragment() :
                 )
             }
         }
-            // starredFriendList를 날짜별로 파싱하기
-//        Log.d("받은 것", starredFriendList.toString())
+        // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
+        for (recommendedFriendListOnData in starredFriendList) {
+            val recommendedAt = recommendedFriendListOnData.recommendedDate.toLocalDate()
 
-            // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
-                for (recommendedFriendListOnData in starredFriendList) {
-                    val recommendedAt = recommendedFriendListOnData.recommendedDate
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-                    val date = LocalDate.parse(recommendedAt, formatter)
-            val period: Int = 7 - (Period.between(date, LocalDate.now()).days)
+            val period: Int = 7 - (Period.between(recommendedAt, LocalDate.now()).days)
 
             var recyclerviewId: Int = resources.getIdentifier(
                 "recommend_friend_list_d_" + period.toString()

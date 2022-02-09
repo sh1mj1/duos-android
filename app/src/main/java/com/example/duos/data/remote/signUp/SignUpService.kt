@@ -1,6 +1,7 @@
 package com.example.duos.data.remote.signUp
 
 import android.util.Log
+import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.ApplicationClass.Companion.retrofit
 import com.example.duos.data.entities.PhoneAuthNum
@@ -18,7 +19,7 @@ import retrofit2.Response
 import retrofit2.http.Multipart
 
 object SignUpService {
-    //val retrofit = NetworkModule.getRetrofit()
+    val retrofit = ApplicationClass.retrofit
     fun signUpCreateAuthNum(signUpCreateAuthNumView: SignUpCreateAuthNumView, phoneNumber: String) {
         val signUpCreateAuthNumService = retrofit.create(SignUpRetrofitInterface::class.java)
 

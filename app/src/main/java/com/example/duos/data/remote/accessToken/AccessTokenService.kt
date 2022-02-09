@@ -17,10 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object AccessTokenService {
     fun getAccessToken() {
-        val retrofit : Retrofit = Retrofit.Builder()
-            .baseUrl(ApplicationClass.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit = ApplicationClass.retrofit
         val getAccessTokenService = retrofit.create(AccessTokenRetrofitInterface::class.java)
 
         getAccessTokenService.getAccessToken(com.example.duos.utils.getAccessToken()!!, getRefreshToken()!!, getUserIdx()!!).enqueue(object :

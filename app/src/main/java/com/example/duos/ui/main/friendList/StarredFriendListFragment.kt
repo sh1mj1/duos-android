@@ -10,6 +10,7 @@ import com.example.duos.databinding.FragmentStarredFriendListBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.FriendListCountViewModel
+import com.example.duos.utils.getUserIdx
 
 class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBinding>
     (FragmentStarredFriendListBinding::inflate), StarredFriendListView {
@@ -31,7 +32,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         binding.starredFriendListRecyclerviewRc.itemAnimator = null
         binding.starredFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.starredFriendListRecyclerviewRc.adapter = StarredFriendListRVAdapter(ArrayList<StarredFriend>())
-        FriendListService.getStarredFriendList(this, 1)
+        FriendListService.getStarredFriendList(this, getUserIdx()!!)
     }
 
     override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
@@ -41,7 +42,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         val starredFriendListRVAdapter = StarredFriendListRVAdapter(friendListDatas)
 
         starredFriendListRVAdapter.setMyItemClickListener(object : StarredFriendListRVAdapter.MyItemClickListener {
-            override fun onDeleteFriend(friendId: String) {
+            override fun onDeleteFriend(friendIdx : Int) {
                 // 찜한친구 목록에서 삭제
             }
 

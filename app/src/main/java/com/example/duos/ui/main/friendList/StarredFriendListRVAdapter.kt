@@ -13,7 +13,7 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
 
     // 클릭 인터페이스 정의
     interface MyItemClickListener{
-        fun onDeleteFriend(friendId : String)
+        fun onDeleteFriend(frieIdx : Int)
         fun onGetFriendCount()
     }
 
@@ -36,7 +36,7 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
 
         // 친구 삭제 버튼 클릭시 삭제
         holder.binding.myFriendListDeleteBtn.setOnClickListener {
-            mItemClickListener.onDeleteFriend(friendlist[position].starredFriendNickname)
+            mItemClickListener.onDeleteFriend(friendlist[position].starredFrienedIdx!!)
             removeFriend(position)
             mItemClickListener.onGetFriendCount()
         }
