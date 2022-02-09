@@ -22,6 +22,8 @@ import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.ActivityManager.RunningTaskInfo
 import android.content.ComponentName
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.utils.getCurrentChatRoomIdx
 
 
@@ -108,6 +110,10 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 //                messageData.get("sentAt").toString(), messageData.get("title").toString())
 
 
+            var chatDB = ChatDatabase.getInstance(this)!!
+
+            val chatRoom : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
+            Log.d("채팅방리스트", chatRoom.toString())
 
             val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
             val componentName: ComponentName?
@@ -212,6 +218,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
         val intent = Intent(this, ChattingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("chatRoomIdx",chatRoomIdx)
+        intent.putExtra("senderId", senderId)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,

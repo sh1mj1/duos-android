@@ -2,6 +2,7 @@ package com.example.duos.data.remote.localList
 
 import android.util.Log
 import com.example.duos.ApplicationClass
+import com.example.duos.ApplicationClass.Companion.retrofit
 import com.example.duos.ui.signup.localSearch.LocationView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
@@ -9,7 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object LocationService {
-    val retrofit = NetworkModule.getRetrofit()
+    //val retrofit = NetworkModule.getRetrofit()
     fun getLocationList(locationView: LocationView) {
         val locationListService = retrofit.create(LocationRetrofitInterface::class.java)
 

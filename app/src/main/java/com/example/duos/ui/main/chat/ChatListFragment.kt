@@ -115,7 +115,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
                 intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
-                intent.putExtra("chatRoomName", chatRoom.chatRoomName)
+                intent.putExtra("senderId", chatRoom.chatRoomName)
                 intent.putExtra("partnerIdx", chatRoom.participantIdx)
                 startActivity(intent)
             }

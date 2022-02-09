@@ -63,12 +63,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         this.runOnUiThread {
             if (type.equals("DATE")) {    //
                 chattingMessagesRVAdapter.addItem(
-                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             } else {
                 chattingMessagesRVAdapter.addItem(
-                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE)
+                    ChatMessageItem(senderId, body, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx)
                 )
                 chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
             }
@@ -99,9 +99,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
 
-        val intent = intent
-        chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-        chatRoomName.text = intent.getStringExtra("chatRoomName")!!
+        if(intent != null){
+            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+            chatRoomName.text = intent.getStringExtra("senderId")!!
+        }
+
         //partnerIdx = intent.getIntExtra("partnerIdx", 0)!!    // 나중에 주석 해제
 
         saveCurrentChatRoomIdx(chatRoomIdx)
@@ -114,7 +116,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         // 약속 여부 받아오기
         // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
-        AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
+        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
+            AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
+            Log.d("인터넷 연결 확인", "CONNECTED")
+        }else{
+            Log.d("인터넷 연결 확인", "DISCONNECTED")
+            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
+                setAppointmentBtnExist()
+            }else{
+                setAppointmentBtnNotExist()
+            }
+        }
+
 
 
 
@@ -248,7 +261,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 userId,
                 chattingEt.text.toString(),
                 toDate(sendTime),
-                ChatType.RIGHT_MESSAGE
+                ChatType.RIGHT_MESSAGE,
+                chatRoomIdx
             )
         )
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
@@ -290,7 +304,20 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
                Log.d("채팅화면일때", "3")
                 Log.d("발신자 아이디", senderId)
-                addChatItem(senderId, body, sendTime, "MESSAGE")
+                if(type.equals("MESSAGE")){
+                    addChatItem(senderId, body, sendTime, "MESSAGE")
+                } else if(type.equals("CREATE_APPOINTMENT")){
+                    // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼)
+                    chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+                    setAppointmentBtnExist()
+                } else if(type.equals("DELETE_APPOINTMENT")){
+                    // 약속 취소 ("약속" 버튼 -> "약속 잡기" 버튼)
+                    chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+                    setAppointmentBtnNotExist()
+                } else{
+                    // 약속 수정 - 딱히 해줄 거 없을듯?
+                }
+
             }else{  // 채팅화면을 마지막으로 백그라운드로 전환했다가 푸시알림을 통해 다시 왔을 때 여기로 옴, onStart에서 api 호출해줄 것이므로 비워두면 됨
                 Log.d("채팅화면일때", "3 - null 존재")
                 Log.d("sendTime 확인", sendTime)
@@ -363,7 +390,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onAppointmentExistSuccess(appointmentIdx: Int) {
-        Log.d("약속여부 성공",appointmentIdx.toString())
+        Log.d("약속여부 성공", appointmentIdx.toString())
         if (appointmentIdx == -1){
             // 약속 없음
             setAppointmentBtnNotExist()
@@ -381,6 +408,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     fun setAppointmentBtnExist(){
         binding.chattingMakePlanBtn.background = getDrawable(R.drawable.unchecked_check_box)
+        binding.chattingMakePlanBtn.text = "약속"
         binding.chattingMakePlanBtn.setTextColor(
             ContextCompat.getColor(
             applicationContext,
@@ -390,6 +418,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     fun setAppointmentBtnNotExist(){
         binding.chattingMakePlanBtn.background = getDrawable(R.drawable.selected_btn)
+        binding.chattingMakePlanBtn.text = "약속잡기"
         binding.chattingMakePlanBtn.setTextColor(
             ContextCompat.getColor(
                 applicationContext,
