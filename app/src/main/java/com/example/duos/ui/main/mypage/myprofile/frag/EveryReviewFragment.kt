@@ -2,25 +2,22 @@ package com.example.duos.ui.main.mypage.myprofile.frag
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.data.entities.EveryReviewsItem
+import com.example.duos.data.entities.everyReviews.EveryReviewsItem
 import com.example.duos.data.entities.MyProfileInfoItem
 import com.example.duos.data.remote.everyReviews.EveryReviewsResponse
 import com.example.duos.data.remote.everyReviews.EveryReviewsService
 import com.example.duos.databinding.FragmentEveryReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.EveryReviewRVAdapter
-import com.example.duos.ui.main.mypage.myprofile.EveryReviewsItemView
+import com.example.duos.data.entities.everyReviews.EveryReviewsItemView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.google.gson.Gson
 

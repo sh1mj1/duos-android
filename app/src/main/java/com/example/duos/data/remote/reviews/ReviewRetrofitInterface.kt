@@ -12,8 +12,6 @@ import retrofit2.http.Query
 
 interface ReviewRetrofitInterface {
 
-//    @Headers(X_ACCESS_TOKEN)
-@Headers(X_ACCESS_TOKEN)
     @POST(REVIEW_API)
     fun postReview(@Body reviewData: JSONObject, @Query ("userIdx") userIdx: Int) : Call<ReviewResponse>
 

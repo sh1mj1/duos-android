@@ -38,7 +38,6 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
         MyPageService.getUserPage(this, userIdx!!)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/
 
-
         // 클릭리스너
         initClickListener()
 

@@ -39,8 +39,9 @@ internal class AuthInterceptor : Interceptor{
         val response = chain.proceed(request)
 
         when (response.code) {
-            1000 ->{
+            200 or 201 or 202 ->{
                 Log.d("AuthInterceptor", "재발급 불필요")
+                Log.d("AuthInterceptor", response.code.toString())
             }
             else ->{
                 Log.d("AuthInterceptor", "재발급")

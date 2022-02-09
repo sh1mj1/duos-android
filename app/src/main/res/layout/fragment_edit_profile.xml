@@ -64,6 +64,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv" />
 
+
+
+        
         <EditText
             android:id="@+id/nickname_et"
             android:layout_width="0dp"
@@ -218,8 +221,9 @@
             android:layout_height="195dp"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="9dp"
-            android:background="@color/white"
             android:enabled="true"
+            android:background="@null"
+            android:gravity="top"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:fontFamily="@font/applesdgothicneoregular"
@@ -232,7 +236,7 @@
             app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
             app:layout_constraintStart_toStartOf="@+id/dimension_introduction_iv"
             app:layout_constraintTop_toTopOf="@+id/dimension_introduction_iv" />
-        <!--        android:background="@drawable/ic_rectangler_introduction_off"-->
+
 
         <TextView
             android:id="@+id/guide_career_tv"
@@ -258,9 +262,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@+id/apply_btn"
+            app:layout_constraintBottom_toTopOf="@+id/activating_apply_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dimension_introduction_iv">
@@ -527,11 +531,24 @@
         </com.example.duos.ToggleButtonGroupTableLayout>
 
         <Button
-            android:id="@+id/apply_btn"
+            android:id="@+id/activating_apply_btn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/next_btn_done_rectangular"
             android:gravity="center"
+            android:text="@string/edit_profile_apply"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/inactivating_apply_btn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/next_btn_inactivitate_rectangular"
+            android:gravity="center"
+            android:visibility="gone"
             android:text="@string/edit_profile_apply"
             android:textColor="@color/white"
             android:textStyle="bold"

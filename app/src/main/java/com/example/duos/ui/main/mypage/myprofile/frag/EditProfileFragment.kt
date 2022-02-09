@@ -15,23 +15,36 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.editProfile.EditProfileListView
+import com.example.duos.data.entities.editProfile.EditProfilePutListView
+import com.example.duos.data.entities.editProfile.EditProfilePutReqDto
 import com.example.duos.data.entities.editProfile.GetEditProfileResDto
-import com.example.duos.data.remote.editProfile.EditProfileService
+import com.example.duos.data.local.UserDatabase
+import com.example.duos.data.remote.editProfile.EditProfileGetService
+import com.example.duos.data.remote.editProfile.EditProfilePutResponse
+import com.example.duos.data.remote.editProfile.EditProfilePutService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.mypage.MypageFragment
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.utils.getUserIdx
+import org.json.JSONObject
 import java.io.File
 
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate), EditProfileListView {
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate), EditProfileListView,
+    EditProfilePutListView {
     val TAG = "EditProfileFragment"
+    val userIdx = getUserIdx()
+
     lateinit var contentUri: Uri
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
@@ -54,10 +67,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
     override fun initAfterBinding() {
         Log.d(TAG, "Start_EditProfileFragment")
+        val db = UserDatabase.getInstance(requireContext())
+        // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
+        val myProfileDB = db!!.userDao().getUser(userIdx!!)
 
-        EditProfileService.getEditProfile(this, 186)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/
-
-
+        EditProfileGetService.getEditProfile(this, userIdx!!)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/
 
         for (i in 1..14) {
             var btnId: Int = resources.getIdentifier("edit_profile_table_" + i.toString() + "_btn", "id", requireActivity().packageName)
@@ -68,6 +82,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
             btn.text = resources.getString(resources.getIdentifier("signup_length_of_play_$num", "string", requireActivity().packageName))
 
         }
+
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
         binding.myProfileImgIv.setOnClickListener {
@@ -169,6 +184,27 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
             dialogBuilder.create().show()
 
         }
+
+        /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
+
+
+        binding.activatingApplyBtn.setOnClickListener {
+            val phoneNumber = "01074403939"
+            val nickname = binding.nicknameEt.text.toString()
+            val birth = "1997-01-01"
+            val gender = 1
+            val locationIdx = 3
+            val experienceIdx = 2
+            val introduction = binding.contentIntroductionEt.text.toString()
+
+            EditProfilePutService.putEditProfile(this, phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction, userIdx)
+            Log.d(
+                TAG,
+                " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender , locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
+            )
+        }
+
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -315,14 +351,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     }
 
 
-
     override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
         binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
 //        binding.locationInfoEt.hint = getEditProfileResDto.existingProfileInfo.LOCATION
         binding.contentIntroductionEt.hint = getEditProfileResDto.existingProfileInfo.introduction
-        Glide.with(binding.btnEditMyProfileImgIv.context)
+        Glide.with(binding.myProfileImgIv.context)
             .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
-            .into(binding.btnEditMyProfileImgIv)
+            .into(binding.myProfileImgIv)
 
         binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx!!
 
@@ -330,8 +365,28 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
     override fun onGetEditItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
-        Toast.makeText(context, "$TAG , onGetEditItemFailure",Toast.LENGTH_LONG)
+        Toast.makeText(context, "$TAG , onGetEditItemFailure", Toast.LENGTH_LONG)
 
+    }
+
+
+    override fun onPutEditProfileItemSuccess(editPutProfileResponse: EditProfilePutResponse, message: String) {
+        Log.d(TAG, "onPutEditProfileItemSuccess")
+
+        // go to MyPageFrag!
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+
+        (context as MyProfileActivity).supportFragmentManager.beginTransaction()
+            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment()).commitAllowingStateLoss()
+
+        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
+        (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.VISIBLE
+
+    }
+
+    override fun onPutEditProfileItemFailure(code: Int, message: String) {
+        Log.d(TAG, "onPutEditProfileItemFailure")
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     // 사진의 사이즈를 조정하는 메서드

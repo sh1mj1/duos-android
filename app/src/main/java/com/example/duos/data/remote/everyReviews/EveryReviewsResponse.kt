@@ -1,6 +1,6 @@
 package com.example.duos.data.remote.everyReviews
 
-import com.example.duos.data.entities.EveryReviewsItem
+import com.example.duos.data.entities.everyReviews.EveryReviewsItem
 import com.google.gson.annotations.SerializedName
 
 data class EveryReviewsResponse(
