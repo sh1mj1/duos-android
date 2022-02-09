@@ -5,12 +5,12 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface FriendListRetrofitInterface {
-    @GET("/test/partner/starred")
+    @GET("/api/partners/star")
     fun starredFriendList(
         @Query("userIdx") userIdx : Int
     ): Call<StarredFriendResponse>
 
-    @GET("/test/partner/recommend/history")
+    @GET("/api/partners/search/count")
     fun recommendedFriendList(
         @Query("userIdx") userIdx: Int
     ): Call<RecommendedFriendResponse>

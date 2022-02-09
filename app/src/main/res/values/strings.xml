@@ -85,7 +85,7 @@
     </string-array>
 
     <!-- splash -->
-    <string name="splash_button_start">시작하기</string>
+    <string name="splash_button_start">가입하기</string>
     <string name="splash_duos_logo">DUOS</string>
     <string name="splash_goto_login_text_01">이미 계정이 있나요?&#160;</string>
     <string name="splash_goto_login_text_02">로그인</string>

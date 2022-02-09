@@ -59,7 +59,7 @@ class ApplicationClass : Application() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
+//            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .build()
 
         retrofit = Retrofit.Builder()
