@@ -3,6 +3,7 @@ package com.example.duos.ui.main.mypage.myprofile.frag
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,17 +13,24 @@ import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.net.http.SslCertificate.saveState
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.editProfile.EditProfileListView
@@ -36,15 +44,26 @@ import com.example.duos.data.remote.editProfile.EditProfilePutService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.signup.SignUpActivity
+import com.example.duos.ui.signup.localSearch.LocationDialogFragment
+import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import org.json.JSONObject
 import java.io.File
 
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate), EditProfileListView,
+class EditProfileFragment : Fragment(), EditProfileListView,
     EditProfilePutListView {
     val TAG = "EditProfileFragment"
-    val userIdx = getUserIdx()
+    lateinit var mContext: MyProfileActivity
+    lateinit var binding: FragmentEditProfileBinding
+    lateinit var viewModel: ViewModel
+    var savedState: Bundle? = null
 
+    val userIdx = getUserIdx()
+    var locationText: TextView? = null
+
+
+    // 카메라 접근 권한
     lateinit var contentUri: Uri
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
@@ -65,23 +84,61 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     )
     val multiplePermissionsCode2 = 300
 
-    override fun initAfterBinding() {
-        Log.d(TAG, "Start_EditProfileFragment")
-        val db = UserDatabase.getInstance(requireContext())
-        // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
-        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MyProfileActivity) {
+            mContext = context
+        }
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         EditProfileGetService.getEditProfile(this, userIdx!!)        /*TODO : 왼족 userIdx에 내 userIdx 넣기 (Room)*/
 
-        for (i in 1..14) {
-            var btnId: Int = resources.getIdentifier("edit_profile_table_" + i.toString() + "_btn", "id", requireActivity().packageName)
+        Log.d(TAG, "Start_EditProfileFragment")
 
-            var btn: Button = requireView().findViewById(btnId)
-            val num: String = i.toString()
+        return binding.root
+    }
 
-            btn.text = resources.getString(resources.getIdentifier("signup_length_of_play_$num", "string", requireActivity().packageName))
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationText = binding.locationInfoTv
+
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(userIdx!!) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+
+        if (savedInstanceState != null && savedState == null) {
+            savedState = savedInstanceState.getBundle("savedState")
         }
+        if (savedInstanceState != null) {
+            Log.d(TAG, "저장")
+        } else {
+            Log.d(TAG, "저장X")
+            viewModel.editProfileLocationName.value = ""
+            viewModel.editProfileLocationDialogShowing.value = false
+//            binding.locationInfoTv.setText(myProfileDB.location.toString())
+        }
+        savedState = null
+
+        binding.locationInfoTv.setOnClickListener {
+            val dialog = LocationDialogFragment()
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                dialog.show(
+                    fragmentManager, "지역 선택"
+                )
+            }
+        }
+
+
+        viewModel.editProfileLocationDialogShowing.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                binding.locationInfoTv.text = viewModel.editProfileLocationCateName.value + " " + viewModel.editProfileLocationName.value
+            }
+        })
+
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
@@ -185,25 +242,60 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
         }
 
+
+        // 구력 관련
+        for (i in 1..14) {
+            val btnId: Int = resources.getIdentifier(
+                "edit_profile_table_" + i.toString() + "_btn",
+                "id",
+                requireActivity().packageName
+            )
+            val btn: Button = requireView().findViewById(btnId)
+            val num: String = i.toString()
+            btn.text = resources.getString(
+                resources.getIdentifier(
+                    "signup_length_of_play_$num",
+                    "string",
+                    requireActivity().packageName
+                )
+            )
+            btn.tag = i.toString()
+        }
+
+
         /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
 
 
         binding.activatingApplyBtn.setOnClickListener {
             val phoneNumber = "01074403939"
-            val nickname = binding.nicknameEt.text.toString()
+            val nickname = binding.nicknameTextField.text.toString()
             val birth = "1997-01-01"
             val gender = 1
-            val locationIdx = 3
+            val locationIdx = viewModel.editProfileLocation.value!!.toInt()
             val experienceIdx = 2
             val introduction = binding.contentIntroductionEt.text.toString()
 
-            EditProfilePutService.putEditProfile(this, phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction, userIdx)
+            EditProfilePutService.putEditProfile(this, phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction, userIdx!!)
             Log.d(
                 TAG,
                 " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender , locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
             )
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("$TAG _ onDestroyView", "onDestroyView")
+        savedState = saveState()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("$TAG _ onSaveInstanceState", "onSaveInstanceState")
+        super.onSaveInstanceState(outState)
+        outState.putBundle(
+            "savedState", if (savedState != null) savedState else saveState()
+        )
 
     }
 
@@ -285,7 +377,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -359,7 +450,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
             .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
             .into(binding.myProfileImgIv)
 
-        binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx!!
+//        binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx!!
 
     }
 
@@ -381,6 +472,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
         (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setImageResource(R.drawable.ic_my_page_back_btn)
 
     }
 
@@ -434,4 +526,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         return bitmap2
     }
 
+    private fun saveState(): Bundle { /* called either from onDestroyView() or onSaveInstanceState() */
+        val state = Bundle()
+        state.putCharSequence("save", "true")
+
+        return state
+    }
 }

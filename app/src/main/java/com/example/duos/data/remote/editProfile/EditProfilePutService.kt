@@ -1,16 +1,14 @@
 package com.example.duos.data.remote.editProfile
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.editProfile.EditProfileListView
 import com.example.duos.data.entities.editProfile.EditProfilePutListView
 import com.example.duos.data.entities.editProfile.EditProfilePutReqDto
 import com.example.duos.utils.NetworkModule
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 object EditProfilePutService {
     val TAG = "EditProfilePutService"

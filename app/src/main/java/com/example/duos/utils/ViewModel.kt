@@ -46,6 +46,15 @@ class ViewModel : ViewModel() {
     var partnerLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
     var partnerGender = MutableLiveData<Int?>()
 
+    // editProfile
+
+    var editProfileLocationCate = MutableLiveData<Int?>()
+    var editProfileLocation = MutableLiveData<Int?>()
+    var editProfileLocationCateName = MutableLiveData<String?>()
+    var editProfileLocationName = MutableLiveData<String?>()
+    var editProfileLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
+
+
     // Appointment
     var isAppointmentExist : MutableLiveData<Boolean> = MutableLiveData(false)
 
