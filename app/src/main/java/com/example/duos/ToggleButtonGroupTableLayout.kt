@@ -14,6 +14,8 @@ import android.widget.TableLayout
 import android.os.Bundle
 
 import android.os.Parcelable
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
 import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
 import okhttp3.internal.parseCookie
@@ -23,6 +25,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
     lateinit var radioBtnListener: ToggleButtonInterface
     lateinit var signupContext: Context
     lateinit var partnerFilterContext: Context
+    lateinit var editProfileContext: Context
 
     var checkedRadioButtonId: Int =
         if (activeRadioButton != null) {
@@ -76,7 +79,10 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
             radioBtnListener = partnerFilterContext as PartnerFilterActivity
             (radioBtnListener as PartnerFilterActivity).setRadiobutton(activeRadioButton!!.tag.toString())
         }
-
+//        else if(v.context is EditProfileFragment){
+//            radioBtnListener = editProfileContext as EditProfileFragment
+//            (radioBtnListener as EditProfileFragment).setRadioButton(activeRadioButton!!.tag.toString())
+//        }
 
     }
 

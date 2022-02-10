@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.duos.R
+import com.example.duos.ToggleButtonInterface
 import com.example.duos.data.entities.User
 import com.example.duos.data.entities.editProfile.EditProfileListView
 import com.example.duos.data.entities.editProfile.EditProfilePutListView
@@ -50,11 +51,9 @@ import com.example.duos.utils.getUserIdx
 import java.io.File
 
 class EditProfileFragment : Fragment(), EditProfileListView,
-    EditProfilePutListView {
+    EditProfilePutListView, ToggleButtonInterface {
     val TAG = "EditProfileFragment"
     lateinit var binding: FragmentEditProfileBinding
-
-//    var updatedUserProfile = List<BeforeProfileUpdate>
 
     lateinit var mContext: MyProfileActivity
     lateinit var viewModel: ViewModel
@@ -375,7 +374,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Log.d("$TAG _ onSaveInstanceState", "onSaveInstanceState")
         super.onSaveInstanceState(outState)
         outState.putBundle(
-            "savedState", if (savedState != null) savedState else saveState()
+            "savedState",
+            if (savedState != null) savedState else saveState()
         )
 
     }
@@ -551,13 +551,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
         binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
-//        binding.locationInfoEt.hint = getEditProfileResDto.existingProfileInfo.LOCATION
         binding.contentIntroductionEt.hint = getEditProfileResDto.existingProfileInfo.introduction
         Glide.with(binding.myProfileImgIv.context)
             .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
             .into(binding.myProfileImgIv)
 
-//        binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx!!
+        binding.editProfileTableLayoutTl.checkedRadioButtonId =
+            getEditProfileResDto.existingProfileInfo.experienceIdx!!
 
     }
 
@@ -665,7 +665,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     }
 
-//    fun setUser(editProfilePutReqDto: EditProfilePutReqDto): User {
+//    override fun setRadiobutton(tag: String) {
+//        setRadioButton(tag.toInt())
+//    }
+
+    //    fun setUser(editProfilePutReqDto: EditProfilePutReqDto): User {
 ////        Log.d(TAG,"TAG")
 //    }
 

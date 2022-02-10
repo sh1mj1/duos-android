@@ -43,10 +43,12 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
         // 날짜 비교 반복문
         while (appointmentResponse.result.size > i) {
             var xx = appointmentResponse.result[i].appointmentTime
+
             if (ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now()) < 35) {
                 /* 일주일 이내이면 previousPlayerDatas 에 넣기 - 이제 오늘이거나 어제이면 text 바꿔줘야 해 */
                 Log.d(TAG, "7일 이내 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())}?")
                 previousPlayerData.add(appointmentResponse.result[i])
+
             } else { /* 일주일 이상이면 previousPlayerDatas 에 넣기 */
                 Log.d(TAG, "7일 이상 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())}?")
                 morePreviousPlayerDatas.add(appointmentResponse.result[i])

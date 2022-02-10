@@ -19,7 +19,7 @@ object NetworkModule {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .writeTimeout(30000, TimeUnit.MILLISECONDS)
-//            .addInterceptor(AuthInterceptor())
+            .addInterceptor(AuthInterceptor())
             .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .build()
 
