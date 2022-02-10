@@ -17,6 +17,7 @@ import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.databinding.FragmentChatListBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.utils.getUserIdx
 import kotlin.collections.ArrayList
 
 class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::inflate), ChatListView, ChatListRVAdapter.DeleteClickListener {
@@ -28,7 +29,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
     private lateinit var mContext:Context
     lateinit var chatDB: ChatDatabase
-    val userIdx = 76
+    val userIdx = getUserIdx()!!
 
     override fun initAfterBinding() {
         chatListRv = binding.chatListRv

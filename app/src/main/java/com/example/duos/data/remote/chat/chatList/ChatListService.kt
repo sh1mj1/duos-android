@@ -19,7 +19,7 @@ object ChatListService {
             override fun onResponse(call: Call<ChatListResponse>, response: Response<ChatListResponse>) {
                 val resp = response.body()!!
                 when (resp.code) {
-                    1000 ->
+                    1000, 6203 ->
                         resp.result?.let { chatListView.onGetChatListSuccess(it) }
                     else -> chatListView.onGetChatListFailure(resp.code, resp.message)
                 }

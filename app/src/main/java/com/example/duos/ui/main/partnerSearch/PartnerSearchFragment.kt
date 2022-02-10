@@ -10,15 +10,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.RecommendedPartnerDatabase
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
-import com.example.duos.utils.getLastUpdatedDate
-import com.example.duos.utils.saveLastUpdatedDate
+import com.example.duos.utils.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import java.text.SimpleDateFormat
@@ -29,7 +28,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
     private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
-    var userIdx: Int = 1
+    var userIdx: Int = getUserIdx()!!
     lateinit var recommendedPartnerDatabase: RecommendedPartnerDatabase
 
     companion object {
@@ -59,7 +58,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //        }
 
         Log.d("get_recommendedPartnerList","ongetSuccess")
-        progressOFF()
+        //progressOFF()
 
         val userNickName = partnerSearchData.userNickname
 
@@ -97,39 +96,25 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun initAfterBinding() {
 
+        Log.d("유저idx", userIdx.toString())
+
         recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
 
-        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록 수정해야함.
+        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
+        val userDB = UserDatabase.getInstance(requireContext())!!
+        binding.partnerSearchUserIdTv.text = userDB.userDao().getUserNickName(userIdx)
+        Log.d("유저닉네임", userDB.userDao().getUserNickName(userIdx))
+        Log.d("유저프로필url", userDB.userDao().getUserProfileImgUrl(userIdx))
+        Log.d("jwtAccess토큰정보", getAccessToken().toString())
+        Log.d("jwtRefresh토큰정보", getRefreshToken().toString())
 
-
-
-        //수
-
-        //정
-
-        //필
-
-        //요
-
-//        val userDB = UserDatabase.getInstance(requireContext())!!
-//        val userNickName = userDB.userDao().
-//
-//        Glide.with(this).load(partnerSearchData.userProfileImageUrl)
-//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-
-        //수
-
-        //정
-
-        //필
-
-        //요
-
+        Glide.with(this).load(userDB.userDao().getUserProfileImgUrl(userIdx))
+            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 
         // 임시로 사용자의 프로필이미지와 닉네임 세팅함
-        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
-            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-        binding.partnerSearchUserIdTv.text = "tennis1010"
+//        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
+//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
+//        binding.partnerSearchUserIdTv.text = "tennis1010"
 
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)

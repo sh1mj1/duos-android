@@ -20,5 +20,9 @@ interface UserDao {
     @Query("DELETE FROM UserTable") // 테이블에 들어있는 모든 값을 지워라
     fun clearAll()
 
+    @Query("SELECT nickName FROM UserTable WHERE userIdx = :userIdx")
+    fun getUserNickName(userIdx : Int): String
 
+    @Query("SELECT profileImg FROM UserTable WHERE userIdx = :userIdx")
+    fun getUserProfileImgUrl(userIdx: Int): String
 }

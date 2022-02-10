@@ -24,6 +24,7 @@ import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.local.ChatDatabase
+import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
@@ -31,6 +32,7 @@ import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
 import com.example.duos.ui.main.appointment.AppointmentInfoActivity
 import com.example.duos.utils.ViewModel
+import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -47,7 +49,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     var roomIdx: Int = 0
     var userId: String = "tennis01"     // 룸디비에서 userIdx로 userId(=userNickname) 조회하도록 수정 필요
     var partnerId: String = "djeikd0620"    // 인텐트로 넘겨받은 partnerIdx로 룸디비에서 partnerID(=chatRoomName) 가져오도록 수정 필요
-    var thisUserIdx = 76    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
+    private var thisUserIdx = getUserIdx()!!    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
     var partnerIdx: Int = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
     private var layoutManager: LayoutManager? = null
     lateinit var chatRoomIdx : String
@@ -102,7 +104,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         if(intent != null){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             chatRoomName.text = intent.getStringExtra("senderId")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 110)
         }
+
+        val userDB = UserDatabase.getInstance(this)!!
+        userId = userDB.userDao().getUserNickName(thisUserIdx)
 
         //partnerIdx = intent.getIntExtra("partnerIdx", 0)!!    // 나중에 주석 해제
 
@@ -111,6 +117,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chatDB = ChatDatabase.getInstance(this)!!
 
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+
+
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
 
@@ -299,7 +307,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
             //var currentTime = toDate(System.currentTimeMillis())
 
-            if (!senderId.isNullOrEmpty() && !body.isNullOrEmpty() && !sendTime.isNullOrEmpty() && type.equals("MESSAGE")) {
+            if (!senderId.isNullOrEmpty() && !body.isNullOrEmpty() && !sendTime.isNullOrEmpty()) {
                 // 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 누르면 onMessageReceived를 거치지 않고 onNewIntent가 호출되고 senderId가 null으로 와서
                     // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
                     // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
