@@ -30,12 +30,15 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
     lateinit var chatDB: ChatDatabase
     lateinit var viewModel: ViewModel
     lateinit var chatRoomIdx : String
+    var partnerIdx : Int = 0
     lateinit var appointmentTime : String
 
     override fun initAfterBinding() {
 
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+        partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
         chatDB = ChatDatabase.getInstance(this)!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
@@ -43,7 +46,8 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
         binding.makePlanApplyTv.setOnClickListener {
             Thread.sleep(100)
-            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx, appointmentTime)
+            Log.d("유저인덱스", getUserIdx().toString())
+            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, partnerIdx, appointmentTime)
             AppointmentService.makeAppointment(this, makeAppointment)
         }
 

@@ -226,13 +226,15 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
                 // 약속현황 보기
                 val intent = Intent(this, AppointmentInfoActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
                 startActivity(intent)
             }
             else {
                 // 약속 잡기
                 val intent = Intent(this, AppointmentActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
                 startActivity(intent)
             }
 
@@ -304,6 +306,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val senderId = bundle.getString("senderId")
             val body = bundle.getString("body")
             var type = bundle.getString("type")
+            partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
             var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
             //var currentTime = toDate(System.currentTimeMillis())
 
@@ -318,6 +321,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 } else if(type.equals("CREATE_APPOINTMENT")){
                     // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼)
                     chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+                    //chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, )
                     setAppointmentBtnExist()
                 } else if(type.equals("DELETE_APPOINTMENT")){
                     // 약속 취소 ("약속" 버튼 -> "약속 잡기" 버튼)

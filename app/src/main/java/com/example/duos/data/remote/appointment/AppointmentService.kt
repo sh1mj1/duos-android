@@ -2,6 +2,7 @@ package com.example.duos.data.remote.appointment
 
 import android.util.Log
 import com.example.duos.ApplicationClass
+import com.example.duos.ApplicationClass.Companion.retrofit
 import com.example.duos.data.entities.EditAppointment
 import com.example.duos.data.entities.MakeAppointment
 import com.example.duos.data.entities.appointment.AppointmentListView

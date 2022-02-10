@@ -134,7 +134,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
                     intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
                     intent.putExtra("type", messageData.get("type").toString())
                     intent.putExtra("body", messageData.get("body").toString())
-                    intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
+                    intent.putExtra("partnerIdx", messageData.get("senderIdx").toString())
                     intent.putExtra("sentAt", messageData.get("sentAt").toString())
                     intent.putExtra("senderId",  messageData.get("title").toString())
                     Log.d("발신자", remoteMessage.data.get("title").toString())
