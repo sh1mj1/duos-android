@@ -1,20 +1,19 @@
 package com.example.duos.utils
 
 import android.util.Log
+import android.util.Log.d
+import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.BASE_URL
 import com.example.duos.config.XAccessTokenInterceptor
-import com.example.duos.data.entities.ResponseWrapper
 import com.example.duos.data.remote.accessToken.AccessTokenService
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
+import com.google.gson.JsonObject
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-
-
+import java.util.logging.Logger
 
 
 object NetworkModule {
@@ -30,8 +29,8 @@ object NetworkModule {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL) // 기본 URL 세팅
-            .client(client) //Logger 세팅
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client) //Logger 세팅
             .build()
 
         return retrofit
@@ -40,49 +39,27 @@ object NetworkModule {
 
 internal class AuthInterceptor : Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val request = chain.request()
         val response = chain.proceed(request)
-        val rawJson = response.body?.string() ?: "{}"
+        val responseJson = response.extractResponseJson()
 
-        /**
-         * 4) Wrap body with gson
-         */
-        val gson = Gson()
-        val type = object : TypeToken<ResponseWrapper<*>>() {}.type
-        val res = try {
-            val r = gson.fromJson<ResponseWrapper<*>>(rawJson, type) ?: throw JsonSyntaxException("Parse Fail")
-
-            if(!r.isSuccess)
-                ResponseWrapper<Any>(false, r.code, "Server Logic Fail : ${r.message}", null) //1
-            else
-                ResponseWrapper<Any>(true, r.code, "Success : ${r.message}", null)
-
-        } catch (e: JsonSyntaxException) {
-            ResponseWrapper<Any>(false, e.hashCode(), "json parsing fail : $e", null) //2
-        } catch (t: Throwable) {
-            ResponseWrapper<Any>(false, t.hashCode(), "unknown error : $t", null)   //3
-        }
-
-//        /**
-//         * 5) get data json from data
-//         */
-//        val dataJson = gson.toJson(res.data)
-
-        when (res.code) {
-            1000 ->{
-                Log.d("AuthInterceptor", "재발급 불필요")
-            }
-            2007 ->{
-                Log.d("AuthInterceptor", "재발급")
-                AccessTokenService.getAccessToken()
-            }
-            else->{
-                Log.d("상태", res.code.toString())
-                Log.d("메시지",res.message.toString())
-
+        if (responseJson.has("code")){
+            when (responseJson["code"]){
+                2007 ->{
+                    Log.d("AuthInterceptor", "재발급")
+                    AccessTokenService.getAccessToken()
+                }
             }
         }
-        return response
+        return response.newBuilder()
+            .body(responseJson.toString().toResponseBody())
+            .build()
+    }
+
+    fun Response.extractResponseJson(): JSONObject {
+        val jsonString = this.body?.string() ?: "{}"
+        return JSONObject(jsonString)
     }
 }
 

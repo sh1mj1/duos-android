@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 
-@Database(entities = [ChatRoom::class, ChatMessageItem::class], version = 5, exportSchema = false)
+@Database(entities = [ChatRoom::class, ChatMessageItem::class], version = 6, exportSchema = false)
 abstract class ChatDatabase: RoomDatabase() {
     abstract fun chatRoomDao(): ChatRoomDao
     abstract fun chatMessageItemDao(): ChatMessageItemDao

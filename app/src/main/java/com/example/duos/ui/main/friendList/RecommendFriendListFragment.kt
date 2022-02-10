@@ -2,6 +2,7 @@ package com.example.duos.ui.main.friendList
 
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.RecommendedFriend
 import com.example.duos.data.remote.myFriendList.FriendListService
-import com.example.duos.data.remote.myFriendList.RecommendedFriendListOnDate
+import com.example.duos.data.remote.myFriendList.RecommendHistoryDto
 import com.example.duos.databinding.FragmentRecommendFriendListBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.utils.getFriendListDiaglogNotShowing
@@ -22,7 +23,7 @@ import org.threeten.bp.Period
 
 class RecommendFriendListFragment() :
     BaseFragment<FragmentRecommendFriendListBinding>(FragmentRecommendFriendListBinding::inflate),
-    RecommendedFriendListView {
+    RecommendedFriendListView, AddStarredFriendView {
 
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
 
@@ -31,7 +32,10 @@ class RecommendFriendListFragment() :
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendedFriendListOnDate>) {
+    override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendHistoryDto>) {
+
+        Log.d("지난추천친구","성공")
+
         if (!getFriendListDiaglogNotShowing()) {
             activity?.supportFragmentManager?.let { fragmentManager ->
                 FriendListDialogFragment().show(
@@ -41,8 +45,8 @@ class RecommendFriendListFragment() :
             }
         }
         // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
-        for (recommendedFriendListOnData in starredFriendList) {
-            val recommendedAt = recommendedFriendListOnData.recommendedDate.toLocalDate()
+        for (recommendHistoryDto in starredFriendList) {
+            val recommendedAt = recommendHistoryDto.recommendedDate.toLocalDate()
 
             val period: Int = 7 - (Period.between(recommendedAt, LocalDate.now()).days)
 
@@ -57,7 +61,7 @@ class RecommendFriendListFragment() :
             recyclerview.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapterList[period] =
-                RecommendFriendListRVAdapter(recommendedFriendListOnData.recommendedFriendList as ArrayList<RecommendedFriend>)
+                RecommendFriendListRVAdapter(recommendHistoryDto.PastRecommendPartnerDto as ArrayList<RecommendedFriend>)
             recyclerview.adapter = adapterList[period]
             recyclerview.itemAnimator = null
 
@@ -72,10 +76,13 @@ class RecommendFriendListFragment() :
             adapterList[period]?.setMyItemClickListener(object :
                 RecommendFriendListRVAdapter.MyItemClickListener {
                 override fun onDeleteFriend(friendId: String) {
-
+                    Log.d("추천친구삭제","bye")
                 }
 
-                override fun onAddFriend(friendId: String) {
+                override fun onAddFriend(friend: RecommendedFriend) {
+                    Log.d("찜하기","api 호출하기")
+                    // 하트값을 viewModel 로 observe 해서 빈하트라면, 찜하기 , 채워져있는 하트라면, 찜하기 취소 api를 호출하자.
+//                    FriendListService.addStarredFriend(this, getUserIdx()!!, partnerIdx )
 
                 }
 
@@ -89,6 +96,14 @@ class RecommendFriendListFragment() :
     }
 
     override fun onGetRecommendedFriendListFailure(code: Int, message: String) {
+        showToast("code : $code, message : $message")
+    }
+
+    override fun onAddStarredFriendSuccess() {
+
+    }
+
+    override fun onAddStarredFriendFailure(code: Int, message: String) {
         showToast("code : $code, message : $message")
     }
 }

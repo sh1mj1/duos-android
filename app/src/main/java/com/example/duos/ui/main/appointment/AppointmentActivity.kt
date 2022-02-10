@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.chat.appointment
+package com.example.duos.ui.main.appointment
 
 import android.content.Intent
 import android.util.Log
@@ -7,7 +7,7 @@ import com.example.duos.R
 import com.example.duos.data.entities.MakeAppointment
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
-import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
+import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.databinding.ActivityAppointmentBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.ChattingActivity
@@ -23,10 +23,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import java.util.*
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
-import kotlinx.coroutines.selects.select
-import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
 
 class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppointmentBinding::inflate), MakeAppointmentView {
 

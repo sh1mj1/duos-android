@@ -57,7 +57,7 @@
                 android:id="@+id/partner_profile_like_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/last_recommend_friend_list_like_ic"
+                android:src="@drawable/last_recommend_friend_list_unlike_ic"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

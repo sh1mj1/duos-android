@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.chat.appointment
+package com.example.duos.ui.main.appointment
 
 interface MakeAppointmentView {
     fun onMakeAppointmentSuccess()

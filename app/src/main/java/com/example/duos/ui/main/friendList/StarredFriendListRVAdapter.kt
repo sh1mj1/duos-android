@@ -49,13 +49,6 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
         notifyItemRangeChanged(position, friendlist.size)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(myFriends: ArrayList<StarredFriend>) {
-        this.friendlist.clear()
-        this.friendlist.addAll(myFriends)
-
-        notifyDataSetChanged()
-    }
 
     override fun getItemCount(): Int = friendlist.size
     

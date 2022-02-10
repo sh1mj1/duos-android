@@ -26,4 +26,7 @@ interface ChatRoomDao {
 
     @Query("UPDATE ChatRoomTable SET isAppointmentExist = :isAppointmentExist WHERE chatRoomIdx = :chatRoomIdx")
     fun updateAppointmentExist(chatRoomIdx: String, isAppointmentExist : Boolean)
+
+    @Query("UPDATE ChatRoomTable SET appointmentIdx = :appointmentIdx WHERE chatRoomIdx = :chatRoomIdx")
+    fun updateAppointmentIdx(chatRoomIdx: String, appointmentIdx : Int)
 }
