@@ -40,7 +40,7 @@ object FriendListService {
         friendListService.recommendedFriendList(userIdx).enqueue(object : Callback<RecommendedFriendResponse> {
             override fun onResponse(call: Call<RecommendedFriendResponse>, response: Response<RecommendedFriendResponse>) {
                 val resp = response.body()!!
-
+                Log.d("resp",resp.toString())
                 when (resp.code) {
                     1000 ->
                         resp.result?.let { recommendedFriendListView.onGetRecommendedFriendListSuccess(it) }

@@ -18,6 +18,7 @@ object ChatListService {
             Callback<ChatListResponse> {
             override fun onResponse(call: Call<ChatListResponse>, response: Response<ChatListResponse>) {
                 val resp = response.body()!!
+                Log.d("resp",resp.toString())
                 when (resp.code) {
                     1000 ->
                         resp.result?.let { chatListView.onGetChatListSuccess(it) }

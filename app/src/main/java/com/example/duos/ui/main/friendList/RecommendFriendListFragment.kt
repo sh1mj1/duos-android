@@ -23,13 +23,16 @@ import org.threeten.bp.Period
 
 class RecommendFriendListFragment() :
     BaseFragment<FragmentRecommendFriendListBinding>(FragmentRecommendFriendListBinding::inflate),
-    RecommendedFriendListView, AddStarredFriendView {
+    RecommendedFriendListView, AddStarredFriendView, DeleteStarredFriendView {
 
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
 
-    override fun initAfterBinding() {
+    override fun onResume() {
         FriendListService.getRecommendedFriendList(this, getUserIdx()!!)
+        super.onResume()
     }
+
+    override fun initAfterBinding() {}
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendHistoryDto>) {
@@ -45,8 +48,9 @@ class RecommendFriendListFragment() :
             }
         }
         // 날짜 파싱 & Dday 별로 recyclerview 에 매칭
-        for (recommendHistoryDto in starredFriendList) {
-            val recommendedAt = recommendHistoryDto.recommendedDate.toLocalDate()
+        for (friendList in starredFriendList) {
+            Log.d("friendlist",friendList.toString())
+            val recommendedAt = friendList.recommendedDate.toLocalDate()
 
             val period: Int = 7 - (Period.between(recommendedAt, LocalDate.now()).days)
 
@@ -61,7 +65,7 @@ class RecommendFriendListFragment() :
             recyclerview.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapterList[period] =
-                RecommendFriendListRVAdapter(recommendHistoryDto.PastRecommendPartnerDto as ArrayList<RecommendedFriend>)
+                RecommendFriendListRVAdapter(friendList.pastRecommendPartnerDto as ArrayList<RecommendedFriend>)
             recyclerview.adapter = adapterList[period]
             recyclerview.itemAnimator = null
 
@@ -75,14 +79,20 @@ class RecommendFriendListFragment() :
 
             adapterList[period]?.setMyItemClickListener(object :
                 RecommendFriendListRVAdapter.MyItemClickListener {
-                override fun onDeleteFriend(friendId: String) {
+                override fun onDeleteFriend(partnerIdx : Int) {
                     Log.d("추천친구삭제","bye")
                 }
 
                 override fun onAddFriend(friend: RecommendedFriend) {
-                    Log.d("찜하기","api 호출하기")
                     // 하트값을 viewModel 로 observe 해서 빈하트라면, 찜하기 , 채워져있는 하트라면, 찜하기 취소 api를 호출하자.
-//                    FriendListService.addStarredFriend(this, getUserIdx()!!, partnerIdx )
+                    if (friend.recommendedFriendIsStarred){
+                        Log.d("찜삭제","api 호출하기")
+                        deleteStarredFriend(friend.partnerIdx!!)
+                    } else{
+                        Log.d("찜하기","api 호출하기")
+                        addStarredFriend(friend.partnerIdx!!)
+                    }
+
 
                 }
 
@@ -95,6 +105,14 @@ class RecommendFriendListFragment() :
         }
     }
 
+    fun addStarredFriend(partnerIdx : Int){
+        FriendListService.addStarredFriend(this, getUserIdx()!!, partnerIdx)
+    }
+
+    fun deleteStarredFriend(partnerIdx : Int){
+        FriendListService.deleteStarredFriend(this, getUserIdx()!!, partnerIdx)
+    }
+
     override fun onGetRecommendedFriendListFailure(code: Int, message: String) {
         showToast("code : $code, message : $message")
     }
@@ -104,6 +122,14 @@ class RecommendFriendListFragment() :
     }
 
     override fun onAddStarredFriendFailure(code: Int, message: String) {
+        showToast("code : $code, message : $message")
+    }
+
+    override fun onDeleteStarredFriendSuccess() {
+
+    }
+
+    override fun onDeleteStarredFriendFailure(code: Int, message: String) {
         showToast("code : $code, message : $message")
     }
 }
