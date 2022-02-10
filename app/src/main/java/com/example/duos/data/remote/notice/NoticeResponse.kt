@@ -17,25 +17,23 @@ data class NoticeGetResult(
     @SerializedName("createdAt") val createdAt: String = ""
 )
 
-data class NoticeDeleteResponse(
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("code") val code: Int,
-    @SerializedName("message") val message: String,
-
-)
-
-
-data class NoticePostResponse(
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("code") val code: Int,
-    @SerializedName("message") val message: String,
-
-)
-
-
-data class NoticePatchResponse(
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("code") val code: Int,
-    @SerializedName("message") val message: String,
-
-)
+//data class NoticeDeleteResponse(
+//    @SerializedName("isSuccess") val isSuccess: Boolean,
+//    @SerializedName("code") val code: Int,
+//    @SerializedName("message") val message: String
+//
+//)
+//
+//data class NoticePostResponse(
+//    @SerializedName("isSuccess") val isSuccess: Boolean,
+//    @SerializedName("code") val code: Int,
+//    @SerializedName("message") val message: String,
+//
+//)
+//
+//data class NoticePatchResponse(
+//    @SerializedName("isSuccess") val isSuccess: Boolean,
+//    @SerializedName("code") val code: Int,
+//    @SerializedName("message") val message: String,
+//
+//)

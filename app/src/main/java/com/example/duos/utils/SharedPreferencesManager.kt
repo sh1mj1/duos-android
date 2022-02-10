@@ -70,3 +70,8 @@ fun saveCurrentChatRoomIdx(currentChatRoomIdx: String){
 
 fun getCurrentChatRoomIdx(): String =
     mSharedPreferences.getString("currentChatRoomIdx", "").toString()
+
+fun withdrawalAllData() {
+    val editor = mSharedPreferences.edit()
+    editor.clear().apply()
+}

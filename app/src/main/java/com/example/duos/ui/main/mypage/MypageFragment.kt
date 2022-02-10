@@ -105,11 +105,10 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     override fun onGetMyPageItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
-        Toast.makeText(context, "$TAG , onGetMyPageItemFailure", Toast.LENGTH_LONG)
+        Toast.makeText(context, "$TAG , onGetMyPageItemFailure", Toast.LENGTH_LONG).show()
 
 
-        val db = UserDatabase.getInstance(requireContext())
-        // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
+        val db = UserDatabase.getInstance(requireContext()) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
         val myProfileDB = db!!.userDao().getUser(userIdx!!)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 

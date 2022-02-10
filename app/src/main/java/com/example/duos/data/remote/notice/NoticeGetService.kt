@@ -2,7 +2,7 @@ package com.example.duos.data.remote.notice
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.notice.NoticeGetListView
+import com.example.duos.data.entities.notice.NoticeListView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,7 +12,7 @@ object NoticeGetService {
     val TAG = "NoticeGetService"
     val retrofit = NetworkModule.getRetrofit()
 
-    fun onGetNotice(noticeGetListView: NoticeGetListView) {
+    fun onGetNotice(noticeListView: NoticeListView) {
         val noticeGetService = retrofit.create(NoticeGetRetrofitInterface::class.java)
 
         noticeGetService.onGetNotice().enqueue(object : Callback<NoticeGetResponse> {
@@ -24,7 +24,7 @@ object NoticeGetService {
                 when (resp.code) {
                     1000 -> {
                         resp.result.let {
-                            noticeGetListView.onGetNoticeSuccess(resp)
+                            noticeListView.onGetNoticeSuccess(resp)
                             Log.d(TAG, resp.toString())
                             Log.d(TAG, resp.result.toString())
                         }

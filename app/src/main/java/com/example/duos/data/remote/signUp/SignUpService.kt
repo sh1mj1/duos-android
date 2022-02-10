@@ -120,7 +120,11 @@ object SignUpService {
         })
     }
 
-    fun signUpReqeust(signUpRequestView: SignUpRequestView, mFile: MultipartBody.Part?, userInfo: RequestBody) {
+    fun signUpReqeust(
+        signUpRequestView: SignUpRequestView,
+        mFile: MultipartBody.Part?,
+        userInfo: RequestBody
+    ) {
         val signUpRequestService = retrofit.create(SignUpRetrofitInterface::class.java)
 
         signUpRequestService.signUpRequest(mFile, userInfo).enqueue(object :
@@ -134,7 +138,10 @@ object SignUpService {
                 Log.d("resp", resp.toString())
 
                 when (resp.code) {
-                    1000 -> signUpRequestView.onSignUpRequestSuccess()
+                    1000 -> {
+                        signUpRequestView.onSignUpRequestSuccess()
+                        Log.d(TAG, resp.result.toString())
+                    }
                     else -> signUpRequestView.onSignUpRequestFailure(resp.code, resp.message)
                 }
             }
