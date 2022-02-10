@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.chat.appointment
+package com.example.duos.ui.main.appointment
 
 import com.example.duos.databinding.ActivityAppointmentEditBinding
 import com.example.duos.ui.BaseActivity

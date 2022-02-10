@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.duos.R
 import com.example.duos.data.entities.RecommendedFriend
 import com.example.duos.databinding.ItemFragmentRecommendFriendListBinding
 
@@ -13,7 +14,7 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
     // 클릭 인터페이스 정의
     interface MyItemClickListener{
         fun onDeleteFriend(friendId : String)
-        fun onAddFriend(friendId: String)
+        fun onAddFriend(friend: RecommendedFriend)
         fun onDeleteText()
     }
 
@@ -35,9 +36,15 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
         holder.bind(friendlist[position], position)
 
         // 친구 삭제 버튼 클릭시 삭제
-        holder.binding.recommendFriendListTodayDeleteBtn.setOnClickListener {
+        holder.binding.recommendFriendListDeleteBtn.setOnClickListener {
             mItemClickListener.onDeleteFriend(friendlist[position].recommendedFriendNickname)
             removeFriend(position)
+        }
+
+        // 친구 찜하기
+        holder.binding.recommendFriendListLikeIv.setOnClickListener {
+            mItemClickListener.onAddFriend(friendlist[position])
+            holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_like)
         }
 
     }
@@ -51,14 +58,6 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(friends: ArrayList<RecommendedFriend>) {
-        this.friendlist.clear()
-        this.friendlist.addAll(friends)
-
-        notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int = friendlist.size
 
 
@@ -66,16 +65,16 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
     // 뷰홀더
     inner class ViewHolder(val binding: ItemFragmentRecommendFriendListBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(friend : RecommendedFriend, position: Int){
-            binding.recommendFriendListTodayIdTv.text = friend.recommendedFriendNickname
-            binding.recommendFriendListTodayAgeTv.text = friend.recommendedFriendAge.toString()
-            binding.recommendFriendListTodaySexTv.text =
+            binding.recommendFriendListIdTv.text = friend.recommendedFriendNickname
+            binding.recommendFriendListAgeTv.text = friend.recommendedFriendAge.toString()
+            binding.recommendFriendListSexTv.text =
                 when(friend.recommendedFriendGender) {
                     1-> "남자"
                     else -> "여자"
                 }
-            Glide.with(binding.recommendFriendListTodayProfileImageIv.context)
+            Glide.with(binding.recommendFriendListProfileImageIv.context)
                 .load(friend.recommendedFriendImgUrl)
-                .into(binding.recommendFriendListTodayProfileImageIv)
+                .into(binding.recommendFriendListProfileImageIv)
         }
     }
 }

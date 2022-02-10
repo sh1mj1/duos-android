@@ -1,6 +1,5 @@
-package com.example.duos.data.remote.chat.chat.appointment
+package com.example.duos.data.remote.appointment
 
-import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.google.gson.annotations.SerializedName
 
 data class AppointmentExistResultData(

@@ -25,11 +25,11 @@ import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
-import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
+import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.chat.appointment.AppointmentActivity
-import com.example.duos.ui.main.chat.appointment.AppointmentExistView
-import com.example.duos.ui.main.chat.appointment.AppointmentInfoActivity
+import com.example.duos.ui.main.appointment.AppointmentActivity
+import com.example.duos.ui.main.appointment.AppointmentExistView
+import com.example.duos.ui.main.appointment.AppointmentInfoActivity
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.saveCurrentChatRoomIdx
 import org.threeten.bp.LocalDateTime
@@ -218,6 +218,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
                 // 약속현황 보기
                 val intent = Intent(this, AppointmentInfoActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
                 startActivity(intent)
             }
             else {
@@ -399,6 +400,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             // 약속 존재함
             setAppointmentBtnExist()
             chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+            chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.friendList
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -13,7 +14,7 @@ import com.example.duos.utils.FriendListCountViewModel
 import com.example.duos.utils.getUserIdx
 
 class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBinding>
-    (FragmentStarredFriendListBinding::inflate), StarredFriendListView {
+    (FragmentStarredFriendListBinding::inflate), StarredFriendListView, DeleteStarredFriendView {
 
     private var friendListDatas = ArrayList<StarredFriend>()
     lateinit var mContext: MainActivity
@@ -36,7 +37,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
     }
 
     override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
-
+        Log.d("찜한친구","성공")
         friendListDatas.addAll(starredFriendList)
 
         val starredFriendListRVAdapter = StarredFriendListRVAdapter(friendListDatas)
@@ -44,6 +45,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         starredFriendListRVAdapter.setMyItemClickListener(object : StarredFriendListRVAdapter.MyItemClickListener {
             override fun onDeleteFriend(friendIdx : Int) {
                 // 찜한친구 목록에서 삭제
+                onDeleteFriendApi(friendIdx)
             }
 
             override fun onGetFriendCount() {
@@ -56,7 +58,19 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         binding.starredFriendListRecyclerviewRc.adapter = starredFriendListRVAdapter
     }
 
+    fun onDeleteFriendApi(friendIdx : Int){
+        FriendListService.deleteStarredFriend(this, getUserIdx()!!, friendIdx)
+    }
+
     override fun onGetStarredFriendListFailure(code: Int, message: String) {
+        showToast("code : $code, message : $message")
+    }
+
+    override fun onDeleteStarredFriendSuccess() {
+        Log.d("찜한친구삭제","성공")
+    }
+
+    override fun onDeleteStarredFriendFailure(code: Int, message: String) {
         showToast("code : $code, message : $message")
     }
 }

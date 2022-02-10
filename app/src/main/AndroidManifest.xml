@@ -99,7 +99,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.chat.appointment.AppointmentActivity"
+            android:name="com.example.duos.ui.main.appointment.AppointmentActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -109,7 +109,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.chat.appointment.AppointmentInfoActivity"
+            android:name="com.example.duos.ui.main.appointment.AppointmentInfoActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
 

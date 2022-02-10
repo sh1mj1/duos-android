@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.appointment.AppointmentListView
 import com.example.duos.data.entities.appointment.AppointmentResDto
-import com.example.duos.data.remote.appointment.AppointmentResponse
+import com.example.duos.data.remote.appointment.GetAppointmentListResponse
 import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
@@ -34,7 +34,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onGetAppointmentSuccess(appointmentResponse: AppointmentResponse) {
+    override fun onGetAppointmentSuccess(appointmentResponse: GetAppointmentListResponse) {
         previousPlayerData.clear()
         morePreviousPlayerDatas.clear()
 
