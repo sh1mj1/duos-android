@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.lastappointment.LastAppointmentResDto
+import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
 import com.example.duos.utils.GlideApp
 
-class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayList<LastAppointmentResDto>) :
+class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayList<AppointmentResDto>) :
     RecyclerView.Adapter<MorePreviousGameReviewRVAdapter.ViewHolder>() {
 
     interface MorePreiousPlayerItemclickListener {
-        fun onProfileCLick(lastAppointmentItem: LastAppointmentResDto)
+        fun onProfileCLick(lastAppointmentItem: AppointmentResDto)
     }
 
     private lateinit var mItemClickListener: MorePreiousPlayerItemclickListener
@@ -43,7 +43,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
 
     inner class ViewHolder(val binding: PreviousGamePlayerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(morePreviousGame: LastAppointmentResDto) {
+        fun bind(morePreviousGame: AppointmentResDto) {
             binding.previousGamePlayerNicknameTv.text = morePreviousGame.nickname
             GlideApp.with(binding.previousGamePlayerIv.context)
                 .load(morePreviousGame.profilePhotoUrl)

@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.lastappointment.LastAppointmentResDto
+import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
 import com.example.duos.utils.GlideApp
 
-class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<LastAppointmentResDto>) :
+class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<AppointmentResDto>) :
     RecyclerView.Adapter<PreviousGameReviewRVAdapter.ViewHolder>() {
 
     interface PreviousPlayerItemClickListener {
-        fun onProfileClick(lastAppointmentItem: LastAppointmentResDto)         // 해당 회원 프로필로 이동
-        fun onWriteBtnClick(lastAppointmentItem: LastAppointmentResDto)     // 리뷰 작성하기로 이동
+        fun onProfileClick(lastAppointmentItem: AppointmentResDto)         // 해당 회원 프로필로 이동
+        fun onWriteBtnClick(lastAppointmentItem: AppointmentResDto)     // 리뷰 작성하기로 이동
     }
 
     private lateinit var mItemClickListener: PreviousPlayerItemClickListener
@@ -45,7 +45,7 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<LastAp
 
     inner class ViewHolder(val binding: PreviousGamePlayerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(myLastAppointment: LastAppointmentResDto) {
+        fun bind(myLastAppointment: AppointmentResDto) {
             binding.previousGamePlayerNicknameTv.text = myLastAppointment.nickname
             GlideApp.with(binding.previousGamePlayerIv.context)
                 .load(myLastAppointment.profilePhotoUrl)
