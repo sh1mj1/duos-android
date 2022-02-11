@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
-import com.example.duos.utils.GlideApp
 
 class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<AppointmentResDto>) :
     RecyclerView.Adapter<PreviousGameReviewRVAdapter.ViewHolder>() {
@@ -47,7 +47,7 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<Appoin
         RecyclerView.ViewHolder(binding.root) {
         fun bind(myLastAppointment: AppointmentResDto) {
             binding.previousGamePlayerNicknameTv.text = myLastAppointment.nickname
-            GlideApp.with(binding.previousGamePlayerIv.context)
+            Glide.with(binding.previousGamePlayerIv.context)
                 .load(myLastAppointment.profilePhotoUrl)
                 .into(binding.previousGamePlayerIv)
             binding.previousGamePlayTimeTv.text = myLastAppointment.appointmentTime

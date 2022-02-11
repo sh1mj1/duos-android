@@ -27,7 +27,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,12 +41,9 @@ import com.example.duos.data.remote.duplicate.DuplicateNicknameService
 import com.example.duos.data.remote.editProfile.EditProfileGetService
 import com.example.duos.data.remote.editProfile.EditProfilePutResponse
 import com.example.duos.data.remote.editProfile.EditProfilePutService
-import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.editprofile.EditBtnInterface
 import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
-import com.example.duos.ui.signup.SignUpNextBtnInterface
 import com.example.duos.ui.signup.SignUpNickNameView
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
 import com.example.duos.utils.ViewModel
@@ -56,7 +52,7 @@ import java.io.File
 import java.util.regex.Pattern
 
 class EditProfileFragment : Fragment(), EditProfileListView,
-    EditProfilePutListView, SignUpNickNameView, DuplicateNicknameListView {
+    EditProfilePutListView, DuplicateNicknameListView {
     val TAG = "EditProfileFragment"
     lateinit var binding: FragmentEditProfileBinding
 
@@ -272,7 +268,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                         binding.nicknameCheckIconIv.visibility = View.VISIBLE
                         binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
                         binding.btnCheckDuplicationTv.isEnabled = false
-                        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+                        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
                         binding.btnCheckDuplicationTv.setText(ContextCompat.getColor(mContext,R.color.dark_gray_A))
                     } else{
                         binding.nickNameErrorTv.visibility = View.INVISIBLE
@@ -717,7 +713,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyEnable() {
         binding.activatingApplyBtn.background =
-            activity!!.getDrawable(R.drawable.next_btn_done_rectangular)
+            activity!!.getDrawable(R.drawable.next_btn_activate_rectangular)
         binding.activatingApplyBtn.setTextColor(R.color.white)
         binding.activatingApplyBtn.isEnabled = true
 //        binding.activatingApplyBtn.visibility = View.VISIBLE
@@ -734,22 +730,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 //        binding.inactivatingApplyBtn.visibility = View.VISIBLE
     }
 
-    override fun onSignUpNickNameSuccess() {
-        viewModel.editProfileSetNickname.value = true
-        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
-        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
-        binding.btnCheckDuplicationTv.isEnabled = false
-        binding.nicknameEtField.isEndIconVisible = false
-    }
 
-    override fun onSignUpNickNameFailure(code: Int, message: String) {
-        binding.nickNameErrorTv.visibility = View.VISIBLE
-        binding.nickNameErrorTv.text = message
-        binding.nicknameCheckIconIv.visibility = View.VISIBLE
-        binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
-        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
-        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext,R.color.dark_gray_A))
-    }
 
     override fun onGetDuplicateNicknameSuccess(duplicateNicknameResponse: DuplicateNicknameResponse) {
         viewModel.editProfileSetNickname.value = true
