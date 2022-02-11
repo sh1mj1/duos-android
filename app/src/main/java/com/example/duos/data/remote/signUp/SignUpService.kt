@@ -135,7 +135,7 @@ object SignUpService {
                 Log.d("resp", resp.toString())
 
                 when (resp.code) {
-                    1000 -> signUpRequestView.onSignUpRequestSuccess()
+                    1000 -> signUpRequestView.onSignUpRequestSuccess(resp.result)
                     else -> signUpRequestView.onSignUpRequestFailure(resp.code, resp.message)
                 }
             }

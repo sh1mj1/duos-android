@@ -92,8 +92,6 @@ class RecommendFriendListFragment() :
                         Log.d("찜하기","api 호출하기")
                         addStarredFriend(friend.partnerIdx!!)
                     }
-
-
                 }
 
                 override fun onDeleteText() {

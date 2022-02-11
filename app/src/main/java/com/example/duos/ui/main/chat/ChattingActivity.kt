@@ -31,6 +31,7 @@ import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
 import com.example.duos.ui.main.appointment.AppointmentInfoActivity
 import com.example.duos.utils.ViewModel
+import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -57,6 +58,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chatRoomName: TextView
     //var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
     lateinit var chatDB: ChatDatabase
+    lateinit var chatRoom : ChatRoom
     lateinit var viewModel: ViewModel
 
     // 리사이클러뷰에 채팅 추가
@@ -118,24 +120,23 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
         getFCMIntent()
+
+        // 약속 여부 받아오기
+        // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
+
+        AppointmentService.isAppointmentExist(this, getUserIdx()!!, chatRoom.participantIdx!!)
         Log.d("생명주기","onStart")
     }
 
     override fun initAfterBinding() {
         Log.d("생명주기","onCreate(initAfterBinding)")
 
-
-        val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
         saveCurrentChatRoomIdx(chatRoomIdx)
         chatDB = ChatDatabase.getInstance(this)!!
-        val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+        chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
-
-        // 약속 여부 받아오기
-        // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
-        AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
 
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
@@ -412,6 +413,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             applicationContext,
             R.color.dark_gray_B4
         ))
+        binding.chattingMakePlanBtn.setText(getString(R.string.chatting_show_plan))
     }
 
     fun setAppointmentBtnNotExist(){
@@ -421,5 +423,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 applicationContext,
                 R.color.primary
             ))
+        binding.chattingMakePlanBtn.setText(getString(R.string.chatting_make_plan))
     }
 }

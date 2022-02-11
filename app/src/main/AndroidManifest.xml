@@ -114,6 +114,10 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
 
+        <activity android:name="com.example.duos.ui.main.appointment.AppointmentEditActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
         <!--        마이 페이지 B 파트     -->
         <activity
             android:name=".ui.main.mypage.notion.NotionActivity"

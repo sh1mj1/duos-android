@@ -29,4 +29,9 @@ interface FriendListRetrofitInterface {
         @Query("userIdx") userIdx: Int,
         @Query("partnerIdx") partnerIdx : Int
     ): Call<DeleteStarredFriendResponse>
+
+    @DELETE("/api/partners/recommendation")
+    fun deleteRecommendedFriend(
+
+    )
 }

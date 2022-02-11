@@ -50,18 +50,24 @@ object NetworkModule {
 }
 
 
-internal class AuthInterceptor : Interceptor{
+internal class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val request = chain.request()
         val response = chain.proceed(request)
         val responseJson = response.extractResponseJson()
 
-        if (responseJson.has("code")){
-            when (responseJson["code"]){
-                2007 ->{
+        if (responseJson.has("code")) {
+            when (responseJson["code"]) {
+                2007 -> {
                     Log.d("AuthInterceptor", "재발급")
                     AccessTokenService.getAccessToken()
+
+                    Thread.sleep(1000)
+                    return response.newBuilder()
+                        .body(responseJson.toString().toResponseBody())
+                        .build()
+
                 }
             }
         }
@@ -74,9 +80,8 @@ internal class AuthInterceptor : Interceptor{
         val jsonString = this.body?.string() ?: "{}"
         return JSONObject(jsonString)
     }
+
 }
-
-
 
 
 //

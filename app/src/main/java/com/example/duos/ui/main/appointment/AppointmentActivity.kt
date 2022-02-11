@@ -43,7 +43,8 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
         binding.makePlanApplyTv.setOnClickListener {
             Thread.sleep(100)
-            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx, appointmentTime)
+            val makeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!,chatRoom.participantIdx!!,appointmentTime)
+            Log.d("약속",makeAppointment.toString())
             AppointmentService.makeAppointment(this, makeAppointment)
         }
 
@@ -105,7 +106,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         timePicker.setIs24HourView(true)
         selectedHour = timePicker.hour
         selectedMinute = timePicker.minute
-        appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+        appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
 
         calendar.setOnDateChangedListener(object: OnDateSelectedListener{
             override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
@@ -114,7 +115,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("selectedDate", selectedDate.toString())
                 val eventDecorator = EventDecorator(this@AppointmentActivity, selectedDate)
                 calendar.addDecorator(eventDecorator)
-                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
@@ -125,22 +126,17 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 selectedMinute = timePicker.minute
                 Log.d("selectedHour", selectedHour.toString())
                 Log.d("selectedMinute", selectedMinute.toString())
-                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
-
-
-
     }
 
     override fun onMakeAppointmentSuccess() {
         Log.d("약속잡기","성공")
         chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
 
-        // 채팅 화면으로 돌아가기
-        val intent = Intent(this, ChattingActivity::class.java)
-        startActivity(intent)
+        finish()
     }
 
     override fun onMakeAppointmentFailure(code: Int, message: String) {
