@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_height="wrap_content">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/partner_filter_count_constraint_layout_cl"
+        android:layout_width="0dp"
+        android:layout_height="132dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/partner_filter_custom_dialog_left_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/partner_filter_count_notice_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:text="@string/partner_filter_count_notice_text"
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/partner_filter_count_notice_text_tv">
+
+            <TextView
+                android:id="@+id/partner_filter_count_text_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/partner_filter_remain_count"
+                android:textColor="@color/grey"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/partner_filter_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textColor="@color/primary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/partner_filter_count_unit"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/partner_filter_count_line_01_iv"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:src="@drawable/friend_list_dialog_line"
+        app:layout_constraintTop_toBottomOf="@id/partner_filter_count_constraint_layout_cl" />
+
+
+    <Button
+        android:id="@+id/partner_filter_custom_dialog_left_btn"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:background="@drawable/partner_filter_dialog_btn"
+        android:fontFamily="@font/applesdgothicneoregular"
+        android:gravity="center"
+        android:text="@string/partner_filter_count_cancel"
+        android:textColor="@color/dark_gray_A"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/partner_filter_custom_dialog_right_btn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/partner_filter_count_line_02_iv"
+        android:layout_width="0.5dp"
+        android:layout_height="44dp"
+        android:src="@drawable/friend_list_dialog_line"
+        app:layout_constraintEnd_toStartOf="@id/partner_filter_custom_dialog_right_btn"
+        app:layout_constraintStart_toEndOf="@id/partner_filter_custom_dialog_left_btn"
+        app:layout_constraintTop_toTopOf="@id/partner_filter_custom_dialog_left_btn" />
+
+    <Button
+        android:id="@+id/partner_filter_custom_dialog_right_btn"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:background="@drawable/partner_filter_dialog_btn"
+        android:fontFamily="@font/applesdgothicneoregular"
+        android:gravity="center"
+        android:text="@string/partner_filter_count_apply"
+        android:textColor="@color/primary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/partner_filter_custom_dialog_left_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,6 +18,7 @@ import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.utils.getLastUpdatedDate
+import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveLastUpdatedDate
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView {
+class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView{
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
     private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
@@ -178,7 +179,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         })
 
 
-
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
@@ -207,4 +207,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
         })
     }
+
+
 }

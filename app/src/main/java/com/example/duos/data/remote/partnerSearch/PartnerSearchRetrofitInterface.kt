@@ -20,4 +20,9 @@ interface PartnerSearchRetrofitInterface {
         @Query("experienceEnd") experienceEnd : Int,
         @Query("locationIdx") locationIdx : Int
     )
+
+    @GET("/api/partners/search/count")
+    fun partnerSearchFilterCount(
+        @Query("userIdx") userIdx: Int
+    ): Call<PartnerSearchFilterCountResponse>
 }

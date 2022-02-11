@@ -6,8 +6,10 @@ import android.view.View
 import com.example.duos.data.local.RecommendedPartnerDatabase
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.duos.CustomDialog
 import com.example.duos.R
 import com.example.duos.ToggleButtonInterface
+import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
@@ -15,12 +17,13 @@ import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.utils.saveCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
 import com.example.duos.utils.ViewModel
+import com.example.duos.utils.getUserIdx
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 
 class PartnerFilterActivity :
     BaseActivity<ActivityPartnerFilterBinding>(ActivityPartnerFilterBinding::inflate),
-    ToggleButtonInterface {
+    ToggleButtonInterface, PartnerSearchFilterCountView {
 
     lateinit var viewModel: ViewModel
     override fun initAfterBinding() {
@@ -128,8 +131,11 @@ class PartnerFilterActivity :
             //요
 //            Log.d("PartnerFilterActivity:", "필터적용 후 파트너 추천 api로 받은 리스트 룸DB에 잘 저장되었는지 확인"+recommendedPartnerDB.recommendedPartnerDao().getRecommendedPartnerList())
 
-                // 파트너 찾기 - 매칭 화면으로 이동
-            startActivity(Intent(this, MainActivity::class.java))
+
+            PartnerSearchService.partnerSearchFilterCount(this, getUserIdx()!!)
+
+
+
         })
 
         binding.partnerFilterInitiateBtn.setOnClickListener {
@@ -167,15 +173,27 @@ class PartnerFilterActivity :
             }
         })
 
-//        viewModel.partnerGender.observe(this, Observer {
-//            if (it != null){
-//                viewModel.partnerLocation.observe(this, Observer {
-//                    if (it!= null){
-//                        setApplyBtnEnable()
-//                    } else setApplyBtnUnable()
-//                })
-//            } else setApplyBtnUnable()
-//        })
+    }
+
+    private fun setDialog(count : Int) {
+
+       PartnerFilterDialog.Builder(this)// 만약 액티비티에서 사용한다면 requireContext() 가 아닌 context를 사용하면 됨.
+            .setCount(count.toString()) // Dialog 텍스트 설정하기
+            .setRightButton(object : PartnerFilterDialog.PartnerFilterDialogCallback{
+                override fun onClick(dialog: PartnerFilterDialog) {
+                    // 그냥 취소하기
+                    dialog.dismiss()
+                }
+            })
+            .setLeftButton(object : PartnerFilterDialog.PartnerFilterDialogCallback{
+                override fun onClick(dialog: PartnerFilterDialog) {
+                    // 필터 적용하고 main 으로 가기
+                    // 파트너 찾기 - 매칭 화면으로 이동
+//                    startActivity(Intent(this, MainActivity::class.java))
+                    dialog.dismiss()
+                }
+            })
+            .show()
     }
 
     override fun setRadiobutton(tag: String) {
@@ -192,6 +210,19 @@ class PartnerFilterActivity :
         binding.partnerFilterApplyTv.isEnabled = false
         binding.partnerFilterApplyTv.background = getDrawable(R.color.white_smoke_E)
         binding.partnerFilterApplyTv.setTextColor(getColor(R.color.dark_gray_B0))
+    }
+
+
+
+    override fun onPartnerSearchFilterCountSuccess(searchCount: Int) {
+        if (searchCount > 0){
+            setDialog(searchCount)
+        }
+
+    }
+
+    override fun onPartnerSearchFilterCountFailure(code: Int, message: String) {
+        showToast(code.toString() + " : " + message)
     }
 
 
