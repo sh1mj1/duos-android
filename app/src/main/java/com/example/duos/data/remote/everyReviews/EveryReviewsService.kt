@@ -1,7 +1,7 @@
 package com.example.duos.data.remote.everyReviews
 
 import android.util.Log
-import com.example.duos.ui.main.mypage.myprofile.EveryReviewsItemView
+import com.example.duos.data.entities.everyReviews.EveryReviewsItemView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback

@@ -14,6 +14,7 @@ import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 
 object AppointmentService {
     val retrofit = NetworkModule.getRetrofit()

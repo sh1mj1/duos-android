@@ -50,8 +50,17 @@ internal class AuthInterceptor : Interceptor{
                     Log.d("AuthInterceptor", "재발급")
                     AccessTokenService.getAccessToken()
                 }
-            }
-        }
+                // 지훈님코드
+//        when (response.code) {
+//            200 or 201 or 202 ->{
+//                Log.d("AuthInterceptor", "재발급 불필요")
+//                Log.d("AuthInterceptor", response.code.toString())
+//            }
+//            else ->{
+//                Log.d("AuthInterceptor", "재발급")
+//                AccessTokenService.getAccessToken()
+//            }
+//        }
         return response.newBuilder()
             .body(responseJson.toString().toResponseBody())
             .build()

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
 import com.google.gson.Gson
 
+// 내 프로필 , 모든 리뷰 보기, 지난 약속 보기, 파트너 서치, 채팅방에서 넘어올 수 있어
 class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate), PartnerProfileListView {
     val TAG: String = "PlayerFragment"
 
@@ -40,18 +42,19 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     override fun initAfterBinding() {
         Log.d(TAG, "Start_PlayerFragment")
 
-        thisIdx = requireArguments().getInt("thisIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
+        partnerUserIdx = requireArguments().getInt("partnerUserIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
 
-        partnerUserIdx = requireArguments().getInt("partnerUserIdx")    /* From PartnerProfile? partnerUserIdx */
-        Log.d(TAG, "MyProfile OR PlayerProfiel -> Here : ${thisIdx.toString()}     PartnerSearch -> Here : ${partnerUserIdx.toString()}")
+//        partnerUserIdx = requireArguments().getInt("partnerUserIdx")    /* From PartnerProfile? partnerUserIdx */
+//        Log.d(TAG, "MyProfile OR PlayerProfiel -> Here : ${thisIdx.toString()}     PartnerSearch -> Here : ${partnerUserIdx.toString()}")
 
-        if (thisIdx == 0) {
-            thisIdx = partnerUserIdx
-        }      /* 만약 From MyProfile Or PlayerProfile 이 아니면 From PartnerProfile 임
-                                                            그렇다면 thisIdx ->  partnerIdx 아래 thisIdx 넣기 */
+//        if (thisIdx == 0) {
+//            thisIdx = partnerUserIdx
+//        }
+        /* 만약 From MyProfile Or PlayerProfile 이 아니면 From PartnerProfile 임
+                  그렇다면 thisIdx ->  partnerIdx 아래 thisIdx 넣기 */
         //TODO : userIdx : RoomDB에 저장된 Idx 값, partnerUserIdx : 이전 Frag에서 Bundle로 받기
-        PartnerProfileService.partnerProfileInfo(this, 1, thisIdx)
 
+        PartnerProfileService.partnerProfileInfo(this, 1, partnerUserIdx)
         Log.d(TAG, "Create Retrofit")
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
@@ -77,7 +80,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onGetProfileInfoFailure(code: Int, message: String) {
-        TODO("Not yet implemented")
+        Toast.makeText(context, "네트워크 불안정",Toast.LENGTH_LONG).show()
+        Log.d(TAG, "CODE : $code , MESSAGE : $message ")
     }
 
     private fun initRecyclerView(): PartnerProfileReviewRVAdapter {
@@ -130,14 +134,14 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
     @SuppressLint("SetTextI18n")
     private fun setPartnerProfileInfo(partnerResDto: PartnerResDto) {
-        binding.playerNicknameTv.text = partnerResDto.partnerInfoDto.nickname
-        binding.playerGenerationTv.text = partnerResDto.partnerInfoDto.age
-        profileGenderInt = partnerResDto.partnerInfoDto.gender
-        if (profileGenderInt == 0) profileGenderString = "남" else profileGenderString = "여"
-        binding.playerSexTv.text = profileGenderString
+        val profileGenderStr = toGenderStr(partnerResDto.partnerInfoDto.gender)
         val locationName = partnerResDto.partnerInfoDto.locationName
         val locationCategory = partnerResDto.partnerInfoDto.locationCategory
         val location = locationCategory + locationName
+
+        binding.playerNicknameTv.text = partnerResDto.partnerInfoDto.nickname
+        binding.playerGenerationTv.text = partnerResDto.partnerInfoDto.age
+        binding.playerSexTv.text = profileGenderStr
         binding.profileLocationTv.text = location
         binding.partnerProfileGradeRb.rating = partnerResDto.partnerInfoDto.rating!!
         binding.partnerProfileGradeNumTv.text = partnerResDto.partnerInfoDto.rating.toString()
@@ -148,7 +152,6 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         binding.playerIntroductionTv.text = partnerResDto.partnerInfoDto.introduction
         binding.playerCareerPlayedNumTv.text = partnerResDto.partnerInfoDto.gameCount.toString()
         binding.playerPlayingReviewCountTv.text = "후기(${partnerResDto.partnerInfoDto.reviewCount.toString()})"
-        //binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
 
         isStarred = partnerResDto.partnerInfoDto.starred
         if (isStarred) {

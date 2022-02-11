@@ -20,9 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    바꿔야댐-->
-    <!--    46-->
-    <!--    24-->
+
     <Switch
         android:id="@+id/notification_setting_sw"
         android:layout_width="46dp"
@@ -49,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@id/notification_setting_sw" />
 
     <TextView
-        android:id="@+id/btn_login_logout_tv"
+        android:id="@+id/btn_logout_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -67,8 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
-        app:layout_constraintStart_toStartOf="@+id/btn_login_logout_tv"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_logout_tv">
+        app:layout_constraintStart_toStartOf="@+id/btn_logout_tv"
+        app:layout_constraintTop_toBottomOf="@+id/btn_logout_tv">
 
         <TextView
             android:id="@+id/btn_delete_account_tv"

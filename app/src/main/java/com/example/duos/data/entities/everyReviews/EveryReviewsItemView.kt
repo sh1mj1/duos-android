@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile
+package com.example.duos.data.entities.everyReviews
 
 import com.example.duos.data.remote.everyReviews.EveryReviewsResponse
 

@@ -1,4 +1,4 @@
-package com.example.duos.data.entities
+package com.example.duos.data.entities.everyReviews
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime

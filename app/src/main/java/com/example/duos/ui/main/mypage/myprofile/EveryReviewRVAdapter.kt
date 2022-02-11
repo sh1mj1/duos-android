@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.duos.data.entities.EveryReviewsItem
+import com.example.duos.data.entities.everyReviews.EveryReviewsItem
 import com.example.duos.databinding.MyPlayingReviewItemBinding
 
 // 어댑터의 parameter : 데이터리스트. 이 어댑터의 ViewHolder 상속받기
