@@ -2,6 +2,7 @@ package com.example.duos.utils
 
 import android.util.Log
 import android.util.Log.d
+import android.widget.Toast
 import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.BASE_URL
 import com.example.duos.config.XAccessTokenInterceptor
@@ -18,6 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
+import kotlin.coroutines.coroutineContext
 
 
 object NetworkModule {
@@ -27,7 +29,7 @@ object NetworkModule {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .writeTimeout(30000, TimeUnit.MILLISECONDS)
-            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
+//            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .addInterceptor(AuthInterceptor())
             .build()
 
@@ -53,27 +55,49 @@ object NetworkModule {
 internal class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        val request = chain.request()
-        val response = chain.proceed(request)
-        val responseJson = response.extractResponseJson()
+        var request = chain.request()
+        var builder = request.newBuilder()
+
+        val token: String? = getAccessToken() //save token of this request for future
+        setAuthHeader(builder, token) //write current token to request
+
+        request = builder.build(); //overwrite old request
+        var response = chain.proceed(request)
+        var responseJson = response.extractResponseJson()
 
         if (responseJson.has("code")) {
             when (responseJson["code"]) {
                 2007 -> {
-                    Log.d("AuthInterceptor", "재발급")
-                    AccessTokenService.getAccessToken()
-
-                    Thread.sleep(1000)
-                    return response.newBuilder()
-                        .body(responseJson.toString().toResponseBody())
-                        .build()
-
+                    synchronized(this){
+                        Log.d("AuthInterceptor", "재발급")
+                        if (getRefreshToken()){
+                            setAuthHeader(builder, getAccessToken()); //set auth token to updated
+                            request = builder.build();
+                            return chain.proceed(request); //repeat request with new token
+                        }
+                        else{
+                            // 로그아웃 api 호출
+                        }
+                    }
                 }
             }
         }
-        return response.newBuilder()
-            .body(responseJson.toString().toResponseBody())
-            .build()
+        return chain.proceed(request)
+    }
+
+
+    private fun setAuthHeader(builder: Request.Builder, token: String?) {
+        if (token != null) //Add Auth token to each request if authorized
+            builder.header(ApplicationClass.X_ACCESS_TOKEN, token)
+    }
+
+    fun getRefreshToken() : Boolean{
+        val code = AccessTokenService.getAccessToken()
+        if (code != null ){
+            if (code == 1000)
+                return true
+        }
+        return false
     }
 
     fun Response.extractResponseJson(): JSONObject {

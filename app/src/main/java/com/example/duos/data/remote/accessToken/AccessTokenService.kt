@@ -2,6 +2,7 @@ package com.example.duos.data.remote.accessToken
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.example.duos.ApplicationClass
 import com.example.duos.ui.main.MainActivity
@@ -16,8 +17,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object AccessTokenService {
-    fun getAccessToken() {
+    fun getAccessToken() : Int? {
         val retrofit = ApplicationClass.retrofit
+        var code : Int? = null
         val getAccessTokenService = retrofit.create(AccessTokenRetrofitInterface::class.java)
 
         getAccessTokenService.getAccessToken(com.example.duos.utils.getAccessToken()!!, getRefreshToken()!!, getUserIdx()!!).enqueue(object :
@@ -29,9 +31,12 @@ object AccessTokenService {
 
                 val resp = response.body()!!
                 Log.d("resp", resp.toString())
+                code = resp.code
 
                 when (resp.code) {
-                    1000 -> saveJwt(resp.result.jwtAccessToken)
+                    1000 -> {
+                        saveJwt(resp.result.jwtAccessToken)
+                    }
                     else -> {
                         val intent = Intent(ApplicationClass.getInstance().context(), SplashActivity::class.java)
                         intent.flags =
@@ -45,5 +50,6 @@ object AccessTokenService {
                 Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
             }
         })
+        return code
     }
 }
