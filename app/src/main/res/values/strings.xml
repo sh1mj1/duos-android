@@ -321,7 +321,7 @@
     <string name="game_review_complete">완료</string>
     <string name="previous_game_last_promise">지난 약속</string>
     <string name="game_review_hint">간단한 경기 후기도 작성해주세요. 당신의 후기는 이 서비스를 이용하는 모두에게 귀중한 정보가 됩니다. 다만 인신공격을 피해주세요. 우리 모두 누군가의 귀한 딸과 아들입니다. :)\n </string>
-
+    <string name="appointment_review_content_notice">내용을 입력해주세요.</string>
 
     <!--    설정-->
     <string name="setup_setup">설정</string>

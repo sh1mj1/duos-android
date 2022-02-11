@@ -5,3 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class PostReviewResDto(
     @SerializedName("reviewIdx") val reviewIdx: Int
 )
+
+/*
+*
+* */
+

@@ -10,7 +10,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface AppointmentRetrofitInterface {
+interface LastAppointmentRetrofitInterface {
 
     @GET(APPOINTMENT_API)
     fun getAppointmentList(@Query("userIdx") userIdx: Int): Call<AppointmentResponse>
