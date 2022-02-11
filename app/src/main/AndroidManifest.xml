@@ -21,6 +21,7 @@
         android:roundIcon="@mipmap/ic_duos_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DUOS"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
         <!--        안드로이드 8.0 이상 푸시 처리 추가 코드-->
@@ -99,7 +100,7 @@
         </activity>
 
         <activity
-            android:name=".ui.main.chat.appointment.AppointmentActivity"
+            android:name="com.example.duos.ui.main.appointment.AppointmentActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -109,7 +110,11 @@
         </activity>
 
         <activity
-            android:name=".ui.main.chat.appointment.AppointmentInfoActivity"
+            android:name="com.example.duos.ui.main.appointment.AppointmentInfoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.example.duos.ui.main.appointment.AppointmentEditActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
 

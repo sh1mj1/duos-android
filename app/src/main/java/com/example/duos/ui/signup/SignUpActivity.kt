@@ -15,6 +15,7 @@ import com.example.duos.ToggleButtonInterface
 import com.example.duos.data.entities.User
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.ui.login.LoginActivity
+import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.ViewModel
 
 
@@ -106,7 +107,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
 
                 val intent = Intent(
                     findFragmentById(R.id.signup_fragment_container_fc)?.requireContext(),
-                    LoginActivity::class.java
+                    MainActivity::class.java
                 )
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 findFragmentById(R.id.signup_fragment_container_fc)?.requireContext()

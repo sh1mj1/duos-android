@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.duos.R
 import com.example.duos.data.entities.RecommendedFriend
 import com.example.duos.databinding.ItemFragmentRecommendFriendListBinding
 
-class RecommendFriendListRVAdapter (private val friendlist : ArrayList<RecommendedFriend>) : RecyclerView.Adapter<RecommendFriendListRVAdapter.ViewHolder>() {
+class RecommendFriendListRVAdapter(private val friendlist: ArrayList<RecommendedFriend>) :
+    RecyclerView.Adapter<RecommendFriendListRVAdapter.ViewHolder>() {
 
     // 클릭 인터페이스 정의
-    interface MyItemClickListener{
-        fun onDeleteFriend(friendId : String)
-        fun onAddFriend(friendId: String)
+    interface MyItemClickListener {
+        fun onDeleteFriend(friendId: Int)
+        fun onAddFriend(friend: RecommendedFriend)
         fun onDeleteText()
     }
 
@@ -21,13 +23,18 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
     private lateinit var mItemClickListener: MyItemClickListener
 
 
-    fun setMyItemClickListener(itemClickListener: MyItemClickListener){
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
         mItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecommendFriendListRVAdapter.ViewHolder {
-        val binding: ItemFragmentRecommendFriendListBinding = ItemFragmentRecommendFriendListBinding.inflate(
-            LayoutInflater.from(viewGroup.context), viewGroup, false)
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): RecommendFriendListRVAdapter.ViewHolder {
+        val binding: ItemFragmentRecommendFriendListBinding =
+            ItemFragmentRecommendFriendListBinding.inflate(
+                LayoutInflater.from(viewGroup.context), viewGroup, false
+            )
         return ViewHolder(binding)
     }
 
@@ -35,9 +42,18 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
         holder.bind(friendlist[position], position)
 
         // 친구 삭제 버튼 클릭시 삭제
-        holder.binding.recommendFriendListTodayDeleteBtn.setOnClickListener {
-            mItemClickListener.onDeleteFriend(friendlist[position].recommendedFriendNickname)
+        holder.binding.recommendFriendListDeleteBtn.setOnClickListener {
+            mItemClickListener.onDeleteFriend(friendlist[position].partnerIdx!!)
             removeFriend(position)
+        }
+
+        // 친구 찜하기
+        holder.binding.recommendFriendListLikeIv.setOnClickListener {
+            mItemClickListener.onAddFriend(friendlist[position])
+            if (friendlist[position].recommendedFriendIsStarred)
+                holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_unlike)
+            else
+                holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_like)
         }
 
     }
@@ -46,36 +62,34 @@ class RecommendFriendListRVAdapter (private val friendlist : ArrayList<Recommend
         friendlist.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, friendlist.size)
-        if (friendlist.size == 0){
+        if (friendlist.size == 0) {
             mItemClickListener.onDeleteText()
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(friends: ArrayList<RecommendedFriend>) {
-        this.friendlist.clear()
-        this.friendlist.addAll(friends)
-
-        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = friendlist.size
 
 
-
     // 뷰홀더
-    inner class ViewHolder(val binding: ItemFragmentRecommendFriendListBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(friend : RecommendedFriend, position: Int){
-            binding.recommendFriendListTodayIdTv.text = friend.recommendedFriendNickname
-            binding.recommendFriendListTodayAgeTv.text = friend.recommendedFriendAge.toString()
-            binding.recommendFriendListTodaySexTv.text =
-                when(friend.recommendedFriendGender) {
-                    1-> "남자"
+    inner class ViewHolder(val binding: ItemFragmentRecommendFriendListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(friend: RecommendedFriend, position: Int) {
+            binding.recommendFriendListIdTv.text = friend.recommendedFriendNickname
+            binding.recommendFriendListAgeTv.text = friend.recommendedFriendAge.toString()
+            binding.recommendFriendListSexTv.text =
+                when (friend.recommendedFriendGender) {
+                    1 -> "남자"
                     else -> "여자"
                 }
-            Glide.with(binding.recommendFriendListTodayProfileImageIv.context)
+            binding.recommendFriendListLikeIv.setImageResource(
+                when (friend.recommendedFriendIsStarred) {
+                    true -> R.drawable.ic_like
+                    false -> R.drawable.ic_unlike
+                }
+            )
+            Glide.with(binding.recommendFriendListProfileImageIv.context)
                 .load(friend.recommendedFriendImgUrl)
-                .into(binding.recommendFriendListTodayProfileImageIv)
+                .into(binding.recommendFriendListProfileImageIv)
         }
     }
 }

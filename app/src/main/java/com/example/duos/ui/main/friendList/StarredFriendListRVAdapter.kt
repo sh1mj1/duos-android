@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.friendList
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
 
     // 클릭 인터페이스 정의
     interface MyItemClickListener{
-        fun onDeleteFriend(friendId : String)
+        fun onDeleteFriend(frieIdx : Int)
         fun onGetFriendCount()
     }
 
@@ -31,12 +32,13 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d("friendList",friendlist.toString())
         holder.bind(friendlist[position], position)
         mItemClickListener.onGetFriendCount()
 
         // 친구 삭제 버튼 클릭시 삭제
         holder.binding.myFriendListDeleteBtn.setOnClickListener {
-            mItemClickListener.onDeleteFriend(friendlist[position].starredFriendNickname)
+            mItemClickListener.onDeleteFriend(friendlist[position].starredFrienedIdx!!)
             removeFriend(position)
             mItemClickListener.onGetFriendCount()
         }
@@ -49,13 +51,6 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
         notifyItemRangeChanged(position, friendlist.size)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addFriend(myFriends: ArrayList<StarredFriend>) {
-        this.friendlist.clear()
-        this.friendlist.addAll(myFriends)
-
-        notifyDataSetChanged()
-    }
 
     override fun getItemCount(): Int = friendlist.size
     

@@ -85,7 +85,7 @@
     </string-array>
 
     <!-- splash -->
-    <string name="splash_button_start">시작하기</string>
+    <string name="splash_button_start">가입하기</string>
     <string name="splash_duos_logo">DUOS</string>
     <string name="splash_goto_login_text_01">이미 계정이 있나요?&#160;</string>
     <string name="splash_goto_login_text_02">로그인</string>
@@ -187,6 +187,7 @@
     <string name="chatting_partner_id">djeikd0620</string>
     <string name="chatting_title_right_brck">)</string>
     <string name="chatting_make_plan">약속잡기</string>
+    <string name="chatting_show_plan">약속</string>
     <string name="chatting_partner_message">안녕하세요~ 반갑습니다!!</string>
     <string name="chatting_my_message">안녕하세요!ㅎㅎ</string>
     <string name="chatting_message_time">지금</string>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:id="@+id/make_plan_back_iv"
+        android:id="@+id/edit_plan_back_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="5dp"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/make_plan_title_tv"
+        android:id="@+id/edit_plan_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
@@ -22,9 +22,9 @@
         android:text="@string/edit_plan_title"
         android:textSize="19sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/make_plan_back_iv"
-        app:layout_constraintStart_toEndOf="@id/make_plan_back_iv"
-        app:layout_constraintTop_toTopOf="@id/make_plan_back_iv"/>
+        app:layout_constraintBottom_toBottomOf="@id/edit_plan_back_iv"
+        app:layout_constraintStart_toEndOf="@id/edit_plan_back_iv"
+        app:layout_constraintTop_toTopOf="@id/edit_plan_back_iv"/>
 
     <View
         android:id="@+id/edit_plan_top_divider"
@@ -32,10 +32,10 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_plan_back_iv"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_plan_back_iv"/>
 
     <TextView
-        android:id="@+id/make_plan_apply_tv"
+        android:id="@+id/edit_plan_apply_tv"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/primary"

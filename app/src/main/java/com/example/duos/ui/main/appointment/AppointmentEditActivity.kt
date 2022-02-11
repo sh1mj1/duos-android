@@ -1,16 +1,15 @@
-package com.example.duos.ui.main.chat.appointment
+package com.example.duos.ui.main.appointment
 
-import android.content.Intent
 import android.util.Log
 import android.widget.TimePicker
 import com.example.duos.R
+import com.example.duos.data.entities.EditAppointment
 import com.example.duos.data.entities.MakeAppointment
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
-import com.example.duos.data.remote.chat.chat.appointment.AppointmentService
-import com.example.duos.databinding.ActivityAppointmentBinding
+import com.example.duos.data.remote.appointment.AppointmentService
+import com.example.duos.databinding.ActivityAppointmentEditBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.calendarDecorators.EventDecorator
 import com.example.duos.ui.main.chat.calendarDecorators.MinMaxDecorator
 import com.example.duos.ui.main.chat.calendarDecorators.TodayDecorator
@@ -20,15 +19,13 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
-import java.util.*
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
-import kotlinx.coroutines.selects.select
-import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 
-class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppointmentBinding::inflate), MakeAppointmentView {
+class AppointmentEditActivity: BaseActivity<ActivityAppointmentEditBinding>(ActivityAppointmentEditBinding::inflate),
+EditAppointmentView{
 
     lateinit var chatDB: ChatDatabase
     lateinit var viewModel: ViewModel
@@ -44,17 +41,18 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
         initCalendar()
 
-        binding.makePlanApplyTv.setOnClickListener {
+        binding.editPlanApplyTv.setOnClickListener {
             Thread.sleep(100)
-            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx, appointmentTime)
-            AppointmentService.makeAppointment(this, makeAppointment)
+            val editAppointment = EditAppointment(chatRoomIdx,
+                getUserIdx()!!,chatRoom.participantIdx!! ,appointmentTime)
+            Log.d("약속수정",editAppointment.toString())
+            AppointmentService.editAppointment(this, chatRoom.appointmentIdx!!, editAppointment)
         }
 
-        binding.makePlanBackIv.setOnClickListener {
+        binding.editPlanBackIv.setOnClickListener {
             finish()
         }
     }
-
 
     fun initCalendar(){
         var selectedDate: CalendarDay = CalendarDay.today()
@@ -66,7 +64,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         var selectedMinute: Int
 
         lateinit var calendar: MaterialCalendarView
-        calendar = binding.makePlanCalendar
+        calendar = binding.editPlanCalendar
         calendar.setSelectedDate(CalendarDay.today())
 
 
@@ -80,7 +78,8 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         endTimeCalendar.set(Calendar.MONTH, currentMonth+3)     // 이번 달부터 3달 후까지만 보여지도록 함
 
         val stCalendarDay = CalendarDay.from(currentYear, currentMonth, currentDate)
-        val enCalendarDay = CalendarDay.from(endTimeCalendar.get(Calendar.YEAR), endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE))
+        val enCalendarDay = CalendarDay.from(endTimeCalendar.get(Calendar.YEAR), endTimeCalendar.get(
+            Calendar.MONTH), endTimeCalendar.get(Calendar.DATE))
 
         //val sundayDecorator = SundayDecorator()
         //val saturdayDecorator = SaturdayDecorator()
@@ -99,25 +98,27 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
         calendar.state().edit()
             .setMinimumDate(CalendarDay.from(currentYear, currentMonth, 1))
-            .setMaximumDate(CalendarDay.from(currentYear, currentMonth+3, endTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)))
+            .setMaximumDate(
+                CalendarDay.from(currentYear, currentMonth+3, endTimeCalendar.getActualMaximum(
+                    Calendar.DAY_OF_MONTH)))
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
 
         selectedDate = calendar.selectedDate
-        val timePicker = binding.makePlanTimePicker
+        val timePicker = binding.editPlanTimePicker
         timePicker.setIs24HourView(true)
         selectedHour = timePicker.hour
         selectedMinute = timePicker.minute
-        appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+        appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
 
-        calendar.setOnDateChangedListener(object: OnDateSelectedListener{
+        calendar.setOnDateChangedListener(object: OnDateSelectedListener {
             override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
                 calendar.removeDecorator(todayDecorator)    // 이전에 클릭했던 날짜의 decorator 삭제
                 selectedDate = calendar.selectedDate
                 Log.d("selectedDate", selectedDate.toString())
-                val eventDecorator = EventDecorator(this@AppointmentActivity, selectedDate)
+                val eventDecorator = EventDecorator(this@AppointmentEditActivity, selectedDate)
                 calendar.addDecorator(eventDecorator)
-                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
@@ -128,25 +129,17 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 selectedMinute = timePicker.minute
                 Log.d("selectedHour", selectedHour.toString())
                 Log.d("selectedMinute", selectedMinute.toString())
-                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
+                appointmentTime = LocalDateTime.of(selectedDate.year,selectedDate.month+1, selectedDate.day, selectedHour, selectedMinute).toString() + ":00"
                 Log.d("약속시간",appointmentTime)
             }
         })
-
-
-
     }
 
-    override fun onMakeAppointmentSuccess() {
-        Log.d("약속잡기","성공")
-        chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
-
-        // 채팅 화면으로 돌아가기
-        val intent = Intent(this, ChattingActivity::class.java)
-        startActivity(intent)
+    override fun onEditAppointmentSuccess() {
+        finish()
     }
 
-    override fun onMakeAppointmentFailure(code: Int, message: String) {
-        showToast(message)
+    override fun onEditAppointmentFailure(code: Int, message: String) {
+        showToast(code.toString() + " : " + message)
     }
 }
