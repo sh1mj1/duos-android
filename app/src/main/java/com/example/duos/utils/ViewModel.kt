@@ -48,13 +48,21 @@ class ViewModel : ViewModel() {
 
     // editProfile
 
+    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var editProfileNickname = MutableLiveData<String>()
+
     var editProfileLocationCate = MutableLiveData<Int?>()
     var editProfileLocation = MutableLiveData<Int?>()
     var editProfileLocationCateName = MutableLiveData<String?>()
     var editProfileLocationName = MutableLiveData<String?>()
     var editProfileLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
 
+    var editProfileIntroduce = MutableLiveData<String>()
     var editProfileExperience = MutableLiveData<Int?>()
+
+
+
 
     // Appointment
     var isAppointmentExist : MutableLiveData<Boolean> = MutableLiveData(false)

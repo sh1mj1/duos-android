@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.mypage.myprofile.editprofile.EditProfileActivity">
+
+    <!--상단 나의 프로필 바-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar_myProfile_cl"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/my_profile_fragment_sv">
+
+        <ImageView
+            android:id="@+id/top_left_arrow_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="12dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_btn_close_iv"
+            app:layout_constraintEnd_toStartOf="@+id/top_myProfile_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/top_myProfile_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="23dp"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:gravity="center"
+            android:letterSpacing="0.05"
+            android:text="나의 프로필 수정"
+            android:textAlignment="center"
+            android:textColor="@color/nero"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/top_left_arrow_iv"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/edit_myProfile_tv"
+            android:layout_width="95dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="109dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="19dp"
+            android:background="@drawable/ic_rectangle_stroke2_inside1_opac40"
+            android:fontFamily="@font/applesdgothicneoregular"
+            android:gravity="center"
+            android:letterSpacing="0.05"
+            android:text="수정하기"
+            android:textAlignment="center"
+            android:textColor="@color/dark_gray_A"
+            android:textSize="13sp"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/top_myProfile_divider"
+            style="@style/Light_gray_Divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_bar_myProfile_cl" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    FragmentContainer 부분-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_profile_fragment_sv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_bottom_chat_btn_cl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar_myProfile_cl">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/edit_profile_into_fragment_container_fc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.3dp"
+                app:navGraph="@navigation/edit_profile_nav" />
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        하단 버튼 찜한 친구, 좋아요 채팅하기 버튼-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_bottom_chat_btn_cl"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/player_is_starred_iv"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_islike_false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/partner_profile_chatting_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/partner_profile_chatting_btn"
+            android:layout_width="280dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/primary"
+            android:gravity="center"
+            android:text="@string/partner_profile_chatting"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/player_is_starred_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

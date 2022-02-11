@@ -25,42 +25,48 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.ToggleButtonInterface
-import com.example.duos.data.entities.User
-import com.example.duos.data.entities.editProfile.EditProfileListView
-import com.example.duos.data.entities.editProfile.EditProfilePutListView
-import com.example.duos.data.entities.editProfile.EditProfilePutReqDto
-import com.example.duos.data.entities.editProfile.GetEditProfileResDto
-import com.example.duos.data.local.BeforeProfileUpdate
+import com.example.duos.data.entities.duplicate.DuplicateNicknameListView
+import com.example.duos.data.entities.editProfile.*
 import com.example.duos.data.local.UserDatabase
+import com.example.duos.data.remote.duplicate.DuplicateNicknameResponse
+import com.example.duos.data.remote.duplicate.DuplicateNicknameService
 import com.example.duos.data.remote.editProfile.EditProfileGetService
 import com.example.duos.data.remote.editProfile.EditProfilePutResponse
 import com.example.duos.data.remote.editProfile.EditProfilePutService
+import com.example.duos.data.remote.signUp.SignUpService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.editprofile.EditBtnInterface
+import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
+import com.example.duos.ui.signup.SignUpNextBtnInterface
+import com.example.duos.ui.signup.SignUpNickNameView
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import java.io.File
+import java.util.regex.Pattern
 
 class EditProfileFragment : Fragment(), EditProfileListView,
-    EditProfilePutListView, ToggleButtonInterface {
+    EditProfilePutListView, SignUpNickNameView, DuplicateNicknameListView {
     val TAG = "EditProfileFragment"
     lateinit var binding: FragmentEditProfileBinding
 
-    lateinit var mContext: MyProfileActivity
+    lateinit var mContext: EditProfileActivity
     lateinit var viewModel: ViewModel
     var savedState: Bundle? = null
-
     val userIdx = getUserIdx()
     var locationText: TextView? = null
+    var checkStore : Boolean = false
+
 
     // 카메라 접근 권한
     lateinit var contentUri: Uri
@@ -77,6 +83,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     val multiplePermissionsCode1 = 200
 
     // 멀티퍼미션 갤러리(앨범)2
+    @RequiresApi(Build.VERSION_CODES.Q)
     val permission_list = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_MEDIA_LOCATION
@@ -85,7 +92,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MyProfileActivity) {
+        if (context is EditProfileActivity) {
             mContext = context
         }
     }
@@ -95,33 +102,26 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
-
-        /*TODO : 아래 왼쪽 userIdx에 내 userIdx 넣기 (Room)*/
-        EditProfileGetService.getEditProfile(this, userIdx!!)
-
-        Log.d(TAG, "Start_EditProfileFragment")
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         return binding.root
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        /*TODO : 아래 왼쪽 userIdx에 내 userIdx 넣기 (Room)*/
+        EditProfileGetService.getEditProfile(this, userIdx!!)
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(userIdx!!) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        val myProfileDB = db!!.userDao().getUser(userIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
 
-        Log.d(TAG, myProfileDB.toString())
+        Log.d(TAG, " 원래 내 DB 데이터 $myProfileDB.toString()")
 
-        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
-
-        binding.nicknameTextField.hint = myProfileDB.nickName
-        binding.locationInfoTv.hint = toLocationStr(myProfileDB.location!!)
-        binding.contentIntroductionEt.hint = myProfileDB.introduce
-
+        binding.btnClearIntroductionTv.setOnClickListener {
+            binding.contentIntroductionEt.text.clear()
+        }
 
         // 사진 관련
         val file_path = requireActivity().getExternalFilesDir(null).toString()
@@ -261,18 +261,56 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
         }
 
+        // 닉네임 관련
+        this.viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+            val pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"
+            if(!checkStore){
+                if(it!!.isNotEmpty()){
+                    binding.nicknameEtField.isEndIconVisible = true
+                    if(!Pattern.matches(pattern, it.toString()) or (it.length < 2)){
+                        binding.nickNameErrorTv.visibility = View.VISIBLE
+                        binding.nicknameCheckIconIv.visibility = View.VISIBLE
+                        binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+                        binding.btnCheckDuplicationTv.isEnabled = false
+                        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+                        binding.btnCheckDuplicationTv.setText(ContextCompat.getColor(mContext,R.color.dark_gray_A))
+                    } else{
+                        binding.nickNameErrorTv.visibility = View.INVISIBLE
+                        binding.nicknameCheckIconIv.visibility = View.VISIBLE
+                        binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
+                        binding.btnCheckDuplicationTv.isEnabled = true
+                        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+                        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext,R.color.primary))
+                    }
+                }
+            }
+            checkStore = false
+        })
+
+        binding.btnCheckDuplicationTv.setOnClickListener {
+            DuplicateNicknameService.getDuplicateNickname(this, userIdx,binding.nicknameEt.text.toString())
+        }
+
         locationText = binding.locationInfoTv
 
         if (savedInstanceState != null && savedState == null) {
             savedState = savedInstanceState.getBundle("savedState")
         }
         if (savedInstanceState != null) {
-            Log.d(TAG, "저장")
+            // TODO : 저장
+            checkStore= true
+            binding.btnCheckDuplicationTv.isEnabled = false
+            binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+            binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
+
         } else {
-            Log.d(TAG, "저장X")
-            viewModel.editProfileLocationName.value = ""
+            // TODO : 저장 X
+            viewModel.editProfileNickname.value = myProfileDB.nickName
             viewModel.editProfileLocationDialogShowing.value = false
             viewModel.editProfileExperience.value = myProfileDB.experience!!.toInt()
+            viewModel.editProfileLocation.value = myProfileDB.location
+            viewModel.editProfileSetNickname.value = false
+
         }
         savedState = null
 
@@ -292,6 +330,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 if (it) {
                     binding.locationInfoTv.text =
                         viewModel.editProfileLocationCateName.value + " " + viewModel.editProfileLocationName.value
+                    Log.d(
+                        TAG, "${viewModel.editProfileLocationCateName.value} " +
+                                "${viewModel.editProfileLocationName.value}"
+                    )
+
                 }
             })
 
@@ -313,16 +356,44 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             btn.tag = i.toString()
         }
 
-
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         binding.viewmodel = viewModel
 
         /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
 
+        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+            if (it == myProfileDB.nickName) {
+                viewModel.editProfileLocation.observe(viewLifecycleOwner, { it2 ->
+                    if (it2 != myProfileDB.location) {
+                        onApplyEnable()
+                    }
+                })
+                viewModel.editProfileIntroduce.observe(viewLifecycleOwner, { it3 ->
+                    if (it3 != myProfileDB.introduce && it3 != "" ) {
+                        onApplyEnable()
+                    }
+                })
+                viewModel.editProfileExperience.observe(viewLifecycleOwner, { it4 ->
+                    if (it4 != myProfileDB.experience) {
+                        onApplyEnable()
+                    }
+                })
+            }
+        })
+
+
+        // TODO : 닉네임 중복 확인이 인증이 되면!
+        this.viewModel.editProfileSetNickname.observe(viewLifecycleOwner,{
+            if(it){
+                onApplyEnable()
+            }
+        })
+
+
 
         binding.activatingApplyBtn.setOnClickListener {
             val phoneNumber = myProfileDB.phoneNumber.toString()
-            val nickname = binding.nicknameTextField.text.toString()    ////
+            val nickname = binding.nicknameEt.text.toString()    ////
             val birth = myProfileDB.birth.toString()
             val gender = myProfileDB.gender!!.toInt()
             val locationIdx = viewModel.editProfileLocation.value!!.toInt()     ////
@@ -330,28 +401,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             val profileImg = viewModel.profileImg.value
             val introduction = binding.contentIntroductionEt.text.toString()            ////
 
-//            val updatedUserProfile = BeforeProfileUpdate(
-//                phoneNumber,
-//                nickname,
-//                gender,
-//                birth,
-//                locationIdx,
-//                experienceIdx,
-//                profileImg,
-//                introduction,
-//                userIdx
-//            )
 
             EditProfilePutService.putEditProfile(
-                this,
-                phoneNumber,
-                nickname,
-                birth,
-                gender,
-                locationIdx,
-                experienceIdx,
-                introduction,
-                userIdx!!
+                this, phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction, userIdx
             )
 
 
@@ -479,6 +531,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     }
 
+    @SuppressLint("Recycle")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -550,20 +603,31 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
 
     override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(userIdx!!) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+
         binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
         binding.contentIntroductionEt.hint = getEditProfileResDto.existingProfileInfo.introduction
         Glide.with(binding.myProfileImgIv.context)
             .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
             .into(binding.myProfileImgIv)
-
+        binding.locationInfoTv.hint = toLocationStr(myProfileDB.location!!)
         binding.editProfileTableLayoutTl.checkedRadioButtonId =
-            getEditProfileResDto.existingProfileInfo.experienceIdx!!
+            getEditProfileResDto.existingProfileInfo.experienceIdx
 
     }
 
     override fun onGetEditItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
-        Toast.makeText(context, "$TAG , onGetEditItemFailure", Toast.LENGTH_LONG)
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(userIdx!!) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+
+        binding.nicknameEt.hint = myProfileDB.nickName
+        binding.locationInfoTv.hint = toLocationStr(myProfileDB.location!!)
+        binding.contentIntroductionEt.hint = myProfileDB.introduce
+        binding.editProfileTableLayoutTl.checkedRadioButtonId = myProfileDB.experience!!
+
+        Toast.makeText(context, "$TAG , onGetEditItemFailure", Toast.LENGTH_LONG).show()
 
     }
 
@@ -577,21 +641,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         // go to MyPageFrag!
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 
-//        val db = UserDatabase.getInstance(requireContext())
-//        var user = db!!.userDao().update(updatedUserProfile)
-
-
-//        myProfileDB.nickName = phoneNumber
-
-        (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
-            .commitAllowingStateLoss()
-
-        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
-        (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
-            View.VISIBLE
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.top_left_arrow_iv)
-            .setImageResource(R.drawable.ic_my_page_back_btn)
+        val intent = Intent(activity, MyProfileActivity::class.java)
+        startActivity(intent)
 
     }
 
@@ -605,7 +656,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         // 이미지 비율 계산
         val ratio = targetWidth.toDouble() / source.width.toDouble()
         // 보정될 세로 길이 구하기
-        var targetHeight = (source.height * ratio).toInt()
+        val targetHeight = (source.height * ratio).toInt()
         // 크기를 조정한 bitmap 객체를 생성
         val result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false)
         return result
@@ -625,7 +676,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             exif = ExifInterface(source)
         }
         var degree = 0
-        var ori = exif.getAttributeInt(
+        val ori = exif.getAttributeInt(
             ExifInterface.TAG_ORIENTATION,
             -1
         )   // 만약 회전값이 저장이 안되어 있으면 default값으로 -1 넣기 (0 넣으면 안댐)
@@ -655,9 +706,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         return state
     }
 
-    fun setRadioButton(tag: Int) {
-        viewModel.editProfileExperience.value = tag
-    }
 
     fun toLocationStr(index: Int): String? {
         val array = resources.getStringArray(R.array.location_full_name)
@@ -665,12 +713,60 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     }
 
-//    override fun setRadiobutton(tag: String) {
-//        setRadioButton(tag.toInt())
-//    }
 
-    //    fun setUser(editProfilePutReqDto: EditProfilePutReqDto): User {
-////        Log.d(TAG,"TAG")
-//    }
+    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
+    private fun onApplyEnable() {
+        binding.activatingApplyBtn.background =
+            activity!!.getDrawable(R.drawable.next_btn_done_rectangular)
+        binding.activatingApplyBtn.setTextColor(R.color.white)
+        binding.activatingApplyBtn.isEnabled = true
+//        binding.activatingApplyBtn.visibility = View.VISIBLE
+//        binding.inactivatingApplyBtn.visibility = View.GONE
+    }
+
+    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
+    private fun onApplyDisable() {
+        binding.activatingApplyBtn.background =
+            activity!!.getDrawable(R.drawable.next_btn_inactivitate_rectangular)
+        binding.activatingApplyBtn.setTextColor(R.color.dark_gray_B0)
+        binding.activatingApplyBtn.isEnabled = false
+//        binding.activatingApplyBtn.visibility = View.GONE
+//        binding.inactivatingApplyBtn.visibility = View.VISIBLE
+    }
+
+    override fun onSignUpNickNameSuccess() {
+        viewModel.editProfileSetNickname.value = true
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
+        binding.btnCheckDuplicationTv.isEnabled = false
+        binding.nicknameEtField.isEndIconVisible = false
+    }
+
+    override fun onSignUpNickNameFailure(code: Int, message: String) {
+        binding.nickNameErrorTv.visibility = View.VISIBLE
+        binding.nickNameErrorTv.text = message
+        binding.nicknameCheckIconIv.visibility = View.VISIBLE
+        binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext,R.color.dark_gray_A))
+    }
+
+    override fun onGetDuplicateNicknameSuccess(duplicateNicknameResponse: DuplicateNicknameResponse) {
+        viewModel.editProfileSetNickname.value = true
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
+        binding.btnCheckDuplicationTv.isEnabled = false
+        binding.nicknameEtField.isEndIconVisible = false
+    }
+
+    override fun onGetDuplicateNicknameFailure(code: Int, message: String) {
+        binding.nickNameErrorTv.visibility = View.VISIBLE
+        binding.nickNameErrorTv.text = message
+        binding.nicknameCheckIconIv.visibility = View.VISIBLE
+        binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext,R.color.dark_gray_A))
+    }
+
 
 }

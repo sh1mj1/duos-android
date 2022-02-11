@@ -2,19 +2,15 @@ package com.example.duos
 
 import android.content.Context
 import android.widget.RadioButton
-
 import android.view.View
-
 import android.widget.TableRow
-
 import android.util.AttributeSet
 import android.view.ViewGroup
-
 import android.widget.TableLayout
 import android.os.Bundle
-
 import android.os.Parcelable
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
 import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
@@ -42,6 +38,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         else if (context is PartnerFilterActivity){
             partnerFilterContext = context
         }
+        else if (context is EditProfileActivity){
+            editProfileContext = context
+        }
     }
 
     /**
@@ -57,6 +56,9 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         }
         else if (context is PartnerFilterActivity){
             partnerFilterContext = context
+        }
+        else if (context is EditProfileActivity){
+            editProfileContext = context
         }
 
     }
@@ -78,11 +80,10 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         else if (v.context is PartnerFilterActivity){
             radioBtnListener = partnerFilterContext as PartnerFilterActivity
             (radioBtnListener as PartnerFilterActivity).setRadiobutton(activeRadioButton!!.tag.toString())
+        } else if(v.context is EditProfileActivity){
+            radioBtnListener = editProfileContext as EditProfileActivity
+            (radioBtnListener as EditProfileActivity).setRadiobutton(activeRadioButton!!.tag.toString())
         }
-//        else if(v.context is EditProfileFragment){
-//            radioBtnListener = editProfileContext as EditProfileFragment
-//            (radioBtnListener as EditProfileFragment).setRadioButton(activeRadioButton!!.tag.toString())
-//        }
 
     }
 
