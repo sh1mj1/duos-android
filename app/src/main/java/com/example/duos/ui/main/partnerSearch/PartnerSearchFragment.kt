@@ -18,6 +18,7 @@ import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.utils.getLastUpdatedDate
+import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveLastUpdatedDate
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -162,7 +163,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
                 recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             }else{
-                PartnerSearchService.partnerSearchData(this, userIdx)
+                PartnerSearchService.partnerSearchData(this, getUserIdx()!!)
                 saveLastUpdatedDate(formattedTodayDate)
                 Log.d("saved lastUpdatedDate", getLastUpdatedDate())
             }
@@ -172,7 +173,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
                 Log.d("그리드","itemClick")
-                var intent = Intent(activity, PartnerProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
                 startActivity(intent)
             }
         })
