@@ -33,8 +33,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.ApplicationClass
+import com.example.duos.data.entities.User
+import com.example.duos.data.local.UserDatabase
+import com.example.duos.data.remote.login.LoginVerifyAuthNumResultData
+import com.example.duos.data.remote.signUp.SignUpRequestResultData
 import com.example.duos.data.remote.signUp.SignUpService
+import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.ViewModel
+import com.example.duos.utils.saveJwt
+import com.example.duos.utils.saveRefreshJwt
+import com.example.duos.utils.saveUserIdx
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
@@ -570,10 +578,42 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         }
     }
 
-    override fun onSignUpRequestSuccess() {
+    fun setUser(result : SignUpRequestResultData) : User {
+        var user = User(
+            result.phoneNumber,
+            result.nickname,
+            result.gender,
+            result.birthDate,
+            result.locationIdx,
+            result.experienceIdx,
+            result.profilePhotoUrl,
+            result.introduction,
+            result.userIdx
+        )
+        return user
+    }
+
+    override fun onSignUpRequestSuccess(result : SignUpRequestResultData) {
         Log.d("success", "hi")
         //         roomDB 에 회원가입 정보 모두 저장
-        val viewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        // 인증번호 확인 성공!
+        // 사용자 정보 roomDB 에 저장 or 업데이트
+        // jwt토큰 sharedpreference 에 저장
+        Log.d("user", result.toString())
+
+        val db = UserDatabase.getInstance(requireContext())
+        var user = db!!.userDao().getUser(result.userIdx)
+        if (user != null){
+            user = setUser(result)
+            db!!.userDao().update(user)
+        } else{
+            user = setUser(result)
+            db!!.userDao().insert(user)
+        }
+
+        saveUserIdx(result.userIdx)
+        saveJwt(result.jwtAccessToken)
+        saveRefreshJwt(result.jwtRefreshToken)
 
         onGoingNextListener.onGoingNext()
     }

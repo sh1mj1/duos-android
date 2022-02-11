@@ -1,6 +1,7 @@
 package com.example.duos.data.remote.appointment
 
 import com.example.duos.ApplicationClass
+import com.example.duos.data.entities.DeleteAppointment
 import com.example.duos.data.entities.EditAppointment
 import com.example.duos.data.entities.MakeAppointment
 import retrofit2.Call
@@ -33,4 +34,12 @@ interface AppointmentRetrofitInterface{
         @Path("appointmentIdx") appointmentIdx : Int,
         @Body editAppointment: EditAppointment
     ) : Call<EditAppointmentResponse>
+
+    @PATCH("/api/appointment/status")
+    fun deleteAppointment(
+        @Query("appointmentIdx") appointmentIdx : Int,
+        @Query("userIdx") userIdx : Int,
+        @Body deleteAppointment : DeleteAppointment
+    ) : Call<DeleteAppointmentResponse>
+
 }

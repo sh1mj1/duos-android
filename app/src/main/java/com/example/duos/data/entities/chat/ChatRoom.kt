@@ -12,7 +12,7 @@ data class ChatRoom(
 //    var userIdx : Int = 0
     @SerializedName("chatRoomName") var chatRoomName : String = "",
     @SerializedName("chatRoomImageUrl") var chatRoomImg : String? = "",
-    @SerializedName("participantIdx") var participantIdx : Int,
+    @SerializedName("participantIdx") var participantIdx : Int?,
     @SerializedName("lastMessage") var lastMessage : String = "",
     @SerializedName("updatedAt") var lastUpdatedAt : String = "",
     @SerializedName("isAppointmentExist") var isAppointmentExist : Boolean = false,

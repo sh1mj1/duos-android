@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.friendList
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d("friendList",friendlist.toString())
         holder.bind(friendlist[position], position)
         mItemClickListener.onGetFriendCount()
 

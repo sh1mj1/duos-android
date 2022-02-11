@@ -92,6 +92,7 @@ class SplashActivity: AppCompatActivity(), SplashView {
     private fun autoLogin() {
         val userDB = UserDatabase.getInstance(this)
         if (getAccessToken() != null || userDB != null){
+            Log.d("jwt", getAccessToken().toString())
             if(userDB?.userDao()?.getUser(getUserIdx()!!) != null){
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags =

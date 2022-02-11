@@ -40,7 +40,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatDB = ChatDatabase.getInstance(requireContext())!!
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
-            ChatListService.chatList(this, userIdx)
+            ChatListService.chatList(this, getUserIdx()!!)
             Log.d("인터넷 연결 확인", "CONNECTED")
         } else {    // 인터넷 연결 안돼있을 때
             Log.d("인터넷 연결 확인", "DISCONNECTED")

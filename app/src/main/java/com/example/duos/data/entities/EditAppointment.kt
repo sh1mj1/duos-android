@@ -1,8 +1,10 @@
 package com.example.duos.data.entities
 
+import com.google.gson.annotations.SerializedName
+
 data class EditAppointment(
-    val chatroomIdx : String,
-    val userIdx : Int,
-    val partnerIdx : Int,
-    val appointmentTime : String
+    @SerializedName("chatroomIdx") val chatroomIdx : String,
+    @SerializedName("userIdx") val userIdx : Int,
+    @SerializedName("partnerIdx") val partnerIdx : Int,
+    @SerializedName("appointmentTime") val appointmentTime : String
 )

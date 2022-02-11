@@ -6,10 +6,14 @@ import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.BASE_URL
 import com.example.duos.config.XAccessTokenInterceptor
 import com.example.duos.data.remote.accessToken.AccessTokenService
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import com.google.gson.JsonObject
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -27,28 +31,43 @@ object NetworkModule {
             .addInterceptor(AuthInterceptor())
             .build()
 
+        val gson = GsonBuilder()
+            .registerTypeAdapter(
+                LocalDateTime::class.java,
+                JsonDeserializer { json, _, _ ->
+                    LocalDateTime.parse(json.asString, DateTimeFormatter.ISO_DATE_TIME)
+                }).create()
+
+
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL) // 기본 URL 세팅
-            .addConverterFactory(GsonConverterFactory.create())
             .client(client) //Logger 세팅
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         return retrofit
     }
 }
 
-internal class AuthInterceptor : Interceptor{
+
+internal class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val request = chain.request()
         val response = chain.proceed(request)
         val responseJson = response.extractResponseJson()
 
-        if (responseJson.has("code")){
-            when (responseJson["code"]){
-                2007 ->{
+        if (responseJson.has("code")) {
+            when (responseJson["code"]) {
+                2007 -> {
                     Log.d("AuthInterceptor", "재발급")
                     AccessTokenService.getAccessToken()
+
+                    Thread.sleep(1000)
+                    return response.newBuilder()
+                        .body(responseJson.toString().toResponseBody())
+                        .build()
+
                 }
                 // 지훈님코드
 //        when (response.code) {
@@ -70,9 +89,8 @@ internal class AuthInterceptor : Interceptor{
         val jsonString = this.body?.string() ?: "{}"
         return JSONObject(jsonString)
     }
+
 }
-
-
 
 
 //

@@ -59,6 +59,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chatRoomName: TextView
     //var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
     lateinit var chatDB: ChatDatabase
+    lateinit var chatRoom : ChatRoom
     lateinit var viewModel: ViewModel
 
     private fun addChatItem(senderId: String, body: String, sentAt:String, type: String) {
@@ -113,12 +114,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         //partnerIdx = intent.getIntExtra("partnerIdx", 0)!!    // 나중에 주석 해제
 
         saveCurrentChatRoomIdx(chatRoomIdx)
-
         chatDB = ChatDatabase.getInstance(this)!!
-
-        val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
-
-
+        chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
 
@@ -421,21 +418,21 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     fun setAppointmentBtnExist(){
         binding.chattingMakePlanBtn.background = getDrawable(R.drawable.unchecked_check_box)
-        binding.chattingMakePlanBtn.text = "약속"
         binding.chattingMakePlanBtn.setTextColor(
             ContextCompat.getColor(
             applicationContext,
             R.color.dark_gray_B4
         ))
+        binding.chattingMakePlanBtn.setText(getString(R.string.chatting_show_plan))
     }
 
     fun setAppointmentBtnNotExist(){
         binding.chattingMakePlanBtn.background = getDrawable(R.drawable.selected_btn)
-        binding.chattingMakePlanBtn.text = "약속잡기"
         binding.chattingMakePlanBtn.setTextColor(
             ContextCompat.getColor(
                 applicationContext,
                 R.color.primary
             ))
+        binding.chattingMakePlanBtn.setText(getString(R.string.chatting_make_plan))
     }
 }

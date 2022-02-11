@@ -2,19 +2,15 @@ package com.example.duos.data.remote.appointment
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.ApplicationClass.Companion.retrofit
+import com.example.duos.data.entities.DeleteAppointment
 import com.example.duos.data.entities.EditAppointment
 import com.example.duos.data.entities.MakeAppointment
 import com.example.duos.data.entities.appointment.AppointmentListView
-import com.example.duos.ui.main.appointment.AppointmentExistView
-import com.example.duos.ui.main.appointment.EditAppointmentView
-import com.example.duos.ui.main.appointment.MakeAppointmentView
-import com.example.duos.ui.main.appointment.ShowAppointmentView
+import com.example.duos.ui.main.appointment.*
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 object AppointmentService {
     val retrofit = NetworkModule.getRetrofit()
@@ -45,10 +41,10 @@ object AppointmentService {
     }
 
 
-    fun appointmentExist(appointmentExistView : AppointmentExistView, userIdx : Int, partnerIdx : Int){
-        val appointmentExistService = retrofit.create(AppointmentRetrofitInterface::class.java)
+    fun isAppointmentExist(appointmentExistView : AppointmentExistView, userIdx : Int, partnerIdx : Int){
+        val isAppointmentExistService = retrofit.create(AppointmentRetrofitInterface::class.java)
 
-        appointmentExistService.appointmentExist(userIdx, partnerIdx).enqueue(object :
+        isAppointmentExistService.appointmentExist(userIdx, partnerIdx).enqueue(object :
             Callback<AppointmentExistResponse>
         {
             override fun onResponse(
@@ -85,7 +81,7 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1000 -> makeAppointmentView.onMakeAppointmentSuccess()
+                    1122 -> makeAppointmentView.onMakeAppointmentSuccess()
                     else -> makeAppointmentView.onMakeAppointmentFailure(resp.code, resp.message)
                 }
             }
@@ -111,7 +107,7 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1000 -> editAppointmentView.onEditAppointmentSuccess()
+                    1120 -> editAppointmentView.onEditAppointmentSuccess()
                     else -> editAppointmentView.onEditAppointmentFailure(resp.code, resp.message)
 
                 }
@@ -149,7 +145,32 @@ object AppointmentService {
 
                 showAppointmentView.onShowAppointmentFailure(400, "네트워크 오류가 발생했습니다.")
             }
+        })
+    }
 
+    fun deleteAppointment(deleteAppointmentView: DeleteAppointmentView, appointmentIdx:Int, userIdx: Int, deleteAppointment: DeleteAppointment){
+        val deleteAppointmentService = retrofit.create(AppointmentRetrofitInterface::class.java)
+        deleteAppointmentService.deleteAppointment(appointmentIdx, userIdx, deleteAppointment).enqueue(object :
+            Callback<DeleteAppointmentResponse>{
+            override fun onResponse(
+                call: Call<DeleteAppointmentResponse>,
+                response: Response<DeleteAppointmentResponse>
+            ) {
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+
+                when(resp.code){
+                    1121 -> deleteAppointmentView.onDeleteAppointmentSuccess()
+                    else -> deleteAppointmentView.onDeleteAppointmentFailure(resp.code, resp.message)
+
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteAppointmentResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+
+                deleteAppointmentView.onDeleteAppointmentFailure(400, "네트워크 오류가 발생했습니다.")
+            }
         })
     }
 }

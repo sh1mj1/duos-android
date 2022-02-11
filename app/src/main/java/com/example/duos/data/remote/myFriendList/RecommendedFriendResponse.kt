@@ -6,7 +6,7 @@ import org.threeten.bp.LocalDate
 import java.time.LocalDateTime
 
 data class RecommendHistoryDto(@SerializedName("recommendedAt") val recommendedDate: org.threeten.bp.LocalDateTime,
-@SerializedName("PastRecommendPartnerDto") val PastRecommendPartnerDto : List<RecommendedFriend>)
+@SerializedName("pastRecommendPartnerDto") val pastRecommendPartnerDto : List<RecommendedFriend>)
 
 data class RecommendedFriendResponse(
     @SerializedName("isSuccess") val isSuccess: Boolean,
