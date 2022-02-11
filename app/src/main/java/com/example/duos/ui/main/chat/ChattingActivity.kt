@@ -237,19 +237,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 intent.putExtra("partnerIdx", partnerIdx)
                 startActivity(intent)
             }
-
         })
 
         binding.chattingBackIv.setOnClickListener {
             finish()
         }
-
-
     }
 
     private fun postSendMessage() {
         val messageData = sendMessageData(chatRoomIdx, "MESSAGE",
             thisUserIdx, partnerIdx, chattingEt.text.toString())
+
+        Log.d("메세지 보내기", messageData.toString())
 
         ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
     }
@@ -281,13 +280,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onSendMessageLoading() {
-        progressON()
+        //progressON()
         Log.d("로딩중","채팅 메세지 보내기 api")
     }
 
     override fun onSendMessageSuccess() {
         Log.d("채팅 메세지 보내기 POST", "성공")
-        progressOFF()
+        //progressOFF()
     }
 
     override fun onSendMessageFailure(code: Int, message: String) {

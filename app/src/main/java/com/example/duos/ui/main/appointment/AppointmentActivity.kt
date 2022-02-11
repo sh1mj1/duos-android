@@ -41,6 +41,8 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
         chatDB = ChatDatabase.getInstance(this)!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+        Log.d("약속현황액티비티 - 채팅방 확인", chatDB.chatRoomDao().getChatRoom(chatRoomIdx).toString())
+        Log.d("약속현황액티비티 - 채팅방 리스트 확인", chatDB.chatRoomDao().getChatRoomList().toString())
 
         initCalendar()
 
@@ -133,9 +135,6 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("약속시간",appointmentTime)
             }
         })
-
-
-
     }
 
     override fun onMakeAppointmentSuccess() {

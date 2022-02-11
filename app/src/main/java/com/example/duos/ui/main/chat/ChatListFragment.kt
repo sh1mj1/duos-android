@@ -162,8 +162,10 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
                 }
 
             }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }else{
             Log.d("업데이트된 채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }
     }
 

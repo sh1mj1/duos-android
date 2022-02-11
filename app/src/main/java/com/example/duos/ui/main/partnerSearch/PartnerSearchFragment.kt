@@ -70,11 +70,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         recommendedPartnerDatas.clear()
         recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
-        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
