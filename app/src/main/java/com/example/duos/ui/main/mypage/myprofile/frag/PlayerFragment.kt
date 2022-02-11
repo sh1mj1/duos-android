@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -79,7 +80,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onGetProfileInfoFailure(code: Int, message: String) {
-        TODO("Not yet implemented")
+        Toast.makeText(context, "네트워크 불안정",Toast.LENGTH_LONG).show()
+        Log.d(TAG, "CODE : $code , MESSAGE : $message ")
     }
 
     private fun initRecyclerView(): PartnerProfileReviewRVAdapter {

@@ -61,6 +61,7 @@ class ViewModel : ViewModel() {
     var editProfileIntroduce = MutableLiveData<String>()
     var editProfileExperience = MutableLiveData<Int?>()
 
+    var appointmentReviewContent = MutableLiveData<String>()
 
 
 
