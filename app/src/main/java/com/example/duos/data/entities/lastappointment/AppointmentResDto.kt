@@ -2,7 +2,7 @@ package com.example.duos.data.entities.lastappointment
 
 import com.google.gson.annotations.SerializedName
 
-data class LastAppointmentResDto(
+data class AppointmentResDto(
     @SerializedName("userIdx") var userIdx: Int? = null,
     @SerializedName("appointmentIdx") var appointmentIdx : Int? = null,
     @SerializedName("nickname") var nickname : String = "",
