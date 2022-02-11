@@ -25,6 +25,7 @@ import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
+import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 
 // 내 프로필 , 모든 리뷰 보기, 지난 약속 보기, 파트너 서치, 채팅방에서 넘어올 수 있어
@@ -54,7 +55,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                   그렇다면 thisIdx ->  partnerIdx 아래 thisIdx 넣기 */
         //TODO : userIdx : RoomDB에 저장된 Idx 값, partnerUserIdx : 이전 Frag에서 Bundle로 받기
 
-        PartnerProfileService.partnerProfileInfo(this, 1, partnerUserIdx)
+        PartnerProfileService.partnerProfileInfo(this, getUserIdx()!!, partnerUserIdx)
         Log.d(TAG, "Create Retrofit")
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE

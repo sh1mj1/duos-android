@@ -19,7 +19,6 @@ import com.example.duos.data.remote.reviews.ReviewResponse
 import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now
@@ -80,7 +79,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
     override fun onPostReviewSuccess(reviewResponse: ReviewResponse) {
         Log.d(TAG, "onPostReviewSuccess")
 
-        (context as AppointmentActivity).supportFragmentManager.beginTransaction()
+        (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
             .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment())
             .commitAllowingStateLoss()
         Toast.makeText(context, "리뷰 작성 완료", Toast.LENGTH_LONG).show()

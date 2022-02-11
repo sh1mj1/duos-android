@@ -158,10 +158,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
                 Log.d("그리드","itemClick")
-                var intent = Intent(activity, PartnerProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
                 startActivity(intent)
             }
         })
+
 
 
         binding.partnerSearchFilteringIc.setOnClickListener{
