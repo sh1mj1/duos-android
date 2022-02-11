@@ -19,7 +19,7 @@ import com.example.duos.data.remote.reviews.ReviewResponse
 import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.chat.appointment.AppointmentActivity
+import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now

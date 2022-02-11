@@ -47,10 +47,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     //lateinit var binding: ActivityChattingBinding
     private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
-    var userId: String = "tennis01"     // 룸디비에서 userIdx로 userId(=userNickname) 조회하도록 수정 필요
-    var partnerId: String = "djeikd0620"    // 인텐트로 넘겨받은 partnerIdx로 룸디비에서 partnerID(=chatRoomName) 가져오도록 수정 필요
-    private var thisUserIdx = getUserIdx()!!    // ChatListFragment에서 userIdx넘겨받거나, 룸디비에서 userIdx 가져오도록 수정 필요
-    var partnerIdx: Int = 110 // ChatListFragment에서 partnerIdx 인텐트 넘겨받도록 수정 필요
+    lateinit var userId: String
+    private var thisUserIdx = getUserIdx()!!
+    var partnerIdx: Int = 0 // initAfterBinding에서 ChatListFragment에서 partnerIdx 인텐트 넘겨받음
     private var layoutManager: LayoutManager? = null
     lateinit var chatRoomIdx : String
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
@@ -105,13 +104,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         if(intent != null){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             chatRoomName.text = intent.getStringExtra("senderId")!!
-            partnerIdx = intent.getIntExtra("partnerIdx", 110)
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
         }
 
         val userDB = UserDatabase.getInstance(this)!!
         userId = userDB.userDao().getUserNickName(thisUserIdx)
-
-        //partnerIdx = intent.getIntExtra("partnerIdx", 0)!!    // 나중에 주석 해제
 
         saveCurrentChatRoomIdx(chatRoomIdx)
         chatDB = ChatDatabase.getInstance(this)!!
@@ -120,9 +117,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
 
         // 약속 여부 받아오기
-        // 원래는 userIdx 인수자리에 실제 내 Idx 인 getUserIdx()!! 을 사용해야함
         if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
-            AppointmentService.appointmentExist(this, thisUserIdx, chatRoom.participantIdx)
+            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
             Log.d("인터넷 연결 확인", "CONNECTED")
         }else{
             Log.d("인터넷 연결 확인", "DISCONNECTED")
@@ -204,15 +200,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             }
         })
 
-//        chattingEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-//            override fun onFocusChange(view: View, hasFocus: Boolean) {
-//                if (hasFocus || !chattingEt.text.equals("")) {
-//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
-//                } else {
-//                    sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_gray)
-//                }
-//            }
-//        })
         sendBtn.setOnClickListener{
             postSendMessage()
             sendMessage()

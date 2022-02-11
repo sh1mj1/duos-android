@@ -35,4 +35,7 @@ interface ChatRoomDao {
 
     @Query("SELECT chatRoomImg FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
     fun getPartnerProfileImgUrl(chatRoomIdx: String): String
+
+    @Query("SELECT chatRoomName FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getPartnerId(chatRoomIdx: String): String
 }
