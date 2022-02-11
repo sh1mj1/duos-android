@@ -10,10 +10,10 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
-import com.example.duos.data.entities.appointment.AppointmentListView
-import com.example.duos.data.entities.appointment.AppointmentResDto
-import com.example.duos.data.remote.appointment.AppointmentResponse
-import com.example.duos.data.remote.appointment.LastAppointmentService
+import com.example.duos.data.entities.lastappointment.LastAppointmentListView
+import com.example.duos.data.entities.lastappointment.LastAppointmentResDto
+import com.example.duos.data.remote.lastappointment.LastAppointmentResponse
+import com.example.duos.data.remote.lastappointment.LastAppointmentService
 import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
@@ -25,10 +25,10 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.temporal.ChronoUnit
 
 
-class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), AppointmentListView {
+class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), LastAppointmentListView {
     val TAG = "AppointmentFragment"
-    private var previousPlayerData = ArrayList<AppointmentResDto>()
-    private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
+    private var previousPlayerData = ArrayList<LastAppointmentResDto>()
+    private var morePreviousPlayerDatas = ArrayList<LastAppointmentResDto>()
     val userIdx = getUserIdx()  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
@@ -36,24 +36,24 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onGetAppointmentSuccess(appointmentResponse: AppointmentResponse) {
+    override fun onGetAppointmentSuccess(lastAppointmentResponse: LastAppointmentResponse) {
         previousPlayerData.clear()
         morePreviousPlayerDatas.clear()
 
         var i = 0
 
         // 날짜 비교 반복문
-        while (appointmentResponse.result.size > i) {
-            val xx = appointmentResponse.result[i].appointmentTime
+        while (lastAppointmentResponse.result.size > i) {
+            val xx = lastAppointmentResponse.result[i].appointmentTime
 
             if (ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now()) < 8) {
                 /* 일주일 이내이면 previousPlayerDatas 에 넣기 - 이제 오늘이거나 어제이면 text 바꿔줘야 해 */
                 Log.d(TAG, "7일 이내 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())} 일 전 약속?")
-                previousPlayerData.add(appointmentResponse.result[i])
+                previousPlayerData.add(lastAppointmentResponse.result[i])
 
             } else { /* 일주일 이상이면 previousPlayerDatas 에 넣기 */
                 Log.d(TAG, "7일 이상 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())} 일 전 약속")
-                morePreviousPlayerDatas.add(appointmentResponse.result[i])
+                morePreviousPlayerDatas.add(lastAppointmentResponse.result[i])
             }
             i++
         }
@@ -90,25 +90,25 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     private fun previousGameClickListener(previousGameReviewRVAdapter: PreviousGameReviewRVAdapter) {
         previousGameReviewRVAdapter.previousReviewItemClickListener(object :
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
-            override fun onProfileClick(appointmentItem: AppointmentResDto) {
+            override fun onProfileClick(lastAppointmentItem: LastAppointmentResDto) {
                 //TODO : 해당 회원의 프로필로 이동
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromAppointment", true)
-                    this.putExtra("partnerUserIdx", appointmentItem.userIdx)
+                    this.putExtra("partnerUserIdx", lastAppointmentItem.userIdx)
                 }
                 startActivity(intent)
 
             }
 
-            override fun onWriteBtnClick(appointmentItem: AppointmentResDto) {  /* 후기 작성 클릭!*/
+            override fun onWriteBtnClick(lastAppointmentItem: LastAppointmentResDto) {  /* 후기 작성 클릭!*/
                 val fragmentTransaction: FragmentTransaction =
                     (context as LastAppointmentActivity).supportFragmentManager.beginTransaction().replace(
                         R.id.previous_game_into_fragment_container_fc,
                         LastAppointmentReviewFragment().apply {
                             arguments = Bundle().apply {
                                 val gson = Gson()
-                                val profileJson = gson.toJson(appointmentItem)
+                                val profileJson = gson.toJson(lastAppointmentItem)
                                 putString("profile", profileJson)
                             }
                         })
@@ -122,12 +122,12 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     private fun morePreviousGameClickListener(morePreviousGameReviewRVAdapter: MorePreviousGameReviewRVAdapter) {
         morePreviousGameReviewRVAdapter.morePreviousItemClickListener(object :
             MorePreviousGameReviewRVAdapter.MorePreiousPlayerItemclickListener {
-            override fun onProfileCLick(appointmentItem: AppointmentResDto) {
+            override fun onProfileCLick(lastAppointmentItem: LastAppointmentResDto) {
 
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromAppointment", true)
-                    this.putExtra("partnerUserIdx", appointmentItem.userIdx)
+                    this.putExtra("partnerUserIdx", lastAppointmentItem.userIdx)
                 }
                 startActivity(intent)
 

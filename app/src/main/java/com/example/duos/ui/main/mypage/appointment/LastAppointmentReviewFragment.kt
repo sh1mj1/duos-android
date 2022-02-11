@@ -12,8 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.data.entities.appointment.AppointmentResDto
-import com.example.duos.data.entities.review.PostReviewReqDto
+import com.example.duos.data.entities.lastappointment.LastAppointmentResDto
 import com.example.duos.data.entities.review.PostReviewResDto
 import com.example.duos.data.entities.review.ReviewListView
 import com.example.duos.data.remote.reviews.ReviewResponse
@@ -21,7 +20,6 @@ import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.chat.appointment.AppointmentActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now
@@ -53,7 +51,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
         val profileData =
             arguments?.getString("profile")   /* From player's userIdx From AppointFrag */
-        val profile = gson.fromJson(profileData, AppointmentResDto::class.java)
+        val profile = gson.fromJson(profileData, LastAppointmentResDto::class.java)
 
         // 이전 AppointmentFragment 에서 넘어온 프로필 이미지 회원 nickname binding
         setInitProfile(profile)
@@ -132,7 +130,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
         })
     }
 
-    private fun setInitProfile(profile: AppointmentResDto) {
+    private fun setInitProfile(profile: LastAppointmentResDto) {
         Glide.with(binding.imgWriteReviewPlayerIv.context)
             .load(profile.profilePhotoUrl)
             .into(binding.imgWriteReviewPlayerIv)
