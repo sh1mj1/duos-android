@@ -160,6 +160,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 Log.d("그리드","itemClick")
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
+                intent.putExtra("isFromSearch", true)
                 startActivity(intent)
             }
         })
