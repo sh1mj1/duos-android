@@ -164,7 +164,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         })
 
 
-
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }

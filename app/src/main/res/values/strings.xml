@@ -176,6 +176,13 @@
 
     <string name="partner_profile_title">프로필</string>
 
+    <string name="partner_filter_count_notice_text">필터는 하루 3번까지 그리고\n필터링 결과로 10명까지 볼 수 있습니다</string>
+    <string name="partner_filter_remain_count">남은 필터 적용 횟수:&#160;</string>
+    <string name="partner_filter_count_unit">회</string>
+    <string name="partner_filter_count_cancel">취소</string>
+    <string name="partner_filter_count_apply">적용</string>
+
+
     <!-- 여기까지 파트너 찾기 -->
 
     <!-- 채팅 -->
