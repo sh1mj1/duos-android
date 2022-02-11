@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.appointment.AppointmentResDto
-import com.example.duos.data.entities.review.PostReviewReqDto
 import com.example.duos.data.entities.review.PostReviewResDto
 import com.example.duos.data.entities.review.ReviewListView
 import com.example.duos.data.remote.reviews.ReviewResponse
@@ -21,7 +20,6 @@ import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.chat.appointment.AppointmentActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now

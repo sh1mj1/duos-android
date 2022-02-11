@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
-import com.example.duos.data.entities.appointment.AppointmentListView
+import com.example.duos.data.entities.appointment.LastAppointmentListView
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.data.remote.appointment.AppointmentResponse
 import com.example.duos.data.remote.appointment.LastAppointmentService
@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.temporal.ChronoUnit
 
 
-class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), AppointmentListView {
+class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), LastAppointmentListView {
     val TAG = "AppointmentFragment"
     private var previousPlayerData = ArrayList<AppointmentResDto>()
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()

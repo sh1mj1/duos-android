@@ -2,7 +2,7 @@ package com.example.duos.data.entities.appointment
 
 import com.example.duos.data.remote.appointment.AppointmentResponse
 
-interface AppointmentListView {
+interface LastAppointmentListView {
     fun onGetAppointmentSuccess(appointmentResponse: AppointmentResponse)
     fun onGetAppointmentFailure(code : Int, message : String)
 
