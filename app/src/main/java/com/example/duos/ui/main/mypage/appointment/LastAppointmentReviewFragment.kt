@@ -19,7 +19,6 @@ import com.example.duos.data.remote.reviews.ReviewResponse
 import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.chat.appointment.AppointmentActivity
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now
@@ -27,7 +26,7 @@ import java.time.LocalDateTime.now
 class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReviewBinding>
     (FragmentLastAppointmentReviewBinding::inflate), ReviewListView {
     val TAG: String = "AppointmentReviewFragment"
-    lateinit var mContext : LastAppointmentActivity
+    lateinit var mContext: LastAppointmentActivity
     private var gson: Gson = Gson()
 
     //    val postReqData = Array<ReviewsReqDto>()
@@ -37,7 +36,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is LastAppointmentActivity){
+        if (context is LastAppointmentActivity) {
             mContext = context
         }
     }
@@ -71,7 +70,16 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
             val createdAt = now().toString()
             val appointmentIdx = profile.appointmentIdx!!
 
-            ReviewService.postReview(this, writerIdx, revieweeIdx, rating, reviewContent, createdAt, appointmentIdx, writerIdx)
+            ReviewService.postReview(
+                this,
+                writerIdx,
+                revieweeIdx,
+                rating,
+                reviewContent,
+                createdAt,
+                appointmentIdx,
+                writerIdx
+            )
 
         }
 
@@ -80,7 +88,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
     override fun onPostReviewSuccess(reviewResponse: ReviewResponse) {
         Log.d(TAG, "onPostReviewSuccess")
 
-        (context as AppointmentActivity).supportFragmentManager.beginTransaction()
+        (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
             .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment())
             .commitAllowingStateLoss()
         Toast.makeText(context, "리뷰 작성 완료", Toast.LENGTH_LONG).show()
@@ -89,13 +97,14 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
     }
 
     override fun onPostReviewFailure(code: Int, message: String) {
-        Toast.makeText(context, message,Toast.LENGTH_LONG).show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private fun initEditText(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 
@@ -105,13 +114,23 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
                     if (s.toString().length > 0 && s.toString().length < 300) { /* EditText 에 글이 1 ~ 400 자면 파란 작성완료 버튼*/
                         binding.activatingCompleteBtn.isEnabled = true
                         binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_done_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
+                        binding.activatingCompleteBtn.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.white
+                            )
+                        )
                         binding.countTextLengthTv.text = ""
                     } else if (s.toString().length >= 300) {    /* EditText 에 글이 400 자보다 길면 */
 
                         binding.activatingCompleteBtn.isEnabled = false
                         binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
+                        binding.activatingCompleteBtn.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.dark_gray_B0
+                            )
+                        )
                         binding.countTextLengthTv.text = "후기는 400자 이하로만 입력할 수 있습니다."
                         Toast.makeText(context, "후기는 400자 이하로만 입력할 수 있습니다.", Toast.LENGTH_LONG)
                             .show()
@@ -119,7 +138,12 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
                     } else { /* EditText 에 글이 없으면 회색 작성완료 버튼*/
                         binding.activatingCompleteBtn.isEnabled = false
                         binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
+                        binding.activatingCompleteBtn.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.dark_gray_B0
+                            )
+                        )
                         binding.countTextLengthTv.text = "내용을 입력해주세요."
 
 //                        }

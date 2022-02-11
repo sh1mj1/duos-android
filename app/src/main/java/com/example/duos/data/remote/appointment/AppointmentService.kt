@@ -72,7 +72,7 @@ object AppointmentService {
     fun makeAppointment(makeAppointmentView: MakeAppointmentView, makeAppointment: MakeAppointment){
         val makeAppointmentService = retrofit.create(AppointmentRetrofitInterface::class.java)
         makeAppointmentService.makeAppointment(makeAppointment).enqueue(object :
-        Callback<MakeAppointmentResponse>{
+            Callback<MakeAppointmentResponse>{
             override fun onResponse(
                 call: Call<MakeAppointmentResponse>,
                 response: Response<MakeAppointmentResponse>

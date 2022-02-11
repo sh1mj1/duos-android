@@ -13,6 +13,9 @@ interface EveryReviewsRetrofitInterface {
     // API 코드 구현
 
     @GET(EVERY_REVIEW_API)
-    fun getEveryReviews(@Query("userIdx") userIdx: Int): Call<EveryReviewsResponse>
+    fun getEveryReviews(
+        @Query("userIdx") userIdx: Int,
+        @Query("partnerIdx") partnerIdx : Int
+    ): Call<EveryReviewsResponse>
     // 이때 user는 해당 프로필의 주인 (내 프로필이 될 수도 있고 파트너의 프로피이 될 수도 있다.)
 }

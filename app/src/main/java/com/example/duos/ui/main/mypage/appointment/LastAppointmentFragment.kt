@@ -17,6 +17,7 @@ import com.example.duos.data.remote.lastappointment.LastAppointmentService
 import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
