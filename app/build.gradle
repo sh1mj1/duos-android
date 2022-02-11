@@ -124,5 +124,7 @@ dependencies {
     // localdate
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
+    kapt 'org.xerial:sqlite-jdbc:3.34.0'// m1 맥북 에러 대응
+
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
