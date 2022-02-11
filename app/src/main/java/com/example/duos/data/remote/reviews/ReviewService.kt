@@ -2,10 +2,9 @@ package com.example.duos.data.remote.reviews
 
 import android.util.Log
 import com.example.duos.ApplicationClass
+import com.example.duos.data.entities.review.PostReviewReqDto
 import com.example.duos.data.entities.review.ReviewListView
-import com.example.duos.data.entities.review.ReviewsReqDto
 import com.example.duos.utils.NetworkModule
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,10 +12,13 @@ import retrofit2.Response
 object ReviewService {
     val TAG = "ReviewService"
     val retrofit = NetworkModule.getRetrofit()
-    fun postReview(reviewListView: ReviewListView, reviewData: JSONObject, userIdx: Int) {
+    fun postReview(
+        reviewListView: ReviewListView, writerIdx: Int, revieweeIdx: Int, rating: Float, reviewContent: String, createdAt: String,
+        appointmentIdx: Int, userIdx: Int) {
         val reviewService = retrofit.create(ReviewRetrofitInterface::class.java)
         Log.d(TAG, "CREATE_RETROFIT")
-        reviewService.postReview(reviewData, userIdx).enqueue(object : Callback<ReviewResponse> {
+        val postReviewReqDto = PostReviewReqDto(writerIdx, revieweeIdx, rating,reviewContent, createdAt,appointmentIdx  )
+        reviewService.postReview(postReviewReqDto, userIdx).enqueue(object : Callback<ReviewResponse> {
             override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
                 Log.d(TAG, "ON_RESPONSE")
                 val resp = response.body()!!
@@ -24,7 +26,7 @@ object ReviewService {
                     1000 -> {
                         resp.let {
                             reviewListView.onPostReviewSuccess(it)
-                            Log.d(TAG, reviewData.toString())
+                            Log.d(TAG, "postReviewReqDto : $postReviewReqDto.toString()")
                             Log.d(TAG, it.result.toString())
                         }
                     }

@@ -17,6 +17,7 @@ import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
@@ -24,13 +25,15 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.temporal.ChronoUnit
 
 
-class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate), AppointmentListView {
+class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>(FragmentLastAppointmentGameBinding::inflate),
+    AppointmentListView {
     val TAG = "AppointmentFragment"
     private var previousPlayerData = ArrayList<AppointmentResDto>()
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
+    val userIdx = getUserIdx()  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
-        AppointmentService.getAppointmentList(this, 186)
+        AppointmentService.getAppointmentList(this, userIdx!!)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,13 +45,15 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
 
         // 날짜 비교 반복문
         while (appointmentResponse.result.size > i) {
-            var xx = appointmentResponse.result[i].appointmentTime
-            if (ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now()) < 35) {
+            val xx = appointmentResponse.result[i].appointmentTime
+
+            if (ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now()) < 8) {
                 /* 일주일 이내이면 previousPlayerDatas 에 넣기 - 이제 오늘이거나 어제이면 text 바꿔줘야 해 */
-                Log.d(TAG, "7일 이내 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())}?")
+                Log.d(TAG, "7일 이내 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())} 일 전 약속?")
                 previousPlayerData.add(appointmentResponse.result[i])
+
             } else { /* 일주일 이상이면 previousPlayerDatas 에 넣기 */
-                Log.d(TAG, "7일 이상 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())}?")
+                Log.d(TAG, "7일 이상 ${i} 번째 ${ChronoUnit.DAYS.between(LocalDateTime.parse(xx, ISO_DATE_TIME), now())} 일 전 약속")
                 morePreviousPlayerDatas.add(appointmentResponse.result[i])
             }
             i++
@@ -88,7 +93,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
             override fun onProfileClick(appointmentItem: AppointmentResDto) {
                 //TODO : 해당 회원의 프로필로 이동
-                var intent = Intent(activity, MyProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromAppointment", true)
                     this.putExtra("partnerUserIdx", appointmentItem.userIdx)
@@ -120,7 +125,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
             MorePreviousGameReviewRVAdapter.MorePreiousPlayerItemclickListener {
             override fun onProfileCLick(appointmentItem: AppointmentResDto) {
 
-                var intent = Intent(activity, MyProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromAppointment", true)
                     this.putExtra("partnerUserIdx", appointmentItem.userIdx)

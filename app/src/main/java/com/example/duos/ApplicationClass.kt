@@ -7,9 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
-import android.text.TextUtils
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import com.example.duos.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
@@ -19,13 +17,14 @@ import java.util.concurrent.TimeUnit
 
 // Retrofit을 호출하기 위한 Creator( API를 바로 호출할 수 있도록 설정해주는 클래스)
 class ApplicationClass : Application() {
-    companion object{
+    companion object {
         const val X_ACCESS_TOKEN: String = "jwtAccessToken"         // JWT Access Token Key
         const val X_REFRESH_TOKEN: String = "jwtRefreshToken"       // JWT Refresh Token Key
         const val USER_IDX: String = "userIdx"       // JWT Refresh Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
-        const val TEST_ACCESS_TOKEN : String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
+        const val TEST_ACCESS_TOKEN: String =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
 
 
         const val DEV_URL: String = "https://duos.co.kr/"       // 테스트 서버 주소
@@ -42,13 +41,20 @@ class ApplicationClass : Application() {
             return baseApplication
         }
 
+
+
         const val MY_PAGE_API = "api/mypage"
         const val MY_PROFILE_API = "api/mypage/myprofile"
-        const val EVERY_REVIEW_API="api/reviews"
+        const val EVERY_REVIEW_API = "api/reviews"
         const val PARTNER_PROFILE_API = "api/partners/profile"
         const val APPOINTMENT_API = "api/appointments"
         const val REVIEW_API = "api/reviews"
         const val EDIT_GET_API = "api/mypage/myprofile/previous"
+        const val EDIT_PUT_NON_PIC_API = "api/mypage/myprofile/info"
+        const val DUPLICATE_NICKNAME_API = "api/nickname/duplication"
+        const val NOTICE_GET_API = "api/notices"
+        const val NOTICE_API = "api/notice"
+        const val WITHDRAWAL_API = "api/signup/withdrawal"
     }
 
     override fun onCreate() {
@@ -105,4 +111,21 @@ class ApplicationClass : Application() {
             progressDialog.dismiss()
         }
     }
+
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    fun toDateStr(localDateTime: String): String {
+//
+//        if (ChronoUnit.DAYS.between(
+//                LocalDateTime.parse(localDateTime, DateTimeFormatter.ISO_DATE_TIME),
+//                now()
+//            ) < 35) {
+//            // 7일 이내임.
+//        } else{
+//
+//        }
+//
+//    }
+
+
 }

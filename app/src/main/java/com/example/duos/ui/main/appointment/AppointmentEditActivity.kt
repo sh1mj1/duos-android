@@ -136,6 +136,7 @@ EditAppointmentView{
     }
 
     override fun onEditAppointmentSuccess() {
+
         finish()
     }
 

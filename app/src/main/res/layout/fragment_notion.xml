@@ -49,7 +49,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/notice_onoff_tv"
+            android:id="@+id/notice_on_create_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
@@ -76,7 +76,7 @@
             android:textSize="13sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notice_onoff_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/notice_on_create_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

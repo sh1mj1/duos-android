@@ -30,21 +30,26 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
     lateinit var chatDB: ChatDatabase
     lateinit var viewModel: ViewModel
     lateinit var chatRoomIdx : String
+    var partnerIdx : Int = 0
     lateinit var appointmentTime : String
 
     override fun initAfterBinding() {
 
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+        partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
         chatDB = ChatDatabase.getInstance(this)!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+        Log.d("약속현황액티비티 - 채팅방 확인", chatDB.chatRoomDao().getChatRoom(chatRoomIdx).toString())
+        Log.d("약속현황액티비티 - 채팅방 리스트 확인", chatDB.chatRoomDao().getChatRoomList().toString())
 
         initCalendar()
 
         binding.makePlanApplyTv.setOnClickListener {
             Thread.sleep(100)
-            val makeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!,chatRoom.participantIdx!!,appointmentTime)
-            Log.d("약속",makeAppointment.toString())
+            Log.d("유저인덱스", getUserIdx().toString())
+            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, partnerIdx, appointmentTime)
             AppointmentService.makeAppointment(this, makeAppointment)
         }
 
@@ -130,6 +135,9 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("약속시간",appointmentTime)
             }
         })
+
+
+
     }
 
     override fun onMakeAppointmentSuccess() {

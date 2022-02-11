@@ -29,4 +29,13 @@ interface ChatRoomDao {
 
     @Query("UPDATE ChatRoomTable SET appointmentIdx = :appointmentIdx WHERE chatRoomIdx = :chatRoomIdx")
     fun updateAppointmentIdx(chatRoomIdx: String, appointmentIdx : Int)
+
+    @Query("SELECT isAppointmentExist FROM ChatRoomTable WHERE chatRoomIdx = :chatRoomIdx")
+    fun getAppointmentExist(chatRoomIdx: String): Boolean
+
+    @Query("SELECT chatRoomImg FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getPartnerProfileImgUrl(chatRoomIdx: String): String
+
+    @Query("SELECT chatRoomName FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
+    fun getPartnerId(chatRoomIdx: String): String
 }

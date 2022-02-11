@@ -31,20 +31,24 @@ import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 
-class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate), ProfileListView {
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate),
+    ProfileListView {
     val TAG: String = "MyProfileFragment"
     private var myProfileReviewDatas = ArrayList<PartnerProfileReviewItem>()
     val userIdx = getUserIdx()
 
     override fun initAfterBinding() {
+        // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
-        Log.d(TAG, "Start_MypageFragment")
+        Log.d(TAG, "Start_MypageFragment : 현재 user의 userIdx : $userIdx")
 
-        Log.d(TAG, "현재 user의 userIdx : $userIdx")
-        //TODO userIdx에 어떤 값이 들어갈지
-        MyProfileService.myProfileInfo(this, userIdx!!)
+        MyProfileService.myProfileInfo(this, userIdx)
 
-        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility =
+            View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
 
 
@@ -75,33 +79,20 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         val myProfileDB = db!!.userDao().getUser(userIdx!!)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 
+        val genderStr = toGenderStr(myProfileDB.gender!!)
+        val locationStr = toLocationStr(myProfileDB.location!!)
+
         Glide.with(binding.myProfileImgIv.context)
             .load(myProfileDB.profileImg)
             .into(binding.myProfileImgIv)
         binding.myNicknameTv.text = myProfileDB.nickName
-        val genderStr = makeGenderIdxToStr(myProfileDB)
         binding.mySexTv.text = genderStr
-        val locationStr = when(myProfileDB.location){
-            1 -> "서울시 마포구"
-            2 -> "서울시 동대문구"
-
-            else -> "부산 중구"
-        }
         binding.myLocationTv.text = locationStr
         binding.myIntroductionTv.text = myProfileDB.introduce
 
 
-
-
     }
 
-    private fun makeGenderIdxToStr(myProfileDB: User): String {
-        val genderStr = when (myProfileDB.gender) {
-            1 -> "남"
-            else -> "여"
-        }
-        return genderStr
-    }
 
     /* 나의 모든 후기 보기 페이지로 이동*/
     private fun goEveryReview(myProfile: MyProfileResult) {
@@ -109,24 +100,28 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
             val profileNickname = binding.myNicknameTv.text.toString()
             val fragmentTransaction: FragmentTransaction =
                 (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
-                        arguments = Bundle().apply {
-                            val gson = Gson()
-                            val profileJson = gson.toJson(myProfile.profileInfo)
-                            putString("profile", profileJson)
-                            //                        putString("profileInfo", myProfile.profileInfo.nickname)
+                    .replace(
+                        R.id.my_profile_into_fragment_container_fc,
+                        EveryReviewFragment().apply {
+                            arguments = Bundle().apply {
+                                val gson = Gson()
+                                val profileJson = gson.toJson(myProfile.profileInfo)
+                                putString("profile", profileJson)
+                                //                        putString("profileInfo", myProfile.profileInfo.nickname)
 
-                        }
+                            }
 
-                    })
+                        })
 
             fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
             fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
 
             // 상단 텍스트 변경
             val reviewCount = binding.playingReviewCountTv.text
-            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = reviewCount.toString()
-            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
+            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
+                reviewCount.toString()
+            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
+                View.GONE
         }
     }
 
@@ -135,22 +130,26 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         profileReviewRVAdapter.clickPlayerReviewListener(
             object : ProfileReviewRVAdapter.PlayerReviewItemClickListener {
                 override fun onItemClick(myProfileReviewItem: PartnerProfileReviewItem) {
-                    val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                        .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-                            Log.d(TAG, "MyProfileFrag -> PlayerFrag")
-                            arguments = Bundle().apply {
-                                putInt("thisIdx", myProfileReviewItem.writerIdx!!)
-                                /*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동해야되 그 Idx 만 전달*/
-
-                            }
-                        })
+                    val fragmentTransaction: FragmentTransaction =
+                        (context as MyProfileActivity).supportFragmentManager.beginTransaction()
+                            .replace(
+                                R.id.my_profile_into_fragment_container_fc,
+                                PlayerFragment().apply {
+                                    Log.d(TAG, "MyProfileFrag -> PlayerFrag")
+                                    arguments = Bundle().apply {
+                                        putInt("partnerUserIdx", myProfileReviewItem.writerIdx!!)
+                                    }
+                                })
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
 
                     // 상단 텍스트 변경
-                    (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
-                    (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
-                    (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
+                    (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
+                        "프로필"
+                    (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
+                        View.GONE
+                    (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility =
+                        View.VISIBLE
                 }
             })
     }
@@ -159,7 +158,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     private fun initRecyclerView(): ProfileReviewRVAdapter {
         val profileReviewRVAdapter = ProfileReviewRVAdapter(myProfileReviewDatas)
         binding.playingReviewContentRv.adapter = profileReviewRVAdapter
-        binding.playingReviewContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.playingReviewContentRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         return profileReviewRVAdapter
     }
 
@@ -168,14 +168,14 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         Glide.with(binding.myProfileImgIv.context)
             .load(myProfile.profileInfo.profileImgUrl)
             .into(binding.myProfileImgIv)
-        binding.myNicknameTv.text = myProfile.profileInfo.nickname
-        binding.myGenerationTv.text = myProfile.profileInfo.age
-        binding.myLocationTv.text = myProfile.profileInfo.location
-        binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString()
-        binding.myGradeRb.rating = myProfile.profileInfo.rating!!
-        binding.myIntroductionTv.text = myProfile.profileInfo.introduction
-        binding.careerYearNumTv.text = myProfile.profileInfo.experience
-        binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()
+        binding.myNicknameTv.text = myProfile.profileInfo.nickname  // nickname
+        binding.myGenerationTv.text = myProfile.profileInfo.age     // 나이
+        binding.myLocationTv.text = myProfile.profileInfo.location  // 위치 이것도 Str 로 넘어오네
+        binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString() // 평점 텍스트
+        binding.myGradeRb.rating = myProfile.profileInfo.rating!!           // 평점
+        binding.myIntroductionTv.text = myProfile.profileInfo.introduction  // 소개글
+        binding.careerYearNumTv.text = myProfile.profileInfo.experience     // Str 로 넘어옴.
+        binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()    // 게임수
         binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
     }
 
@@ -193,11 +193,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         // TextView에 적용
         textExperience.text = textExperienceBuilder
 
-        // API의 reviewCount의 View -> 위에서 하면 되지 않을까
-//        val textReviewCount = binding.playingReviewCountTv
-//        var textReviewCountData : String = textReviewCount.text.toString()
-//        textReviewCountData = "후기($textReviewCountData)"
-//        binding.playingReviewCountTv.text = textReviewCountData
 
     }
 

@@ -22,6 +22,8 @@ import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.ActivityManager.RunningTaskInfo
 import android.content.ComponentName
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.utils.getCurrentChatRoomIdx
 
 
@@ -108,6 +110,10 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
 //                messageData.get("sentAt").toString(), messageData.get("title").toString())
 
 
+            var chatDB = ChatDatabase.getInstance(this)!!
+
+            val chatRoom : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
+            Log.d("채팅방리스트", chatRoom.toString())
 
             val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
             val componentName: ComponentName?
@@ -125,13 +131,19 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
                     Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
                     val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
-                    intent.putExtra("chatRoomIdx", messageData.get("chatRoomIdx").toString())
-                    intent.putExtra("type", messageData.get("type").toString())
-                    intent.putExtra("body", messageData.get("body").toString())
-                    intent.putExtra("senderIdx", messageData.get("senderIdx").toString())
-                    intent.putExtra("sentAt", messageData.get("sentAt").toString())
-                    intent.putExtra("senderId",  messageData.get("title").toString())
-                    Log.d("발신자", remoteMessage.data.get("title").toString())
+                    val chatRoomIdx = messageData.get("chatRoomIdx").toString()
+                    val type = messageData.get("type").toString()
+                    val body = messageData.get("body").toString()
+                    val partnerIdx = messageData.get("senderIdx").toString()
+                    val sentAt = messageData.get("sentAt").toString()
+                    val senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
+                    intent.putExtra("chatRoomIdx", chatRoomIdx)
+                    intent.putExtra("type", type)
+                    intent.putExtra("body", body)
+                    intent.putExtra("partnerIdx", partnerIdx)
+                    intent.putExtra("sentAt", sentAt)
+                    intent.putExtra("senderId",  senderId)
+                    Log.d("발신자", senderId)
                     startActivity(intent)
                 } else{
                     Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
@@ -212,6 +224,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(){
         val intent = Intent(this, ChattingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("chatRoomIdx",chatRoomIdx)
+        intent.putExtra("senderId", senderId)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,

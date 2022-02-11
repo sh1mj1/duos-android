@@ -7,9 +7,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-object EditProfileService {
-    val TAG = "EditProfileService"
-
+object EditProfileGetService {
+    val TAG = "EditProfileGetService"
     val retrofit = NetworkModule.getRetrofit()
 
     fun getEditProfile(editProfileListView: EditProfileListView, userIdx: Int) {
@@ -30,7 +29,6 @@ object EditProfileService {
 
                     else -> {
                         Log.d(TAG, "CODE: ${resp.code}, MESSAGE : ${resp.message}")
-                        editProfileListView.onGetEditItemFailure(resp.code, resp.message)
                     }
                 }
             }

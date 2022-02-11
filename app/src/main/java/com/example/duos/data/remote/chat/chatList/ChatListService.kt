@@ -20,7 +20,7 @@ object ChatListService {
                 val resp = response.body()!!
                 Log.d("resp",resp.toString())
                 when (resp.code) {
-                    1000 ->
+                    1000, 6203 ->
                         resp.result?.let { chatListView.onGetChatListSuccess(it) }
                     else -> chatListView.onGetChatListFailure(resp.code, resp.message)
                 }

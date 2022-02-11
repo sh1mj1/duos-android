@@ -15,6 +15,8 @@ import com.example.duos.data.entities.LocationCategoryList
 import com.example.duos.data.entities.LocationList
 import com.example.duos.data.remote.localList.LocationService
 import com.example.duos.databinding.FragmentLocationDialogBinding
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
 import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
 import com.example.duos.utils.ViewModel
@@ -75,6 +77,15 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
                 viewModel.partnerLocation.value = myLocation.locationIdx
                 viewModel.partnerLocationName.value = myLocation.locationName
                 viewModel.partnerLocationDialogShowing.value = true
+            } else if(requireActivity() is EditProfileActivity){
+                this.dismiss()
+                val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
+                viewModel.editProfileLocationCate.value = myLocationCategory.locationCategoryIdx
+                viewModel.editProfileLocationCateName.value = myLocationCategory.locationCategoryName
+                viewModel.editProfileLocation.value = myLocation.locationIdx
+                viewModel.editProfileLocationName.value = myLocation.locationName
+                viewModel.editProfileLocationDialogShowing.value = true
+
             }
         }
     }

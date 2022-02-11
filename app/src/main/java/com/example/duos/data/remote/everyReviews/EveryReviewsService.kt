@@ -1,7 +1,7 @@
 package com.example.duos.data.remote.everyReviews
 
 import android.util.Log
-import com.example.duos.ui.main.mypage.myprofile.EveryReviewsItemView
+import com.example.duos.data.entities.everyReviews.EveryReviewsItemView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,9 +11,9 @@ object EveryReviewsService {
     private const val TAG: String = "EveryReviewsService"
     val retrofit = NetworkModule.getRetrofit()
 
-    fun getEveryReviews(everyReviewsItemView: EveryReviewsItemView, userIdx: Int) {
+    fun getEveryReviews(everyReviewsItemView: EveryReviewsItemView, userIdx: Int, partnerIdx : Int) {
         val everyReviewsService = retrofit.create(EveryReviewsRetrofitInterface::class.java)
-        everyReviewsService.getEveryReviews(userIdx).enqueue(object : Callback<EveryReviewsResponse> {
+        everyReviewsService.getEveryReviews(userIdx, partnerIdx).enqueue(object : Callback<EveryReviewsResponse> {
             override fun onResponse(call: Call<EveryReviewsResponse>, response: Response<EveryReviewsResponse>) {
                 Log.d(TAG, "onResponse")
                 val resp = response.body()!!

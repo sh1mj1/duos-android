@@ -9,7 +9,7 @@ data class AppointmentResDto(
     @SerializedName("profilePhotoUrl") var profilePhotoUrl : String = "",
     @SerializedName("appointmentTime") var appointmentTime : String = "",
     @SerializedName("reviewed") var reviewed : Boolean= false
-    )
+)
 
 /*
 

@@ -29,7 +29,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     lateinit var swipeHelperCallback: ChatListItemTouchHelperCallback
     private lateinit var mContext:Context
     lateinit var chatDB: ChatDatabase
-    val userIdx = 76
+    val userIdx = getUserIdx()!!
 
     override fun initAfterBinding() {
         chatListRv = binding.chatListRv
@@ -116,6 +116,8 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
                 intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
+                intent.putExtra("senderId", chatRoom.chatRoomName)
+                intent.putExtra("partnerIdx", chatRoom.participantIdx)
                 startActivity(intent)
             }
         })
@@ -160,8 +162,10 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
                 }
 
             }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }else{
             Log.d("업데이트된 채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }
     }
 

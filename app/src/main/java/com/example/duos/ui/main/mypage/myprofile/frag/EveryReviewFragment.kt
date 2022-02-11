@@ -2,26 +2,24 @@ package com.example.duos.ui.main.mypage.myprofile.frag
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.data.entities.EveryReviewsItem
+import com.example.duos.data.entities.everyReviews.EveryReviewsItem
 import com.example.duos.data.entities.MyProfileInfoItem
 import com.example.duos.data.remote.everyReviews.EveryReviewsResponse
 import com.example.duos.data.remote.everyReviews.EveryReviewsService
 import com.example.duos.databinding.FragmentEveryReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.EveryReviewRVAdapter
-import com.example.duos.ui.main.mypage.myprofile.EveryReviewsItemView
+import com.example.duos.data.entities.everyReviews.EveryReviewsItemView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 
 class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEveryReviewBinding::inflate), EveryReviewsItemView {
@@ -39,11 +37,13 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         val profileData = arguments?.getString("profile")
         val profile = gson.fromJson(profileData, MyProfileInfoItem::class.java)
 
+
+
         // HomeFrag에서 넘어온 데이터를 반영
         setInit(profile)
 
         // userIdx 에 내 사용자 인덱스가 들어갈 수도, 파트너의 Idx 가 들어갈 수도
-        EveryReviewsService.getEveryReviews(this, 186)
+        EveryReviewsService.getEveryReviews(this, getUserIdx()!!, profile.userIdx!!)
     }
 
     override fun onGetEveryReviewsItemSuccess(everyReviewsResponse: EveryReviewsResponse) {

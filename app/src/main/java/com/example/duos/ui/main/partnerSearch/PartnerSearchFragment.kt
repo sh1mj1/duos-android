@@ -10,27 +10,25 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.RecommendedPartnerDatabase
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
-import com.example.duos.utils.getLastUpdatedDate
-import com.example.duos.utils.getUserIdx
-import com.example.duos.utils.saveLastUpdatedDate
+import com.example.duos.utils.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView{
+class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView {
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
     private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
-    var userIdx: Int = 1
+    var userIdx: Int = getUserIdx()!!
     lateinit var recommendedPartnerDatabase: RecommendedPartnerDatabase
 
     companion object {
@@ -60,7 +58,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //        }
 
         Log.d("get_recommendedPartnerList","ongetSuccess")
-        progressOFF()
+        //progressOFF()
 
         val userNickName = partnerSearchData.userNickname
 
@@ -72,20 +70,21 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         recommendedPartnerDatas.clear()
         recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
-        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
 
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
 
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
                 Log.d("그리드","itemClick")
-                var intent = Intent(activity, MyProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromSearch", true)
-                    this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
+                    this.putExtra("partnerIdxFromPartnerSearch", recommendedPartner.partnerIdx)
                 }
                 startActivity(intent)
             }
@@ -98,39 +97,25 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun initAfterBinding() {
 
+        Log.d("유저idx", userIdx.toString())
+
         recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
 
-        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록 수정해야함.
+        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
+        val userDB = UserDatabase.getInstance(requireContext())!!
+        binding.partnerSearchUserIdTv.text = userDB.userDao().getUserNickName(userIdx)
+        Log.d("유저닉네임", userDB.userDao().getUserNickName(userIdx))
+        Log.d("유저프로필url", userDB.userDao().getUserProfileImgUrl(userIdx))
+        Log.d("jwtAccess토큰정보", getAccessToken().toString())
+        Log.d("jwtRefresh토큰정보", getRefreshToken().toString())
 
-
-
-        //수
-
-        //정
-
-        //필
-
-        //요
-
-//        val userDB = UserDatabase.getInstance(requireContext())!!
-//        val userNickName = userDB.userDao().
-//
-//        Glide.with(this).load(partnerSearchData.userProfileImageUrl)
-//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-
-        //수
-
-        //정
-
-        //필
-
-        //요
-
+        Glide.with(this).load(userDB.userDao().getUserProfileImgUrl(userIdx))
+            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 
         // 임시로 사용자의 프로필이미지와 닉네임 세팅함
-        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
-            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-        binding.partnerSearchUserIdTv.text = "tennis1010"
+//        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
+//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
+//        binding.partnerSearchUserIdTv.text = "tennis1010"
 
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
@@ -173,10 +158,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
                 Log.d("그리드","itemClick")
-                var intent = Intent(activity, PartnerProfileActivity::class.java)
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
                 startActivity(intent)
             }
         })
+
 
 
         binding.partnerSearchFilteringIc.setOnClickListener{
@@ -207,6 +194,4 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
         })
     }
-
-
 }
