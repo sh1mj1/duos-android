@@ -266,9 +266,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         val db = UserDatabase.getInstance(applicationContext)
         var user = db!!.userDao().getUser(result.userIdx)
         if (user != null){
+            Log.d("user", "user가 null 이 아님")
             user = setUser(result)
             db!!.userDao().update(user)
         } else{
+            Log.d("user", "user가 null 임")
             user = setUser(result)
             db!!.userDao().insert(user)
         }

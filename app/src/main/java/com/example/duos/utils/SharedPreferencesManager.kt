@@ -1,5 +1,6 @@
 package com.example.duos.utils
 
+import android.content.SharedPreferences
 import com.example.duos.ApplicationClass.Companion.USER_IDX
 import com.example.duos.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.example.duos.ApplicationClass.Companion.X_REFRESH_TOKEN
@@ -74,4 +75,7 @@ fun getCurrentChatRoomIdx(): String =
 fun withdrawalAllData() {
     val editor = mSharedPreferences.edit()
     editor.clear().apply()
+
+
+
 }

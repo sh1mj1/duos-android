@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import com.example.duos.CustomDialog
 import com.example.duos.R
 import com.example.duos.data.local.UserDatabase
+import com.example.duos.data.remote.logout.LogOutService
+import com.example.duos.data.remote.logout.LogoutListView
 import com.example.duos.data.remote.withdrawal.WithDrawalService
 import com.example.duos.data.remote.withdrawal.WithdrawalListView
 import com.example.duos.data.remote.withdrawal.WithdrawalResponse
@@ -15,11 +17,15 @@ import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.splash.SplashActivity
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.withdrawalAllData
+import android.content.SharedPreferences
 
 
-class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::inflate), WithdrawalListView {
+
+
+
+class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::inflate), WithdrawalListView, LogoutListView {
     val TAG = "SetupFragment"
-    val userIdx = getUserIdx()
+    val myUserIdx = getUserIdx()!!
 
 
     override fun initAfterBinding() {
@@ -41,32 +47,32 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
             .setCommentMessage("로그아웃하시겠습니까?") // Dialog 텍스트 설정하기
             .setRightButton("로그아웃", object : CustomDialog.CustomDialogCallback {
                 override fun onClick(dialog: CustomDialog, message: String) {                   // 오른쪽 버튼 클릭시 이벤트 설정하기
-
+                    LogOutService.postLogOut(this@SetupFragment, myUserIdx)
                     dialog.dismiss()
                     // DB의 데이터 삭제
-                    val db = UserDatabase.getInstance(requireContext()) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
-                    Log.d(TAG, db!!.userDao().getUser(userIdx!!).toString())
-                    db.userDao().clearAll()
-
-                    // sharedPreference의 데이터 삭제
-                    withdrawalAllData()
-                    var testWithdrawal = ""
-                    if(getUserIdx() == 0){
-                        testWithdrawal =  "성공함"
-                    }else {
-                        testWithdrawal = "실패함"
-                    }
-                    Log.d(TAG, testWithdrawal)
-
-                    // 초기화면 SplashActivity로 가기
-                    val intent = Intent(activity, SplashActivity::class.java)
-                    startActivity(intent)
+//                    val db = UserDatabase.getInstance(requireContext()) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
+//                    Log.d(TAG, db!!.userDao().getUser(myUserIdx).toString())
+//                    db.userDao().clearAll()
+//
+//                    // sharedPreference의 데이터 삭제
+//                    withdrawalAllData()
+//                    var testWithdrawal = ""
+//                    if(getUserIdx() == 0){
+//                        testWithdrawal =  "성공함"
+//                    }else {
+//                        testWithdrawal = "실패함"
+//                    }
+//                    Log.d(TAG, testWithdrawal)
+//
+//                    // 초기화면 SplashActivity로 가기
+//                    val intent = Intent(activity, SplashActivity::class.java)
+//                    startActivity(intent)
                 }
             })
             .setLeftButton("취소", object : CustomDialog.CustomDialogCallback {
                 override fun onClick(dialog: CustomDialog, message: String) {                   // 왼쪽 버튼 클릭시 이벤트 설정하기
                     // 바로 dismiss 되야야 함
-                    Log.d("CustomDialog in SetupFrag", message.toString())  // 테스트 로그
+                    Log.d("CustomDialog in SetupFrag", message)  // 테스트 로그
                     dialog.dismiss()
                 }
             })
@@ -82,10 +88,9 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
             .setCommentMessage("회원탈퇴시 기존 데이터는 복구할 수 없습니다.\n 회원 탈퇴 하시겠습니까?") // Dialog 텍스트 설정하기
             .setRightButton("탈퇴", object : CustomDialog.CustomDialogCallback {
                 override fun onClick(dialog: CustomDialog, message: String) {                   // 오른쪽 버튼 클릭시 이벤트 설정하기
-                    
                     // DB의 데이터 삭제
                     val db = UserDatabase.getInstance(requireContext()) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
-                    Log.d(TAG, db!!.userDao().getUser(userIdx!!).toString())
+                    Log.d(TAG, db!!.userDao().getUser(myUserIdx).toString())
                     db.userDao().clearAll()
                     
                     // sharedPreference의 데이터 삭제
@@ -103,7 +108,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
                     startActivity(intent)
 
                     // API 호출 -> 서버에 있는 내 데이터 삭제
-                    WithDrawalService.withDrawal(this@SetupFragment, userIdx!!)
+                    WithDrawalService.withDrawal(this@SetupFragment, myUserIdx)
                     Log.d("CustomDialog in SetupFrag", message)  // 테스트 로그
                     dialog.dismiss()
                 }
@@ -150,11 +155,12 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     override fun onWithdrawalSuccess(withdrawalResponse: WithdrawalResponse) {
 
         // TODO : Room에 있는 값들과 SharedPreference 모두 삭제하기
-        val db = UserDatabase.getInstance(requireContext()) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
-        Log.d(TAG, db!!.userDao().getUser(userIdx!!).toString())
+        val db = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
+        Log.d(TAG, db!!.userDao().getUser(myUserIdx).toString())
         db.userDao().clearAll()
 
         withdrawalAllData()
+
         var testWithdrawal = ""
         if(getUserIdx() == 0){
             testWithdrawal =  "성공함"
@@ -170,6 +176,33 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
 
     override fun onWithdrawalFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
+    }
+
+    override fun onLogOutSuccess() {
+
+        val db = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
+        Log.d(TAG, db!!.userDao().getUser(myUserIdx).toString())
+        db.userDao().clearAll()
+
+        // sharedPreference의 데이터 삭제
+        withdrawalAllData()
+        var testWithdrawal = ""
+        if(getUserIdx() == 0){
+            testWithdrawal =  "성공함"
+        }else {
+            testWithdrawal = "실패함"
+        }
+        Log.d(TAG, testWithdrawal)
+
+        // 초기화면 SplashActivity로 가기
+        val intent = Intent(activity, SplashActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    override fun onLogOutFailure(code: Int, message: String) {
+        showToast("code : $code, message : $message")
     }
 
 }
