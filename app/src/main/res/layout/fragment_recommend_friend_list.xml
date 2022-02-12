@@ -210,6 +210,8 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
+            android:clipToPadding="true"
+            android:paddingBottom="200dp"
             android:visibility="gone"/>
 
 

@@ -88,6 +88,8 @@ ShowAppointmentView, DeleteAppointmentView{
     }
 
     override fun onDeleteAppointmentSuccess() {
+        chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
         finish()
     }
 
