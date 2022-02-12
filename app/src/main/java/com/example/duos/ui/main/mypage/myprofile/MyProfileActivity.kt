@@ -24,51 +24,35 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
     CreateChatRoomView {
     var thisUserIdx = 102
     var targetUserIdx = 76
-    val userIdx = getUserIdx()
+    val userIdx = getUserIdx()!!
 
     override fun initAfterBinding() {
         val db = UserDatabase.getInstance(applicationContext)
-        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        val myProfileDB = db!!.userDao().getUser(userIdx)
 
-        // PartnerSearchFragment 에서 넘어온 정보 받기
-        val isFromSearch = intent.getBooleanExtra(
-            "isFromSearch",
-            false
-        )   /* PartnerSearchFragment 에서 넘어왔다면 True else> 기본값 false*/
-        val isFromAppointment = intent.getBooleanExtra(
-            "isFromAppointment",
-            false
-        ) /* AppointmentFragment 에서 넘어왔다면 True else> 기본값 false*/
+        /* FromPartnerSearchFrag ? True else> 기본값 false*/
+        val isFromSearch = intent.getBooleanExtra("isFromSearch", false)
+        /* AppointmentFragment 에서 넘어왔다면 True else> 기본값 false*/
+        val isFromAppointment = intent.getBooleanExtra("isFromAppointment", false)
+
         val partnerUserIdx = intent.getIntExtra("partnerUserIdx", 0)
         /*TODO :위 thisIdx는 PartnerSearchFragment 에서 혹은 LastAppointmentFragment 에서
             아이템 클릭시 해당 회원의 고유 인덱스 값이 들어가야 해. 0이 default지만 할당될 일 없음*/
-        Log.d("넘겨주기", "PartnerSearchFrag 에서 옴? : ${isFromSearch} 파트너 userIdx는? :${partnerUserIdx}")
+        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch}  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
 
-        if (partnerUserIdx == userIdx) {  // PlayerFrag 에서 내가 쓴 후기를 눌렀을 때 나의 프로필로 이동한다.
+
+        // PartnerSearch OR Appointment OR Chatting 에서 호출될 때 항상 다른 PlayerFrag 로감.
+        if (isFromSearch or isFromAppointment) {
+            goToPlayerProfile(partnerUserIdx)
+        } else {    /* 그게 아니라면 항상 나의 프로필 Frag 가 되고 이때 backStack 이 없음.*/
             supportFragmentManager.beginTransaction()
                 .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
                 .commitAllowingStateLoss()
+            binding.editMyProfileTv.visibility = View.VISIBLE
+            binding.profileBottomChatBtnCl.visibility = View.GONE
+            binding.topMyProfileTv.text = "나의 프로필"
         }
 
-        if (isFromSearch) {    /* 만약 PartnerSearchFrag 으로부터 이 액티비티가 호출되었다면 */
-            goToPlayerProfile(partnerUserIdx)
-
-        } else if (isFromAppointment) {   /* 만약 AppointmentFrag 으로부터 이 액티비티가 호출되었다면 */
-            goToPlayerProfile(partnerUserIdx)
-
-        } else {    // PartnerSearchFrag 으로부터 이 액티비티가 호출되지 않았다면 내 프로필로 이동
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
-                .commitAllowingStateLoss()
-        }
-
-//        binding.editMyProfileTv.setOnClickListener{
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.my_profile_into_fragment_container_fc, EditProfileFragment())
-//                .commitAllowingStateLoss()
-//            binding.topLeftArrowIv.setImageResource(R.drawable.ic_btn_close_iv)
-//            binding.editMyProfileTv.visibility= View.GONE
-//            binding.topMyProfileTv.text= "나의 프로필 수정"
 //        }
         binding.editMyProfileTv.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
@@ -85,6 +69,10 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
     }
 
     private fun goToPlayerProfile(partnerUserIdx: Int) {
+        binding.editMyProfileTv.visibility = View.GONE
+        binding.profileBottomChatBtnCl.visibility = View.VISIBLE
+        binding.topMyProfileTv.text = "프로필"
+
         val playerFragment = PlayerFragment()
         val bundle = Bundle()
         bundle.putInt("partnerUserIdx", partnerUserIdx)   // bundle로 PlayerFragment 에

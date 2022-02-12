@@ -8,14 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.duos.CustomDialog
 import com.example.duos.R
+import com.example.duos.data.entities.RecommendedPartner
 import com.example.duos.databinding.CustomDialogBinding
 import com.example.duos.databinding.PartnerFilterCustomDialogBinding
 
 class PartnerFilterDialog (context: Context) : Dialog(context) {
     var partnerFilterCount : String? = ""
 
-    var leftButtonCallback: PartnerFilterDialogCallback? = null
-    var rightButtonCallback: PartnerFilterDialogCallback? = null
+    var leftButtonCallback: PartnerFilterDialogCallbackLeft? = null
+    var rightButtonCallback: PartnerFilterDialogCallbackRight? = null
 
     var mBinding: PartnerFilterCustomDialogBinding? = null
 
@@ -61,13 +62,13 @@ class PartnerFilterDialog (context: Context) : Dialog(context) {
             return this
         }
 
-        fun setRightButton(callback: PartnerFilterDialogCallback): Builder {
-            dialog.rightButtonCallback = callback
+        fun setLeftButton(callback: PartnerFilterDialogCallbackLeft): Builder {
+            dialog.leftButtonCallback = callback
             return this
         }
 
-        fun setLeftButton(callback: PartnerFilterDialogCallback): Builder {
-            dialog.leftButtonCallback = callback
+        fun setRightButton(callback: PartnerFilterDialogCallbackRight): Builder {
+            dialog.rightButtonCallback = callback
             return this
         }
 
@@ -77,8 +78,14 @@ class PartnerFilterDialog (context: Context) : Dialog(context) {
         }
     }
 
-    interface PartnerFilterDialogCallback {
+    interface PartnerFilterDialogCallbackLeft {
         fun onClick(dialog: PartnerFilterDialog)
-
     }
+    interface PartnerFilterDialogCallbackRight{
+        fun onClick(dialog: PartnerFilterDialog)
+        fun onGetPartnerFilterSuccess(recommendedPartner: List<RecommendedPartner>)
+        fun onGetPartnerFilterFailure(code: Int, message: String)
+    }
+
+
 }

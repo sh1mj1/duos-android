@@ -53,7 +53,7 @@ class ViewModel : ViewModel() {
 
     var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
 
-    var editProfileNickname = MutableLiveData<String>()
+    var editProfileNickname = MutableLiveData<String?>()
 
     var editProfileLocationCate = MutableLiveData<Int?>()
     var editProfileLocation = MutableLiveData<Int?>()

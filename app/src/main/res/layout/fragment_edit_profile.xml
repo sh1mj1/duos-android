@@ -96,9 +96,9 @@
                     style="@style/styleTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/signup_nick_name"
                     android:layout_gravity="center"
                     android:background="@null"
+                    android:hint="@string/signup_nick_name"
                     android:inputType="textNoSuggestions"
                     android:maxLength="13"
                     android:singleLine="true"
@@ -121,7 +121,7 @@
                 android:textSize="10sp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="@id/nickname_et_field"
-                app:layout_constraintTop_toBottomOf="@id/nickname_et_field"/>
+                app:layout_constraintTop_toBottomOf="@id/nickname_et_field" />
 
             <ImageView
                 android:id="@+id/nickname_check_icon_iv"
@@ -131,8 +131,8 @@
                 android:src="@drawable/ic_signup_phone_verifying_check_done"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/nickname_et_field"
-                app:layout_constraintStart_toEndOf="@+id/nickname_et_field"
                 app:layout_constraintEnd_toStartOf="@+id/btn_check_duplication_tv"
+                app:layout_constraintStart_toEndOf="@+id/nickname_et_field"
                 app:layout_constraintTop_toTopOf="@+id/nickname_et_field" />
 
             <TextView
@@ -248,10 +248,10 @@
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:gravity="top"
                 android:hint="@string/my_profile_my_introduction"
-                android:text="@={viewmodel.editProfileIntroduce}"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:letterSpacing="0.05"
+                android:text="@={viewmodel.editProfileIntroduce}"
                 android:textColor="@color/dark_gray_B4"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
@@ -551,7 +551,8 @@
 
             </com.example.duos.ToggleButtonGroupTableLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/activating_apply_btn"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -563,17 +564,17 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-<!--            <Button-->
-<!--                android:id="@+id/inactivating_apply_btn"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="56dp"-->
-<!--                android:background="@drawable/next_btn_inactivitate_rectangular"-->
-<!--                android:gravity="center"-->
-<!--                android:text="@string/edit_profile_apply"-->
-<!--                android:textColor="@color/dark_gray_B0"-->
-<!--                android:textStyle="bold"-->
-<!--                android:visibility="visible"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
+            <!--            <Button-->
+            <!--                android:id="@+id/inactivating_apply_btn"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="56dp"-->
+            <!--                android:background="@drawable/next_btn_inactivitate_rectangular"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="@string/edit_profile_apply"-->
+            <!--                android:textColor="@color/dark_gray_B0"-->
+            <!--                android:textStyle="bold"-->
+            <!--                android:visibility="visible"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

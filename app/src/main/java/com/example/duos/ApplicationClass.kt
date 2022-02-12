@@ -55,6 +55,7 @@ class ApplicationClass : Application() {
         const val NOTICE_GET_API = "api/notices"
         const val NOTICE_API = "api/notice"
         const val WITHDRAWAL_API = "api/signup/withdrawal"
+        const val PARTER_FILTER_API = "api/partners/search?userIdx={userIdx}&gender={gender}&ageStart={ageStart}&ageEnd={ageEnd}&experienceStart={experienceStart}&experienceEnd={experienceEnd}&locationIdx={locationIdx}"
     }
 
     override fun onCreate() {
