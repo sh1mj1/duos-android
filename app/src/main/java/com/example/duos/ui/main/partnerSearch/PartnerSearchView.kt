@@ -4,7 +4,7 @@ import com.example.duos.data.entities.PartnerSearchData
 
 
 interface PartnerSearchView {
-    fun onGetPartnerSearchDataLoading()
+    //fun onGetPartnerSearchDataLoading()
     fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData)
     fun onGetPartnerSearchDataFailure(code: Int, message: String)
 }

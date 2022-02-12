@@ -35,11 +35,11 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
     }
 
-    override fun onGetPartnerSearchDataLoading() {
-//        progressON()
-        Log.d("로딩중","파트너 추천 api")
-        //Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
+//    override fun onGetPartnerSearchDataLoading() {
+////        progressON()
+//        Log.d("로딩중","파트너 추천 api")
+//        //Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+//    }
 
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
          // 서울시 마포구로 필터링됐을 떄를 가정
@@ -160,6 +160,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 Log.d("그리드","itemClick")
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
+                intent.putExtra("isFromSearch", true)
                 startActivity(intent)
             }
         })

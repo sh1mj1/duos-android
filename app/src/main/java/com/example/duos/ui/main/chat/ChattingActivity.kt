@@ -88,11 +88,25 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun onStart() {
         super.onStart()
+        Log.d("생명주기","onStart")
         // 사용자가 백그라운드에서 돌아왔을 때 호출됨
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
         getFCMIntent()
-        Log.d("생명주기","onStart")
+
+        // 약속 여부 받아오기
+        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
+            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
+            Log.d("인터넷 연결 확인", "CONNECTED")
+        }else{
+            Log.d("인터넷 연결 확인", "DISCONNECTED")
+            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
+                setAppointmentBtnExist()
+            }else{
+                setAppointmentBtnNotExist()
+            }
+        }
+
     }
 
     override fun initAfterBinding() {
@@ -115,20 +129,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
-
-        // 약속 여부 받아오기
-        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
-            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
-            Log.d("인터넷 연결 확인", "CONNECTED")
-        }else{
-            Log.d("인터넷 연결 확인", "DISCONNECTED")
-            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
-                setAppointmentBtnExist()
-            }else{
-                setAppointmentBtnNotExist()
-            }
-        }
-
 
 
 

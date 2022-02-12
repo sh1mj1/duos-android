@@ -13,7 +13,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
     RecyclerView.Adapter<MorePreviousGameReviewRVAdapter.ViewHolder>() {
 
     interface MorePreiousPlayerItemclickListener {
-        fun onProfileCLick(appointmentItem: AppointmentResDto)
+       fun onProfileCLick(appointmentItem: AppointmentResDto)
     }
 
     private lateinit var mItemClickListener: MorePreiousPlayerItemclickListener

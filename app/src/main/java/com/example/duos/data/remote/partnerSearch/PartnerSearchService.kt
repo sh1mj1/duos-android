@@ -14,7 +14,7 @@ object PartnerSearchService {
     fun partnerSearchData(partnerSearchView: PartnerSearchView, userIdx: Int){
         val partnerSearchService = retrofit.create(PartnerSearchRetrofitInterface::class.java)
 
-        partnerSearchView.onGetPartnerSearchDataLoading()
+        //partnerSearchView.onGetPartnerSearchDataLoading()
 
         partnerSearchService.partnerSearchDataList(userIdx).enqueue(object : Callback<PartnerSearchDataResponse>{
             override fun onResponse(
