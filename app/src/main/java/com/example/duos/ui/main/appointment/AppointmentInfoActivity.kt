@@ -81,6 +81,7 @@ ShowAppointmentView, DeleteAppointmentView{
         Log.d("result",result.toString())
         binding.planInfoDateTv.text = result.appointmentData
         binding.planInfoTimeTv.text = result.appointmentTime
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, result.appointmentIdx)
     }
 
     override fun onShowAppointmentFailure(code: Int, message: String) {

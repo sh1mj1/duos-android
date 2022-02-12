@@ -325,9 +325,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     }
 
                 } else if(type.equals("CREATE_APPOINTMENT")){
-                    // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼)
-//                    chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)    // FirebaseMessagingServiceUtil에서 이미 저장해줌!!
-                    //chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, )
+                    // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼) // FirebaseMessagingServiceUtil에서 이미 약속정보 roomDB에 저장해줌!!
                     setAppointmentBtnExist()
                 } else if(type.equals("DELETE_APPOINTMENT")){
                     // 약속 취소 ("약속" 버튼 -> "약속 잡기" 버튼)

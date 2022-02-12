@@ -140,19 +140,23 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
                 ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
             } else if(type.equals("CREATE_APPOINTMENT")){
                 Log.d("fcm data payload - type","약속 생성")
-                // DB에 isAppointmentExist와 appointmentIdx update하기
-                //chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+                // DB에 isAppointmentExist와 appointmentIdx update
+                chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+                val appointmentIdx = messageData.get("dataIdx")?.toInt()
+                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
             } else if(type.equals("DELETE_APPOINTMENT")){
                 Log.d("fcm data payload - type","약속 삭제")
-                // DB에 isAppointmentExist와 appointmentIdx update하기
+                // DB에 isAppointmentExist와 appointmentIdx update
+                chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
             } else if(type.equals("UPDATE_APPOINTMENT")){
                 Log.d("fcm data payload - type","약속 수정")
-                // DB에 isAppointmentExist와 appointmentIdx update하기
+                // DB에 isAppointmentExist와 appointmentIdx update
+                val appointmentIdx = messageData.get("dataIdx")?.toInt()
+                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
             } else{
                 Log.d("fcm data payload - type", "type을 제대로 받아오지 못함")
             }
-
-
 
             val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
             val componentName: ComponentName?
