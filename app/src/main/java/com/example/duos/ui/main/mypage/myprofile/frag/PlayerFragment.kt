@@ -9,6 +9,7 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -57,24 +58,41 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
 
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).setOnClickListener {
-            addStarredFriend()  /* 친구 찜하기 */
+            deleteStarredFriend()   /* 친구 찜 취소 */
+
         }
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv).setOnClickListener {
-            deleteStarredFriend()   /* 친구 찜 취소 */
-        }
+            addStarredFriend()  /* 친구 찜하기 */
 
+        }
+        
     }
+
 
     private fun deleteStarredFriend() {
         FriendListService.deleteStarredFriend(this, myUserIdx, partnerUserIdx)
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).visibility = View.VISIBLE
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv).visibility = View.GONE
+        initIsNotStarred()
     }
 
     private fun addStarredFriend() {
         FriendListService.addStarredFriend(this, myUserIdx, partnerUserIdx)
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).visibility = View.GONE
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv).visibility = View.VISIBLE
+        initIsStarred()
+    }
+
+    @SuppressLint("CutPasteId")
+    private fun initIsStarred() {
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).isEnabled = true
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).visibility = View.INVISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).isEnabled = false
+    }
+
+    @SuppressLint("CutPasteId")
+    private fun initIsNotStarred() {
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).visibility = View.INVISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).isEnabled = false
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).isEnabled = true
     }
 
     override fun onGetProfileInfoSuccess(partnerResDto: PartnerResDto) {
@@ -84,6 +102,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         partnerProfileReviewDatas.clear()
         partnerProfileReviewDatas.addAll(partnerResDto.reviewResDto)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
+        Log.d(TAG, partnerResDto.toString())
         // 리사이클러뷰 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
         val profileReviewRVAdapter = initRecyclerView()
 
@@ -191,11 +210,10 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
         isStarred = partnerResDto.partnerInfoDto.starred
         if (isStarred) {
-            (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv)
-                .setImageResource(R.drawable.ic_islike_true)
+            initIsStarred()
+
         } else {
-            (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv)
-                .setImageResource(R.drawable.ic_islike_false)
+            initIsNotStarred()
         }
     }
 
@@ -223,7 +241,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onDeleteStarredFriendSuccess() {
-        Log.d(TAG, "친구 찜하기 실패")
+        Log.d(TAG, "친구 삭제 성공")
     }
 
     override fun onDeleteStarredFriendFailure(code: Int, message: String) {

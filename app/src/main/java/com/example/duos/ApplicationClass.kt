@@ -56,6 +56,7 @@ class ApplicationClass : Application() {
         const val NOTICE_API = "api/notice"
         const val WITHDRAWAL_API = "api/signup/withdrawal"
         const val PARTER_FILTER_API = "api/partners/search"
+        const val LOGOUT_API = "api/logout"
     }
 
     override fun onCreate() {
