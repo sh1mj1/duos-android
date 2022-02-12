@@ -59,7 +59,7 @@ object ChatService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1000 -> sendMessageView.onSendMessageSuccess()
+                    1000 -> sendMessageView.onSendMessageSuccess(resp.result)
                     else -> sendMessageView.onSendMessageFailure(resp.code, resp.message)
                 }
             }
