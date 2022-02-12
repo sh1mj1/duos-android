@@ -136,7 +136,7 @@ EditAppointmentView{
     }
 
     override fun onEditAppointmentSuccess() {
-
+        chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
         finish()
     }
 

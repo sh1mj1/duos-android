@@ -181,6 +181,10 @@
     <string name="partner_filter_count_unit">회</string>
     <string name="partner_filter_count_cancel">취소</string>
     <string name="partner_filter_count_apply">적용</string>
+    
+    <string name="partner_filter_unable">적용 가능한 필터 횟수가 모두 소진 되었습니다.</string>
+    <string name="partner_filter_unable_02">필터는 하루 최대 3번</string>
+    <string name="partner_filter_unable_03">까지 적용 가능합니다.</string>
 
 
     <!-- 여기까지 파트너 찾기 -->

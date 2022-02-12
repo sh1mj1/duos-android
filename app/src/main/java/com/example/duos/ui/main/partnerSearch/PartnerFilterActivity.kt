@@ -13,6 +13,7 @@ import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.main.friendList.FriendListDialogFragment
 import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.utils.saveCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
@@ -215,8 +216,14 @@ class PartnerFilterActivity :
 
 
     override fun onPartnerSearchFilterCountSuccess(searchCount: Int) {
+        Log.d("필터남은횟수",searchCount.toString())
         if (searchCount > 0){
             setDialog(searchCount)
+        }
+        else{
+            PartnerFilterUnableDialogFragment().show(
+                supportFragmentManager, "파트너필터적용못함"
+            )
         }
 
     }

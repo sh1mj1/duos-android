@@ -2,7 +2,7 @@ package com.example.duos.data.remote.login
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.PhoneAuthNum
+import com.example.duos.data.entities.LoginAuthNum
 import com.example.duos.ui.login.LoginCreateAuthNumView
 import com.example.duos.ui.login.LoginVerifyAuthNumView
 import retrofit2.Call
@@ -43,13 +43,14 @@ object LoginService {
     fun loginVerifyAuthNum(
         loginVerifyAuthNumView: LoginVerifyAuthNumView,
         phoneNumber: String,
-        authNumber: String
+        authNumber: String,
+        fcmToken : String
     ) {
         val loginVerifyAuthNumService = ApplicationClass.retrofit.create(LoginRetrofitInterface::class.java)
 
-        val phoneAuthNum = PhoneAuthNum(phoneNumber, authNumber)
+        val loginAuthNum = LoginAuthNum(phoneNumber, authNumber, fcmToken)
 
-        loginVerifyAuthNumService.loginVerifyAuthNum(phoneAuthNum).enqueue(object :
+        loginVerifyAuthNumService.loginVerifyAuthNum(loginAuthNum).enqueue(object :
             Callback<LoginVerifyAuthNumResponse> {
             override fun onResponse(
                 call: Call<LoginVerifyAuthNumResponse>,
