@@ -12,8 +12,8 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<Appoin
     RecyclerView.Adapter<PreviousGameReviewRVAdapter.ViewHolder>() {
 
     interface PreviousPlayerItemClickListener {
-        fun onProfileClick(lastAppointmentItem: AppointmentResDto)         // 해당 회원 프로필로 이동
-        fun onWriteBtnClick(lastAppointmentItem: AppointmentResDto)     // 리뷰 작성하기로 이동
+        fun onProfileClick(appointmentItem: AppointmentResDto)         // 해당 회원 프로필로 이동
+        fun onWriteBtnClick(appointmentItem: AppointmentResDto)     // 리뷰 작성하기로 이동
     }
 
     private lateinit var mItemClickListener: PreviousPlayerItemClickListener
@@ -45,13 +45,13 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<Appoin
 
     inner class ViewHolder(val binding: PreviousGamePlayerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(myLastAppointment: AppointmentResDto) {
-            binding.previousGamePlayerNicknameTv.text = myLastAppointment.nickname
+        fun bind(myAppointment: AppointmentResDto) {
+            binding.previousGamePlayerNicknameTv.text = myAppointment.nickname
             Glide.with(binding.previousGamePlayerIv.context)
-                .load(myLastAppointment.profilePhotoUrl)
+                .load(myAppointment.profilePhotoUrl)
                 .into(binding.previousGamePlayerIv)
-            binding.previousGamePlayTimeTv.text = myLastAppointment.appointmentTime
-            if (myLastAppointment.reviewed) {
+            binding.previousGamePlayTimeTv.text = myAppointment.appointmentTime
+            if (myAppointment.reviewed) {
                 // 이미 리뷰 됨
                 binding.writeDoneTv.visibility = View.VISIBLE   // 작성 완료가 보임
                 binding.btnWriteReview.visibility = View.GONE   // 후기 작성이 안보이고

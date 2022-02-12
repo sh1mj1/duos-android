@@ -81,7 +81,7 @@
         android:id="@+id/my_profile_fragment_sv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_bottom_chat_btn_cl"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar_myProfile_cl">
 
@@ -101,43 +101,43 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--        하단 버튼 찜한 친구, 좋아요 채팅하기 버튼-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/profile_bottom_chat_btn_cl"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent">
+<!--    &lt;!&ndash;        하단 버튼 찜한 친구, 좋아요 채팅하기 버튼&ndash;&gt;-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/profile_bottom_chat_btn_cl"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent">-->
 
-        <ImageView
-            android:id="@+id/player_is_starred_iv"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_islike_false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/partner_profile_chatting_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <ImageView-->
+<!--            android:id="@+id/player_is_starred_iv"-->
+<!--            android:layout_width="46dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/ic_islike_false"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/partner_profile_chatting_btn"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/partner_profile_chatting_btn"
-            android:layout_width="280dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/primary"
-            android:gravity="center"
-            android:text="@string/partner_profile_chatting"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/player_is_starred_iv"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/partner_profile_chatting_btn"-->
+<!--            android:layout_width="280dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:background="@color/primary"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/partner_profile_chatting"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/player_is_starred_iv"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

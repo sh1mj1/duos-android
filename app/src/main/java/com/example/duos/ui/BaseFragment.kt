@@ -15,6 +15,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.duos.ApplicationClass
 import com.example.duos.R
 import com.example.duos.utils.Inflate
+import java.lang.Math.round
 
 
 abstract class BaseFragment<VB : ViewBinding>(
@@ -118,6 +119,11 @@ abstract class BaseFragment<VB : ViewBinding>(
             else -> myPageCareerStr = "11년 이상"
         }
         return myPageCareerStr
+    }
+
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = round(ratingFloat * 10) /10
+        return ratingStr.toString()
     }
 
 

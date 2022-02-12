@@ -8,20 +8,16 @@ import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.MyProfileResult
 import com.example.duos.data.entities.PartnerProfileReviewItem
-import com.example.duos.data.entities.User
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.myProfile.MyProfileService
 import com.example.duos.databinding.FragmentMyProfileBinding
@@ -35,22 +31,22 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     ProfileListView {
     val TAG: String = "MyProfileFragment"
     private var myProfileReviewDatas = ArrayList<PartnerProfileReviewItem>()
-    val userIdx = getUserIdx()
+    val myUserIdx = getUserIdx()!!
 
     override fun initAfterBinding() {
         // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        val myProfileDB = db!!.userDao().getUser(getUserIdx()!!)
         binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
-        Log.d(TAG, "Start_MypageFragment : 현재 user의 userIdx : $userIdx")
+        Log.d(TAG, "Start_MypageFragment : 현재 user의 userIdx : $myUserIdx")
 
-        MyProfileService.myProfileInfo(this, userIdx)
-
-        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility =
-            View.GONE
+        MyProfileService.myProfileInfo(this, myUserIdx)
+        
+        // 화면 상단 뷰 설정 (채팅하기 쪽 layout GONE, 나의 프로필 보이게
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
-
+        (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.VISIBLE
 
     }
 
@@ -59,24 +55,27 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         setExperienceView()
 
         myProfileReviewDatas.clear()
-        myProfileReviewDatas.addAll(myProfile.reviews)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
+        myProfileReviewDatas.addAll(myProfile.reviews)   /* API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이) */
 
-        // 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
-        val profileReviewRVAdapter = initRecyclerView()
+        val profileReviewRVAdapter = initRecyclerView() /* 리사이클러뷰에 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정*/
 
-        /* 다른 회원 프로필로 이동*/
-        goPlayerProfile(profileReviewRVAdapter)
-
-        /* 나의 모든 후기 보기 페이지로 이동*/
-        goEveryReview(myProfile)
+        goPlayerProfile(profileReviewRVAdapter) /* 다른 회원 프로필로 이동*/
+        
+        goEveryReview(myProfile)    /* 나의 모든 후기 보기 페이지로 이동*/
     }
 
     override fun onGetMyProfileInfoFailure(code: Int, message: String) {
         Toast.makeText(context, "$TAG : onGetMyProfileInfoFailure", Toast.LENGTH_LONG).show()
 
         // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
+        setMyProfileInfoWithoutAPI()
+        setExperienceView()
+
+    }
+
+    private fun setMyProfileInfoWithoutAPI() {
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        val myProfileDB = db!!.userDao().getUser(myUserIdx)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 
         val genderStr = toGenderStr(myProfileDB.gender!!)
@@ -89,37 +88,30 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         binding.mySexTv.text = genderStr
         binding.myLocationTv.text = locationStr
         binding.myIntroductionTv.text = myProfileDB.introduce
-
-
     }
 
 
     /* 나의 모든 후기 보기 페이지로 이동*/
+    @SuppressLint("SetTextI18n")
     private fun goEveryReview(myProfile: MyProfileResult) {
         binding.playingReviewCountTv.setOnClickListener {
-            val profileNickname = binding.myNicknameTv.text.toString()
             val fragmentTransaction: FragmentTransaction =
                 (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.my_profile_into_fragment_container_fc,
-                        EveryReviewFragment().apply {
+                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                             arguments = Bundle().apply {
-                                val gson = Gson()
+                                val gson = Gson()   /* 나의 프로필 정보 gson.toJson 해서 모든 리뷰 보기 Frag로  보내주기*/
                                 val profileJson = gson.toJson(myProfile.profileInfo)
                                 putString("profile", profileJson)
-                                //                        putString("profileInfo", myProfile.profileInfo.nickname)
-
+                                putBoolean("isFromMyProfile", true)
                             }
-
                         })
 
             fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
-            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
+            fragmentTransaction.commit()
 
             // 상단 텍스트 변경
-            val reviewCount = binding.playingReviewCountTv.text
             (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
-                reviewCount.toString()
+                "후기(${myProfile.profileInfo.reviewCount.toString()})"
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
                 View.GONE
         }
@@ -174,7 +166,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString() // 평점 텍스트
         binding.myGradeRb.rating = myProfile.profileInfo.rating!!           // 평점
         binding.myIntroductionTv.text = myProfile.profileInfo.introduction  // 소개글
-        binding.careerYearNumTv.text = myProfile.profileInfo.experience     // Str 로 넘어옴.
+        binding.careerYearNumTv.text = myProfile.profileInfo.experience     // 구력 Str 로 넘어옴.
         binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()    // 게임수
         binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
     }

@@ -17,7 +17,7 @@ interface FriendListRetrofitInterface {
     fun recommendedFriendList(
         @Query("userIdx") userIdx: Int
     ): Call<RecommendedFriendResponse>
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @POST("/api/partners/star")
     fun addStarredFriend(
         @Query("userIdx") userIdx: Int,
@@ -29,6 +29,7 @@ interface FriendListRetrofitInterface {
         @Query("userIdx") userIdx: Int,
         @Query("partnerIdx") partnerIdx : Int
     ): Call<DeleteStarredFriendResponse>
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @DELETE("/api/partners/recommendation")
     fun deleteRecommendedFriend(

@@ -18,11 +18,11 @@ import com.example.duos.ApplicationClass
 import com.example.duos.R
 import com.jakewharton.threetenabp.AndroidThreeTen
 
-abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater) -> T): AppCompatActivity(){
+abstract class BaseActivity<T : ViewBinding>(private val inflate: (LayoutInflater) -> T) : AppCompatActivity() {
     protected lateinit var binding: T
         private set
 
-    private var imm : InputMethodManager? = null
+    private var imm: InputMethodManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,15 +55,15 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
         startActivity(intent)
     }
 
-    fun progressON(){
+    fun progressON() {
         ApplicationClass.getInstance().progressON(this, null)
     }
 
-    fun progressON(message: String){
+    fun progressON(message: String) {
         ApplicationClass.getInstance().progressON(this, message)
     }
 
-    fun progressOFF(){
+    fun progressOFF() {
         ApplicationClass.getInstance().progressOFF()
     }
 
@@ -71,7 +71,7 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw      = connectivityManager.activeNetwork ?: return false
+            val nw = connectivityManager.activeNetwork ?: return false
             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
 
             return when {
@@ -87,6 +87,7 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
             return connectivityManager.activeNetworkInfo?.isConnected ?: false
         }
     }
+
     fun toMyPagePhoneNumber(phoneNumber: String): String {
         return phoneNumber.substring(0, 3) + " " + phoneNumber.substring(3, 7) + " "
     }
@@ -102,9 +103,10 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
             else -> "여"
         }
     }
+
     fun toCareerStr(myPageCareerIdx: Int?): String {
-        val myPageCareerStr : String
-         when (myPageCareerIdx) {
+        val myPageCareerStr: String
+        when (myPageCareerIdx) {
             1 -> myPageCareerStr = "1개월 미만"
             2 -> myPageCareerStr = "3개월 미만"
             3 -> myPageCareerStr = "6개월 미만"
@@ -121,6 +123,11 @@ abstract class BaseActivity<T: ViewBinding>(private val inflate: (LayoutInflater
             else -> myPageCareerStr = "11년 이상"
         }
         return myPageCareerStr
+    }
+
+    fun toRatingStr(ratingFloat: Float): String {
+        val ratingStr = Math.round(ratingFloat * 10) / 10
+        return ratingStr.toString()
     }
 
 }
