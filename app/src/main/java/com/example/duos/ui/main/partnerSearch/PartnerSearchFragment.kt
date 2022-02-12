@@ -95,36 +95,13 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
 
-    override fun initAfterBinding() {
-
-        Log.d("유저idx", userIdx.toString())
-
-        recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
-
-        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
-        val userDB = UserDatabase.getInstance(requireContext())!!
-        binding.partnerSearchUserIdTv.text = userDB.userDao().getUserNickName(userIdx)
-        Log.d("유저닉네임", userDB.userDao().getUserNickName(userIdx))
-        Log.d("유저프로필url", userDB.userDao().getUserProfileImgUrl(userIdx))
-        Log.d("jwtAccess토큰정보", getAccessToken().toString())
-        Log.d("jwtRefresh토큰정보", getRefreshToken().toString())
-
-        Glide.with(this).load(userDB.userDao().getUserProfileImgUrl(userIdx))
-            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-
-        // 임시로 사용자의 프로필이미지와 닉네임 세팅함
-//        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
-//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-//        binding.partnerSearchUserIdTv.text = "tennis1010"
-
+    override fun onStart() {
+        super.onStart()
+        Log.d("PartnerSearchFragment 생명주기", "onStart")
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-
-
-
-
 
         if(getCheckUserAppliedPartnerFilterMoreThanOnce()){ //필터를 한번이라도 적용한 적이 있을 때
             // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
@@ -164,6 +141,31 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 startActivity(intent)
             }
         })
+    }
+
+    override fun initAfterBinding() {
+
+        Log.d("유저idx", userIdx.toString())
+
+        recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
+
+        // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
+        val userDB = UserDatabase.getInstance(requireContext())!!
+        binding.partnerSearchUserIdTv.text = userDB.userDao().getUserNickName(userIdx)
+        Log.d("유저닉네임", userDB.userDao().getUserNickName(userIdx))
+        Log.d("유저프로필url", userDB.userDao().getUserProfileImgUrl(userIdx))
+        Log.d("jwtAccess토큰정보", getAccessToken().toString())
+        Log.d("jwtRefresh토큰정보", getRefreshToken().toString())
+
+        Glide.with(this).load(userDB.userDao().getUserProfileImgUrl(userIdx))
+            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
+
+        // 임시로 사용자의 프로필이미지와 닉네임 세팅함
+//        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
+//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
+//        binding.partnerSearchUserIdTv.text = "tennis1010"
+
+
 
 
 
