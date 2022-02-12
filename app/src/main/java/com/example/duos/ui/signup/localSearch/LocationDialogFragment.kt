@@ -60,7 +60,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         binding.locationCloseBtn.setOnClickListener {
             this.dismiss()
         }
-        binding.locationOkBtn.setOnClickListener {
+        binding.locationOkBtn.setOnClickListener {  /* 지역 선택 다이얼로그에서 값을 선택 했을 때 viewModel의 값이 바뀜*/
             if (requireActivity() is SignUpActivity) {
                 this.dismiss()
                 val viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
