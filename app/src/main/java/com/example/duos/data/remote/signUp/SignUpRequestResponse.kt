@@ -14,6 +14,7 @@ data class SignUpRequestResultData(
     @SerializedName("experienceIdx") val experienceIdx: Int,
     @SerializedName("profilePhotoUrl") val profilePhotoUrl: String,
     @SerializedName("introduction") val introduction: String,
+    @SerializedName("fcmToken") val fcmToken: String,
     @SerializedName("jwtAccessToken") val jwtAccessToken: String,
     @SerializedName("jwtRefreshToken") val jwtRefreshToken: String
 )

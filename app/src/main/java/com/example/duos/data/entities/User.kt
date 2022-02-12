@@ -15,6 +15,7 @@ data class User(
     var experience: Int? = null,
     var profileImg: String? = null,
     var introduce: String? = null,
+    var fcmToken: String? = null,
     @PrimaryKey var userIdx: Int? = null
 )
 

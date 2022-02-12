@@ -20,7 +20,6 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
     private var friendListDatas = ArrayList<StarredFriend>()
     lateinit var mContext: MainActivity
-    lateinit var sharedViewModel: FriendListCountViewModel
     lateinit var viewModel: ViewModel
 
 
@@ -53,6 +52,8 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
         val starredFriendListRVAdapter = StarredFriendListRVAdapter(friendListDatas)
 
+        viewModel.friendCount.value = starredFriendListRVAdapter.itemCount
+
         starredFriendListRVAdapter.setMyItemClickListener(object : StarredFriendListRVAdapter.MyItemClickListener {
             override fun onDeleteFriend(friendIdx : Int) {
                 // 찜한친구 목록에서 삭제
@@ -61,9 +62,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
             override fun onGetFriendCount() {
                 // 뷰 모델 프로바이더를 통해 뷰모델 가져오기
-                sharedViewModel = ViewModelProvider(requireActivity()).get(FriendListCountViewModel::class.java)
-                // 뷰모델이 가지고 있는 값의 변경사항을 관찰할 수 있는 라이브 데이터를 관찰한다
-                sharedViewModel.updateValue(starredFriendListRVAdapter.itemCount)
+                viewModel.friendCount.value = starredFriendListRVAdapter.itemCount
             }
         })
         binding.starredFriendListRecyclerviewRc.adapter = starredFriendListRVAdapter

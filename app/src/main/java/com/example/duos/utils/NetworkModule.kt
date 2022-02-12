@@ -71,9 +71,10 @@ internal class AuthInterceptor : Interceptor {
                     synchronized(this){
                         Log.d("AuthInterceptor", "재발급")
                         if (getRefreshToken()){
-                            setAuthHeader(builder, getAccessToken()); //set auth token to updated
-                            request = builder.build();
-                            return chain.proceed(request); //repeat request with new token
+                            Log.d("재발급 성공",request.toString())
+                            setAuthHeader(builder, getAccessToken()) //set auth token to updated
+                            request = builder.build()
+                            return chain.proceed(request) //repeat request with new token
                         }
                         else{
                             // 로그아웃 api 호출
@@ -81,17 +82,6 @@ internal class AuthInterceptor : Interceptor {
                     }
                 }
             }
-            // 지훈님코드
-//        when (response.code) {
-//            200 or 201 or 202 ->{
-//                Log.d("AuthInterceptor", "재발급 불필요")
-//                Log.d("AuthInterceptor", response.code.toString())
-//            }
-//            else ->{
-//                Log.d("AuthInterceptor", "재발급")
-//                AccessTokenService.getAccessToken()
-//            }
-
         }
         return chain.proceed(request)
     }

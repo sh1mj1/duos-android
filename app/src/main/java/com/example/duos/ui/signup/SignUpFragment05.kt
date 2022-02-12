@@ -588,6 +588,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
             result.experienceIdx,
             result.profilePhotoUrl,
             result.introduction,
+            result.fcmToken,
             result.userIdx
         )
         return user
