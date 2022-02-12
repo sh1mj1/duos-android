@@ -50,10 +50,15 @@ class RecommendFriendListRVAdapter(private val friendlist: ArrayList<Recommended
         // 친구 찜하기
         holder.binding.recommendFriendListLikeIv.setOnClickListener {
             mItemClickListener.onAddFriend(friendlist[position])
-            if (friendlist[position].recommendedFriendIsStarred)
+            if (friendlist[position].recommendedFriendIsStarred == true) {
                 holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_unlike)
-            else
+                updateFriend(position, false)
+            }
+            else {
                 holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_like)
+                updateFriend(position, true)
+            }
+
         }
 
     }
@@ -65,6 +70,11 @@ class RecommendFriendListRVAdapter(private val friendlist: ArrayList<Recommended
         if (friendlist.size == 0) {
             mItemClickListener.onDeleteText()
         }
+    }
+
+    private fun updateFriend(position: Int, isStarred : Boolean){
+        friendlist[position].recommendedFriendIsStarred = isStarred
+        notifyItemChanged(position)
     }
 
     override fun getItemCount(): Int = friendlist.size
@@ -82,7 +92,7 @@ class RecommendFriendListRVAdapter(private val friendlist: ArrayList<Recommended
                     else -> "여자"
                 }
             binding.recommendFriendListLikeIv.setImageResource(
-                when (friend.recommendedFriendIsStarred) {
+                when (friend.recommendedFriendIsStarred!!) {
                     true -> R.drawable.ic_like
                     false -> R.drawable.ic_unlike
                 }

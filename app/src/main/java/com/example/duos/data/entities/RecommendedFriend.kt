@@ -8,5 +8,5 @@ data class RecommendedFriend(
     @SerializedName("age") var recommendedFriendAge: String? = "",
     @SerializedName("gender") var recommendedFriendGender: Int? = null,
     @SerializedName("profilePhotoUrl") var recommendedFriendImgUrl: String? = "",
-    @SerializedName("starred") var recommendedFriendIsStarred : Boolean = false // 찜한 여부
+    @SerializedName("starred") var recommendedFriendIsStarred : Boolean?// 찜한 여부
 )

@@ -15,7 +15,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class FriendListFragment(): BaseFragment<FragmentFriendListBinding>(FragmentFriendListBinding::inflate){
 
     lateinit var viewModel: ViewModel
-    lateinit var sharedViewModel: FriendListCountViewModel
 
     override fun initAfterBinding() {
         var friendCount : Int // 서버에서 친구 수 받아오기
@@ -28,9 +27,8 @@ class FriendListFragment(): BaseFragment<FragmentFriendListBinding>(FragmentFrie
         val child = binding.friendListContentVp.getChildAt(0)
         (child as RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(FriendListCountViewModel::class.java)
-        sharedViewModel.currentCount.observe(viewLifecycleOwner, Observer {
-            friendCount = it
+        viewModel.friendCount.observe(viewLifecycleOwner, Observer {
+            friendCount = it!!
             TabLayoutMediator(binding.friendListContentTb, binding.friendListContentVp){
                     tab, position -> tab.text =  arrayListOf("찜한 친구($friendCount)", "지난 추천 친구")[position]
             }.attach()

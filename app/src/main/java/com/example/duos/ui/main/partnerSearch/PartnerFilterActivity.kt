@@ -15,6 +15,7 @@ import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.ActivityPartnerFilterBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.main.friendList.FriendListDialogFragment
 import com.example.duos.utils.getCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.utils.saveCheckUserAppliedPartnerFilterMoreThanOnce
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
@@ -29,6 +30,7 @@ class PartnerFilterActivity :
 
     lateinit var viewModel: ViewModel
     val myUserIdx = getUserIdx()!!
+    val TAG = "PartnerFilterActivity"
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
 
     @SuppressLint("SetTextI18n")
@@ -105,9 +107,9 @@ class PartnerFilterActivity :
 //            val ballCapacityMax: Int =
 //                binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
 //            val location: Int = viewModel.partnerLocation.value!!
-
+            Log.d(TAG, "적용하기 버튼 클릭")
             PartnerSearchService.partnerSearchFilterCount(this, myUserIdx)
-
+            Log.d(TAG, "파트너 필터 적용 가능 횟수 부르는 API 호출")
             // api 데이터를 룸디비에 저장 - 수정 필요
 
 //            val recommendedPartnerDB = RecommendedPartnerDatabase.getInstance(this)!!
@@ -166,14 +168,19 @@ class PartnerFilterActivity :
             .setRightButton(object : PartnerFilterDialog.PartnerFilterDialogCallbackRight {
                 override fun onClick(dialog: PartnerFilterDialog) {
                     /* 적용하기 선택 -> 다이얼로그 dismiss-> viewModel의 값 가져오기 -> API 호출 ->*/
-                    dialog.dismiss()
+                    Log.d(TAG, "count 이게 얼마나 필터 추천 받을 수 있는지 남은 수 : $count")
                     val gender: Int = viewModel.partnerGender.value!!
                     val ageMin: Int = binding.partnerFilterAgeMinTv.text.toString().toInt()
                     val ageMax: Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
-                    val ballCapacityMin: Int =
-                        binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
-                    val ballCapacityMax: Int =
-                        binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
+                    val str = "aaa1234, ^&*2233pp"
+
+                    val number = str.replace("[^0-9]".toRegex(), "")
+                    val ballCapacityMinStr = binding.partnerFilterBallCapabilityMinTv.text.toString()
+                    val ballCapacityMin : Int = strToInt(ballCapacityMinStr)
+//                    val ballCapacityMin: Int = binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
+                    val ballCapacityMaxStr = binding.partnerFilterBallCapabilityMaxTv.text.toString()
+                    val ballCapacityMax: Int = strToInt(ballCapacityMaxStr)
+//                        binding.partnerFilterBallCapabilityMaxTv.text.toString().toInt()
                     val location: Int = viewModel.partnerLocation.value!!
                     PartnerFilterService.showPartnersByFilter(
                         this,
@@ -185,6 +192,9 @@ class PartnerFilterActivity :
                         ballCapacityMax,
                         location
                     )
+                    Log.d(TAG, "검색한 기준 : $myUserIdx, $gender, $ageMin, $ageMax, $ballCapacityMin, $ballCapacityMax, $location")
+                    dialog.dismiss()
+
                 }
 
                 override fun onGetPartnerFilterSuccess(recommendedPartner: List<RecommendedPartner>) {
@@ -214,8 +224,6 @@ class PartnerFilterActivity :
                     )
 
                     val intent = Intent(this@PartnerFilterActivity, MainActivity::class.java)
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //액티비티 스택제거
                     startActivity(intent)
                 }
 
@@ -224,8 +232,10 @@ class PartnerFilterActivity :
                 }
             })
             .setLeftButton(object : PartnerFilterDialog.PartnerFilterDialogCallbackLeft {
-                override fun onClick(dialog: PartnerFilterDialog) { /* 취소 버튼 클릭 파트너 추천 필터를 적용한 수 카운트 안 늘어나*/
+                override fun onClick(dialog: PartnerFilterDialog) {
+                    
                     dialog.dismiss()
+                    Log.d(TAG,"취소 버튼을 누름")
                 }
             })
             .show()
@@ -236,7 +246,7 @@ class PartnerFilterActivity :
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    fun setApplyBtnEnable() {   /* 필터 적용하기 버튼 활성화 */
+    fun setApplyBtnEnable() {
         binding.partnerFilterApplyTv.isEnabled = true
         binding.partnerFilterApplyTv.background = getDrawable(R.color.primary)
         binding.partnerFilterApplyTv.setTextColor(getColor(R.color.white))
@@ -252,9 +262,16 @@ class PartnerFilterActivity :
 
     override fun onPartnerSearchFilterCountSuccess(searchCount: Int) {
         if (searchCount > 0) {  /* 파트너 추천할 수 있는 횟수가 있으면 다이얼로그 띄우기*/
-            setDialog(searchCount)
-        }
+            Log.d("필터남은횟수", searchCount.toString())
+            if (searchCount > 0) {
+                setDialog(searchCount)
+            } else {
+                PartnerFilterUnableDialogFragment().show(
+                    supportFragmentManager, "파트너필터적용못함"
+                )
+            }
 
+        }
     }
 
     override fun onPartnerSearchFilterCountFailure(code: Int, message: String) {
@@ -287,4 +304,5 @@ class PartnerFilterActivity :
 //            seekbar.showIndicator(false)
 //        }
 //    }
+
 }

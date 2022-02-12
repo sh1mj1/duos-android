@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.duos.ApplicationClass
 import com.example.duos.R
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.login.LoginService
@@ -26,6 +27,9 @@ import com.example.duos.data.entities.User
 import com.example.duos.utils.saveJwt
 import com.example.duos.utils.saveRefreshJwt
 import com.example.duos.utils.saveUserIdx
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
@@ -155,7 +159,25 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         val regex = Regex("[^A-Za-z0-9]")//Regex를 활용하여 특수문자 없애주기
         val phoneNumber = regex.replace(this.binding.loginPhoneNumberEt.text.toString(), "")
         val phoneNumVerifying = binding.loginPhoneNumberVerifyingEt.text.toString()
-        LoginService.loginVerifyAuthNum(this, phoneNumber, phoneNumVerifying)
+
+        FirebaseApp.initializeApp(this)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(
+                    ApplicationClass.TAG,
+                    "Fetching FCM registration token failed",
+                    task.exception
+                )
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token // FCM 등록 토큰 get
+            val token = task.result
+
+            Log.d("token", token!!)
+
+            LoginService.loginVerifyAuthNum(this, phoneNumber, phoneNumVerifying, token)
+        })
     }
 
     override fun onBackPressed() {
@@ -290,6 +312,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             result.experienceIdx,
             result.profilePhotoUrl,
             result.introduction,
+            result.fcmToken,
             result.userIdx
         )
         return user

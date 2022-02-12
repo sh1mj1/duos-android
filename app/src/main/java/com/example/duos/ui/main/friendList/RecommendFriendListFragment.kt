@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.RecommendedFriend
@@ -13,6 +14,7 @@ import com.example.duos.data.remote.myFriendList.FriendListService
 import com.example.duos.data.remote.myFriendList.RecommendHistoryDto
 import com.example.duos.databinding.FragmentRecommendFriendListBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getFriendListDiaglogNotShowing
 import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDate
@@ -25,14 +27,17 @@ class RecommendFriendListFragment() :
     BaseFragment<FragmentRecommendFriendListBinding>(FragmentRecommendFriendListBinding::inflate),
     RecommendedFriendListView, AddStarredFriendView, DeleteStarredFriendView {
 
+    lateinit var viewModel: ViewModel
     private var adapterList = arrayOfNulls<RecommendFriendListRVAdapter>(8)
 
     override fun onResume() {
-        FriendListService.getRecommendedFriendList(this, getUserIdx()!!)
+       getRecommendedFriend()
         super.onResume()
     }
 
-    override fun initAfterBinding() {}
+    override fun initAfterBinding() {
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendHistoryDto>) {
@@ -85,11 +90,13 @@ class RecommendFriendListFragment() :
 
                 override fun onAddFriend(friend: RecommendedFriend) {
                     // 하트값을 viewModel 로 observe 해서 빈하트라면, 찜하기 , 채워져있는 하트라면, 찜하기 취소 api를 호출하자.
-                    if (friend.recommendedFriendIsStarred){
+                    if (friend.recommendedFriendIsStarred == true){
                         Log.d("찜삭제","api 호출하기")
+                        viewModel.friendCount.value = viewModel.friendCount.value?.minus(1)
                         deleteStarredFriend(friend.partnerIdx!!)
                     } else{
                         Log.d("찜하기","api 호출하기")
+                        viewModel.friendCount.value = viewModel.friendCount.value?.plus(1)
                         addStarredFriend(friend.partnerIdx!!)
                     }
                 }
@@ -101,6 +108,10 @@ class RecommendFriendListFragment() :
             })
 
         }
+    }
+
+    fun getRecommendedFriend(){
+        FriendListService.getRecommendedFriendList(this, getUserIdx()!!)
     }
 
     fun addStarredFriend(partnerIdx : Int){
@@ -116,7 +127,7 @@ class RecommendFriendListFragment() :
     }
 
     override fun onAddStarredFriendSuccess() {
-
+        Log.d("찜하기","성공")
     }
 
     override fun onAddStarredFriendFailure(code: Int, message: String) {
@@ -124,7 +135,7 @@ class RecommendFriendListFragment() :
     }
 
     override fun onDeleteStarredFriendSuccess() {
-
+        Log.d("찜삭제","성공")
     }
 
     override fun onDeleteStarredFriendFailure(code: Int, message: String) {

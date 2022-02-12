@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.friendList
+package com.example.duos.ui.main.partnerSearch
 
 import android.content.Context
 import android.graphics.Color
@@ -11,38 +11,32 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.example.duos.databinding.FragmentFriendListDialogBinding
+import com.example.duos.databinding.FragmentPartnerFilterUnableDialogBinding
 import com.example.duos.utils.saveFriendListDialogNotShowing
 
-class FriendListDialogFragment : DialogFragment() {
+class PartnerFilterUnableDialogFragment  : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isCancelable = false
+        isCancelable = true
 
     }
 
-    private lateinit var binding: FragmentFriendListDialogBinding
+    private lateinit var binding: FragmentPartnerFilterUnableDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFriendListDialogBinding.inflate(inflater, container, false)
+        binding = FragmentPartnerFilterUnableDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.friendListDialogOkTv.setOnClickListener {
-            if (binding.friendListDialogCheckBoxCb.isChecked){
-                // 다시 보지 않기 설정 -> sharedpreference 에 저장
-                saveFriendListDialogNotShowing(true)
-            }
-            else{
-                saveFriendListDialogNotShowing(false)
-            }
+        binding.parterFilterUnableDialogOkTv.setOnClickListener {
             this.dismiss()
         }
     }

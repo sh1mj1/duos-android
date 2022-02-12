@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 
 class ViewModel : ViewModel() {
 
+    // friendListCount
+    var friendCount = MutableLiveData<Int?>()
+
     // signup
     var phoneNumber = MutableLiveData<String?>()
     var phoneNumberVerifying = MutableLiveData<String>()

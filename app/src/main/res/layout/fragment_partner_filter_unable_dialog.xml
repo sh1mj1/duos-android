@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/parter_filter_unable_dialog_text_01_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/partner_filter_unable"
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/parter_filter_unable_dialog_linearlayout_01_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:paddingBottom="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/parter_filter_unable_dialog_text_01_tv">
+
+
+            <TextView
+                android:id="@+id/parter_filter_unable_dialog_text_02_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/partner_filter_unable_02"
+                android:textColor="@color/primary"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/parter_filter_unable_dialog_text_03_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/partner_filter_unable_03"
+                android:textColor="@color/grey"
+                android:textSize="15sp"/>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/parter_filter_unable_dialog_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@drawable/friend_list_dialog_line"
+            app:layout_constraintTop_toBottomOf="@id/parter_filter_unable_dialog_linearlayout_01_ll"/>
+
+        <TextView
+            android:id="@+id/parter_filter_unable_dialog_ok_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/partner_filter_dialog_btn"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/friend_list_dialog_ok_btn"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/parter_filter_unable_dialog_line"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

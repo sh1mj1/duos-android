@@ -12,7 +12,7 @@ object PartnerFilterService {
     val retrofit = NetworkModule.getRetrofit()
     val TAG = "PartnerFilterService"
     fun showPartnersByFilter(
-        partnerFilterListView: PartnerFilterDialog.PartnerFilterDialogCallback,
+        partnerFilterListView: PartnerFilterDialog.PartnerFilterDialogCallbackRight,
         userIdx: Int,
         gender: Int,
         ageStart: Int,
