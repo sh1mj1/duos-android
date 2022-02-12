@@ -29,7 +29,7 @@ ShowAppointmentView, DeleteAppointmentView{
 
     override fun initAfterBinding() {
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-        chatDB = ChatDatabase.getInstance(this)!!
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         setDialog()

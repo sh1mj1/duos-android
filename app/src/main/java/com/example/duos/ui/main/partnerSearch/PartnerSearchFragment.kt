@@ -59,6 +59,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         Log.d("get_recommendedPartnerList","ongetSuccess")
         //progressOFF()
+        var currentTime = System.currentTimeMillis()
+        var todayDate = Date(currentTime)
+        var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        var formattedTodayDate = dateFormatter.format(todayDate)
+        saveLastUpdatedDate(formattedTodayDate)
+        Log.d("saved lastUpdatedDate", getLastUpdatedDate())
 
         val userNickName = partnerSearchData.userNickname
 
@@ -103,6 +109,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
         binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
+        //if(false){
         if(getCheckUserAppliedPartnerFilterMoreThanOnce()){ //필터를 한번이라도 적용한 적이 있을 때
             // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
             recommendedPartnerDatas.clear()
@@ -110,7 +117,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
             binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-            Log.d("필터를 한번이라도 적용한 적 있음", " ")
+            Log.d("필터를 한번이라도 적용한 적 있음", "ㅎ")
 
         }else{  // 필터를 한 번도 적용한 적이 없는 사용자일때
             //날짜 확인
@@ -119,6 +126,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
             var formattedTodayDate = dateFormatter.format(todayDate)
 
+            //if(false){
             if(getLastUpdatedDate().equals(formattedTodayDate)){    // 오늘 파트너 추천을 받은 적이 있는지 확인하고 있다면 룸디비에서 데이터 가져옴
                 Log.d("파트너 추천 받은 적 있음", getLastUpdatedDate())
                 recommendedPartnerDatas.clear()
@@ -126,8 +134,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             }else{
                 PartnerSearchService.partnerSearchData(this, userIdx)
-                saveLastUpdatedDate(formattedTodayDate)
-                Log.d("saved lastUpdatedDate", getLastUpdatedDate())
+
             }
         }
 

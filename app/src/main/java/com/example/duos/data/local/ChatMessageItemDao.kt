@@ -16,4 +16,7 @@ interface ChatMessageItemDao {
 
     @Query("SELECT * FROM ChatMessageItemTable WHERE chatMessageIdx LIKE :chatRoomIdx || '%'")
     fun getChatMessages(chatRoomIdx: String): List<ChatMessageItem>
+
+    @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx =:chatRoomIdx ORDER BY ROWID DESC LIMIT 1")
+    fun getLastMessageData(chatRoomIdx: String): ChatMessageItem
 }

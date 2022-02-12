@@ -36,7 +36,7 @@ EditAppointmentView{
 
         val intent = intent
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-        chatDB = ChatDatabase.getInstance(this)!!
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         initCalendar()
