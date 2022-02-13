@@ -38,6 +38,7 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
     override fun initAfterBinding() {
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
+        binding.starredFriendListRecyclerviewRc.setHasFixedSize(true)
         binding.starredFriendListRecyclerviewRc.itemAnimator = null
         binding.starredFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.starredFriendListRecyclerviewRc.adapter = StarredFriendListRVAdapter(ArrayList<StarredFriend>())

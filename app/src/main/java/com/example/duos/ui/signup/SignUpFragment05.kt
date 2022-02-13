@@ -184,54 +184,54 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
                             }
 
-                            // 사진 1 -> 갤러리에 저장 함 (용량 큰). 이미지의 용량이 너무 크면 서버와 송수신할 때 데이터를 너무 많이 써서 용량 줄이는 작업 ㄱ,  사진 보정 가능
-                            1 -> {
-
-                                // 거부 Or 아직 수락하지 않은 퍼미션을 저장할 String 배열리스트
-                                val rejectedPermissionList = ArrayList<String>()
-                                // 필요한 퍼미션들이 현재 권한을 받았는지 체크
-                                for (permission in requiredPermissions1) {
-                                    if (ContextCompat.checkSelfPermission(
-                                            requireContext(),
-                                            permission
-                                        ) != PackageManager.PERMISSION_GRANTED
-                                    ) {
-                                        //만약 권한이 없다면 rejectedPermissionList에 추가
-                                        rejectedPermissionList.add(permission)
-                                    }
-                                }
-
-                                if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
-                                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
-                                    requestPermissions(
-                                        rejectedPermissionList.toArray(array),
-                                        multiplePermissionsCode1
-                                    )
-                                } else {// 모두 허용된 퍼미션이라면
-                                    Log.d("Signup_Image_Upload_Dialog", "PERMISSION_GRANTED$which")
-                                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-                                    // 촬영한 사진이 저장될 파일 이름
-                                    val file_name = "/temp_${System.currentTimeMillis()}.jpg"
-                                    // 경로 + 파일 이름
-                                    val pic_path = "$file_path/$file_name"
-                                    val file = File(pic_path)
-
-                                    // 사진이 저장될 위치를 관리하는 Uri 객체
-                                    // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
-                                    // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
-                                    contentUri = FileProvider.getUriForFile(
-                                        requireContext(),
-                                        "com.duos.camera.file_provider",
-                                        file
-                                    )
-
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-                                    startActivityForResult(intent, multiplePermissionsCode1)
-                                }
-                            }
+//                            // 사진 1 -> 갤러리에 저장 함 (용량 큰). 이미지의 용량이 너무 크면 서버와 송수신할 때 데이터를 너무 많이 써서 용량 줄이는 작업 ㄱ,  사진 보정 가능
+//                            1 -> {
+//
+//                                // 거부 Or 아직 수락하지 않은 퍼미션을 저장할 String 배열리스트
+//                                val rejectedPermissionList = ArrayList<String>()
+//                                // 필요한 퍼미션들이 현재 권한을 받았는지 체크
+//                                for (permission in requiredPermissions1) {
+//                                    if (ContextCompat.checkSelfPermission(
+//                                            requireContext(),
+//                                            permission
+//                                        ) != PackageManager.PERMISSION_GRANTED
+//                                    ) {
+//                                        //만약 권한이 없다면 rejectedPermissionList에 추가
+//                                        rejectedPermissionList.add(permission)
+//                                    }
+//                                }
+//
+//                                if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
+//                                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
+//                                    requestPermissions(
+//                                        rejectedPermissionList.toArray(array),
+//                                        multiplePermissionsCode1
+//                                    )
+//                                } else {// 모두 허용된 퍼미션이라면
+//                                    Log.d("Signup_Image_Upload_Dialog", "PERMISSION_GRANTED$which")
+//                                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//
+//                                    // 촬영한 사진이 저장될 파일 이름
+//                                    val file_name = "/temp_${System.currentTimeMillis()}.jpg"
+//                                    // 경로 + 파일 이름
+//                                    val pic_path = "$file_path/$file_name"
+//                                    val file = File(pic_path)
+//
+//                                    // 사진이 저장될 위치를 관리하는 Uri 객체
+//                                    // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
+//                                    // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
+//                                    contentUri = FileProvider.getUriForFile(
+//                                        requireContext(),
+//                                        "com.duos.camera.file_provider",
+//                                        file
+//                                    )
+//
+//                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
+//                                    startActivityForResult(intent, multiplePermissionsCode1)
+//                                }
+//                            }
                             // 파일 접근
-                            2 -> {
+                            1 -> {
                                 Log.d("Signup_Image_Upload_Dialog", "파일 접근 $which")
                                 val rejectedPermissionList = ArrayList<String>()
                                 // 필요한 퍼미션들이 현재 권한을 받았는지 체크

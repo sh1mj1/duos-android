@@ -70,6 +70,7 @@ object AppointmentService {
     }
 
     fun makeAppointment(makeAppointmentView: MakeAppointmentView, makeAppointment: MakeAppointment){
+        Log.d("약속잡기","호출됨")
         val makeAppointmentService = retrofit.create(AppointmentRetrofitInterface::class.java)
         makeAppointmentService.makeAppointment(makeAppointment).enqueue(object :
             Callback<MakeAppointmentResponse>{
@@ -81,7 +82,10 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1122 -> makeAppointmentView.onMakeAppointmentSuccess()
+                    1122 -> {
+                        Log.d("약속잡기 api","성공")
+                        makeAppointmentView.onMakeAppointmentSuccess()
+                    }
                     else -> makeAppointmentView.onMakeAppointmentFailure(resp.code, resp.message)
                 }
             }

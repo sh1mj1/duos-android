@@ -75,6 +75,7 @@ ShowAppointmentView, DeleteAppointmentView{
         Log.d("Delete Appointment",chatRoom.participantIdx.toString()+"/"+chatRoom.appointmentIdx)
         val deleteAppointment = DeleteAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx!!, chatRoom.appointmentIdx
         !!)
+            Log.d("약속취소",chatRoom.appointmentIdx!!.toString() + " " +  getUserIdx()!!.toString() + " " + deleteAppointment.toString())
         AppointmentService.deleteAppointment(this, chatRoom.appointmentIdx!!, getUserIdx()!!, deleteAppointment)
     }
 

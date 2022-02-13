@@ -46,7 +46,8 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
         val resignBuilder = CustomDialog.Builder(requireContext())// 액티비티에서는 rquireContext() -> context
             .setCommentMessage("로그아웃하시겠습니까?") // Dialog 텍스트 설정하기
             .setRightButton("로그아웃", object : CustomDialog.CustomDialogCallback {
-                override fun onClick(dialog: CustomDialog, message: String) {                   // 오른쪽 버튼 클릭시 이벤트 설정하기
+                override fun onClick(dialog: CustomDialog, message: String) { // 오른쪽 버튼 클릭시 이벤트 설정하기
+                    Log.d("로그아웃버튼","클릭")
                     LogOutService.postLogOut(this@SetupFragment, myUserIdx)
                     dialog.dismiss()
                     // DB의 데이터 삭제
