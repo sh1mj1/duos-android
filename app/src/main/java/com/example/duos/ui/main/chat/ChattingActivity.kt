@@ -61,46 +61,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chatDB: ChatDatabase
     lateinit var chatRoom : ChatRoom
     lateinit var viewModel: ViewModel
-
-//    private fun addChatItem(senderId: String, body: String, formattedSentAt: String, sentAt:LocalDateTime, type: String) {
-//        this.runOnUiThread {
-//            if (type.equals("DATE")) {    // 날짜일때 ex) "2021년 10월 28일"
-//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx)
-//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//                chatDB.chatMessageItemDao().insert(chatMessageItem) // 룸DB에 저장
-//            } else {    // 받은 메세지일때
-//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx)
-//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
-//            }
-//        }
-//    }
-
-    private fun addChatItem(chatMessageItemData: ChatMessageItem) {
-        this.runOnUiThread {
-            val type = chatMessageItemData.viewType
-            if (type == ChatType.CENTER_MESSAGE) {    // 날짜일때 ex) "2021년 10월 28일"
-                chattingMessagesRVAdapter.addItem(chatMessageItemData)  // 리사이클러뷰에 띄움
-                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
-            } else {    // 받은 메세지일때
-                chattingMessagesRVAdapter.addItem(chatMessageItemData)  // 리사이클러뷰에 띄움
-                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
-            }
-        }
-    }
-
-    // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
-    private fun toDate(currentMiliis: Long): String {
-
-        if(currentMiliis != null){
-
-        }
-        return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
-    }
+    var lastAddedChatMessageId: Int = -1 // 마지막으로 화면에 업데이트된 채팅메세지 번호 기록
 
     override fun onStart() {
         super.onStart()
@@ -127,6 +88,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         if(!chatMessageList.isEmpty()){
             for(i: Int in 0..chatMessageList.size-1){
                 addChatItem(chatMessageList[i])
+                Log.d("onStart addChatItem", chatMessageList[i].toString())
             }
         }else{
             Log.d("주고받은 채팅메세지가","없음~")
@@ -152,9 +114,17 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
+
+
+        //delete All
+
+
+        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
+
+
+        //
+
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
-
-
 
         var sendBtn: ImageView = binding.chattingSendBtn
 
@@ -167,44 +137,16 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // chatting test code
-        val currentTime = LocalDateTime.now()
-        Log.d("currentTime", currentTime.toString())
-        var formattedCurrentTime = getFormattedDateTime(currentTime.toString())
-        Log.d("formattedCurrentTime", formattedCurrentTime)
+        //val currentTime = LocalDateTime.now()
+        //Log.d("currentTime", currentTime.toString())
+        //var formattedCurrentTime = getFormattedDateTime(currentTime.toString())
+        //Log.d("formattedCurrentTime", formattedCurrentTime)
 
 //        addChatItem("userId", "2021년 01월 21일", formattedCurrentTime, currentTime, "DATE")
 //        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 //
 //        addChatItem(chatRoomName.text.toString(), "안녕하세요~^^", formattedCurrentTime, currentTime,"MESSAGE")
 //        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-
-        // 날짜 바뀌면 "2022년 01월 21일" 이런식으로 뜨게 하는거 eventTime이 바뀌면 해당 인덱스에 추가하는거 해보다가 말음
-//        chatListDatas.apply {
-//            add(MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "DATE", thisUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis())
-//            add(MessageData("957cfc80-481c-4ae4-88a0-25a9599dd511", "Message", targetUserIdx, thisUserIdx,"2022년 01월 21일", System.currentTimeMillis()))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//        }
-//        for (i: Int in 0..chatListDatas.size-1){
-//            val dateTime = getFormattedDateTime(chatListDatas[i].lastUpdatedAt)
-//            val nextDateTime = getFormattedDateTime(chatListDatas[i].lastUpdatedAt)
-//            if(dateTime != nextDateTime){
-//
-//            }
-//        }
-
 
         // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
         chattingEt.addTextChangedListener(object: TextWatcher {
@@ -254,6 +196,22 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
     }
 
+    private fun addChatItem(chatMessageItemData: ChatMessageItem) {
+        this.runOnUiThread {
+            val type = chatMessageItemData.viewType
+            if (type == ChatType.CENTER_MESSAGE) {    // 날짜일때 ex) "2021년 10월 28일"
+                chattingMessagesRVAdapter.addItem(chatMessageItemData)  // 리사이클러뷰에 띄움
+                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
+            } else {    // 받은 메세지일때
+                chattingMessagesRVAdapter.addItem(chatMessageItemData)  // 리사이클러뷰에 띄움
+                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+                lastAddedChatMessageId = chatMessageItemData.chatMessageId    // 마지막으로 화면에 띄운 채팅메세지 번호 기록
+                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
+            }
+        }
+    }
+
     private fun postSendMessage() {
         val messageData = sendMessageData(chatRoomIdx, "MESSAGE",
             thisUserIdx, partnerIdx, chattingEt.text.toString())
@@ -265,24 +223,34 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     fun sendMessage(chatMessageIdx: String){
         var sendTime = System.currentTimeMillis()
-        Log.d(
-            "MESSAGE", sendMessageData(
-                chatRoomIdx,
-                "MESSAGE",
-                thisUserIdx, partnerIdx,
-                chattingEt.text.toString()
-            ).toString()
-        )
-
-        // sendTime과 룸디비의 sentAt 확인해서 addItem 한번 더해주도록 수정 필요
+//        Log.d(
+//            "MESSAGE", sendMessageData(
+//                chatRoomIdx,
+//                "MESSAGE",
+//                thisUserIdx, partnerIdx,
+//                chattingEt.text.toString()
+//            ).toString()
+//        )
 
         var parsedChatMessageIdx = chatMessageIdx.split("@")
         var uuid = parsedChatMessageIdx[1]
+
+        Log.d("날짜변경선 추가", "lastAddedChatMessageId: "+lastAddedChatMessageId.toString())
+        // 첫 메세지일때 날짜변경선 추가 ... 채팅방 자체의 첫 메세지 일 떄 말고, 자정 지나고 첫 메세지일때도 추가되도록 수정 필요
+        if(lastAddedChatMessageId == -1){  //지금 받은 메세지가 채팅방의 처음 메세지일 때
+            val parsedLocalDateTime = LocalDateTime.now()
+
+            val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
+            val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
+            chattingMessagesRVAdapter.addItem(dateItem)
+            chatDB.chatMessageItemDao().insert(dateItem)
+        }
 
         val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
         chatDB.chatMessageItemDao().insert(chatMessageItem)
+        lastAddedChatMessageId = chatMessageItem.chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
         chattingEt.setText("")
     }
 
@@ -328,11 +296,14 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 //Log.d("발신자 아이디", senderId)
                 if(type.equals("MESSAGE")){
                     //addChatItem(senderId, body, sendTime, LocalDateTime.now(), "MESSAGE")
-                        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
-                    val chatMessageListSize = chatMessageList.size
-                    if(chatMessageListSize != 0){
-                        for(i: Int in 0..chatMessageListSize-1){
-                            addChatItem(chatMessageList[i])
+                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
+                    Log.d("updatedChatMessageList", updatedChatMessageList.toString())
+                    val updatedChatMessageListSize = updatedChatMessageList.size
+                    if(updatedChatMessageListSize != 0){
+                        for(i: Int in 0..updatedChatMessageListSize-1){
+                            addChatItem(updatedChatMessageList[i])
+                            Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
                         }
                     }else{
                         Log.d("주고받은 채팅메세지가","없음~")
@@ -385,6 +356,15 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             // ChatListFragment에서 인텐트로 온 chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
             // 포그라운드에서 온 경우 인텐트를 받음
         }
+    }
+
+    // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
+    private fun toDate(currentMiliis: Long): String {
+
+        if(currentMiliis != null){
+
+        }
+        return SimpleDateFormat("a hh:mm").format(Date(currentMiliis))
     }
 
     @Throws(Exception::class)
@@ -456,4 +436,20 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             ))
         binding.chattingMakePlanBtn.setText(getString(R.string.chatting_make_plan))
     }
+
+    //    private fun addChatItem(senderId: String, body: String, formattedSentAt: String, sentAt:LocalDateTime, type: String) {
+//        this.runOnUiThread {
+//            if (type.equals("DATE")) {    // 날짜일때 ex) "2021년 10월 28일"
+//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx)
+//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
+//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+//                chatDB.chatMessageItemDao().insert(chatMessageItem) // 룸DB에 저장
+//            } else {    // 받은 메세지일때
+//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx)
+//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
+//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+//                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
+//            }
+//        }
+//    }
 }

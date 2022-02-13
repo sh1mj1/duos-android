@@ -23,6 +23,9 @@ interface ChatMessageItemDao {
     @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx = :chatRoomIdx")
     fun getChatMessages(chatRoomIdx: String): List<ChatMessageItem>
 
+    @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx =:chatRoomIdx AND chatMessageId > :lastAddedChatMessageId")
+    fun getUpdatedMessages(chatRoomIdx: String, lastAddedChatMessageId: Int): List<ChatMessageItem>
+
     @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx =:chatRoomIdx ORDER BY ROWID DESC LIMIT 1")
     fun getLastMessageData(chatRoomIdx: String): ChatMessageItem
 }
