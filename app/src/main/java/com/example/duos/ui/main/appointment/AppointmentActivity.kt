@@ -49,7 +49,8 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         binding.makePlanApplyTv.setOnClickListener {
             Thread.sleep(100)
             Log.d("유저인덱스", getUserIdx().toString())
-            val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, partnerIdx, appointmentTime)
+            val makeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, partnerIdx, appointmentTime)
+            Log.d("약속body",makeAppointment.toString())
             AppointmentService.makeAppointment(this, makeAppointment)
         }
 
@@ -135,8 +136,6 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("약속시간",appointmentTime)
             }
         })
-
-
 
     }
 

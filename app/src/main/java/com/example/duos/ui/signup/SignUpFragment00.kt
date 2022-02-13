@@ -1,7 +1,10 @@
 package com.example.duos.ui.signup
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
+import android.widget.CheckBox
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.duos.databinding.FragmentSignup00Binding
@@ -12,6 +15,9 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
     lateinit var signupNextBtnListener: SignUpNextBtnInterface
     lateinit var viewModel: ViewModel
     lateinit var mContext: SignUpActivity
+    var isChecked01 : Boolean = false
+    var isChecked02 : Boolean = false
+    var isChecked03 : Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,8 +41,33 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
         })
 
         binding.signup00Checkbox01Cb.setOnClickListener { setCheckBox() }
+        binding.signup00AgreementAllTv.setOnClickListener {
+            isChecked01 = isChecked01.not()
+            binding.signup00Checkbox01Cb.isChecked = isChecked01
+            setCheckBox()
+        }
         binding.signup00Checkbox02Cb.setOnClickListener { viewModel.agreementEssential01.value = (viewModel.agreementEssential01.value)?.not() }
         binding.signup00Checkbox03Cb.setOnClickListener { viewModel.agreementEssential02.value = (viewModel.agreementEssential02.value)?.not() }
+        binding.signup00AgreementDetail01Tv.setOnClickListener {
+            isChecked02 = isChecked02.not()
+            binding.signup00Checkbox02Cb.isChecked = isChecked02
+            viewModel.agreementEssential01.value = (viewModel.agreementEssential01.value)?.not()
+        }
+        binding.signup00AgreementDetail02Tv.setOnClickListener {
+            isChecked03 = isChecked03.not()
+            binding.signup00Checkbox03Cb.isChecked = isChecked03
+            viewModel.agreementEssential02.value = (viewModel.agreementEssential02.value)?.not()
+        }
+
+        binding.signup00AgreementDetail01ArrowIv.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://duos.co.kr/policy"))
+            startActivity(intent)
+        }
+
+        binding.signup00AgreementDetail02ArrowIv.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://duos.co.kr/privacy"))
+            startActivity(intent)
+        }
     }
 
     fun setCheckBox(){

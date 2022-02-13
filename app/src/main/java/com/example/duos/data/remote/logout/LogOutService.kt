@@ -15,6 +15,7 @@ object LogOutService {
         logOutService.onPostLogOut(userIdx).enqueue(object : Callback<LogOutResponse> {
             override fun onResponse(call: Call<LogOutResponse>, response: Response<LogOutResponse>) {
                 val resp = response.body()!!
+                Log.d("로그아웃 resp",resp.toString())
                 when (resp.code) {
                     1000 -> logoutListView.onLogOutSuccess()
                     else -> logoutListView.onLogOutFailure(resp.code, resp.message)

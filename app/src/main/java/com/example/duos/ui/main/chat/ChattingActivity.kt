@@ -440,6 +440,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             // 약속 없음
             setAppointmentBtnNotExist()
             chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+            chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
         } else {
             // 약속 존재함
             setAppointmentBtnExist()

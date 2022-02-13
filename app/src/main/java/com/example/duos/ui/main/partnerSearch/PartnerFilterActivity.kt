@@ -70,9 +70,9 @@ class PartnerFilterActivity :
         ballCapacityRangeSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
 
-                if(leftValue.toInt() % 1 == 0){
+                if (leftValue.toInt() % 1 == 0) {
                     var leftUnit = "년"
-                    if(leftValue < 1f){     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
+                    if (leftValue < 1f) {     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
                         leftUnit = "개월"
                     }
                     binding.partnerFilterBallCapabilityMinTv.text = leftValue.toInt().toString() + leftUnit
@@ -222,6 +222,8 @@ class PartnerFilterActivity :
                     )
 
                     val intent = Intent(this@PartnerFilterActivity, MainActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //액티비티 스택제거
                     startActivity(intent)
                 }
 
@@ -256,7 +258,6 @@ class PartnerFilterActivity :
         binding.partnerFilterApplyTv.background = getDrawable(R.color.white_smoke_E)
         binding.partnerFilterApplyTv.setTextColor(getColor(R.color.dark_gray_B0))
     }
-
 
 
     override fun onPartnerSearchFilterCountSuccess(searchCount: Int) {
