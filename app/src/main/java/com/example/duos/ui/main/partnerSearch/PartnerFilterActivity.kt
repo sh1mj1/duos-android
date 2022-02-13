@@ -47,10 +47,10 @@ class PartnerFilterActivity :
         // 연령 선택
         ageRangeSeekbar.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
-                if (leftValue.toInt() % 10 == 0) {
+                if(leftValue.toInt() % 10 == 0){
                     binding.partnerFilterAgeMinTv.text = leftValue.toInt().toString()
                 }
-                if (rightValue.toInt() % 10 == 0) {
+                if(rightValue.toInt() % 10 == 0){
                     binding.partnerFilterAgeMaxTv.text = rightValue.toInt().toString()
                 }
 //                changeSeekBarIndicator(rangeSeekbar.leftSeekBar, leftValue)
@@ -70,9 +70,9 @@ class PartnerFilterActivity :
         ballCapacityRangeSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
 
-                if (leftValue.toInt() % 1 == 0) {
+                if(leftValue.toInt() % 1 == 0){
                     var leftUnit = "년"
-                    if (leftValue < 1f) {     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
+                    if(leftValue < 1f){     // == 0f로 하면 0과 1 사이에서 0개월이 아닌 0년으로 뜨는 구간이 생김
                         leftUnit = "개월"
                     }
                     binding.partnerFilterBallCapabilityMinTv.text = leftValue.toInt().toString() + leftUnit
@@ -172,9 +172,7 @@ class PartnerFilterActivity :
                     val gender: Int = viewModel.partnerGender.value!!
                     val ageMin: Int = binding.partnerFilterAgeMinTv.text.toString().toInt()
                     val ageMax: Int = binding.partnerFilterAgeMaxTv.text.toString().toInt()
-                    val str = "aaa1234, ^&*2233pp"
 
-                    val number = str.replace("[^0-9]".toRegex(), "")
                     val ballCapacityMinStr = binding.partnerFilterBallCapabilityMinTv.text.toString()
                     val ballCapacityMin : Int = strToInt(ballCapacityMinStr)
 //                    val ballCapacityMin: Int = binding.partnerFilterBallCapabilityMinTv.text.toString().toInt()
@@ -233,7 +231,7 @@ class PartnerFilterActivity :
             })
             .setLeftButton(object : PartnerFilterDialog.PartnerFilterDialogCallbackLeft {
                 override fun onClick(dialog: PartnerFilterDialog) {
-                    
+
                     dialog.dismiss()
                     Log.d(TAG,"취소 버튼을 누름")
                 }
@@ -258,6 +256,7 @@ class PartnerFilterActivity :
         binding.partnerFilterApplyTv.background = getDrawable(R.color.white_smoke_E)
         binding.partnerFilterApplyTv.setTextColor(getColor(R.color.dark_gray_B0))
     }
+
 
 
     override fun onPartnerSearchFilterCountSuccess(searchCount: Int) {

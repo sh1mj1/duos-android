@@ -29,7 +29,7 @@ ShowAppointmentView, DeleteAppointmentView{
 
     override fun initAfterBinding() {
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-        chatDB = ChatDatabase.getInstance(this)!!
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         setDialog()
@@ -81,6 +81,7 @@ ShowAppointmentView, DeleteAppointmentView{
         Log.d("result",result.toString())
         binding.planInfoDateTv.text = result.appointmentData
         binding.planInfoTimeTv.text = result.appointmentTime
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, result.appointmentIdx)
     }
 
     override fun onShowAppointmentFailure(code: Int, message: String) {

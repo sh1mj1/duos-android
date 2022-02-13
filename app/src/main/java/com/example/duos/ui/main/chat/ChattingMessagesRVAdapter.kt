@@ -9,7 +9,6 @@ import com.example.duos.data.entities.ChatType
 import android.view.LayoutInflater
 
 import android.view.View
-import android.widget.ImageView
 import java.util.ArrayList
 
 import android.widget.TextView
@@ -17,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatMessageItem
-import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 
 
@@ -31,7 +29,7 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
         context = parent.getContext()
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        chatDB = ChatDatabase.getInstance(context)!!
+        chatDB = ChatDatabase.getInstance(context, ChatDatabase.provideGson())!!
 
         return if (viewType === ChatType.CENTER_MESSAGE) {
             view = inflater.inflate(R.layout.date_border, parent, false)
@@ -95,7 +93,7 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
         fun setItem(item: ChatMessageItem) {
             nameText.setText(item.senderId)
             contentText.setText(item.body)
-            sendTimeText.setText(item.sentAt)
+            sendTimeText.setText(item.formattedSentAt)
         }
 
         init {
@@ -111,7 +109,7 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
         var sendTimeText: TextView
         fun setItem(item: ChatMessageItem) {
             contentText.setText(item.body)
-            sendTimeText.setText(item.sentAt)
+            sendTimeText.setText(item.formattedSentAt)
         }
 
         init {

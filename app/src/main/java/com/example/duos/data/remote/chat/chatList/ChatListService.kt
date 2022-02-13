@@ -10,7 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object ChatListService {
-    //val retrofit = NetworkModule.getRetrofit()
+    val retrofit = NetworkModule.getRetrofit()
     fun chatList(chatListView: ChatListView, userIdx: Int){
         val chatListService = retrofit.create(ChatListRetrofitInterface::class.java)
 
