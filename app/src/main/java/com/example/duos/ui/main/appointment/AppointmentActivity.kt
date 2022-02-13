@@ -49,6 +49,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         binding.makePlanApplyTv.setOnClickListener {
             Thread.sleep(100)
             Log.d("유저인덱스", getUserIdx().toString())
+            Log.d("파트너인덱스", partnerIdx.toString())
             val makeAppointment : MakeAppointment = MakeAppointment(chatRoomIdx, getUserIdx()!!, partnerIdx, appointmentTime)
             AppointmentService.makeAppointment(this, makeAppointment)
         }
@@ -143,7 +144,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
     override fun onMakeAppointmentSuccess() {
         Log.d("약속잡기","성공")
         chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
-
+        // response result로 오는 것이 없어, updateAppointmentIdx는 약속 현황에서 update함
         finish()
     }
 

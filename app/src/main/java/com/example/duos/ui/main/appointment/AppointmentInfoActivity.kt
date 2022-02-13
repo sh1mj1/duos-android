@@ -72,6 +72,7 @@ ShowAppointmentView, DeleteAppointmentView{
     }
 
     fun deleteAppointment(){
+        Log.d("Delete Appointment",chatRoom.participantIdx.toString()+"/"+chatRoom.appointmentIdx)
         val deleteAppointment = DeleteAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx!!, chatRoom.appointmentIdx
         !!)
         AppointmentService.deleteAppointment(this, chatRoom.appointmentIdx!!, getUserIdx()!!, deleteAppointment)
@@ -81,7 +82,7 @@ ShowAppointmentView, DeleteAppointmentView{
         Log.d("result",result.toString())
         binding.planInfoDateTv.text = result.appointmentData
         binding.planInfoTimeTv.text = result.appointmentTime
-        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, result.appointmentIdx)
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, result.appointmentIdx)   // 약속 생성 api의 result로 appointmentIdx가 오지 않아 여기서 룸디비에 저장
     }
 
     override fun onShowAppointmentFailure(code: Int, message: String) {
