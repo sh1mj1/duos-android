@@ -84,15 +84,15 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             }
         }
 
-        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
-        if(!chatMessageList.isEmpty()){
-            for(i: Int in 0..chatMessageList.size-1){
-                addChatItem(chatMessageList[i])
-                Log.d("onStart addChatItem", chatMessageList[i].toString())
-            }
-        }else{
-            Log.d("주고받은 채팅메세지가","없음~")
-        }
+//        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+//        if(!chatMessageList.isEmpty()){
+//            for(i: Int in 0..chatMessageList.size-1){
+//                addChatItem(chatMessageList[i])
+//                Log.d("onStart addChatItem", chatMessageList[i].toString())
+//            }
+//        }else{
+//            Log.d("주고받은 채팅메세지가","없음~")
+//        }
     }
 
     override fun initAfterBinding() {
