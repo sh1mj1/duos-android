@@ -138,12 +138,27 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
 
-        if(intent != null){
+//        if(intent != null){
+//            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+//            chatRoomName.text = intent.getStringExtra("senderId")!!
+//            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+//        }
+        if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             chatRoomName.text = intent.getStringExtra("senderId")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
+        } else if (isFromPlayerProfile){
+
+            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx").toString()
+            chatRoomName.text = intent.getStringExtra("partnerIdx")
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
         }
+
+
 
         val userDB = UserDatabase.getInstance(this)!!
         userId = userDB.userDao().getUserNickName(thisUserIdx)

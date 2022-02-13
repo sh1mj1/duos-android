@@ -31,7 +31,7 @@ object ChatService {
                 Log.d("resp", resp.toString())
 
                 when (resp.code) {
-                    1000 -> createChatRoomView.onCreateChatRoomSuccess()
+                    1000 -> createChatRoomView.onCreateChatRoomSuccess(resp.result)
                     else -> createChatRoomView.onCreateChatRoomFailure(resp.code, resp.message)
                 }
             }

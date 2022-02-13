@@ -37,7 +37,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!   // DB 불러오기
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
             ChatListService.chatList(this, getUserIdx()!!)
@@ -45,7 +45,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         } else {    // 인터넷 연결 안돼있을 때
             Log.d("인터넷 연결 확인", "DISCONNECTED")
             chatListDatas.clear()
-            chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())
+            chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())    // DB에 있는 데이터를 모두 불러오기
         }
 
 //        chatListDatas.apply {
@@ -115,6 +115,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
+                intent.putExtra("isFromChatList", true)
                 intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
                 intent.putExtra("senderId", chatRoom.chatRoomName)
                 intent.putExtra("partnerIdx", chatRoom.participantIdx)

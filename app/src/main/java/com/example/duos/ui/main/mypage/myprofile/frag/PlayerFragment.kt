@@ -1,8 +1,11 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
@@ -13,6 +16,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +25,14 @@ import com.example.duos.R
 import com.example.duos.data.entities.PartnerResDto
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.data.entities.StarredFriend
+import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.data.remote.myFriendList.FriendListService
 import com.example.duos.data.remote.partnerProfile.PartnerProfileService
 import com.example.duos.databinding.FragmentPlayerBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.chat.ChattingActivity
+import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.friendList.AddStarredFriendView
 import com.example.duos.ui.main.friendList.DeleteStarredFriendView
 import com.example.duos.ui.main.friendList.StarredFriendListView
@@ -36,7 +44,7 @@ import com.google.gson.Gson
 
 // 내 프로필 , 모든 리뷰 보기, 지난 약속 보기, 파트너 서치, 채팅방에서 넘어올 수 있어
 class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate),
-    PartnerProfileListView, AddStarredFriendView, DeleteStarredFriendView {
+    PartnerProfileListView, AddStarredFriendView, DeleteStarredFriendView, CreateChatRoomView {
     val TAG: String = "PlayerFragment"
 
     private var partnerProfileReviewDatas = ArrayList<ReviewResDto>()
@@ -44,13 +52,19 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     val myUserIdx = getUserIdx()!!
     private var isStarred: Boolean = false
     var partnerUserIdx: Int = 0
+    var todayChatAvaillCnt: Int = 0
+    var hasChatRoomAlready: Boolean = false
+
+    var createdNewChatRoom : Boolean = false
+    var targetChatRoomIdx : String = ""
+    var participantList : List<Int> =emptyList<Int>()
 
     override fun initAfterBinding() {
         Log.d(TAG, "Start_PlayerFragment")
 
         partnerUserIdx = requireArguments().getInt("partnerUserIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
 
-        PartnerProfileService.partnerProfileInfo(this, getUserIdx()!!, partnerUserIdx)
+        PartnerProfileService.partnerProfileInfo(this, myUserIdx, partnerUserIdx)
         Log.d(TAG, "Create Retrofit")
 
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
@@ -59,12 +73,22 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).setOnClickListener {
             deleteStarredFriend()   /* 친구 찜 취소 */
-
         }
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv).setOnClickListener {
             addStarredFriend()  /* 친구 찜하기 */
-
         }
+        // 채팅하기 버튼 클릭
+        (context as MyProfileActivity).findViewById<AppCompatButton>(R.id.partner_profile_chatting_btn).setOnClickListener {
+            if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    // 원래 만들어진 채팅방이 없고, 오늘 가능 횟수가 남아있으면
+                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt",Toast.LENGTH_LONG).show()
+                createRoom()
+            } else if(hasChatRoomAlready == false && todayChatAvaillCnt ==0){
+                Toast.makeText(context, "오늘 할 수 있는 채팅 수 초과",Toast.LENGTH_LONG).show()
+            }else if(hasChatRoomAlready == true){
+                Toast.makeText(context, "이미 채팅방이 있으니까 그 해당 채팅방을 이동해야 해",Toast.LENGTH_LONG).show()
+            }
+        }
+
 
     }
 
@@ -102,11 +126,13 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         partnerProfileReviewDatas.clear()
         partnerProfileReviewDatas.addAll(partnerResDto.reviewResDto)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
 
+        todayChatAvaillCnt = partnerResDto.todayChatAvailCnt    // 전역 변수에 오늘 채팅 가능 남은 횟수
+        hasChatRoomAlready = partnerResDto.hasChatRoomAlready   // 이미 채팅방이 생성되어있는지 세기
+
         Log.d(TAG, partnerResDto.toString())
         // 리사이클러뷰 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
-        val profileReviewRVAdapter = initRecyclerView()
-
-        /* 다른 회원 프로필로 이동*/
+        val profileReviewRVAdapter = initRecyclerView() // 리뷰 불러오기
+        /* 다른 회원 프로필로 이동 */
         goPlayerProfile(profileReviewRVAdapter)
 
         /* 해당 회원의 모든 후기 보기 페이지로 이동*/
@@ -212,10 +238,10 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         isStarred = partnerResDto.partnerInfoDto.starred
         if (isStarred) {
             initIsStarred()
-
         } else {
             initIsNotStarred()
         }
+
     }
 
     private fun setExperienceView() {
@@ -249,10 +275,96 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
+    fun createRoom() {
+        // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
+        Log.d("채팅방 생성한 user의 userIdx", myUserIdx.toString())
+        Log.d("채팅방 생성: 상대 user의 userIdx", partnerUserIdx.toString())
+        ChatService.createChatRoom(this, myUserIdx, partnerUserIdx)
+        /*
+        var createdNewChatRoom : Boolean = false
+    var targetChatRoomIdx : String = ""
+    var participantList : List<Int> =emptyList<Int>()
+         */
+        //TODO : Response 데이터 클래스에  채팅방 룸 Idx와 참여자, 채팅방을 새로 생성했는지 저장
+
+
+    }
+
+    private fun startChattingActivity() {
+        val intent = Intent(activity, ChattingActivity::class.java)
+        intent.apply {
+            putExtra("isFromPlayerProfile", true)
+            putExtra("createdNewChatRoom", createdNewChatRoom)
+            putExtra("targetChatRoomIdx", targetChatRoomIdx)
+            putExtra("partnerIdx", participantList[1])
+            Log.d(TAG, "$createdNewChatRoom, $targetChatRoomIdx, ${participantList[0]}")
+        }
+//        intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
+//        intent.putExtra("senderId", chatRoom.chatRoomName)
+//        intent.putExtra("partnerIdx", chatRoom.participantIdx)
+
+        startActivity(intent)
+    }
+
+    fun startLoadingProgress() {
+        Log.d("로딩중", "채팅방 생성 api")
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+    }
+
+    override fun onCreateChatRoomLoading() {
+        startLoadingProgress()
+    }
+
+    override fun onCreateChatRoomSuccess(createChatRoomResultData: CreateChatRoomResultData) {
+        createdNewChatRoom = createChatRoomResultData.createdNewChatRoom
+        targetChatRoomIdx = createChatRoomResultData.targetChatRoomIdx
+        participantList = createChatRoomResultData.participantList
+        startChattingActivity()
+    }
+
+    override fun onCreateChatRoomFailure(code: Int, message: String) {
+//        Toast.makeText(this, "code: $code, message: $message", Toast.LENGTH_LONG).show()
+    }
+
 
 }
 
 
+/*
+    /*  아래 희주님이 작성하신 코드                 */
+    fun createRoom() {
+        // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
+        Log.d("채팅방 생성한 user의 userIdx", userIdx.toString())
+        Log.d("채팅방 생성: 상대 user의 userIdx", targetUserIdx.toString())
+        ChatService.createChatRoom(this, userIdx, targetUserIdx)
+
+    }
+
+    private fun startChattingActivity() {
+        val intent = Intent(this, ChattingActivity::class.java)
+//        intent.apply {
+//            putExtra()
+//        }
+        startActivity(intent)
+    }
+
+    fun startLoadingProgress() {
+        Log.d("로딩중", "채팅방 생성 api")
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+    }
+
+    override fun onCreateChatRoomLoading() {
+        startLoadingProgress()
+    }
+
+    override fun onCreateChatRoomSuccess() {
+        startChattingActivity()
+    }
+
+    override fun onCreateChatRoomFailure(code: Int, message: String) {
+//        Toast.makeText(this, "code: $code, message: $message", Toast.LENGTH_LONG).show()
+    }
+ */
 
 
 
