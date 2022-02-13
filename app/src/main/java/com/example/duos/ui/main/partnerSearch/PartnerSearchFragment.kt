@@ -159,6 +159,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
         val userDB = UserDatabase.getInstance(requireContext())!!
         binding.partnerSearchUserIdTv.text = userDB.userDao().getUserNickName(userIdx)
+        Log.d("user","user가 있나...? ${userDB.userDao().getUserNickName(userIdx)}")
         Log.d("유저닉네임", userDB.userDao().getUserNickName(userIdx))
         Log.d("유저프로필url", userDB.userDao().getUserProfileImgUrl(userIdx))
         Log.d("jwtAccess토큰정보", getAccessToken().toString())

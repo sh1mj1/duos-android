@@ -30,7 +30,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     val TAG = "AppointmentFragment"
     private var previousPlayerData = ArrayList<AppointmentResDto>()
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
-    val userIdx = getUserIdx()  // sharedPreference 에 있는 내 userIdx
+    val userIdx = getUserIdx()!!  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
         AppointmentService.getAppointmentList(this, userIdx!!)
@@ -92,7 +92,6 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
         previousGameReviewRVAdapter.previousReviewItemClickListener(object :
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
             override fun onProfileClick(appointmentItem: AppointmentResDto) {
-                //TODO : 해당 회원의 프로필로 이동
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromAppointment", true)

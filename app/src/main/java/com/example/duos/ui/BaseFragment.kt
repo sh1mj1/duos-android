@@ -126,5 +126,10 @@ abstract class BaseFragment<VB : ViewBinding>(
         return ratingStr.toString()
     }
 
+    fun strToInt(str: String):Int{
+        val resultInt : Int = str.replace("[^0-9]".toRegex(), "").toInt()
+        return resultInt
+    }
+
 
 }

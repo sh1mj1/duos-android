@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
+import com.example.duos.utils.GlideApp
 
 class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<AppointmentResDto>) :
     RecyclerView.Adapter<PreviousGameReviewRVAdapter.ViewHolder>() {
