@@ -66,6 +66,7 @@ class RecommendFriendListFragment() :
 
             // recyclerview 설정 & VISIBLE 하게 하기
             var recyclerview: RecyclerView = requireView().findViewById(recyclerviewId)
+            recyclerview.setHasFixedSize(true)
             recyclerview.visibility = View.VISIBLE
             recyclerview.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
