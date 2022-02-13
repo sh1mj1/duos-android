@@ -8,8 +8,12 @@ import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialog
+import androidx.lifecycle.LifecycleOwner
 import com.example.duos.config.XAccessTokenInterceptor
+import com.google.android.datatransport.runtime.dagger.Binds
+import com.google.android.datatransport.runtime.dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -79,6 +83,7 @@ class ApplicationClass : Application() {
     }
 
     fun context(): Context = applicationContext
+
 
     fun progressON(activity: Activity?, message: String?) {
         if (activity == null || activity.isFinishing) {

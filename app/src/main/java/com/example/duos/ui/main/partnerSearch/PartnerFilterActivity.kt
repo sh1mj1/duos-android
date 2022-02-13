@@ -47,10 +47,10 @@ class PartnerFilterActivity :
         // 연령 선택
         ageRangeSeekbar.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(view: RangeSeekBar?, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
-                if (leftValue.toInt() % 10 == 0) {
+                if(leftValue.toInt() % 10 == 0){
                     binding.partnerFilterAgeMinTv.text = leftValue.toInt().toString()
                 }
-                if (rightValue.toInt() % 10 == 0) {
+                if(rightValue.toInt() % 10 == 0){
                     binding.partnerFilterAgeMaxTv.text = rightValue.toInt().toString()
                 }
 //                changeSeekBarIndicator(rangeSeekbar.leftSeekBar, leftValue)
@@ -224,6 +224,8 @@ class PartnerFilterActivity :
                     )
 
                     val intent = Intent(this@PartnerFilterActivity, MainActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //액티비티 스택제거
                     startActivity(intent)
                 }
 
@@ -233,7 +235,7 @@ class PartnerFilterActivity :
             })
             .setLeftButton(object : PartnerFilterDialog.PartnerFilterDialogCallbackLeft {
                 override fun onClick(dialog: PartnerFilterDialog) {
-                    
+
                     dialog.dismiss()
                     Log.d(TAG,"취소 버튼을 누름")
                 }

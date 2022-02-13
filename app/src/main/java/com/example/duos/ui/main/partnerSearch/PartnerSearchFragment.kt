@@ -59,6 +59,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         Log.d("get_recommendedPartnerList","ongetSuccess")
         //progressOFF()
+        var currentTime = System.currentTimeMillis()
+        var todayDate = Date(currentTime)
+        var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        var formattedTodayDate = dateFormatter.format(todayDate)
+        saveLastUpdatedDate(formattedTodayDate)
+        Log.d("saved lastUpdatedDate", getLastUpdatedDate())
 
         val userNickName = partnerSearchData.userNickname
 
@@ -95,6 +101,55 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("PartnerSearchFragment 생명주기", "onStart")
+        partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
+        //if(false){
+        if(getCheckUserAppliedPartnerFilterMoreThanOnce()){ //필터를 한번이라도 적용한 적이 있을 때
+            // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
+            recommendedPartnerDatas.clear()
+            var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
+            recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
+            partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+            binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+            Log.d("필터를 한번이라도 적용한 적 있음", "ㅎ")
+
+        }else{  // 필터를 한 번도 적용한 적이 없는 사용자일때
+            //날짜 확인
+            var currentTime = System.currentTimeMillis()
+            var todayDate = Date(currentTime)
+            var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+            var formattedTodayDate = dateFormatter.format(todayDate)
+
+            //if(false){
+            if(getLastUpdatedDate().equals(formattedTodayDate)){    // 오늘 파트너 추천을 받은 적이 있는지 확인하고 있다면 룸디비에서 데이터 가져옴
+                Log.d("파트너 추천 받은 적 있음", getLastUpdatedDate())
+                recommendedPartnerDatas.clear()
+                var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
+                recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
+            }else{
+                PartnerSearchService.partnerSearchData(this, userIdx)
+
+            }
+        }
+
+        partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
+            override fun onItemClick(recommendedPartner: RecommendedPartner) {
+                // 파트너 세부 화면으로 이동
+                Log.d("그리드","itemClick")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
+                intent.putExtra("isFromSearch", true)
+                startActivity(intent)
+            }
+        })
+    }
+
     override fun initAfterBinding() {
 
         Log.d("유저idx", userIdx.toString())
@@ -118,53 +173,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 //        binding.partnerSearchUserIdTv.text = "tennis1010"
 
-        partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
-        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
-        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
-        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
 
-
-
-
-
-        if(getCheckUserAppliedPartnerFilterMoreThanOnce()){ //필터를 한번이라도 적용한 적이 있을 때
-            // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
-            recommendedPartnerDatas.clear()
-            var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
-            recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
-            partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
-            binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-            Log.d("필터를 한번이라도 적용한 적 있음", " ")
-
-        }else{  // 필터를 한 번도 적용한 적이 없는 사용자일때
-            //날짜 확인
-            var currentTime = System.currentTimeMillis()
-            var todayDate = Date(currentTime)
-            var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-            var formattedTodayDate = dateFormatter.format(todayDate)
-
-            if(getLastUpdatedDate().equals(formattedTodayDate)){    // 오늘 파트너 추천을 받은 적이 있는지 확인하고 있다면 룸디비에서 데이터 가져옴
-                Log.d("파트너 추천 받은 적 있음", getLastUpdatedDate())
-                recommendedPartnerDatas.clear()
-                var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
-                recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
-            }else{
-                PartnerSearchService.partnerSearchData(this, userIdx)
-                saveLastUpdatedDate(formattedTodayDate)
-                Log.d("saved lastUpdatedDate", getLastUpdatedDate())
-            }
-        }
-
-        partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
-            override fun onItemClick(recommendedPartner: RecommendedPartner) {
-                // 파트너 세부 화면으로 이동
-                Log.d("그리드","itemClick")
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.putExtra("partnerUserIdx",recommendedPartner.partnerIdx)
-                intent.putExtra("isFromSearch", true)
-                startActivity(intent)
-            }
-        })
 
 
 

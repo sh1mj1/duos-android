@@ -71,5 +71,15 @@ class ViewModel : ViewModel() {
     // Appointment
     var isAppointmentExist : MutableLiveData<Boolean> = MutableLiveData(false)
 
+    // jwt 재발급
+    var jwtRefreshSuccess :  MutableLiveData<Boolean> = MutableLiveData(false)
+
+
+    companion object {
+        private var instance: com.example.duos.utils.ViewModel? = null
+        fun getInstance() = instance ?: synchronized(com.example.duos.utils.ViewModel::class.java) {
+            instance ?:com.example.duos.utils.ViewModel().also { instance = it }
+        }
+    }
 
 }

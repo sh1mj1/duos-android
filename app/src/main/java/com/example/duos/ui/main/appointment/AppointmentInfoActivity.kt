@@ -29,7 +29,7 @@ ShowAppointmentView, DeleteAppointmentView{
 
     override fun initAfterBinding() {
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-        chatDB = ChatDatabase.getInstance(this)!!
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
         setDialog()
@@ -74,7 +74,7 @@ ShowAppointmentView, DeleteAppointmentView{
     fun deleteAppointment(){
         val deleteAppointment = DeleteAppointment(chatRoomIdx, getUserIdx()!!, chatRoom.participantIdx!!, chatRoom.appointmentIdx
         !!)
-        Log.d("약속취소",deleteAppointment.toString())
+            Log.d("약속취소",chatRoom.appointmentIdx!!.toString() + " " +  getUserIdx()!!.toString() + " " + deleteAppointment.toString())
         AppointmentService.deleteAppointment(this, chatRoom.appointmentIdx!!, getUserIdx()!!, deleteAppointment)
     }
 
@@ -82,6 +82,7 @@ ShowAppointmentView, DeleteAppointmentView{
         Log.d("result",result.toString())
         binding.planInfoDateTv.text = result.appointmentData
         binding.planInfoTimeTv.text = result.appointmentTime
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, result.appointmentIdx)
     }
 
     override fun onShowAppointmentFailure(code: Int, message: String) {

@@ -39,7 +39,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
         partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
-        chatDB = ChatDatabase.getInstance(this)!!
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         val chatRoom : ChatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
         Log.d("약속현황액티비티 - 채팅방 확인", chatDB.chatRoomDao().getChatRoom(chatRoomIdx).toString())
         Log.d("약속현황액티비티 - 채팅방 리스트 확인", chatDB.chatRoomDao().getChatRoomList().toString())
@@ -136,8 +136,6 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
                 Log.d("약속시간",appointmentTime)
             }
         })
-
-
 
     }
 

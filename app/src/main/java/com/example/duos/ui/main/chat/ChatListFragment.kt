@@ -37,7 +37,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        chatDB = ChatDatabase.getInstance(requireContext())!!
+        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
             ChatListService.chatList(this, getUserIdx()!!)
