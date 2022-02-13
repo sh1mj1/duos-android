@@ -18,7 +18,7 @@ import com.example.duos.utils.getAccessToken
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveJwt
 
-class SplashActivity: AppCompatActivity(), SplashView {
+class SplashActivity: AppCompatActivity() {
 
     lateinit var binding: ActivitySplashBinding
     var currentPage = 0
@@ -30,11 +30,7 @@ class SplashActivity: AppCompatActivity(), SplashView {
 
         autoLogin()
 
-        setContentView(binding.root)
-        initViewpager()
-        initStatus()
-        thread = Thread(PagerRunnable())
-        thread.start()
+
     }
 
     val handler=Handler(Looper.getMainLooper()){
@@ -100,17 +96,11 @@ class SplashActivity: AppCompatActivity(), SplashView {
                 startActivity(intent)
             }
         }
+        setContentView(binding.root)
+        initViewpager()
+        initStatus()
+        thread = Thread(PagerRunnable())
+        thread.start()
     }
 
-    override fun onAutoLoginLoading() {
-
-    }
-
-    override fun onAutoLoginSuccess() {
-
-    }
-
-    override fun onAutoLoginFailure(code: Int, message: String) {
-
-    }
 }
