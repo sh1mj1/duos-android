@@ -182,6 +182,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                 "후기(${partnerResDto.partnerInfoDto.reviewCount.toString()})"
             (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
                 View.GONE
+            (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
 
         }
     }

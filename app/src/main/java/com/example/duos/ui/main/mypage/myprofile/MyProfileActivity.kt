@@ -23,7 +23,7 @@ import com.example.duos.utils.getUserIdx
 class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofileBinding::inflate),
     CreateChatRoomView {
     var thisUserIdx = 102
-    var targetUserIdx = 76
+    var targetUserIdx = 2
     val userIdx = getUserIdx()!!
 
     override fun initAfterBinding() {
@@ -86,13 +86,17 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
     /*  아래 희주님이 작성하신 코드                 */
     fun createRoom() {
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
-        Log.d("채팅방 생성한 user의 userIdx", thisUserIdx.toString())
+        Log.d("채팅방 생성한 user의 userIdx", userIdx.toString())
         Log.d("채팅방 생성: 상대 user의 userIdx", targetUserIdx.toString())
-        ChatService.createChatRoom(this, thisUserIdx, targetUserIdx)
+        ChatService.createChatRoom(this, userIdx, targetUserIdx)
+
     }
 
     private fun startChattingActivity() {
-        var intent = Intent(this, ChattingActivity::class.java)
+        val intent = Intent(this, ChattingActivity::class.java)
+//        intent.apply {
+//            putExtra()
+//        }
         startActivity(intent)
     }
 

@@ -90,7 +90,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {
                     this.putExtra("isFromSearch", true)
-                    this.putExtra("partnerIdxFromPartnerSearch", recommendedPartner.partnerIdx)
+                    this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
                 }
                 startActivity(intent)
             }
