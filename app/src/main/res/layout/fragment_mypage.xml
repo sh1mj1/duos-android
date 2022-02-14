@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
-        android:layout_marginTop="37dp"
-        android:fontFamily="@font/applesdgothicneoregular"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/applesdgothicneosemibold"
         android:text="@string/my_page_text"
         android:textColor="@color/nero"
         android:textSize="19sp"
@@ -33,7 +33,7 @@
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/splash_button_rectangular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,8 +54,7 @@
                 android:id="@+id/my_profile_home_profile_image_iv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/dummy_mask_1" />
+                android:scaleType="fitXY" />
 
         </androidx.cardview.widget.CardView>
 
@@ -65,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
-            android:text="tennis01"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/my_profile_card_view_cv"
@@ -76,7 +74,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:bufferType="spannable"
-            android:text="010 7441"
             android:textColor="@color/white_smoke_F"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
@@ -86,7 +83,6 @@
             android:id="@+id/my_profile_home_phone_number_middle_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" ****"
             android:textColor="@color/white_smoke_F"
             android:textSize="13sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/my_profile_home_phone_number_first_tv"

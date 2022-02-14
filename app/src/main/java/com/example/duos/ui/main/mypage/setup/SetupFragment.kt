@@ -18,9 +18,8 @@ import com.example.duos.ui.splash.SplashActivity
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.withdrawalAllData
 import android.content.SharedPreferences
-
-
-
+import android.widget.ImageView
+import com.example.duos.ui.main.mypage.notion.NotionActivity
 
 
 class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::inflate), WithdrawalListView, LogoutListView {
@@ -38,6 +37,10 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
 
         // 알림 설정 스위치
         initPushNotice()
+
+        (context as SetupActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
+            requireActivity().finish()
+        }
 
     }
 

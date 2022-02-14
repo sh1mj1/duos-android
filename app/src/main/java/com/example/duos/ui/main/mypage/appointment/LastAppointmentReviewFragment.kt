@@ -3,13 +3,18 @@ package com.example.duos.ui.main.mypage.appointment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.appointment.AppointmentResDto
@@ -19,6 +24,8 @@ import com.example.duos.data.remote.reviews.ReviewResponse
 import com.example.duos.data.remote.reviews.ReviewService
 import com.example.duos.databinding.FragmentLastAppointmentReviewBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.ui.main.mypage.myprofile.frag.EveryReviewFragment
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 import java.time.LocalDateTime.now
@@ -26,7 +33,7 @@ import java.time.LocalDateTime.now
 class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReviewBinding>
     (FragmentLastAppointmentReviewBinding::inflate), ReviewListView {
     val TAG: String = "AppointmentReviewFragment"
-    lateinit var mContext : LastAppointmentActivity
+    lateinit var mContext: LastAppointmentActivity
     private var gson: Gson = Gson()
 
     //    val postReqData = Array<ReviewsReqDto>()
@@ -36,7 +43,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is LastAppointmentActivity){
+        if (context is LastAppointmentActivity) {
             mContext = context
         }
     }
@@ -74,6 +81,13 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
         }
 
+        // 상단 뒤로 가기 버튼 클릭
+        (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
+                (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
+                    .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment()).commitAllowingStateLoss()
+            (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setImageResource(R.drawable.ic_back_30)
+            (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "지난 약속"
+        }
     }
 
     override fun onPostReviewSuccess(reviewResponse: ReviewResponse) {
@@ -88,13 +102,14 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
     }
 
     override fun onPostReviewFailure(code: Int, message: String) {
-        Toast.makeText(context, message,Toast.LENGTH_LONG).show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private fun initEditText(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 

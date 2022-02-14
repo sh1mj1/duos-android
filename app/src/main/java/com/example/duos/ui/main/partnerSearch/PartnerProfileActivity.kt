@@ -46,11 +46,11 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
         startActivity(intent)
     }
 
-    override fun onCreateChatRoomLoading() {
-        progressON()
-        Log.d("로딩중","채팅방 생성 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
+//    override fun onCreateChatRoomLoading() {
+//        progressON()
+//        Log.d("로딩중","채팅방 생성 api")
+//        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+//    }
 
     override fun onCreateChatRoomSuccess(createChatRoomResultData: CreateChatRoomResultData) {
 //        TODO("Not yet implemented")
