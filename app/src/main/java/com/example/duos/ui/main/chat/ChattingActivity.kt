@@ -81,7 +81,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             if (!chatRoomIdxByFCM.isNullOrEmpty() && !(chatRoomIdx.equals(chatRoomIdxByFCM))) {
                 Log.d("FCM인텐트", "3 - chatRoomIdx를 다시 세팅")
                 // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
-                chatRoomIdx = chatRoomIdxByFCM
+                if (!bundle.getBoolean("isFromPlayerProfile")){ //파트너 세부화면에서 채팅하기를 눌러 온 것이 아님
+                    chatRoomIdx = chatRoomIdxByFCM
+                } else{
+                    Log.d("onStart", "파트너세부화면의 채팅하기눌러서 이동")
+                }
             }else{
                 Log.d("FCM인텐트", "3 - chatRoomIdx is null")
             }
@@ -163,7 +167,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            chatRoomName.text = intent.getStringExtra("senderId")!!
 //            partnerIdx = intent.getIntExtra("partnerIdx", 0)
 //        }
-        val isFromChatList = intent.getBooleanExtra("isFromChatList", true)
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
@@ -196,7 +200,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         //delete All
 
 
-        //chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
+        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
 
 
         //

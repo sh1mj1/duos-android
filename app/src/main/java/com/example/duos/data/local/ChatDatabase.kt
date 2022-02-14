@@ -9,7 +9,7 @@ import com.google.android.datatransport.runtime.dagger.Provides
 import com.google.gson.Gson
 import javax.inject.Singleton
 
-@Database(entities = [ChatRoom::class, ChatMessageItem::class], version = 15, exportSchema = false)
+@Database(entities = [ChatRoom::class, ChatMessageItem::class], version = 16, exportSchema = false)
 @TypeConverters(
     value = [ThreetenLocalDateTimeConverter::class]
 )

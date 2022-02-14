@@ -16,8 +16,8 @@ data class ChatRoom(
     @SerializedName("lastMessage") var lastMessage : String = "",
     @SerializedName("updatedAt") var lastUpdatedAt : String = "",
     var isAppointmentExist : Boolean = false,
-    var appointmentIdx : Int?,
-    var lastAddedChatMessageId : Int = -1
+    var appointmentIdx : Int?
+//    ,var lastAddedChatMessageId : Int = -1
 //    @SerializedName("isAppointmentExist") var isAppointmentExist : Boolean = false,
 //    @SerializedName("appointmentIdx") var appointmentIdx : Int?
 )
