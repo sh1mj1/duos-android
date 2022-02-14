@@ -3,6 +3,9 @@ package com.example.duos.ui.main.mypage.notion
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
+import androidx.fragment.app.FragmentManager
+import com.example.duos.R
 import com.example.duos.data.entities.notice.NoticeListView
 import com.example.duos.data.remote.notice.*
 import com.example.duos.databinding.FragmentNotionBinding
@@ -22,22 +25,6 @@ class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding
 // 서비스 업데이트 공지사항 펼치기/펼치지 않기
 
         NoticeGetService.onGetNotice(this)
-//        noticeDeleteReqDta = NoticeDeleteReqDto(10)
-//        noticePostReqDto =
-//            NoticePostReqDto("신규공지사항 입니다_TEST_0210_1", "신규 공지사항 내용입니다_TEST_0210_1")
-//        noticePatchReqDta =
-//            NoticePatchReqDto(10, "수정된 공지사항입니다_TEST_0210_1", "수정된 공지사항입니다_TEST_0210_1")
-//
-//        NoticeDeleteService.onDeleteNotice(this, 11)
-//        NoticePostService.onPostNotice(
-//            this,
-//            noticePostReqDto.title, noticePostReqDto.body
-//        )
-//        NoticePatchService.onPatchNotice(
-//            this,
-//            noticePatchReqDta
-//        )
-
 
         binding.btnShowServiceUpdateCl.setOnClickListener {
             if (!notionshown) {
@@ -52,6 +39,12 @@ class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding
                 binding.btnShownServiceUpdateIv.visibility = GONE
             }
         }
+
+        (context as NotionActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
+            requireActivity().finish()
+        }
+
+
     }
 
     override fun onGetNoticeSuccess(noticeGetResponse: NoticeGetResponse) {
@@ -70,32 +63,6 @@ class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding
         Log.d(TAG, "onGetNoticeFailure")
     }
 
-
-//    override fun onDeleteNoticeSuccess(noticeDeleteResponse: NoticeDeleteResponse) {
-//        Log.d(TAG, "onDeleteNoticeSuccess : $noticeDeleteReqDta")
-//    }
-//
-//    override fun onDeleteNoticFailure(code: Int, message: String) {
-//        Log.d(TAG, "onDeleteNoticFailure")
-//    }
-//
-//
-//    override fun onPostNoticeSuccess(noticePostResponse: NoticePostResponse) {
-//        Log.d(TAG, "onPostNoticeSuccess : $noticePostReqDto")
-//    }
-//
-//    override fun onPostNoticeFailure(code: Int, message: String) {
-//        Log.d(TAG, "onPostNoticeFailure")
-//    }
-//
-//
-//    override fun onPatchNoticeSuccess(noticePatchResponse: NoticePatchResponse) {
-//        Log.d(TAG, "onPatchNoticeSuccess : $noticePatchReqDta")
-//    }
-//
-//    override fun onPatchNoticeFailure(code: Int, message: String) {
-//        Log.d(TAG, "onPatchNoticeFailure")
-//    }
 
 
 }

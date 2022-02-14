@@ -42,8 +42,8 @@ import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
-import java.time.LocalTime.now
-import java.time.format.DateTimeFormatter
+import androidx.fragment.app.FragmentManager
+
 
 // 내 프로필 , 모든 리뷰 보기, 지난 약속 보기, 파트너 서치, 채팅방에서 넘어올 수 있어
 class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate),
@@ -74,18 +74,20 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         PartnerProfileService.partnerProfileInfo(this, myUserIdx, partnerUserIdx)
         Log.d(TAG, "Create Retrofit")
 
-        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
-        (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
-        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
 
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).setOnClickListener {
+
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(com.example.duos.R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<TextView>(com.example.duos.R.id.edit_myProfile_tv).visibility = View.GONE
+        (context as MyProfileActivity).findViewById<TextView>(com.example.duos.R.id.top_myProfile_tv).text = "프로필"
+
+        (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.player_is_starred_iv).setOnClickListener {
             deleteStarredFriend()   /* 친구 찜 취소 */
         }
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv).setOnClickListener {
+        (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.player_is_not_starred_iv).setOnClickListener {
             addStarredFriend()  /* 친구 찜하기 */
         }
         // 채팅하기 버튼 클릭
-        (context as MyProfileActivity).findViewById<AppCompatButton>(R.id.partner_profile_chatting_btn).setOnClickListener {
+        (context as MyProfileActivity).findViewById<AppCompatButton>(com.example.duos.R.id.partner_profile_chatting_btn).setOnClickListener {
             ChatService.createChatRoom(this, myUserIdx, partnerUserIdx) // 채팅방 생성 OR 불러오기 API 호출
 //            if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    // 원래 만들어진 채팅방이 없고, 오늘 가능 횟수가 남아있으면
 //                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt", Toast.LENGTH_LONG)
@@ -99,6 +101,17 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 //
 //
 //            }
+        }
+        // 상단 뒤로 가기 버튼 클릭
+        val fragmentTransaction : FragmentManager = requireActivity().supportFragmentManager
+        (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.top_left_arrow_iv).setOnClickListener {
+            //TODO  : IF :  backstack Exist -> popbackstack    ELSE :   finish()
+
+            if(fragmentTransaction.backStackEntryCount >= 1){
+                fragmentTransaction.popBackStack()
+            }else{
+                requireActivity().finish()
+            }
         }
 
 
@@ -117,18 +130,18 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
     @SuppressLint("CutPasteId")
     private fun initIsStarred() {
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).visibility = View.VISIBLE
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).isEnabled = true
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).visibility = View.INVISIBLE
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).isEnabled = false
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_starred_iv).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_starred_iv).isEnabled = true
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_not_starred_iv).visibility = View.INVISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_not_starred_iv).isEnabled = false
     }
 
     @SuppressLint("CutPasteId")
     private fun initIsNotStarred() {
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).visibility = View.INVISIBLE
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_starred_iv).isEnabled = false
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).visibility = View.VISIBLE
-        (context as MyProfileActivity).findViewById<ImageButton>(R.id.player_is_not_starred_iv).isEnabled = true
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_starred_iv).visibility = View.INVISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_starred_iv).isEnabled = false
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_not_starred_iv).visibility = View.VISIBLE
+        (context as MyProfileActivity).findViewById<ImageButton>(com.example.duos.R.id.player_is_not_starred_iv).isEnabled = true
     }
 
     override fun onGetProfileInfoSuccess(partnerResDto: PartnerResDto) {
@@ -170,11 +183,12 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         profileReviewRVAdapter.clickPlayerReviewListener(object :
             PartnerProfileReviewRVAdapter.PlayerReviewItemClickListener {
             override fun onItemClick(partnerProfileReviewItem: ReviewResDto) {
+
                 // TO other PlayerProfile (PlayerFragment)
                 if (partnerProfileReviewItem.writerIdx != getUserIdx()) {
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+                            .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                                 Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
                                 arguments =
                                     Bundle().apply {/*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
@@ -183,10 +197,11 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                             })
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
+
                 } else { /* TO MyProfile (MyProfileFrag)  */
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+                            .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
                     Log.d(TAG, "PlayerFrag -> MyProfileFrag")
 
                     fragmentTransaction.addToBackStack(null)
@@ -203,7 +218,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         binding.playerPlayingReviewCountTv.setOnClickListener {
             val fragmentTransaction: FragmentTransaction =
                 (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
+                    .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                         arguments = Bundle().apply {
                             // 해당 회원의 프로필 정보를 gson.toJson 하여 보낸다.
                             val gson = Gson()
@@ -216,11 +231,11 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
             fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
 
             // 상단 텍스트 변경 (후기 갯수, 프로필 수정하기 버튼 없애기
-            (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
+            (context as MyProfileActivity).findViewById<TextView>(com.example.duos.R.id.top_myProfile_tv).text =
                 "후기(${partnerResDto.partnerInfoDto.reviewCount.toString()})"
-            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
+            (context as MyProfileActivity).findViewById<TextView>(com.example.duos.R.id.edit_myProfile_tv).visibility =
                 View.GONE
-            (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
+            (context as MyProfileActivity).findViewById<ConstraintLayout>(com.example.duos.R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
 
         }
     }
@@ -318,14 +333,14 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         startActivity(intent)
     }
 
-    fun startLoadingProgress() {
-        Log.d("로딩중", "채팅방 생성 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
+//    fun startLoadingProgress() {
+//        Log.d("로딩중", "채팅방 생성 api")
+//        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
+//    }
 
-    override fun onCreateChatRoomLoading() {
-        startLoadingProgress()
-    }
+//    override fun onCreateChatRoomLoading() {
+//        startLoadingProgress()
+//    }
 
     override fun onCreateChatRoomSuccess(createChatRoomResultData: CreateChatRoomResultData) {
         createdNewChatRoom = createChatRoomResultData.createdNewChatRoom

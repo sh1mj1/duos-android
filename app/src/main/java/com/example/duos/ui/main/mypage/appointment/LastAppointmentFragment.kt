@@ -33,7 +33,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     val userIdx = getUserIdx()!!  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
-        AppointmentService.getAppointmentList(this, userIdx!!)
+        AppointmentService.getAppointmentList(this, userIdx)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

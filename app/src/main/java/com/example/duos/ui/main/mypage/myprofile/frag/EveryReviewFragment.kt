@@ -3,9 +3,11 @@ package com.example.duos.ui.main.mypage.myprofile.frag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -51,6 +53,18 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             val profile = gson.fromJson(profileData, MyProfileInfoItem::class.java)
             setInit(profile)
             EveryReviewsService.getEveryReviews(this, myUserIdx, profile.userIdx!!)
+        }
+
+        // 상단 뒤로 가기 버튼 클릭
+        val fragmentTransaction : FragmentManager = requireActivity().supportFragmentManager
+        (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.top_left_arrow_iv).setOnClickListener {
+            //TODO  : IF :  backstack Exist -> popbackstack    ELSE :   finish()
+
+            if(fragmentTransaction.backStackEntryCount >= 1){
+                fragmentTransaction.popBackStack()
+            }else{
+                requireActivity().finish()
+            }
         }
 
     }
