@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.friendList
 
 
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.duos.data.remote.myFriendList.FriendListService
 import com.example.duos.data.remote.myFriendList.RecommendHistoryDto
 import com.example.duos.databinding.FragmentRecommendFriendListBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getFriendListDiaglogNotShowing
 import com.example.duos.utils.getUserIdx
@@ -104,6 +106,17 @@ class RecommendFriendListFragment() :
 
                 override fun onDeleteText() {
                     textview.visibility = View.GONE
+                }
+
+                override fun gotoPartnerProfileActivity(partnerIdx: Int) {
+                    // 파트너 세부 화면으로 이동
+                    Log.d("그리드","itemClick")
+                    val intent = Intent(activity, MyProfileActivity::class.java)
+                    intent.apply {
+                        this.putExtra("isFromSearch", true)
+                        this.putExtra("partnerUserIdx", partnerIdx)
+                    }
+                    startActivity(intent)
                 }
 
             })

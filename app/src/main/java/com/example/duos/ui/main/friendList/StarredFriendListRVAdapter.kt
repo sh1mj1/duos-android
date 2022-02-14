@@ -14,8 +14,9 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
 
     // 클릭 인터페이스 정의
     interface MyItemClickListener{
-        fun onDeleteFriend(frieIdx : Int)
+        fun onDeleteFriend(partnerIdx : Int)
         fun onGetFriendCount()
+        fun gotoPartnerProfileActivity(partnerIdx : Int)
     }
 
     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
@@ -42,6 +43,15 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
             removeFriend(position)
             mItemClickListener.onGetFriendCount()
         }
+
+        holder.binding.myFriendListProfileImageIv.setOnClickListener {
+            mItemClickListener.gotoPartnerProfileActivity(friendlist[position].starredFrienedIdx!!)
+        }
+
+        holder.binding.myFriendListProfileIdTv.setOnClickListener {
+            mItemClickListener.gotoPartnerProfileActivity(friendlist[position].starredFrienedIdx!!)
+        }
+
 
     }
 

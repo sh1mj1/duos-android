@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.friendList
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import com.example.duos.data.remote.myFriendList.FriendListService
 import com.example.duos.databinding.FragmentStarredFriendListBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.FriendListCountViewModel
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
@@ -65,11 +67,23 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
                 // 뷰 모델 프로바이더를 통해 뷰모델 가져오기
                 viewModel.friendCount.value = starredFriendListRVAdapter.itemCount
             }
+
+            override fun gotoPartnerProfileActivity(partnerIdx : Int) {
+                // 파트너 세부 화면으로 이동
+                Log.d("그리드","itemClick")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.apply {
+                    this.putExtra("isFromSearch", true)
+                    this.putExtra("partnerUserIdx", partnerIdx)
+                }
+                startActivity(intent)
+            }
         })
         binding.starredFriendListRecyclerviewRc.adapter = starredFriendListRVAdapter
     }
 
     fun onDeleteFriendApi(friendIdx : Int){
+        Log.d("friendIdx 삭제",friendIdx.toString())
         FriendListService.deleteStarredFriend(this, getUserIdx()!!, friendIdx)
     }
 
