@@ -66,6 +66,8 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
                 requireActivity().finish()
             }
         }
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
+
 
     }
 
@@ -140,6 +142,8 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         Glide.with(binding.playerProfileImgIv.context)
             .load(profile.profileImgUrl)
             .into(binding.playerProfileImgIv)
+        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
+            "후기(${profile.reviewCount.toString()})"
     }
 
     private fun setInit(profile: PartnerInfoDto) {
@@ -154,6 +158,8 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         Glide.with(binding.playerProfileImgIv.context)
             .load(profile.profilePhotoUrl)
             .into(binding.playerProfileImgIv)
+        (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
+            "후기(${profile.reviewCount.toString()})"
     }
 
 

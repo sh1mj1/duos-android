@@ -8,6 +8,7 @@ import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.ui.main.chat.ChatMessageView
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.chat.SendMessageView
+import com.example.duos.ui.main.mypage.myprofile.frag.PartnerProfileChatDialog
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,13 +46,44 @@ object ChatService {
         })
     }
 
+    fun createChatRoomInDialog(createChatRoomView: PartnerProfileChatDialog.PartnerProfileChatDialogCallbackRight, thisUserIdx: Int, targetUserIdx: Int) {
+        val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
+        val createChatRoomRequestInfo = CreateChatRoomData(thisUserIdx, targetUserIdx)
+
+//        createChatRoomView.onCreateChatRoomLoading()
+
+        createChatRoomService.createChatRoom(createChatRoomRequestInfo).enqueue(object :
+            Callback<CreateChatRoomResponse> {
+            override fun onResponse(
+                call: Call<CreateChatRoomResponse>,
+                response: Response<CreateChatRoomResponse>
+            ) {
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+
+                when (resp.code) {
+                    1000 -> createChatRoomView.onCreateChatRoomSuccess(resp.result)
+                    else -> createChatRoomView.onCreateChatRoomFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<CreateChatRoomResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+
+                createChatRoomView.onCreateChatRoomFailure(400, "네트워크 오류가 발생했습니다.")
+            }
+
+        })
+    }
+
+
     fun sendMessage(
         sendMessageView: SendMessageView,
-        receiverIdx: Int,
-        senderIdx: Int,
-        message: String,
+        chatRoomIdx: String,
         type: String,
-        chatRoomIdx: String
+        senderIdx: Int,
+        receiverIdx: Int,
+        message: String,
     ) {
         val sendMessageService = retrofit.create(ChatRetrofitInterface::class.java)
         val message = sendMessageData(chatRoomIdx, type, senderIdx, receiverIdx, message)

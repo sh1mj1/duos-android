@@ -158,7 +158,6 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
 
     override fun onWithdrawalSuccess(withdrawalResponse: WithdrawalResponse) {
 
-        // TODO : Room에 있는 값들과 SharedPreference 모두 삭제하기
         val db = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
         Log.d(TAG, db!!.userDao().getUser(myUserIdx).toString())
         db.userDao().clearAll()
@@ -174,7 +173,11 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
         Log.d(TAG, testWithdrawal)
         //TODO : 초기화면 (SplashActivity로 가기)
         val intent = Intent(activity, SplashActivity::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent)
+
 
     }
 

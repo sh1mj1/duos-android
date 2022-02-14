@@ -83,6 +83,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         } else if (isFromPlayerProfile){
 
             chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
+            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
             chatRoomName.text = intent.getStringExtra("partnerNickName")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
@@ -224,7 +225,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         Log.d("메세지 보내기", messageData.toString())
 
-        ChatService.sendMessage(this, messageData.receiverIdx, messageData.senderIdx, messageData.message, messageData.type, messageData.chatRoomIdx)
+        ChatService.sendMessage(this, messageData.chatRoomIdx,messageData.type, messageData.senderIdx, messageData.receiverIdx,  messageData.message  )
     }
 
     fun sendMessage(chatMessageIdx: String){

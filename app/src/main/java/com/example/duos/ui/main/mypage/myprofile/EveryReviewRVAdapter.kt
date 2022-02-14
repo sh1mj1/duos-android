@@ -34,7 +34,10 @@ class EveryReviewRVAdapter(private val everyReveiwsItem: ArrayList<EveryReviewsI
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
     override fun onBindViewHolder(holder: EveryReviewRVAdapter.ViewHolder, position: Int) {
         holder.bind(everyReveiwsItem[position])
-        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
+        holder.binding.profileImgCv.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
+        holder.binding.playerReviewNicknameTv.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
+        holder.binding.playerGradeRb.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
+        holder.binding.playerGradeTv.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
     }
 
     // 데이터 리스트의 크기
