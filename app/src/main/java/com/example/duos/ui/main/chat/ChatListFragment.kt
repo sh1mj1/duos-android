@@ -110,6 +110,8 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
+                intent.putExtra("isFromChatList", true)
+                intent.putExtra("isFromPlayerProfile", false)
                 intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
                 intent.putExtra("senderId", chatRoom.chatRoomName)
                 intent.putExtra("partnerIdx", chatRoom.participantIdx)

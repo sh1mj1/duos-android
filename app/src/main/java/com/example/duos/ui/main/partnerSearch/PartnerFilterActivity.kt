@@ -40,7 +40,6 @@ class PartnerFilterActivity :
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
 
-
         ageRangeSeekbar.setProgress(10f, 60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
 
