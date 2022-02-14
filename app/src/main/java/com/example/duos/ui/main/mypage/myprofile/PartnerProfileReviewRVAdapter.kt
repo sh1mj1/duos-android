@@ -37,11 +37,20 @@ class PartnerProfileReviewRVAdapter(private val partnerProfileReviewItemList: Ar
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 //        if (getItemCount ()!= 0) {
-            Log.d(TAG, "partnerProfileReviewItemList 가 null 이 아님")
-            holder.bind(partnerProfileReviewItemList[position])
-            holder.itemView.setOnClickListener {
-                mItemClickListener.onItemClick(partnerProfileReviewItemList[position])
-            }
+        Log.d(TAG, "partnerProfileReviewItemList 가 null 이 아님")
+        holder.bind(partnerProfileReviewItemList[position])
+        holder.binding.profileImgCv.setOnClickListener {
+            mItemClickListener.onItemClick(partnerProfileReviewItemList[position])
+        }
+        holder.binding.playerReviewNicknameTv.setOnClickListener {
+            mItemClickListener.onItemClick(partnerProfileReviewItemList[position])
+        }
+        holder.binding.playerGradeRb.setOnClickListener {
+            mItemClickListener.onItemClick(partnerProfileReviewItemList[position])
+        }
+        holder.binding.playerGradeTv.setOnClickListener {
+            mItemClickListener.onItemClick(partnerProfileReviewItemList[position])
+        }
 
 //        } else {
 //            Log.d(TAG, "partnerProfileReviewItemList 가 null 임")
