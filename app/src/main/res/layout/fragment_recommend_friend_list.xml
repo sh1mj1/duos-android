@@ -36,7 +36,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/recommend_friend_list_d_7_text_tv"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
         <TextView
@@ -210,8 +210,6 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
-            android:clipToPadding="true"
-            android:paddingBottom="200dp"
             android:visibility="gone"/>
 
 
