@@ -71,6 +71,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
 
+        // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
         var bundle = intent?.extras
 
         if(bundle != null){
@@ -93,18 +94,33 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         setLastAddedChatMessageId(chatRoomIdx)
 
+        // 원래는 update된 걸 아래 코드로 띄워줘야하는데, 일단 주석처리
         val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
-        Log.d("onStart - lastAddedChatMessageId", lastAddedChatMessageId.toString())
-        Log.d("onStart - updatedChatMessageList", updatedChatMessageList.toString())
+        Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
+        Log.d("updatedChatMessageList", updatedChatMessageList.toString())
         val updatedChatMessageListSize = updatedChatMessageList.size
         if(updatedChatMessageListSize != 0){
             for(i: Int in 0..updatedChatMessageListSize-1){
                 addChatItem(updatedChatMessageList[i])
-                Log.d("onStart - addChatItem", updatedChatMessageList[i].toString())
+                Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
             }
         }else{
-            Log.d("onStart - 주고받은 채팅메세지가","없음~")
+            Log.d("주고받은 채팅메세지가","없음~")
         }
+
+//        // val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+//        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+//        Log.d("onStart - lastAddedChatMessageId", lastAddedChatMessageId.toString())
+//        Log.d("onStart - chatMessageList", chatMessageList.toString())
+//        val chatMessageListSize = chatMessageList.size
+//        if(chatMessageListSize != 0){
+//            for(i: Int in 0..chatMessageListSize-1){
+//                addChatItem(chatMessageList[i])
+//                Log.d("onStart - addChatItem", chatMessageList[i].toString())
+//            }
+//        }else{
+//            Log.d("onStart - 주고받은 채팅메세지가","없음~")
+//        }
 
         setLastAddedChatMessageId(chatRoomIdx)
 
@@ -180,7 +196,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         //delete All
 
 
-        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
+        //chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
 
 
         //
