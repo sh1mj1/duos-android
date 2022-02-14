@@ -112,7 +112,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //        }
         val isFromChatList = intent.getBooleanExtra("isFromChatList", true)
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
-        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
         if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
