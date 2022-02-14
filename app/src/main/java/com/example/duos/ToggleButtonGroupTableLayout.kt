@@ -65,6 +65,12 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 
     override fun onClick(v: View) {
         val rb = v as RadioButton
+
+        if (v.context is PartnerFilterActivity){
+            radioBtnListener = partnerFilterContext as PartnerFilterActivity
+            (radioBtnListener as PartnerFilterActivity).setRadiobutton("init")
+        }
+
         if (activeRadioButton != null) {
             activeRadioButton!!.isChecked = false
         }
