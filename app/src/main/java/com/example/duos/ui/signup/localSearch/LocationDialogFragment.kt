@@ -122,8 +122,6 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
 
     fun setLocalList(cateIdx: Int) {
 
-        Log.d("cateIdx",cateIdx.toString())
-
         // category 에 해당하는 시/구/군을 보여준다.
         val filteredLocationList = ArrayList<LocationList>()
         for (location in locationList) {
@@ -132,6 +130,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
             }
         }
 
+        // 아무것도 선택하지 않았을 때는 맨 위에 있는 지역이 자동으로 선택됨
         myLocation = filteredLocationList[0]
 
         val locationRVAdapter = LocationRVAdapter(filteredLocationList)
