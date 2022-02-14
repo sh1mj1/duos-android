@@ -171,6 +171,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
+        // fcm 푸시알림으로 오는 경우는???
+
+        
         if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
