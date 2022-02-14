@@ -42,6 +42,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
     val mContext : Context = this
     var chatDB = ChatDatabase.getInstance(mContext, ChatDatabase.provideGson())!!
     lateinit var chatRoomIdx:String
+    lateinit var partnerIdx:String
     lateinit var type:String
     /**
      * Called when message is received.
@@ -127,6 +128,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
             Log.d("채팅방리스트", chatRoom.toString())
 
             chatRoomIdx = messageData.get("chatRoomIdx").toString()
+            partnerIdx = messageData.get("senderIdx").toString()
             //chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
             type = messageData.get("type").toString()
             if(type.equals("MESSAGE")){
@@ -175,11 +177,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
                     val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
                     chatDB.chatMessageItemDao().insert(chatMessageItem)
 
-                    val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
-                    intent.putExtra("chatRoomIdx", chatRoomIdx)
-                    intent.putExtra("type", type)
-                    startActivity(intent)
                 }
 //                ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
             } else if(type.equals("CREATE_APPOINTMENT")){
@@ -235,7 +232,11 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
                 if(getCurrentChatRoomIdx().equals(chatRoomIdx)){  //
                     Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
 
-
+                    val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
+                    intent.putExtra("chatRoomIdx", chatRoomIdx)
+                    intent.putExtra("type", type)
+                    startActivity(intent)
 
                     //intent.putExtra("body", body)
                     //intent.putExtra("partnerIdx", partnerIdx)
@@ -276,11 +277,26 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
      */
 
     private fun sendMessageData(body: String, senderId: String, chatRoomIdx: String){
-        val intent = Intent(this, ChattingActivity::class.java)
+        val intent = Intent(mContext, ChattingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.putExtra("type", type)
         intent.putExtra("chatRoomIdx",chatRoomIdx)
         intent.putExtra("senderId", senderId)
         intent.putExtra("isAlarmed", true)
+        intent.putExtra("partnerIdx", partnerIdx)
+
+
+
+//        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("chatRoomIdx", chatRoomIdx)
+//        bundle.putString("senderId", senderId)
+//        bundle.putString("partnerIdx", partnerIdx)
+//        bundle.putBoolean("isAlarmed", true)
+
+        Log.d("fcmService - sendMessageData의 인텐트 - chatRoomIdx", chatRoomIdx)
+        Log.d("fcmService - sendMessageData의 인텐트 - senderId", senderId)
+        Log.d("fcmService - sendMessageData의 인텐트 - partnerIdx", partnerIdx)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -293,6 +309,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
             .setContentTitle(senderId)
             .setContentText(body)
             .setAutoCancel(true)
+//            .setExtras(bundle)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 

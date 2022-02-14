@@ -121,6 +121,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
                         binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_done_rectangular)
                         binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
                         binding.countTextLengthTv.text = ""
+                        binding.contentReviewEt.setTextColor(ContextCompat.getColor(mContext, R.color.black))
                     } else if (s.toString().length >= 300) {    /* EditText 에 글이 400 자보다 길면 */
 
                         binding.activatingCompleteBtn.isEnabled = false

@@ -110,7 +110,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     }
 
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
-        Toast.makeText(context, "$TAG , onGetMyPageItemSuccess", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "$TAG , onGetMyPageItemSuccess", Toast.LENGTH_LONG).show()
 
         Log.d(TAG, "onGetMyPageItemSuccess")
         val phoneNumberView = toMyPagePhoneNumber(myPageInfo.phoneNumber)

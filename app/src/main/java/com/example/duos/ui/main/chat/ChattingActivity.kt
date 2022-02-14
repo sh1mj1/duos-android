@@ -60,8 +60,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chatRoomName: TextView
     //var chatRoomIdx: String = "9af55ffe-17cc-45e9-bc28-a674e6a9785b"
     lateinit var chatDB: ChatDatabase
-    lateinit var chatRoom : ChatRoom
-    lateinit var viewModel: ViewModel
+    //lateinit var chatRoom : ChatRoom
+    //lateinit var viewModel: ViewModel
     var lastAddedChatMessageId: Int = -1 // 마지막으로 화면에 업데이트된 채팅메세지 번호 기록
 
     override fun onStart() {
@@ -70,65 +70,45 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 사용자가 백그라운드에서 돌아왔을 때 호출됨
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
-        // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
-        var bundle = intent?.extras
+        // fcm 푸시알림으로 오는 경우는???
 
-        if(bundle != null){
-            val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
-            Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")
-            Log.d("chatRoomIdx is", chatRoomIdxByFCM)
-            if (!chatRoomIdxByFCM.isNullOrEmpty() && !(chatRoomIdx.equals(chatRoomIdxByFCM))) {
-                Log.d("FCM인텐트", "3 - chatRoomIdx를 다시 세팅")
-                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
-                if (!bundle.getBoolean("isFromPlayerProfile")){ //파트너 세부화면에서 채팅하기를 눌러 온 것이 아님
-                    chatRoomIdx = chatRoomIdxByFCM
-                } else{
-                    Log.d("onStart", "파트너세부화면의 채팅하기눌러서 이동")
-                }
-            }else{
-                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
-            }
-        }else{
-            Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님, 혹은 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동")
-            // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
-        // ChatListFragment에서 인텐트로 온 chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
-            // 포그라운드에서 온 경우 인텐트를 받음
+        if(isFromChatList){
+            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
+            chatRoomName.text = intent.getStringExtra("senderId")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
+        } else if (isFromPlayerProfile){
+
+            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
+            chatRoomName.text = intent.getStringExtra("partnerNickName")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
+        } else{ // fcm으로 온 경우
+            getFCMIntent()
         }
 
-        setLastAddedChatMessageId(chatRoomIdx)
+        saveCurrentChatRoomIdx(chatRoomIdx)                     // 현재 chatRoomIdx를 SharedPreference에 저장
 
-        // 원래는 update된 걸 아래 코드로 띄워줘야하는데, 일단 주석처리
-        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
-        Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
-        Log.d("updatedChatMessageList", updatedChatMessageList.toString())
-        val updatedChatMessageListSize = updatedChatMessageList.size
-        if(updatedChatMessageListSize != 0){
-            for(i: Int in 0..updatedChatMessageListSize-1){
-                addChatItem(updatedChatMessageList[i])
-                Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
-            }
-        }else{
-            Log.d("주고받은 채팅메세지가","없음~")
-        }
 
-//        // val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
-//        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
-//        Log.d("onStart - lastAddedChatMessageId", lastAddedChatMessageId.toString())
-//        Log.d("onStart - chatMessageList", chatMessageList.toString())
-//        val chatMessageListSize = chatMessageList.size
-//        if(chatMessageListSize != 0){
-//            for(i: Int in 0..chatMessageListSize-1){
-//                addChatItem(chatMessageList[i])
-//                Log.d("onStart - addChatItem", chatMessageList[i].toString())
-//            }
-//        }else{
-//            Log.d("onStart - 주고받은 채팅메세지가","없음~")
-//        }
+        //delete All
 
-        setLastAddedChatMessageId(chatRoomIdx)
 
-        //getFCMIntent()
+        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
+
+        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
+
+        chattingRV.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(this)
+        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
+        chattingRV.setLayoutManager(layoutManager)
+        chattingRV.setItemAnimator(DefaultItemAnimator())
+        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
+        chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // 약속 여부 받아오기
         if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
@@ -142,6 +122,24 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 setAppointmentBtnNotExist()
             }
         }
+
+        binding.chattingMakePlanBtn.setOnClickListener ({
+
+            if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
+                // 약속현황 보기
+                val intent = Intent(this, AppointmentInfoActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
+                startActivity(intent)
+            }
+            else {
+                // 약속 잡기
+                val intent = Intent(this, AppointmentActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
+                startActivity(intent)
+            }
+        })
 
 //        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
 //        if(!chatMessageList.isEmpty()){
@@ -159,78 +157,22 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
+        var sendBtn: ImageView = binding.chattingSendBtn
         //val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
-        //val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
+        //val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
+
+
+        val userDB = UserDatabase.getInstance(this)!!
+        userId = userDB.userDao().getUserNickName(thisUserIdx)  // 내 인덱스로 내 닉네임 가져오기
+
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
 
 //        if(intent != null){
 //            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
 //            chatRoomName.text = intent.getStringExtra("senderId")!!
 //            partnerIdx = intent.getIntExtra("partnerIdx", 0)
 //        }
-        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
-        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
-        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
-        // fcm 푸시알림으로 오는 경우는???
-
-        
-        if(isFromChatList){
-            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
-            chatRoomName.text = intent.getStringExtra("senderId")!!
-            partnerIdx = intent.getIntExtra("partnerIdx", 0)
-
-        } else if (isFromPlayerProfile){
-
-            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
-            chatRoomName.text = intent.getStringExtra("partnerNickName")!!
-            partnerIdx = intent.getIntExtra("partnerIdx", 0)
-
-        }
-
-
-
-        val userDB = UserDatabase.getInstance(this)!!
-        userId = userDB.userDao().getUserNickName(thisUserIdx)  // 내 인덱스로 내 닉네임 가져오기
-
-        saveCurrentChatRoomIdx(chatRoomIdx)                     // 현재 chatRoomIdx를 SharedPreference에 저장
-        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!   // ChatDB 에서 현재 chatRoomIdx를 가져오기
-        chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
-
-
-
-
-        //delete All
-
-
-        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
-
-
-        //
-
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
-
-        var sendBtn: ImageView = binding.chattingSendBtn
-
-        chattingRV.setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(this)
-        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
-        chattingRV.setLayoutManager(layoutManager)
-        chattingRV.setItemAnimator(DefaultItemAnimator())
-        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
-        chattingRV.setAdapter(chattingMessagesRVAdapter)
-
-        // chatting test code
-        //val currentTime = LocalDateTime.now()
-        //Log.d("currentTime", currentTime.toString())
-        //var formattedCurrentTime = getFormattedDateTime(currentTime.toString())
-        //Log.d("formattedCurrentTime", formattedCurrentTime)
-
-//        addChatItem("userId", "2021년 01월 21일", formattedCurrentTime, currentTime, "DATE")
-//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//
-//        addChatItem(chatRoomName.text.toString(), "안녕하세요~^^", formattedCurrentTime, currentTime,"MESSAGE")
-//        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
 
         // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
         chattingEt.addTextChangedListener(object: TextWatcher {
@@ -256,24 +198,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         sendBtn.setOnClickListener{
             postSendMessage()
         }
-
-        binding.chattingMakePlanBtn.setOnClickListener ({
-
-            if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
-                // 약속현황 보기
-                val intent = Intent(this, AppointmentInfoActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoomIdx)
-                intent.putExtra("partnerIdx", partnerIdx)
-                startActivity(intent)
-            }
-            else {
-                // 약속 잡기
-                val intent = Intent(this, AppointmentActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoomIdx)
-                intent.putExtra("partnerIdx", partnerIdx)
-                startActivity(intent)
-            }
-        })
 
         binding.chattingBackIv.setOnClickListener {
             finish()
@@ -420,33 +344,81 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     fun getFCMIntent(){
-        // chatRoomIdx만 받도록 수정 (여기서 데이터 받을필요 없이 chatRoomIdx로 이전 채팅 데이터 api 호출하게 하면 됨)
-        Log.d("FCM인텐트", "1")
+        // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
         var bundle = intent?.extras
-
 
         if(bundle != null){
             val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
-            Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")
-            Log.d("chatRoomIdx is", chatRoomIdxByFCM)
-            if (!chatRoomIdxByFCM.isNullOrEmpty()) {
-                Log.d("FCM인텐트", "3 - chatRoomIdx를 받아옴")
-                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
-                chatRoomIdx = chatRoomIdxByFCM
-            }else{
-                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
-            }
-//            if (chatRoomIdx != null && senderIdx != null && body != null && sendTime != null) {
-//                Log.d("채팅액티비티", "3")
-//                updateMessage(chatRoomIdx, "MESSAGE", senderIdx, thisUserIdx, body, sendTime)
+            val senderId = bundle.getString("senderId").toString()
+            partnerIdx = bundle.getInt("partnerIdx", 0)
+            val type = bundle.getString("type").toString()
+            Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")
+            Log.d("getFCMIntent - chatRoomIdx", chatRoomIdxByFCM)
+            Log.d("getFCMIntent - senderId", senderId)
+            Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
+
+            chatRoomIdx = chatRoomIdxByFCM
+            chatRoomName.text = senderId
+
+//            var tempChatRoomIdx = chatRoomIdx
+//            chatRoomIdx = chatRoomIdxByFCM
+//
+//            if(tempChatRoomIdx.isNullOrBlank()){
+//                tempChatRoomIdx = ""
+//            }
+////
+//            if(!(tempChatRoomIdx.equals(chatRoomIdxByFCM))){    // 현재 채팅방이 푸시알림이 온 채팅방이 아닌 경우
+//                chatRoomIdx = chatRoomIdxByFCM
+//            } else{ //
+//                chatRoomIdx = chatRoomIdxByFCM
+//            }
+
+
+//            if (!chatRoomIdxByFCM.isNullOrEmpty() && !(chatRoomIdx.equals(chatRoomIdxByFCM))) {
+//                Log.d("FCM인텐트", "3 - chatRoomIdx를 다시 세팅")
+//                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
 //            }else{
-//                Log.d("채팅액티비티", "3 - null 존재")
+//                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
 //            }
         }else{
-            Log.d("FCM인텐트", "푸시알림을 통해 채팅화면으로 온 것이 아님, 혹은 ")
+            Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
+            // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
             // ChatListFragment에서 인텐트로 온 chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
             // 포그라운드에서 온 경우 인텐트를 받음
         }
+
+        setLastAddedChatMessageId(chatRoomIdx)
+
+        // 원래는 update된 걸 아래 코드로 띄워줘야하는데, 일단 주석처리
+        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+        Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
+        Log.d("updatedChatMessageList", updatedChatMessageList.toString())
+        val updatedChatMessageListSize = updatedChatMessageList.size
+        if(updatedChatMessageListSize != 0){
+            for(i: Int in 0..updatedChatMessageListSize-1){
+                addChatItem(updatedChatMessageList[i])
+                Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
+            }
+        }else{
+            Log.d("주고받은 채팅메세지가","없음~")
+        }
+
+//        // val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+//        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+//        Log.d("onStart - lastAddedChatMessageId", lastAddedChatMessageId.toString())
+//        Log.d("onStart - chatMessageList", chatMessageList.toString())
+//        val chatMessageListSize = chatMessageList.size
+//        if(chatMessageListSize != 0){
+//            for(i: Int in 0..chatMessageListSize-1){
+//                addChatItem(chatMessageList[i])
+//                Log.d("onStart - addChatItem", chatMessageList[i].toString())
+//            }
+//        }else{
+//            Log.d("onStart - 주고받은 채팅메세지가","없음~")
+//        }
+
+        setLastAddedChatMessageId(chatRoomIdx)
+
     }
 
     // System.currentTimeMillis를 몇시:몇분 am/pm 형태의 문자열로 반환
