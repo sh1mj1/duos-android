@@ -149,11 +149,15 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         // 룸디비에 변경된/추가된 채팅방 저장
         var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
         var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+
         if(!chatListUpdated.isEmpty()){
             Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
             for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
                 if(chatDB.chatRoomDao().getChatRoomIdx(chatListUpdated[i].chatRoomIdx).isNullOrEmpty()){    // 새로 생성된 채팅방일 때 ---- 이 부분은 채팅방 생성 fcm 구현 후 수정 필요할 듯
                     chatDB.chatRoomDao().insert(chatListUpdated[i]) // 새로 생성된 채팅방 룸DB에 추가
+//                    if(chatListUpdated[i].lastAddedChatMessageId <= 0){
+//                        chatDB.chatRoomDao().updateLastAddedChatMessageId(chatListUpdated[i].chatRoomIdx, -1)
+//                    }
                 }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
                     chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
                 }

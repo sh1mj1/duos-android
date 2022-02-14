@@ -71,7 +71,44 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
 
-        getFCMIntent()
+        var bundle = intent?.extras
+
+        if(bundle != null){
+            val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
+            Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")
+            Log.d("chatRoomIdx is", chatRoomIdxByFCM)
+            if (!chatRoomIdxByFCM.isNullOrEmpty() && !(chatRoomIdx.equals(chatRoomIdxByFCM))) {
+                Log.d("FCM인텐트", "3 - chatRoomIdx를 다시 세팅")
+                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
+                chatRoomIdx = chatRoomIdxByFCM
+            }else{
+                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
+            }
+        }else{
+            Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님, 혹은 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동")
+            // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
+        // ChatListFragment에서 인텐트로 온 chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
+            // 포그라운드에서 온 경우 인텐트를 받음
+        }
+
+        setLastAddedChatMessageId(chatRoomIdx)
+
+        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+        Log.d("onStart - lastAddedChatMessageId", lastAddedChatMessageId.toString())
+        Log.d("onStart - updatedChatMessageList", updatedChatMessageList.toString())
+        val updatedChatMessageListSize = updatedChatMessageList.size
+        if(updatedChatMessageListSize != 0){
+            for(i: Int in 0..updatedChatMessageListSize-1){
+                addChatItem(updatedChatMessageList[i])
+                Log.d("onStart - addChatItem", updatedChatMessageList[i].toString())
+            }
+        }else{
+            Log.d("onStart - 주고받은 채팅메세지가","없음~")
+        }
+
+        setLastAddedChatMessageId(chatRoomIdx)
+
+        //getFCMIntent()
 
         // 약속 여부 받아오기
         if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
@@ -136,6 +173,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         saveCurrentChatRoomIdx(chatRoomIdx)                     // 현재 chatRoomIdx를 SharedPreference에 저장
         chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!   // ChatDB 에서 현재 chatRoomIdx를 가져오기
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+
 
 
 
@@ -258,22 +296,25 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         var parsedChatMessageIdx = chatMessageIdx.split("@")
         var uuid = parsedChatMessageIdx[1]
 
-        Log.d("날짜변경선 추가", "lastAddedChatMessageId: "+lastAddedChatMessageId.toString())
+        Log.d("ChattingActvity - sendMessage 날짜변경선 추가 전 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         // 첫 메세지일때 날짜변경선 추가 ... 채팅방 자체의 첫 메세지 일 떄 말고, 자정 지나고 첫 메세지일때도 추가되도록 수정 필요
-        if(lastAddedChatMessageId == -1){  //지금 받은 메세지가 채팅방의 처음 메세지일 때
+        if(lastAddedChatMessageId == -1){  //지금 보내는 메세지가 채팅방의 처음 메세지일 때
             val parsedLocalDateTime = LocalDateTime.now()
 
             val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
             val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
             chattingMessagesRVAdapter.addItem(dateItem)
             chatDB.chatMessageItemDao().insert(dateItem)
+            lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId
+            Log.d("채팅보내기 - 날짜변경선 추가 후 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         }
 
         val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
         chatDB.chatMessageItemDao().insert(chatMessageItem)
-        lastAddedChatMessageId = chatMessageItem.chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
+        lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
+        Log.d("채팅보내기 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         chattingEt.setText("")
     }
 
@@ -310,8 +351,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            val sentAtString = bundle.getString("sentAt")
 //            var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
             //var currentTime = toDate(System.currentTimeMillis())
+            val isAlarmed = bundle.getBoolean("isAlarmed", false)
 
-            if (!type.isNullOrEmpty()) {
+            if (!type.isNullOrEmpty() && !isAlarmed) {
                 // 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 누르면 onMessageReceived를 거치지 않고 onNewIntent가 호출되고 senderId가 null으로 와서
                     // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
                     // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
@@ -361,12 +403,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
 
         if(bundle != null){
-            var chatRoomIdx = bundle.getString("chatRoomIdx").toString()
+            val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
             Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")
-            Log.d("chatRoomIdx is", chatRoomIdx)
-            if (!chatRoomIdx.isNullOrEmpty()) {
+            Log.d("chatRoomIdx is", chatRoomIdxByFCM)
+            if (!chatRoomIdxByFCM.isNullOrEmpty()) {
                 Log.d("FCM인텐트", "3 - chatRoomIdx를 받아옴")
                 // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
+                chatRoomIdx = chatRoomIdxByFCM
             }else{
                 Log.d("FCM인텐트", "3 - chatRoomIdx is null")
             }
@@ -461,6 +504,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 R.color.primary
             ))
         binding.chattingMakePlanBtn.setText(getString(R.string.chatting_make_plan))
+    }
+
+    fun setLastAddedChatMessageId(chatRoomIdx: String){
+        val lastMessageData = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx)
+        if(lastMessageData != null){
+            lastAddedChatMessageId = lastMessageData.chatMessageId
+        }
     }
 
     //    private fun addChatItem(senderId: String, body: String, formattedSentAt: String, sentAt:LocalDateTime, type: String) {

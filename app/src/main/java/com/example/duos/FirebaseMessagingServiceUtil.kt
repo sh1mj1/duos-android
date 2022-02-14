@@ -138,6 +138,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
                     Log.d("onMessageReceived 채팅 동기화api 호출 전 - 룸디비 확인", chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx).toString())
                     ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
                 } else{  //지금 받은 메세지가 채팅방의 처음 메세지일 때
+                    // 메세지를 룸디비에 저장하기 전 lastAddedChatMessageId 업데이트
                     lastChatMessageIdx = messageData.get("dataIdx").toString()
                     Log.d("chatMessageIdx is null or blank", "채팅메세지를 주고받은 적 없음 - " + lastChatMessageIdx)
 
@@ -170,8 +171,8 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
 
 
                      //여기서 받은 메세지를 룸디비에 저장
-//                    val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
-//                    chatDB.chatMessageItemDao().insert(chatMessageItem)
+                    val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
+                    chatDB.chatMessageItemDao().insert(chatMessageItem)
 
                     val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
@@ -278,6 +279,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("chatRoomIdx",chatRoomIdx)
         intent.putExtra("senderId", senderId)
+        intent.putExtra("isAlarmed", true)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
