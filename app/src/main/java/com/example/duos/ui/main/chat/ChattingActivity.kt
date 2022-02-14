@@ -74,8 +74,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
-        // fcm 푸시알림으로 오는 경우는???
-
         if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
@@ -88,7 +86,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chatRoomName.text = intent.getStringExtra("partnerNickName")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
-        } else{ // fcm으로 온 경우
+        } else{ // 푸시알림을 '눌러서' 온 경우
             getFCMIntent()
         }
 
@@ -362,6 +360,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     fun getFCMIntent(){
+        Log.d("getFCMIntent 시작", "즉 푸시알림을 눌러서 온 경우 / ")
         // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
         var bundle = intent?.extras
 

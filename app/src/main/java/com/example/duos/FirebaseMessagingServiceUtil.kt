@@ -44,6 +44,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
     lateinit var chatRoomIdx:String
     lateinit var partnerIdx:String
     lateinit var type:String
+    lateinit var messageData: Map<String, String>
     /**
      * Called when message is received.
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.*/
@@ -118,7 +119,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
 
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
-            val messageData = remoteMessage.data
+            messageData = remoteMessage.data
 
 //            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
 //                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
@@ -176,86 +177,31 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
                      //여기서 받은 메세지를 룸디비에 저장
                     val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
                     chatDB.chatMessageItemDao().insert(chatMessageItem)
-
+                    setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
                 }
 //                ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
-            } else if(type.equals("CREATE_APPOINTMENT")){
-                Log.d("fcm data payload - type","약속 생성")
-                // DB에 isAppointmentExist와 appointmentIdx update
-                chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
-                val appointmentIdx = messageData.get("dataIdx")?.toInt()
-                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
-            } else if(type.equals("DELETE_APPOINTMENT")){
-                Log.d("fcm data payload - type","약속 삭제")
-                // DB에 isAppointmentExist와 appointmentIdx update
-                chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
-                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
-            } else if(type.equals("UPDATE_APPOINTMENT")){
-                Log.d("fcm data payload - type","약속 수정")
-                // DB에 isAppointmentExist와 appointmentIdx update
-                val appointmentIdx = messageData.get("dataIdx")?.toInt()
-                chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
-            } else{
-                Log.d("fcm data payload - type", "type을 제대로 받아오지 못함")
-            }
-
-            val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-            val componentName: ComponentName?
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                componentName = manager.appTasks[0].taskInfo.topActivity
-            }else{
-                componentName = manager.getRunningTasks(1)[0].topActivity
-            }
-            val ActivityName = componentName!!.shortClassName.substring(0)
-            Log.d("현재액티비티이름", ActivityName)
-
-
-            val body = messageData.get("body").toString()
-            val partnerIdx = messageData.get("senderIdx").toString()
-            val sentAtString = messageData.get("sentAt").toString()
-            val senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
-
-            // 여기서 받은 메세지를 룸디비에 저장
-//            val formattedSentAt = getFormattedDateTime(sentAtString)
-//            val parsedSentAtStringArray = sentAtString.split(".")
-//            var parsedSentAtString = parsedSentAtStringArray[0]
-//            val sentAt = LocalDateTime.parse(parsedSentAtString)
-//
-//            val chatMessageIdx = messageData.get("dataIdx").toString()
-//            var parsedChatMessageIdx = chatMessageIdx.split("@")
-//            var uuid = parsedChatMessageIdx[1]
-//            val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
-//            chatDB.chatMessageItemDao().insert(chatMessageItem)
-
-
-            if(ActivityName.contains("ChattingActivity")){
-                if(getCurrentChatRoomIdx().equals(chatRoomIdx)){  //
-                    Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
-
-                    val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
-                    intent.putExtra("chatRoomIdx", chatRoomIdx)
-                    intent.putExtra("type", type)
-                    startActivity(intent)
-
-                    //intent.putExtra("body", body)
-                    //intent.putExtra("partnerIdx", partnerIdx)
-                    //intent.putExtra("sentAt", sentAt)
-                    //intent.putExtra("senderId",  senderId)
-                    //Log.d("발신자", senderId)
-
-
+            } else{ // 약속 관련 fcm 일 때
+                if(type.equals("CREATE_APPOINTMENT")){
+                    Log.d("fcm data payload - type","약속 생성")
+                    // DB에 isAppointmentExist와 appointmentIdx update
+                    chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+                    val appointmentIdx = messageData.get("dataIdx")?.toInt()
+                    chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
+                } else if(type.equals("DELETE_APPOINTMENT")){
+                    Log.d("fcm data payload - type","약속 삭제")
+                    // DB에 isAppointmentExist와 appointmentIdx update
+                    chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
+                    chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
+                } else if(type.equals("UPDATE_APPOINTMENT")){
+                    Log.d("fcm data payload - type","약속 수정")
+                    // DB에 isAppointmentExist와 appointmentIdx update
+                    val appointmentIdx = messageData.get("dataIdx")?.toInt()
+                    chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, appointmentIdx)
                 } else{
-                    Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
-                    Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", messageData.get("chatRoomIdx").toString())
-                    sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
+                    Log.d("fcm data payload - type", "type을 제대로 받아오지 못함")
                 }
-
-            } else{
-                Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
-                sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
+                setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
             }
-
 
         }else{
             Log.d("데이터메세지", "is null")
@@ -371,16 +317,70 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
             Log.d("채팅 동기화 완료", chatDB.chatMessageItemDao().getChatMessages(syncChatMessageData.messageList[0].chatRoomIdx).toString())
         }
 
-        val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
-        intent.putExtra("chatRoomIdx", chatRoomIdx)
-        intent.putExtra("type", type)
-        startActivity(intent)
-
+        setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
     }
 
     override fun onSyncChatMessageFailure(code: Int, message: String) {
         Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
+    }
+
+    fun setIntentByCurrentState(body: String, senderId: String, chatRoomIdx: String){
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val componentName: ComponentName?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            componentName = manager.appTasks[0].taskInfo.topActivity
+        }else{
+            componentName = manager.getRunningTasks(1)[0].topActivity
+        }
+        val ActivityName = componentName!!.shortClassName.substring(0)
+        Log.d("현재액티비티이름", ActivityName)
+
+
+//        val body = messageData.get("body").toString()
+//        val partnerIdx = messageData.get("senderIdx").toString()
+//        val sentAtString = messageData.get("sentAt").toString()
+//        val senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
+
+        // 여기서 받은 메세지를 룸디비에 저장
+//            val formattedSentAt = getFormattedDateTime(sentAtString)
+//            val parsedSentAtStringArray = sentAtString.split(".")
+//            var parsedSentAtString = parsedSentAtStringArray[0]
+//            val sentAt = LocalDateTime.parse(parsedSentAtString)
+//
+//            val chatMessageIdx = messageData.get("dataIdx").toString()
+//            var parsedChatMessageIdx = chatMessageIdx.split("@")
+//            var uuid = parsedChatMessageIdx[1]
+//            val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
+//            chatDB.chatMessageItemDao().insert(chatMessageItem)
+
+
+        if(ActivityName.contains("ChattingActivity")){
+            if(getCurrentChatRoomIdx().equals(chatRoomIdx)){  //
+                Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
+
+                val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("type", type)
+                startActivity(intent)
+
+                //intent.putExtra("body", body)
+                //intent.putExtra("partnerIdx", partnerIdx)
+                //intent.putExtra("sentAt", sentAt)
+                //intent.putExtra("senderId",  senderId)
+                //Log.d("발신자", senderId)
+
+
+            } else{
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", chatRoomIdx)
+                sendMessageData(body, senderId, chatRoomIdx)
+            }
+
+        } else{
+            Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
+            sendMessageData(body, senderId, chatRoomIdx)
+        }
     }
 
     fun convertMessageListDataToChatMessageItem(messageListData: MessageListData): ChatMessageItem{
