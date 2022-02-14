@@ -33,6 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/under_text_visible_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -53,9 +54,9 @@
                 android:id="@+id/partner_filter_count_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
                 android:textColor="@color/primary"
                 android:textSize="13sp" />
+<!--                android:text="3"-->
 
             <TextView
                 android:layout_width="wrap_content"
