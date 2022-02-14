@@ -2,13 +2,8 @@ package com.example.duos.ui.main.chat
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +32,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
         chatListRv.adapter = chatListRVAdapter
 
-        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!   // DB 불러오기
+        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
             ChatListService.chatList(this, getUserIdx()!!)
@@ -45,7 +40,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         } else {    // 인터넷 연결 안돼있을 때
             Log.d("인터넷 연결 확인", "DISCONNECTED")
             chatListDatas.clear()
-            chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())    // DB에 있는 데이터를 모두 불러오기
+            chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())
         }
 
 //        chatListDatas.apply {
@@ -115,7 +110,6 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatListRVAdapter.setChatListItemClickListener(object: ChatListRVAdapter.ChatListItemClickListener {
             override fun onItemClick(chatRoom: ChatRoom) {
                 val intent = Intent(activity, ChattingActivity::class.java)
-                intent.putExtra("isFromChatList", true)
                 intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
                 intent.putExtra("senderId", chatRoom.chatRoomName)
                 intent.putExtra("partnerIdx", chatRoom.participantIdx)
@@ -171,7 +165,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {

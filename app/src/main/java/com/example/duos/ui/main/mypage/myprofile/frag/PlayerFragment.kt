@@ -25,6 +25,8 @@ import com.example.duos.R
 import com.example.duos.data.entities.PartnerResDto
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.data.entities.StarredFriend
+import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.data.remote.myFriendList.FriendListService
@@ -35,17 +37,19 @@ import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.friendList.AddStarredFriendView
 import com.example.duos.ui.main.friendList.DeleteStarredFriendView
-import com.example.duos.ui.main.friendList.StarredFriendListView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
+import java.time.LocalTime.now
+import java.time.format.DateTimeFormatter
 
 // 내 프로필 , 모든 리뷰 보기, 지난 약속 보기, 파트너 서치, 채팅방에서 넘어올 수 있어
 class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding::inflate),
     PartnerProfileListView, AddStarredFriendView, DeleteStarredFriendView, CreateChatRoomView {
     val TAG: String = "PlayerFragment"
+    lateinit var chatDB: ChatDatabase
 
     private var partnerProfileReviewDatas = ArrayList<ReviewResDto>()
     private var friendListDatas = ArrayList<StarredFriend>()
@@ -55,9 +59,12 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     var todayChatAvaillCnt: Int = 0
     var hasChatRoomAlready: Boolean = false
 
-    var createdNewChatRoom : Boolean = false
-    var targetChatRoomIdx : String = ""
-    var participantList : List<Int> =emptyList<Int>()
+    var createdNewChatRoom: Boolean = false
+    var targetChatRoomIdx: String = ""
+    var participantList: List<Int> = emptyList<Int>()
+
+    var partnerImgUrl: String = ""
+    var partnerNickname: String = ""
 
     override fun initAfterBinding() {
         Log.d(TAG, "Start_PlayerFragment")
@@ -80,12 +87,13 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         // 채팅하기 버튼 클릭
         (context as MyProfileActivity).findViewById<AppCompatButton>(R.id.partner_profile_chatting_btn).setOnClickListener {
             if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    // 원래 만들어진 채팅방이 없고, 오늘 가능 횟수가 남아있으면
-                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt", Toast.LENGTH_LONG)
+                    .show()
                 createRoom()
-            } else if(hasChatRoomAlready == false && todayChatAvaillCnt ==0){
-                Toast.makeText(context, "오늘 할 수 있는 채팅 수 초과",Toast.LENGTH_LONG).show()
-            }else if(hasChatRoomAlready == true){
-                Toast.makeText(context, "이미 채팅방이 있으니까 그 해당 채팅방을 이동해야 해",Toast.LENGTH_LONG).show()
+            } else if (hasChatRoomAlready == false && todayChatAvaillCnt == 0) {
+                Toast.makeText(context, "오늘 할 수 있는 채팅 수 초과", Toast.LENGTH_LONG).show()
+            } else if (hasChatRoomAlready == true) {
+                Toast.makeText(context, "이미 채팅방이 있으니까 그 해당 채팅방을 이동해야 해", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -215,12 +223,16 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
     @SuppressLint("SetTextI18n")
     private fun setPartnerProfileInfo(partnerResDto: PartnerResDto) {
+
+        partnerImgUrl = partnerResDto.partnerInfoDto.profilePhotoUrl
+        partnerNickname = partnerResDto.partnerInfoDto.nickname
+
         val profileGenderStr = toGenderStr(partnerResDto.partnerInfoDto.gender)
         val locationName = partnerResDto.partnerInfoDto.locationName
         val locationCategory = partnerResDto.partnerInfoDto.locationCategory
         val location = locationCategory + locationName
 
-        binding.playerNicknameTv.text = partnerResDto.partnerInfoDto.nickname
+        binding.playerNicknameTv.text = partnerNickname
         binding.playerGenerationTv.text = partnerResDto.partnerInfoDto.age
         binding.playerSexTv.text = profileGenderStr
         binding.profileLocationTv.text = location
@@ -228,7 +240,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         binding.partnerProfileGradeNumTv.text = partnerResDto.partnerInfoDto.rating.toString()
         binding.playerCareerYearNumTv.text = partnerResDto.partnerInfoDto.experience
         Glide.with(binding.playerProfileImgIv.context)
-            .load(partnerResDto.partnerInfoDto.profilePhotoUrl)
+            .load(partnerImgUrl)
             .into(binding.playerProfileImgIv)
         binding.playerIntroductionTv.text = partnerResDto.partnerInfoDto.introduction
         binding.playerCareerPlayedNumTv.text = partnerResDto.partnerInfoDto.gameCount.toString()
@@ -295,13 +307,25 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         intent.apply {
             putExtra("isFromPlayerProfile", true)
             putExtra("createdNewChatRoom", createdNewChatRoom)
-            putExtra("targetChatRoomIdx", targetChatRoomIdx)
-            putExtra("partnerIdx", participantList[1])
+            putExtra("targetChatRoomIdx", targetChatRoomIdx)    // 채팅룸Idx
+            putExtra("partnerNickName", partnerNickname)
+            putExtra("partnerIdx", participantList[0])  // 채팅 상대방 Idx
             Log.d(TAG, "$createdNewChatRoom, $targetChatRoomIdx, ${participantList[0]}")
         }
-//        intent.putExtra("chatRoomIdx", chatRoom.chatRoomIdx)
-//        intent.putExtra("senderId", chatRoom.chatRoomName)
-//        intent.putExtra("partnerIdx", chatRoom.participantIdx)
+
+        if (createdNewChatRoom == false) {    /* 원래 채팅방 있 */
+
+        } else {                              /* 원래 채팅방 없 */
+            // 룸 DB에 저장하기
+            chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+            val newChatRoom =
+                ChatRoom(
+                    targetChatRoomIdx, partnerNickname, partnerImgUrl, participantList[0],
+                    "채팅을 해보세요", "오늘날짜 아님 null".toString(), false, null
+                )
+            chatDB.chatRoomDao().insert(newChatRoom)
+        }
+
 
         startActivity(intent)
     }
