@@ -51,6 +51,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var userId: String
     private var thisUserIdx = getUserIdx()!!
     var partnerIdx: Int = 0 // initAfterBinding에서 ChatListFragment에서 partnerIdx 인텐트 넘겨받음
+    var createdNewChatRoom : Boolean = false
     private var layoutManager: LayoutManager? = null
     lateinit var chatRoomIdx : String
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
@@ -109,6 +110,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
         val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
 
         getFCMIntent()
@@ -151,6 +153,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //        }
         if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
             chatRoomName.text = intent.getStringExtra("senderId")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 

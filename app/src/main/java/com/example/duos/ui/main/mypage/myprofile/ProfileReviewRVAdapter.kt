@@ -22,7 +22,8 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
     fun clickPlayerReviewListener(itemClickListener: PlayerReviewItemClickListener) {
         mItemClickListener = itemClickListener
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // ViewHolder 생성. (아이템 뷰 객체를 binding해서 뷰 홀더에 던져줌)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileReviewRVAdapter.ViewHolder {
@@ -34,7 +35,10 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
     override fun onBindViewHolder(holder: ProfileReviewRVAdapter.ViewHolder, position: Int) {
         holder.bind(myProfileReviewItemList[position])
-        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
+        holder.binding.profileImgCv.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
+        holder.binding.playerReviewNicknameTv.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
+        holder.binding.playerGradeRb.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
+        holder.binding.playerGradeTv.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
     }
 
     // 데이터 리스트의 크기
@@ -48,13 +52,16 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
             Glide.with(binding.profileImgIv.context)                                    /*writerProfileImgUrl*/
                 .load(myProfileReviewItem.writerProfileImgUrl)
                 .into(binding.profileImgIv)
-            binding.playerGradeTv.text = myProfileReviewItem.rating.toString()          /*rating*/
-            var playerGradeRate = binding.playerGradeTv.text.toString()
-            binding.playerGradeRb.rating = playerGradeRate.toFloat()
+            binding.playerGradeRb.rating = myProfileReviewItem.rating!!                   /*rating*/
+            binding.playerGradeTv.text = toRatingStr(myProfileReviewItem.rating!!)
             binding.reviewDateTv.text = myProfileReviewItem.date                        /*date*/
             binding.reviewContentTv.text = myProfileReviewItem.reviewContent            /*reviewContent*/
 
-
         }
     }
+    fun toRatingStr(ratingFloat: Float): String {
+        val ratingStr = Math.round(ratingFloat * 10) / 10
+        return ratingStr.toString()
+    }
 }
+

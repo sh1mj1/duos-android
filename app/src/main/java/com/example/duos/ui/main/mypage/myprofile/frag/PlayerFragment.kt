@@ -86,15 +86,19 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         }
         // 채팅하기 버튼 클릭
         (context as MyProfileActivity).findViewById<AppCompatButton>(R.id.partner_profile_chatting_btn).setOnClickListener {
-            if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    // 원래 만들어진 채팅방이 없고, 오늘 가능 횟수가 남아있으면
-                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt", Toast.LENGTH_LONG)
-                    .show()
-                createRoom()
-            } else if (hasChatRoomAlready == false && todayChatAvaillCnt == 0) {
-                Toast.makeText(context, "오늘 할 수 있는 채팅 수 초과", Toast.LENGTH_LONG).show()
-            } else if (hasChatRoomAlready == true) {
-                Toast.makeText(context, "이미 채팅방이 있으니까 그 해당 채팅방을 이동해야 해", Toast.LENGTH_LONG).show()
-            }
+            ChatService.createChatRoom(this, myUserIdx, partnerUserIdx) // 채팅방 생성 OR 불러오기 API 호출
+//            if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    // 원래 만들어진 채팅방이 없고, 오늘 가능 횟수가 남아있으면
+//                Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt", Toast.LENGTH_LONG)
+//                    .show()
+//                createRoom()
+//            } else if (hasChatRoomAlready == false && todayChatAvaillCnt == 0) {
+//                Toast.makeText(context, "오늘 할 수 있는 채팅 수 초과", Toast.LENGTH_LONG).show()
+//            } else if (hasChatRoomAlready == true) {
+//                Toast.makeText(context, "이미 채팅방이 있어 해당 채팅방을 이동해야 해", Toast.LENGTH_LONG).show()
+//                chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+//
+//
+//            }
         }
 
 
@@ -291,42 +295,26 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
         Log.d("채팅방 생성한 user의 userIdx", myUserIdx.toString())
         Log.d("채팅방 생성: 상대 user의 userIdx", partnerUserIdx.toString())
-        ChatService.createChatRoom(this, myUserIdx, partnerUserIdx)
-        /*
-        var createdNewChatRoom : Boolean = false
-    var targetChatRoomIdx : String = ""
-    var participantList : List<Int> =emptyList<Int>()
-         */
-        //TODO : Response 데이터 클래스에  채팅방 룸 Idx와 참여자, 채팅방을 새로 생성했는지 저장
-
+        chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+        val newChatRoom =
+            ChatRoom(
+                targetChatRoomIdx, partnerNickname, partnerImgUrl, participantList[0],
+                "채팅을 해보세요", "오늘날짜 아님 null", false, -1
+            )
+        chatDB.chatRoomDao().insert(newChatRoom)
 
     }
 
     private fun startChattingActivity() {
         val intent = Intent(activity, ChattingActivity::class.java)
-        intent.apply {
-            putExtra("isFromPlayerProfile", true)
-            putExtra("createdNewChatRoom", createdNewChatRoom)
-            putExtra("targetChatRoomIdx", targetChatRoomIdx)    // 채팅룸Idx
-            putExtra("partnerNickName", partnerNickname)
-            putExtra("partnerIdx", participantList[0])  // 채팅 상대방 Idx
-            Log.d(TAG, "$createdNewChatRoom, $targetChatRoomIdx, ${participantList[0]}")
-        }
-
-        if (createdNewChatRoom == false) {    /* 원래 채팅방 있 */
-
-        } else {                              /* 원래 채팅방 없 */
-            // 룸 DB에 저장하기
-            chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
-            val newChatRoom =
-                ChatRoom(
-                    targetChatRoomIdx, partnerNickname, partnerImgUrl, participantList[0],
-                    "채팅을 해보세요", "오늘날짜 아님 null".toString(), false, null
-                )
-            chatDB.chatRoomDao().insert(newChatRoom)
-        }
-
-
+//        intent.apply {      /* ChatActivity 로 intent 정보 넘겨주기*/
+//            putExtra("isFromPlayerProfile", true)         // 파트너 프로필에서 옴
+//            putExtra("createdNewChatRoom", createdNewChatRoom)  // 새로 생성된 채팅방인가? : Boolean
+//            putExtra("targetChatRoomIdx", targetChatRoomIdx)    // 채팅룸Idx
+//            putExtra("partnerNickName", partnerNickname)        // 파트너 이름
+//            putExtra("partnerIdx", participantList[0])          // 채팅 상대 Player Idx
+//        }
+        Log.d(TAG, "$createdNewChatRoom, $targetChatRoomIdx, ${participantList[0]}")
         startActivity(intent)
     }
 
@@ -343,52 +331,55 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         createdNewChatRoom = createChatRoomResultData.createdNewChatRoom
         targetChatRoomIdx = createChatRoomResultData.targetChatRoomIdx
         participantList = createChatRoomResultData.participantList
-        startChattingActivity()
+
+        if (hasChatRoomAlready == false && todayChatAvaillCnt > 0) {    /* 신규 채팅방,  오늘 가능 횟수가 남아있음 */
+            Toast.makeText(context, "원래 채팅방 있? : $hasChatRoomAlready, 남은 채팅 가능 횟수 : $todayChatAvaillCnt", Toast.LENGTH_LONG)
+                .show()
+            createRoom()    // 새 채팅방 RoomDB에 업데이트
+            val intent = Intent(activity, ChattingActivity::class.java)
+            intent.apply {      /* ChatActivity 로 intent 정보 넘겨주기*/
+                putExtra("isFromPlayerProfile", true)         // 파트너 프로필에서 옴
+                putExtra("createdNewChatRoom", createdNewChatRoom)  // 새로 생성된 채팅방인가? : Boolean
+                putExtra("targetChatRoomIdx", targetChatRoomIdx)    // 채팅룸Idx
+                putExtra("partnerNickName", partnerNickname)        // 파트너 이름u
+                putExtra("partnerIdx", participantList[0])          // 채팅 상대 Player Idx
+                putExtra("isAppointmentExist", false)
+                putExtra("appointmentIdx", -1)             // 약속 인덱스 없음이 -1 이었던 것 같은데...
+            }
+            Log.d(TAG, "$createdNewChatRoom, $targetChatRoomIdx, ${participantList[0]}")
+            startActivity(intent)
+
+        } else if (hasChatRoomAlready == false && todayChatAvaillCnt == 0) {    /* 신규 채팅방이지만, 오늘 가능 횟수 없음 */
+            Toast.makeText(context, "오늘 할 수 있는 채팅 수를 초과하였습니다.", Toast.LENGTH_LONG).show()
+
+        } else if (hasChatRoomAlready == true) {                                /* 이미 있는 채팅방 */
+            Toast.makeText(context, "이미 채팅방이 있어 해당 채팅방으로 이동합니다.", Toast.LENGTH_SHORT).show()
+            chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+            val lastChatRoom = chatDB.chatRoomDao().getChatRoom(targetChatRoomIdx)
+            val intent = Intent(activity, ChattingActivity::class.java)
+            intent.apply {      /* ChatActivity 로 intent 정보 넘겨주기*/
+                putExtra("isFromPlayerProfile", true)         // 파트너 프로필에서 옴
+                putExtra("createdNewChatRoom", createdNewChatRoom)  // 새로 생성된 채팅방인가? : Boolean
+                putExtra("targetChatRoomIdx", targetChatRoomIdx)    // 채팅룸Idx
+                putExtra("partnerNickName", partnerNickname)        // 파트너 이름
+                putExtra("partnerIdx", participantList[0])          // 채팅 상대 Player Idx
+                putExtra("isAppointmentExist", lastChatRoom.isAppointmentExist)     // 약속 유무
+                putExtra("appointmentIdx", lastChatRoom.appointmentIdx)             // 약속 인덱스
+            }
+            startActivity(intent)
+
+        }
+
+
+//        startChattingActivity()
     }
 
     override fun onCreateChatRoomFailure(code: Int, message: String) {
-//        Toast.makeText(this, "code: $code, message: $message", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
 
 }
-
-
-/*
-    /*  아래 희주님이 작성하신 코드                 */
-    fun createRoom() {
-        // val chatRoom = ChatRoom(thisUserIdx, targetUserIdx)
-        Log.d("채팅방 생성한 user의 userIdx", userIdx.toString())
-        Log.d("채팅방 생성: 상대 user의 userIdx", targetUserIdx.toString())
-        ChatService.createChatRoom(this, userIdx, targetUserIdx)
-
-    }
-
-    private fun startChattingActivity() {
-        val intent = Intent(this, ChattingActivity::class.java)
-//        intent.apply {
-//            putExtra()
-//        }
-        startActivity(intent)
-    }
-
-    fun startLoadingProgress() {
-        Log.d("로딩중", "채팅방 생성 api")
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-    }
-
-    override fun onCreateChatRoomLoading() {
-        startLoadingProgress()
-    }
-
-    override fun onCreateChatRoomSuccess() {
-        startChattingActivity()
-    }
-
-    override fun onCreateChatRoomFailure(code: Int, message: String) {
-//        Toast.makeText(this, "code: $code, message: $message", Toast.LENGTH_LONG).show()
-    }
- */
 
 
 
