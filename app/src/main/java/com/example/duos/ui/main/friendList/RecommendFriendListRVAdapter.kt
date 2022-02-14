@@ -17,6 +17,7 @@ class RecommendFriendListRVAdapter(private val friendlist: ArrayList<Recommended
         fun onDeleteFriend(friendId: Int)
         fun onAddFriend(friend: RecommendedFriend)
         fun onDeleteText()
+        fun gotoPartnerProfileActivity(partnerIdx : Int)
     }
 
     // 리스너 객체를 전달받는 함수랑 리스너 객체를 저장할 변수
@@ -58,7 +59,14 @@ class RecommendFriendListRVAdapter(private val friendlist: ArrayList<Recommended
                 holder.binding.recommendFriendListLikeIv.setImageResource(R.drawable.ic_like)
                 updateFriend(position, true)
             }
+        }
 
+        holder.binding.recommendFriendListProfileImageIv.setOnClickListener {
+            mItemClickListener.gotoPartnerProfileActivity(friendlist[position].partnerIdx!!)
+        }
+
+        holder.binding.recommendFriendListIdTv.setOnClickListener {
+            mItemClickListener.gotoPartnerProfileActivity(friendlist[position].partnerIdx!!)
         }
 
     }
