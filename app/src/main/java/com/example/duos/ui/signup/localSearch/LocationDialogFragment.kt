@@ -3,6 +3,7 @@ package com.example.duos.ui.signup.localSearch
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -124,9 +125,13 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         // category 에 해당하는 시/구/군을 보여준다.
         val filteredLocationList = ArrayList<LocationList>()
         for (location in locationList) {
-            if (location.locationCategoryIdx == cateIdx)
-                filteredLocationList.add(location);
+            if (location.locationCategoryIdx == cateIdx) {
+                filteredLocationList.add(location)
+            }
         }
+
+        // 아무것도 선택하지 않았을 때는 맨 위에 있는 지역이 자동으로 선택됨
+        myLocation = filteredLocationList[0]
 
         val locationRVAdapter = LocationRVAdapter(filteredLocationList)
         binding.locationListRc.adapter = locationRVAdapter

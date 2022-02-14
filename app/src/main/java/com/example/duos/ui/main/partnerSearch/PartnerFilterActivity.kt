@@ -40,9 +40,10 @@ class PartnerFilterActivity :
         val ballCapacityRangeSeekBar = binding.partnerFilterBallCapabilityRangeSb
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
 
-
         ageRangeSeekbar.setProgress(10f, 60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
+
+        initiateAllFilter(ageRangeSeekbar, ballCapacityRangeSeekBar)
 
         // 연령 선택
         ageRangeSeekbar.setOnRangeChangedListener(object : OnRangeChangedListener {
@@ -153,11 +154,10 @@ class PartnerFilterActivity :
     private fun initiateAllFilter(ageRangeSeekbar: RangeSeekBar, ballCapacityRangeSeekBar: RangeSeekBar) {
         binding.partnerFilterManBtn.isChecked = false
         binding.partnerFilterWomanBtn.isChecked = false
-        binding.partnerFilterCarelessBtn.isChecked = false
+        binding.partnerFilterCarelessBtn.isChecked = true
         binding.partnerFilterLocationTextTv.text = getString(R.string.signup_local_set)
-        viewModel.partnerGender.value = null
-        viewModel.partnerLocation.value = null
-        viewModel.partnerGender.value = null
+        viewModel.partnerGender.value = 0
+        viewModel.partnerLocation.value = 0
         ageRangeSeekbar.setProgress(10f, 60f)
         ballCapacityRangeSeekBar.setProgress(0f, 10f)
     }
@@ -242,7 +242,13 @@ class PartnerFilterActivity :
     }
 
     override fun setRadiobutton(tag: String) {
-        viewModel.partnerGender.value = tag.toInt()
+        if (tag.equals("init")){
+            binding.partnerFilterCarelessBtn.isChecked = false
+        }
+        else{
+            viewModel.partnerGender.value = tag.toInt()
+        }
+
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

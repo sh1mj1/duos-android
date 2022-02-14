@@ -73,9 +73,9 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
             signupNextBtnListener.onNextBtnUnable()
         }
         savedState = null
-
-        // skip 테스트 버튼
-        binding.signup01SkipBtn.setOnClickListener { onGoingNextListener.onGoingNext() }
+//
+//        // skip 테스트 버튼
+//        binding.signup01SkipBtn.setOnClickListener { onGoingNextListener.onGoingNext() }
 
         return binding.root
     }

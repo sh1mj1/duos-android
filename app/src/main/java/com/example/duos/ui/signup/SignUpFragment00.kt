@@ -31,10 +31,12 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         viewModel.agreementEssential01.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it == true){
                 viewModel.agreementEssential02.observe(viewLifecycleOwner, Observer { it2 ->
-                    if (it2){
-                        signupNextBtnListener.onNextBtnEnable()
+                    if (it2 == true){
+                        if (viewModel.agreementEssential01.value == true){
+                            signupNextBtnListener.onNextBtnEnable()
+                        }else signupNextBtnListener.onNextBtnUnable()
                     } else signupNextBtnListener.onNextBtnUnable()
                 })
             }else signupNextBtnListener.onNextBtnUnable()
@@ -48,6 +50,7 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
         }
         binding.signup00Checkbox02Cb.setOnClickListener { viewModel.agreementEssential01.value = (viewModel.agreementEssential01.value)?.not() }
         binding.signup00Checkbox03Cb.setOnClickListener { viewModel.agreementEssential02.value = (viewModel.agreementEssential02.value)?.not() }
+
         binding.signup00AgreementDetail01Tv.setOnClickListener {
             isChecked02 = isChecked02.not()
             binding.signup00Checkbox02Cb.isChecked = isChecked02
@@ -73,7 +76,6 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
     fun setCheckBox(){
         // 체크
         if (binding.signup00Checkbox01Cb.isChecked){
-            Log.d("ㅎㅇ","1")
             binding.signup00Checkbox02Cb.isChecked = true
             binding.signup00Checkbox03Cb.isChecked = true
             viewModel.agreementEssential01.value = true
@@ -81,7 +83,6 @@ class SignUpFragment00 : BaseFragment<FragmentSignup00Binding>(FragmentSignup00B
         }
         // 체크해제
         else{
-            Log.d("ㅎㅇ","2")
             binding.signup00Checkbox02Cb.isChecked = false
             binding.signup00Checkbox03Cb.isChecked = false
             viewModel.agreementEssential01.value = false

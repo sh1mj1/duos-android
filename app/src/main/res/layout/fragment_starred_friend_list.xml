@@ -11,14 +11,12 @@
             android:id="@+id/starred_friend_list_recyclerview_rc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             tools:listitem="@layout/item_fragment_starred_friend_list"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             android:overScrollMode="never"
             android:clipToPadding="true"
-            android:nestedScrollingEnabled="true"
-            android:paddingBottom="200dp"/>
+            android:nestedScrollingEnabled="true" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -142,7 +142,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
     override fun onMakeAppointmentSuccess() {
         Log.d("약속잡기","성공")
         chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
-
+        // response result로 오는 것이 없어, updateAppointmentIdx는 약속 현황에서 update함
         finish()
     }
 
