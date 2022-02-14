@@ -282,6 +282,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onNewIntent(intent: Intent?) {
+        // 채팅화면에 있지만 다른 채팅방의 메세지를 받았을 때 onNewIntent는 호출되지만, 아직 푸시알림을 누르지 않았기 때문에 isAlarmed=false이며 아무것도 안하고 끝나야 맞음.
+        // 푸시알림을 누른 순간에 또 onNewIntent가 호출될 것임. 그 때 isAlarmed가 true가 됨
         if (intent == null){
             Log.d("채팅화면일때 인텐트","is null")
         }
@@ -293,19 +295,35 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             //val senderId = bundle.getString("senderId")
             //val body = bundle.getString("body")
             var type = bundle.getString("type")
-            var chatRoomIdxOfReceivcedMessage = bundle.getString("chatRoomIdx")
+            var chatRoomIdxOfReceivcedMessage = bundle.getString("chatRoomIdx").toString()
             //partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
 //            val sentAtString = bundle.getString("sentAt")
 //            var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
             //var currentTime = toDate(System.currentTimeMillis())
-            val isAlarmed = bundle.getBoolean("isAlarmed", false)
+            val byPushAlarmClick = bundle.getBoolean("byPushAlarmClick", false)
 
-            if (!type.isNullOrEmpty() && !isAlarmed) {
+            Log.d("onNewIntent - type", type.toString())
+            Log.d("onNewIntent - byPushAlarmClick", byPushAlarmClick.toString())
+
+            if (!type.isNullOrEmpty()) {
                 // 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 누르면 onMessageReceived를 거치지 않고 onNewIntent가 호출되고 senderId가 null으로 와서
                     // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
                     // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
                Log.d("채팅화면일때", "3")
                 //Log.d("발신자 아이디", senderId)
+                if(chatRoomIdxOfReceivcedMessage.equals(chatRoomIdx)){
+                    Log.d("onNewIntent","채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
+                } else{
+                    Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때")
+                    if(!byPushAlarmClick){
+                        Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
+                    } else{ // 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때
+                        Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
+                        chatRoomIdx = chatRoomIdxOfReceivcedMessage
+                        chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+                    }
+                }
+
                 if(type.equals("MESSAGE")){
                     //addChatItem(senderId, body, sendTime, LocalDateTime.now(), "MESSAGE")
                         val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
@@ -349,13 +367,17 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         if(bundle != null){
             val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
-            val senderId = bundle.getString("senderId").toString()
-            partnerIdx = bundle.getInt("partnerIdx", 0)
+//            val senderId = bundle.getString("senderId").toString()
+//            partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
+            val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
+            val senderId = chatRoomData.chatRoomName
+            partnerIdx = chatRoomData.participantIdx!!
             val type = bundle.getString("type").toString()
             Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")
             Log.d("getFCMIntent - chatRoomIdx", chatRoomIdxByFCM)
             Log.d("getFCMIntent - senderId", senderId)
             Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
+            Log.d("getFCMIntent - type", type)
 
             chatRoomIdx = chatRoomIdxByFCM
             chatRoomName.text = senderId
@@ -397,7 +419,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         if(updatedChatMessageListSize != 0){
             for(i: Int in 0..updatedChatMessageListSize-1){
                 addChatItem(updatedChatMessageList[i])
-                Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
+                Log.d("getFCMIntent - addChatItem", updatedChatMessageList[i].toString())
             }
         }else{
             Log.d("주고받은 채팅메세지가","없음~")

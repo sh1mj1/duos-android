@@ -247,6 +247,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
 
                 } else{
                     Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
+                    Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", messageData.get("chatRoomIdx").toString())
                     sendMessageData(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
                 }
 
@@ -276,15 +277,14 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
      * FCM 메시지 본문이 수신되었습니다.
      */
 
-    private fun sendMessageData(body: String, senderId: String, chatRoomIdx: String){
+    private fun sendMessageData(body: String, senderId: String, targetChatRoomIdx: String){
         val intent = Intent(mContext, ChattingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("type", type)
-        intent.putExtra("chatRoomIdx",chatRoomIdx)
+        intent.putExtra("chatRoomIdx", targetChatRoomIdx)
         intent.putExtra("senderId", senderId)
-        intent.putExtra("isAlarmed", true)
+        intent.putExtra("byPushAlarmClick", true)
         intent.putExtra("partnerIdx", partnerIdx)
-
 
 
 //        val bundle = Bundle()
@@ -294,7 +294,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
 //        bundle.putString("partnerIdx", partnerIdx)
 //        bundle.putBoolean("isAlarmed", true)
 
-        Log.d("fcmService - sendMessageData의 인텐트 - chatRoomIdx", chatRoomIdx)
+        Log.d("fcmService - sendMessageData의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
         Log.d("fcmService - sendMessageData의 인텐트 - senderId", senderId)
         Log.d("fcmService - sendMessageData의 인텐트 - partnerIdx", partnerIdx)
 
