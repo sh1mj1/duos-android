@@ -63,20 +63,19 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     var locationText: TextView? = null
     var checkStore : Boolean = false
 
-
     // 카메라 접근 권한
     lateinit var contentUri: Uri
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val CAMERA_PERMISSION_REQUEST = 100
 
-    // 멀티퍼미션 카메라1
-    val requiredPermissions1 = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA,
-    )
-    val multiplePermissionsCode1 = 200
+//    // 멀티퍼미션 카메라1
+//    val requiredPermissions1 = arrayOf(
+//        Manifest.permission.READ_EXTERNAL_STORAGE,
+//        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//        Manifest.permission.CAMERA,
+//    )
+//    val multiplePermissionsCode1 = 200
 
     // 멀티퍼미션 갤러리(앨범)2
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -134,7 +133,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                         when (which) {
                             // 카메라 0 썸네일로
                             0 -> {
-                                var permissionResult0 = ContextCompat.checkSelfPermission(
+                                val permissionResult0 = ContextCompat.checkSelfPermission(
                                     requireContext(),
                                     CAMERA_PERMISSION[0]
                                 )
@@ -169,54 +168,54 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
                             }
 
-                            // 사진 1 -> 갤러리에 저장 함 (용량 큰). 이미지의 용량이 너무 크면 서버와 송수신할 때 데이터를 너무 많이 써서 용량 줄이는 작업 ㄱ,  사진 보정 가능
-                            1 -> {
-
-                                // 거부 Or 아직 수락하지 않은 퍼미션을 저장할 String 배열리스트
-                                val rejectedPermissionList = ArrayList<String>()
-                                // 필요한 퍼미션들이 현재 권한을 받았는지 체크
-                                for (permission in requiredPermissions1) {
-                                    if (ContextCompat.checkSelfPermission(
-                                            requireContext(),
-                                            permission
-                                        ) != PackageManager.PERMISSION_GRANTED
-                                    ) {
-                                        //만약 권한이 없다면 rejectedPermissionList에 추가
-                                        rejectedPermissionList.add(permission)
-                                    }
-                                }
-
-                                if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
-                                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
-                                    requestPermissions(
-                                        rejectedPermissionList.toArray(array),
-                                        multiplePermissionsCode1
-                                    )
-                                } else {// 모두 허용된 퍼미션이라면
-                                    Log.d("Signup_Image_Upload_Dialog", "PERMISSION_GRANTED$which")
-                                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-                                    // 촬영한 사진이 저장될 파일 이름
-                                    val file_name = "/temp_${System.currentTimeMillis()}.jpg"
-                                    // 경로 + 파일 이름
-                                    val pic_path = "$file_path/$file_name"
-                                    val file = File(pic_path)
-
-                                    // 사진이 저장될 위치를 관리하는 Uri 객체
-                                    // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
-                                    // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
-                                    contentUri = FileProvider.getUriForFile(
-                                        requireContext(),
-                                        "com.duos.camera.file_provider",
-                                        file
-                                    )
-
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-                                    startActivityForResult(intent, multiplePermissionsCode1)
-                                }
-                            }
+//                            // 사진 1 -> 갤러리에 저장 함 (용량 큰). 이미지의 용량이 너무 크면 서버와 송수신할 때 데이터를 너무 많이 써서 용량 줄이는 작업 ㄱ,  사진 보정 가능
+//                            1 -> {
+//
+//                                // 거부 Or 아직 수락하지 않은 퍼미션을 저장할 String 배열리스트
+//                                val rejectedPermissionList = ArrayList<String>()
+//                                // 필요한 퍼미션들이 현재 권한을 받았는지 체크
+//                                for (permission in requiredPermissions1) {
+//                                    if (ContextCompat.checkSelfPermission(
+//                                            requireContext(),
+//                                            permission
+//                                        ) != PackageManager.PERMISSION_GRANTED
+//                                    ) {
+//                                        //만약 권한이 없다면 rejectedPermissionList에 추가
+//                                        rejectedPermissionList.add(permission)
+//                                    }
+//                                }
+//
+//                                if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
+//                                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
+//                                    requestPermissions(
+//                                        rejectedPermissionList.toArray(array),
+//                                        multiplePermissionsCode1
+//                                    )
+//                                } else {// 모두 허용된 퍼미션이라면
+//                                    Log.d("Signup_Image_Upload_Dialog", "PERMISSION_GRANTED$which")
+//                                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//
+//                                    // 촬영한 사진이 저장될 파일 이름
+//                                    val file_name = "/temp_${System.currentTimeMillis()}.jpg"
+//                                    // 경로 + 파일 이름
+//                                    val pic_path = "$file_path/$file_name"
+//                                    val file = File(pic_path)
+//
+//                                    // 사진이 저장될 위치를 관리하는 Uri 객체
+//                                    // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
+//                                    // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
+//                                    contentUri = FileProvider.getUriForFile(
+//                                        requireContext(),
+//                                        "com.duos.camera.file_provider",
+//                                        file
+//                                    )
+//
+//                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
+//                                    startActivityForResult(intent, multiplePermissionsCode1)
+//                                }
+//                            }
                             // 내 앨범에서 선택
-                            2 -> {
+                            1 -> {
                                 Log.d("Signup_Image_Upload_Dialog", "파일 접근 $which")
                                 val rejectedPermissionList = ArrayList<String>()
                                 // 필요한 퍼미션들이 현재 권한을 받았는지 체크
@@ -456,44 +455,44 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 }
             }
 
-            multiplePermissionsCode1 -> {
-                var startCam = true
-                if (grantResults.isNotEmpty()) {
-                    for ((i, permission) in permissions.withIndex()) {
-                        // 권한이 없는 permission이 있다면
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            Log.d("Signup", "사용하려면 권한 체크 해야되")
-                            Toast.makeText(
-                                requireContext(),
-                                "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            startCam = false
-                        }
-                    }
-                    if (startCam) {
-                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-                        // 촬영한 사진이 저장될 파일 이름
-                        val file_name = "/temp_${System.currentTimeMillis()}.jpg"
-                        // 경로 + 파일 이름
-                        val pic_path = "$file_path/$file_name"
-                        val file = File(pic_path)
-
-                        // 사진이 저장될 위치를 관리하는 Uri 객체
-                        // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
-                        // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
-                        contentUri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.duos.camera.file_provider",
-                            file
-                        )
-
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-                        startActivityForResult(intent, 200)
-                    }
-                }
-            }
+//            multiplePermissionsCode1 -> {
+//                var startCam = true
+//                if (grantResults.isNotEmpty()) {
+//                    for ((i, permission) in permissions.withIndex()) {
+//                        // 권한이 없는 permission이 있다면
+//                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+//                            Log.d("Signup", "사용하려면 권한 체크 해야되")
+//                            Toast.makeText(
+//                                requireContext(),
+//                                "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                            startCam = false
+//                        }
+//                    }
+//                    if (startCam) {
+//                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//
+//                        // 촬영한 사진이 저장될 파일 이름
+//                        val file_name = "/temp_${System.currentTimeMillis()}.jpg"
+//                        // 경로 + 파일 이름
+//                        val pic_path = "$file_path/$file_name"
+//                        val file = File(pic_path)
+//
+//                        // 사진이 저장될 위치를 관리하는 Uri 객체
+//                        // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
+//                        // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
+//                        contentUri = FileProvider.getUriForFile(
+//                            requireContext(),
+//                            "com.duos.camera.file_provider",
+//                            file
+//                        )
+//
+//                        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
+//                        startActivityForResult(intent, 200)
+//                    }
+//                }
+//            }
             multiplePermissionsCode2 -> {
                 var startAlb = true
                 if (grantResults.isNotEmpty()) {
@@ -541,26 +540,26 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 }
             }
 
-            multiplePermissionsCode1 -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val bitmap = BitmapFactory.decodeFile(contentUri.path)
-                    // 사진 조정 된것
-                    val degree = getDegree(
-                        contentUri,
-                        contentUri.path!!
-                    )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
-                    val bitmap2 = resizeBitmap(1024, bitmap)
-                    val bitmap3 = rotateBitmap(bitmap2, degree)
-
-                    binding.myProfileImgIv.setImageBitmap(bitmap3)
-
-
-//                    // 사진 파일 삭제한다.
-//                    val file = File(contentUri.path)
-//                    file.delete()
-
-                }
-            }
+//            multiplePermissionsCode1 -> {
+//                if (resultCode == Activity.RESULT_OK) {
+//                    val bitmap = BitmapFactory.decodeFile(contentUri.path)
+//                    // 사진 조정 된것
+//                    val degree = getDegree(
+//                        contentUri,
+//                        contentUri.path!!
+//                    )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
+//                    val bitmap2 = resizeBitmap(1024, bitmap)
+//                    val bitmap3 = rotateBitmap(bitmap2, degree)
+//
+//                    binding.myProfileImgIv.setImageBitmap(bitmap3)
+//
+//
+////                    // 사진 파일 삭제한다.
+////                    val file = File(contentUri.path)
+////                    file.delete()
+//
+//                }
+//            }
             multiplePermissionsCode2 -> {
                 if (resultCode == Activity.RESULT_OK) {
                     // 선택한 이미지의 경로 데이터를 관리하는 Uri 객체를 추출
@@ -713,7 +712,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyEnable() {
         binding.activatingApplyBtn.background =
-            activity!!.getDrawable(R.drawable.next_btn_activate_rectangular)
+            requireActivity().getDrawable(R.drawable.next_btn_activate_rectangular)
         binding.activatingApplyBtn.setTextColor(R.color.white)
         binding.activatingApplyBtn.isEnabled = true
 //        binding.activatingApplyBtn.visibility = View.VISIBLE
@@ -723,7 +722,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyDisable() {
         binding.activatingApplyBtn.background =
-            activity!!.getDrawable(R.drawable.next_btn_inactivitate_rectangular)
+            requireActivity().getDrawable(R.drawable.next_btn_inactivitate_rectangular)
         binding.activatingApplyBtn.setTextColor(R.color.dark_gray_B0)
         binding.activatingApplyBtn.isEnabled = false
 //        binding.activatingApplyBtn.visibility = View.GONE

@@ -15,15 +15,14 @@ import retrofit2.Response
 
 object ChatService {
     val retrofit = NetworkModule.getRetrofit()
-    fun createChatRoom(createChatRoomView: CreateChatRoomView, thisUserIdx: Int, targetUserIdx: Int){
+    fun createChatRoom(createChatRoomView: CreateChatRoomView, thisUserIdx: Int, targetUserIdx: Int) {
         val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
         val createChatRoomRequestInfo = CreateChatRoomData(thisUserIdx, targetUserIdx)
 
         createChatRoomView.onCreateChatRoomLoading()
 
         createChatRoomService.createChatRoom(createChatRoomRequestInfo).enqueue(object :
-            Callback<CreateChatRoomResponse>
-        {
+            Callback<CreateChatRoomResponse> {
             override fun onResponse(
                 call: Call<CreateChatRoomResponse>,
                 response: Response<CreateChatRoomResponse>
@@ -31,8 +30,8 @@ object ChatService {
                 val resp = response.body()!!
                 Log.d("resp", resp.toString())
 
-                when(resp.code){
-                    1000 -> createChatRoomView.onCreateChatRoomSuccess()
+                when (resp.code) {
+                    1000 -> createChatRoomView.onCreateChatRoomSuccess(resp.result)
                     else -> createChatRoomView.onCreateChatRoomFailure(resp.code, resp.message)
                 }
             }
@@ -46,11 +45,18 @@ object ChatService {
         })
     }
 
-    fun sendMessage(sendMessageView: SendMessageView, receiverIdx: Int, senderIdx: Int, message: String, type: String, chatRoomIdx: String){
+    fun sendMessage(
+        sendMessageView: SendMessageView,
+        receiverIdx: Int,
+        senderIdx: Int,
+        message: String,
+        type: String,
+        chatRoomIdx: String
+    ) {
         val sendMessageService = retrofit.create(ChatRetrofitInterface::class.java)
         val message = sendMessageData(chatRoomIdx, type, senderIdx, receiverIdx, message)
 
-        sendMessageService.sendMessage(message).enqueue(object: Callback<SendMessageResponse>{
+        sendMessageService.sendMessage(message).enqueue(object : Callback<SendMessageResponse> {
             override fun onResponse(
                 call: Call<SendMessageResponse>,
                 response: Response<SendMessageResponse>
@@ -58,7 +64,7 @@ object ChatService {
                 val resp = response.body()!!
                 Log.d("resp", resp.toString())
 
-                when(resp.code){
+                when (resp.code) {
                     1000 -> sendMessageView.onSendMessageSuccess(resp.result)
                     else -> sendMessageView.onSendMessageFailure(resp.code, resp.message)
                 }
@@ -73,7 +79,7 @@ object ChatService {
         })
     }
 
-    fun syncChatMessage(chatMessageView: ChatMessageView, chatMessageIdx: String, chatRoomIdx: String){
+    fun syncChatMessage(chatMessageView: ChatMessageView, chatMessageIdx: String, chatRoomIdx: String) {
         val syncChatMessageService = retrofit.create(ChatRetrofitInterface::class.java)
         val syncChatMessageRequestBody = SyncChatMessageRequestBody(chatMessageIdx, chatRoomIdx)
 
@@ -81,7 +87,7 @@ object ChatService {
             Callback<SyncChatMessageResponse> {
             override fun onResponse(call: Call<SyncChatMessageResponse>, response: Response<SyncChatMessageResponse>) {
                 val resp = response.body()!!
-                Log.d("resp",resp.toString())
+                Log.d("resp", resp.toString())
                 when (resp.code) {
                     1000 ->
                         resp.result?.let { chatMessageView.onSyncChatMessageSuccess(it) }

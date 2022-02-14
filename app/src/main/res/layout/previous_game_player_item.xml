@@ -19,8 +19,7 @@
         <ImageView
             android:id="@+id/previous_game_player_iv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/dummy_mask_2" />
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -31,7 +30,6 @@
         android:layout_marginStart="11dp"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/applesdgothicneoregular"
-        android:text="@string/item_more_previous_game_player_Nickname"
         android:textColor="@color/nero"
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/previous_game_player_cv"
@@ -41,7 +39,6 @@
         android:id="@+id/previous_game_play_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/item_more_previous_game_date"
         android:textColor="@color/color_style_font3"
         android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@+id/previous_game_player_nickname_tv"

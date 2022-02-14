@@ -2,13 +2,8 @@ package com.example.duos.ui.main.chat
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -170,7 +165,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {

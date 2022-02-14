@@ -35,6 +35,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
 
         Log.d(TAG, "Start_EveryReviewFragment")
 
+
         // HomeFragment 에서 넘어온 데이터 받아오기 혹은 PlayerFragment에서 넘어온 데이터 받아오기
         // -> 조건문 사용해서 argument로 받아온 것의 key가 무엇인지 체크하고 그에 해당하는 argument를 gson.fromJsom으로 받기
 

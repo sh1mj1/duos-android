@@ -247,16 +247,15 @@
                 android:focusableInTouchMode="true"
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:gravity="top"
-                android:hint="@string/my_profile_my_introduction"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:letterSpacing="0.05"
-                android:text="@={viewmodel.editProfileIntroduce}"
                 android:textColor="@color/dark_gray_B4"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
                 app:layout_constraintStart_toStartOf="@+id/dimension_introduction_iv"
                 app:layout_constraintTop_toTopOf="@+id/dimension_introduction_iv" />
+<!--                android:text="@={viewmodel.editProfileIntroduce}"-->
 
 
             <TextView

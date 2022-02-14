@@ -51,6 +51,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var userId: String
     private var thisUserIdx = getUserIdx()!!
     var partnerIdx: Int = 0 // initAfterBinding에서 ChatListFragment에서 partnerIdx 인텐트 넘겨받음
+    var createdNewChatRoom : Boolean = false
     private var layoutManager: LayoutManager? = null
     lateinit var chatRoomIdx : String
     lateinit var chattingMessagesRVAdapter: ChattingMessagesRVAdapter
@@ -69,6 +70,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 사용자가 백그라운드에서 돌아왔을 때 호출됨
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
+
         getFCMIntent()
 
         // 약속 여부 받아오기
@@ -100,18 +105,35 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)    ///////////
 
-        if(intent != null){
+//        if(intent != null){
+//            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+//            chatRoomName.text = intent.getStringExtra("senderId")!!
+//            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+//        }
+        if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
             chatRoomName.text = intent.getStringExtra("senderId")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
+        } else if (isFromPlayerProfile){
+
+            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
+            chatRoomName.text = intent.getStringExtra("partnerNickName")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
         }
 
-        val userDB = UserDatabase.getInstance(this)!!
-        userId = userDB.userDao().getUserNickName(thisUserIdx)
 
-        saveCurrentChatRoomIdx(chatRoomIdx)
-        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
+
+        val userDB = UserDatabase.getInstance(this)!!
+        userId = userDB.userDao().getUserNickName(thisUserIdx)  // 내 인덱스로 내 닉네임 가져오기
+
+        saveCurrentChatRoomIdx(chatRoomIdx)                     // 현재 chatRoomIdx를 SharedPreference에 저장
+        chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!   // ChatDB 에서 현재 chatRoomIdx를 가져오기
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
 
 
@@ -335,6 +357,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // chatRoomIdx만 받도록 수정 (여기서 데이터 받을필요 없이 chatRoomIdx로 이전 채팅 데이터 api 호출하게 하면 됨)
         Log.d("FCM인텐트", "1")
         var bundle = intent?.extras
+
+
         if(bundle != null){
             var chatRoomIdx = bundle.getString("chatRoomIdx").toString()
             Log.d("FCM인텐트", "2 - 푸시알림을 통해 채팅화면으로 옴")

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.duos.R
 import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.databinding.ActivityPartnerProfileBinding
 import com.example.duos.ui.BaseActivity
@@ -51,12 +52,16 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
         Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
     }
 
-    override fun onCreateChatRoomSuccess() {
-        startChattingActivity()
+    override fun onCreateChatRoomSuccess(createChatRoomResultData: CreateChatRoomResultData) {
+//        TODO("Not yet implemented")
     }
 
+//    override fun onCreateChatRoomSuccess() {
+//        startChattingActivity()
+//    }
+
     override fun onCreateChatRoomFailure(code: Int, message: String) {
-        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
 

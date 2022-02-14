@@ -1,6 +1,5 @@
 package com.example.duos.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.duos.data.entities.chat.ChatRoom
 

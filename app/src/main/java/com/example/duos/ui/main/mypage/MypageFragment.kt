@@ -2,15 +2,14 @@ package com.example.duos.ui.main.mypage
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.service.autofill.UserData
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.duos.ApplicationClass
 import com.example.duos.data.entities.MyPageInfo
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.myPage.MyPageService
@@ -29,48 +28,85 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     val TAG: String = "MyPageService"
 
-    lateinit var myPageCareerStr: String
-    val userIdx = getUserIdx()  // sharedPreference 에 있는 내 userIdx
+    val myUserIdx = getUserIdx()!!  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
 
         Log.d(TAG, "Start_MypageFragment")
-        Log.d(TAG, "현재 user의 userIdx : $userIdx")
+        Log.d(TAG, "현재 user의 userIdx : $myUserIdx")
 
-        MyPageService.getUserPage(this, userIdx!!)
+        MyPageService.getUserPage(this, myUserIdx)
 
         // 클릭리스너
         initClickListener()
 
     }
 
-
+    // 클릭리스너
     private fun initClickListener() {
         // 나의 프로필 클릭 리스너
+        val appointmentIcon = binding.myPageLastAppointmentIconIv
+        val appointmentText = binding.myPageLastAppointmentTextTv
+        val appointmentArrow = binding.myPageLastAppointmentArrowIv
+
+        val noticeIcon = binding.myPageNoticeIconIv
+        val noticeText = binding.myPageNoticeTextTv
+        val noticeArrow = binding.myPageNoticeArrowIv
+
+        val customerIcon = binding.myPageCustomerServiceCenterIconIv
+        val customerText = binding.myPageCustomerServiceCenterTextTv
+        val customerArrow = binding.myPageCustomerServiceCenterArrowIv
+
+        val setUpIcon = binding.myPageSetIconIv
+        val setUpText = binding.myPageSetTextTv
+        val setUpArrow = binding.myPageSetArrowIv
+
         binding.myProfileHomeConstraintLayoutCl.setOnClickListener {
             val intent = Intent(activity, MyProfileActivity::class.java)
             startActivity(intent)
         }
-        // 지난 약속 클릭 리스너
-        binding.myPageLastAppointmentTextTv.setOnClickListener {
+
+        // 지난 약속
+        appointmentIcon.setOnClickListener {
             val intent = Intent(activity, LastAppointmentActivity::class.java)
-            startActivity(intent)
-        }
-        // 공지 사항 클릭 리스너
-        binding.myPageNoticeTextTv.setOnClickListener {
+            startActivity(intent) }
+        appointmentText.setOnClickListener {
+            val intent = Intent(activity, LastAppointmentActivity::class.java)
+            startActivity(intent) }
+        appointmentArrow.setOnClickListener {
+            val intent = Intent(activity, LastAppointmentActivity::class.java)
+            startActivity(intent) }
+        // 공지 사항
+        noticeIcon.setOnClickListener {
             val intent = Intent(activity, NotionActivity::class.java)
-            startActivity(intent)
-        }
-        //  고객 센터 클릭 리스너
-        binding.myPageCustomerServiceCenterTextTv.setOnClickListener {
+            startActivity(intent) }
+        noticeText.setOnClickListener {
+            val intent = Intent(activity, NotionActivity::class.java)
+            startActivity(intent) }
+        noticeArrow.setOnClickListener {
+            val intent = Intent(activity, NotionActivity::class.java)
+            startActivity(intent) }
+        // 고객 센터
+        customerIcon.setOnClickListener {
             val intent = Intent(activity, CustomerServiceActivity::class.java)
-            startActivity(intent)
-        }
-        //  설정 클릭 리스너
-        binding.myPageSetTextTv.setOnClickListener {
+            startActivity(intent) }
+        customerText.setOnClickListener {
+            val intent = Intent(activity, CustomerServiceActivity::class.java)
+            startActivity(intent) }
+        customerArrow.setOnClickListener {
+            val intent = Intent(activity, CustomerServiceActivity::class.java)
+            startActivity(intent) }
+        // 설정
+        setUpIcon.setOnClickListener {
             val intent = Intent(activity, SetupActivity::class.java)
-            startActivity(intent)
-        }
+            startActivity(intent) }
+        setUpText.setOnClickListener {
+            val intent = Intent(activity, SetupActivity::class.java)
+            startActivity(intent) }
+        setUpArrow.setOnClickListener {
+            val intent = Intent(activity, SetupActivity::class.java)
+            startActivity(intent) }
+
     }
 
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
@@ -93,14 +129,13 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     }
 
 
-
     override fun onGetMyPageItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
         Toast.makeText(context, "$TAG , onGetMyPageItemFailure", Toast.LENGTH_LONG).show()
 
         // 룸에서 내 idx에 맞는 데이터 불러오기.
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(userIdx!!)
+        val myProfileDB = db!!.userDao().getUser(myUserIdx)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 
         val phoneNumber = toMyPagePhoneNumber(myProfileDB.phoneNumber!!)    // 010 7441 형태로 binding
