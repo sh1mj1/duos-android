@@ -39,7 +39,8 @@ import java.text.SimpleDateFormat
 
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView{
-    var chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
+    val mContext : Context = this
+    var chatDB = ChatDatabase.getInstance(mContext, ChatDatabase.provideGson())!!
     lateinit var chatRoomIdx:String
     lateinit var type:String
     /**
