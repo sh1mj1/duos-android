@@ -76,14 +76,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         if(isFromChatList){
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-//            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
             chatRoomName.text = intent.getStringExtra("senderId")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
         } else if (isFromPlayerProfile){
 
             chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
-//            createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)    // 새로 생성된 채팅방인가?
             chatRoomName.text = intent.getStringExtra("partnerNickName")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
@@ -484,7 +482,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         saveCurrentChatRoomIdx("")
     }
 
-    override fun onAppointmentExistSuccess(appointmentIdx: Int) {
+    override fun onAppointmentExistSuccess(isExisted : Boolean, appointmentIdx : Int) {
         Log.d("약속여부 성공", appointmentIdx.toString())
         if (appointmentIdx == -1){
             // 약속 없음
