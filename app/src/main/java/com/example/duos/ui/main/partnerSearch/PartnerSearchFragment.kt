@@ -98,7 +98,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        //Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
     override fun onStart() {

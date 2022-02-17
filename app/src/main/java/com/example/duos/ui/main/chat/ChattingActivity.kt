@@ -28,6 +28,7 @@ import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.data.remote.chat.chat.SendMessageResultData
+import com.example.duos.data.remote.chat.chat.SyncChatMessageData
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
@@ -44,7 +45,7 @@ import kotlin.collections.ArrayList
 //import java.util.*
 
 
-class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView {
+class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView, ChatMessageView {
     //lateinit var binding: ActivityChattingBinding
     private var chatListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
@@ -261,7 +262,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chatDB.chatMessageItemDao().insert(chatMessageItem)
         lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
         Log.d("채팅보내기 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
-        chattingEt.setText("")
+
     }
 
     override fun onSendMessageLoading() {
@@ -272,12 +273,14 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     override fun onSendMessageSuccess(sendMessageResultData: SendMessageResultData) {
         Log.d("채팅 메세지 보내기 POST", "성공")
 
+        chattingEt.setText("")
         sendMessage(sendMessageResultData.chatMessageIdx)
         //progressOFF()
     }
 
     override fun onSendMessageFailure(code: Int, message: String) {
-        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -382,26 +385,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chatRoomIdx = chatRoomIdxByFCM
             chatRoomName.text = senderId
 
-//            var tempChatRoomIdx = chatRoomIdx
-//            chatRoomIdx = chatRoomIdxByFCM
-//
-//            if(tempChatRoomIdx.isNullOrBlank()){
-//                tempChatRoomIdx = ""
-//            }
-////
-//            if(!(tempChatRoomIdx.equals(chatRoomIdxByFCM))){    // 현재 채팅방이 푸시알림이 온 채팅방이 아닌 경우
-//                chatRoomIdx = chatRoomIdxByFCM
-//            } else{ //
-//                chatRoomIdx = chatRoomIdxByFCM
-//            }
-
-
-//            if (!chatRoomIdxByFCM.isNullOrEmpty() && !(chatRoomIdx.equals(chatRoomIdxByFCM))) {
-//                Log.d("FCM인텐트", "3 - chatRoomIdx를 다시 세팅")
-//                // chatRoomIdx 값에 따라 지난 채팅 데이터 가져오는 api 호출
-//            }else{
-//                Log.d("FCM인텐트", "3 - chatRoomIdx is null")
-//            }
         }else{
             Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
             // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
@@ -416,12 +399,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
         Log.d("updatedChatMessageList", updatedChatMessageList.toString())
         val updatedChatMessageListSize = updatedChatMessageList.size
-        if(updatedChatMessageListSize != 0){
+        if(updatedChatMessageListSize != 0) {
             for(i: Int in 0..updatedChatMessageListSize-1){
                 addChatItem(updatedChatMessageList[i])
                 Log.d("getFCMIntent - addChatItem", updatedChatMessageList[i].toString())
             }
-        }else{
+        } else {
             Log.d("주고받은 채팅메세지가","없음~")
         }
 
@@ -530,19 +513,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         }
     }
 
-    //    private fun addChatItem(senderId: String, body: String, formattedSentAt: String, sentAt:LocalDateTime, type: String) {
-//        this.runOnUiThread {
-//            if (type.equals("DATE")) {    // 날짜일때 ex) "2021년 10월 28일"
-//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx)
-//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//                chatDB.chatMessageItemDao().insert(chatMessageItem) // 룸DB에 저장
-//            } else {    // 받은 메세지일때
-//                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx)
-//                chattingMessagesRVAdapter.addItem(chatMessageItem)  // 리사이클러뷰에 띄움
-//                chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-//                // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
-//            }
-//        }
-//    }
+    override fun onSyncChatMessageSuccess(syncChatMessageData: SyncChatMessageData) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSyncChatMessageFailure(code: Int, message: String) {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -622,7 +622,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         binding.contentIntroductionEt.hint = myProfileDB.introduce
         binding.editProfileTableLayoutTl.checkedRadioButtonId = myProfileDB.experience!!
 
-        Toast.makeText(context, "$TAG , onGetEditItemFailure", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "$TAG , onGetEditItemFailure", Toast.LENGTH_LONG).show()
 
     }
 
@@ -643,7 +644,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     override fun onPutEditProfileItemFailure(code: Int, message: String) {
         Log.d(TAG, "onPutEditProfileItemFailure")
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     // 사진의 사이즈를 조정하는 메서드

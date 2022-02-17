@@ -79,7 +79,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     }
 
     override fun onGetMyProfileInfoFailure(code: Int, message: String) {
-        Toast.makeText(context, "$TAG : onGetMyProfileInfoFailure", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
 
         // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
         setMyProfileInfoWithoutAPI()

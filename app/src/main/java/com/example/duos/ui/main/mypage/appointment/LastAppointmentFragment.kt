@@ -69,7 +69,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     }
 
     override fun onGetAppointmentFailure(code: Int, message: String) {
-        Toast.makeText(context, " $TAG onGetAppointmentFailure",Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.",Toast.LENGTH_LONG).show()
     }
 
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {

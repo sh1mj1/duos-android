@@ -182,6 +182,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     }
 
     override fun onWithdrawalFailure(code: Int, message: String) {
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         Log.d(TAG, "code: $code , message : $message ")
     }
 
@@ -209,7 +210,8 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     }
 
     override fun onLogOutFailure(code: Int, message: String) {
-        showToast("code : $code, message : $message")
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //showToast("code : $code, message : $message")
     }
 
 }

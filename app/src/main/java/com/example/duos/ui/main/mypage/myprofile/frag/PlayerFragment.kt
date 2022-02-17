@@ -177,7 +177,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onGetProfileInfoFailure(code: Int, message: String) {
-        Toast.makeText(context, "네트워크 불안정", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
         Log.d(TAG, "CODE : $code , MESSAGE : $message ")
     }
 
@@ -307,7 +307,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onAddStarredFriendFailure(code: Int, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
     override fun onDeleteStarredFriendSuccess() {
@@ -315,7 +315,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onDeleteStarredFriendFailure(code: Int, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
     //TODO  새 채팅방 생성하는 함수 : 만약 해당 회원과의 채팅방이 없으면 새로 룸에 INSERT 한다.//////////////////////////////////
@@ -431,6 +431,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onCreateChatRoomFailure(code: Int, message: String) {
+        Toast.makeText(activity, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
         Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
@@ -473,7 +474,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                 }
 
                 override fun onCreateChatRoomFailure(code: Int, message: String) {
-                    Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG).show()
+                    showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+                    //Toast.makeText(activity, "code: $code, message: $message", Toast.LENGTH_LONG).show()
                 }
 
             })
@@ -495,7 +497,6 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                     dialog.dismiss()
                     Log.d("채팅", "남은 횟수 없어서 못해요 당신")
                 }
-
             })
             .setFailView()
             .show()

@@ -131,7 +131,8 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     override fun onGetMyPageItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
-        Toast.makeText(context, "$TAG , onGetMyPageItemFailure", Toast.LENGTH_LONG).show()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //Toast.makeText(context, "$TAG , onGetMyPageItemFailure", Toast.LENGTH_LONG).show()
 
         // 룸에서 내 idx에 맞는 데이터 불러오기.
         val db = UserDatabase.getInstance(requireContext())
