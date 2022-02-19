@@ -54,7 +54,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // 생성된 토큰 -> 닉네임 연결되게?
             Log.d(TAG, token)
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
         })
         return token
