@@ -13,7 +13,7 @@ data class MessageListData (
     @SerializedName("sentAt") var sentAt: LocalDateTime
 )
 
-data class SyncChatMessageData(
+data class SyncChatMessageData (
     @SerializedName("listSize") var listSize: Int,
     @SerializedName("messageList") var messageList: List<MessageListData>
 )
