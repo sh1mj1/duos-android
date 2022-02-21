@@ -2,6 +2,8 @@ package com.example.duos.ui.main.chat
 
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
@@ -474,13 +476,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     @Throws(Exception::class)
     fun getFormattedDateTime(dateTime: String):String {
         // 대상 날짜로 LocalDateTime 만들기
-        Log.d("채팅메세지수신시간포매팅 1",dateTime)
+        //Log.d("채팅메세지수신시간포매팅 1",dateTime)
         var parsedDateTimeArray = dateTime.split(".")
         var parsedDateTime = parsedDateTimeArray[0]
-        Log.d("채팅메세지수신시간포매팅 2", parsedDateTime)
+        //Log.d("채팅메세지수신시간포매팅 2", parsedDateTime)
 
         val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
-        Log.d("채팅메세지수신시간포매팅 3", parsedLocalDateTime.toString())
+        //Log.d("채팅메세지수신시간포매팅 3", parsedLocalDateTime.toString())
 
         // LocalDateTime에서 필요한 내용 필요한 형식으로 뽑기
 //        val yyyyMMdd = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -553,7 +555,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val listSize = pagingChatMessageResult.currentItemCnt
         isNextPageAvailable = pagingChatMessageResult.isNextPageAvailable
         //var messageList : ArrayList<MessageListData> = ArrayList<MessageListData>()
-        var messageList = pagingChatMessageResult.messageList
+        var messageList = pagingChatMessageResult.messageList.asReversed()
         var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
 
         if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
@@ -568,17 +570,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 val dateItem = ChatMessageItem("date", getFormattedDate(sentAt.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
                 messageItems.add(dateItem)
             }
+            Log.d("for문 "+i, messageItems.toString())
         }
+
+        messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
 
         if(pageNum == 0){   // 제일 최근페이지일 때 페이지의 첫번째 메세지의 dateTime 저장함. 제일 최근페이지이므로 마지막에 날짜변경선 추가되는지 확인 불필요
             dateTimeOfFirstMessageOfLastPage = messageList[0].sentAt
             chattingMessagesRVAdapter.setPagingMessages(messageItems)
+
         } else {     // 불러온 페이지의 마지막 메세지의 날짜와 그 아래 이미 로드된 페이지의 첫 메세지의 날짜가 다르면 날짜변경선을 두 페이지 사이에 추가
-            if (isDateChanged(
-                    messageList[listSize - 1].sentAt,
-                    dateTimeOfFirstMessageOfLastPage
-                )
-            ) {
+            Log.d("날짜변경선 추가 전", messageItems.toString())
+            if (isDateChanged(messageList[listSize - 1].sentAt, dateTimeOfFirstMessageOfLastPage)){
                 val sentAt = messageList[listSize - 1].sentAt
                 val dateItem = ChatMessageItem(
                     "date",
@@ -590,15 +593,21 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     "date" + sentAt
                 )
                 messageItems.add(dateItem)
+                Log.d("날짜변경선 추가 후", messageItems.toString())
             }
             dateTimeOfFirstMessageOfLastPage = pagingChatMessageResult.messageList[0].sentAt
             // 위의 조건문에서 기존 dateTimeOfFirstMessageOfLastPage가 필요하므로 pageNum == 0일때랑은 다르게 분기처리해줌. 조건문 끝나고 첫메세지의 dateTime 저장
             chattingMessagesRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(messageItems)
+
             }
         }
+        Log.d("itemCount 확인", chattingMessagesRVAdapter.itemCount.toString())
+        Log.d("pageNum 확인", pageNum.toString())
+
         pageNum++
+
     }
 
     override fun onPagingChatMessageFailure(code: Int, message: String) {
@@ -615,10 +624,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingMessagesRVAdapter.setLoadingView(true)
         val pagingMessageRequestBody = PagingChatMessageRequestBody(thisUserIdx, chatRoomIdx, pageNum, listNum)
         Log.d("loadMoreMessages() - pagingMessageRequestBody", pagingMessageRequestBody.toString())
-        ChatService.pagingChatMessage(this, pagingMessageRequestBody)
-
-
-
+        Handler(Looper.getMainLooper()).postDelayed({
+            ChatService.pagingChatMessage(this, pagingMessageRequestBody)
+        }, 1000)
 
 //        val startDateTime = pagingChatMessageResult.messageList[0].sentAt.toString()
 //        ChatMessageItem("date", startDateTime, startDateTime, ))
@@ -663,15 +671,17 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 super.onScrolled(recyclerView, dx, dy)
                     layoutManager = chattingRV.layoutManager
                     if(hasNextPage()){
-                        val lastVisibleItem = (layoutManager as LinearLayoutManager)
+                        val firstVisibleItem = (layoutManager as LinearLayoutManager)
                             .findFirstCompletelyVisibleItemPosition()
 //                            .findLastCompletelyVisibleItemPosition()
+                        val lastVisibleItem = (layoutManager as LinearLayoutManager)
+                            .findLastCompletelyVisibleItemPosition()
 
                         // 마지막으로 보여진 item position이 전체 아이템 개수보다 n개 모자란 경우, 데이터를 loadMore 한다
                         val n = 5
-                        Log.d("initScrollListener - itemCount", (layoutManager as LinearLayoutManager).itemCount.toString())
-                        Log.d("initScrollListener - lastVisibleItem + 5", (lastVisibleItem + n).toString())
-                        if (dy < 0 && lastVisibleItem == 0 && isNextPageAvailable) {
+                        //Log.d("initScrollListener - itemCount", (layoutManager as LinearLayoutManager).itemCount.toString())
+                        //Log.d("initScrollListener - lastVisibleItem + 5", (lastVisibleItem + n).toString())
+                        if (dy < 0 && firstVisibleItem == 0 && isNextPageAvailable) {
                             loadMoreMessages()
                             setHasNextPage(false)
                         }
@@ -735,6 +745,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     private fun isDateChanged(lastMessageDateTime: LocalDateTime, currentMessageDateTime: LocalDateTime): Boolean{
         val lastMessageDate = lastMessageDateTime.toLocalDate()
         val currentMessageDate = currentMessageDateTime.toLocalDate()
+        Log.d("isDateChanged - lastMessageDate", lastMessageDate.toString())
+        Log.d("isDateChanged - currentMessageDate", currentMessageDate.toString())
         return !lastMessageDate.isEqual(currentMessageDate) // 이전 날짜랑 다르면 true 반환
     }
 }

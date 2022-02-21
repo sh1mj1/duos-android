@@ -86,6 +86,7 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
             addAll(pagingMessages)
         }
         notifyDataSetChanged()
+
     }
 
     fun addPagingMessages(pagingMessages: List<ChatMessageItem>){   // 페이징
