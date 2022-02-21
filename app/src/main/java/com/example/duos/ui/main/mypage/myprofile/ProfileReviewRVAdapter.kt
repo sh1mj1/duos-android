@@ -53,7 +53,7 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
                 .load(myProfileReviewItem.writerProfileImgUrl)
                 .into(binding.profileImgIv)
             binding.playerGradeRb.rating = myProfileReviewItem.rating!!                   /*rating*/
-            binding.playerGradeTv.text = toRatingStr(myProfileReviewItem.rating!!)
+            binding.playerGradeTv.text = toRatingStr(myProfileReviewItem.rating)
             binding.reviewDateTv.text = myProfileReviewItem.date                        /*date*/
             binding.reviewContentTv.text = myProfileReviewItem.reviewContent            /*reviewContent*/
 

@@ -51,7 +51,7 @@ class ViewModel : ViewModel() {
 
     // editProfile
 
-    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+//    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
 
     var editProfileNickname = MutableLiveData<String?>()
 
@@ -63,8 +63,16 @@ class ViewModel : ViewModel() {
 
     var editProfileIntroduce = MutableLiveData<String>()
     var editProfileExperience = MutableLiveData<Int?>()
-
+    var editProfileImg = MutableLiveData<String?>()
     var appointmentReviewContent = MutableLiveData<String>()
+
+    var setEditProfileNickName : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileImgUrl : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileLocation : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileIntroduction : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileExperience : MutableLiveData<Boolean> = MutableLiveData(false)
+
+
 
 
 

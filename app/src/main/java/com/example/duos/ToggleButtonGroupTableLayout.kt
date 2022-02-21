@@ -89,6 +89,7 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
         } else if(v.context is EditProfileActivity){
             radioBtnListener = editProfileContext as EditProfileActivity
             (radioBtnListener as EditProfileActivity).setRadiobutton(activeRadioButton!!.tag.toString())
+
         }
 
     }

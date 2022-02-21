@@ -13,7 +13,7 @@ class EditProfileActivity :
     BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate),
     ToggleButtonInterface {
 
-    lateinit var viewModel : ViewModel
+    lateinit var viewModel: ViewModel
 
     override fun initAfterBinding() {
         supportFragmentManager.beginTransaction()
@@ -23,9 +23,12 @@ class EditProfileActivity :
     }
 
     override fun setRadiobutton(tag: String) {
-        viewModel.editProfileExperience.value = tag.toInt()
+        val fragment = supportFragmentManager.findFragmentById(R.id.edit_profile_into_fragment_container_fc)
+        if (fragment is EditProfileFragment) {
+            fragment.setRadioButton(tag.toInt())
+        }
+//        viewModel.editProfileExperience.value = tag.toInt()
     }
-
 
 
 }

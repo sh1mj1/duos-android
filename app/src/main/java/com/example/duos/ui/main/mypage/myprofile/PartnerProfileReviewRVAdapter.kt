@@ -97,12 +97,9 @@ public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int positi
     inner class ViewHolder(val binding: MyPlayingReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(partnerProfileReviewItem: ReviewResDto) {
-//            binding.partnerProfileReviewItemListNonNullCl.visibility = View.VISIBLE /* 후기 보이고, 후기 없음 안 보이기*/
-//            binding.partnerProfileReviewItemListNullCl.visibility = View.GONE
-
             /* writerIdx*/
-            binding.playerGradeTv.text = partnerProfileReviewItem.rating.toString()          /*rating*/
-            binding.playerGradeRb.rating = partnerProfileReviewItem.rating!!
+            binding.playerGradeTv.text = toRatingStr(partnerProfileReviewItem.rating!!)          /*rating*/
+            binding.playerGradeRb.rating = partnerProfileReviewItem.rating
             binding.reviewContentTv.text = partnerProfileReviewItem.reviewContent            /*reviewContent*/
             binding.reviewDateTv.text = partnerProfileReviewItem.createdAt                        /*createdAt*/
             binding.playerReviewNicknameTv.text = partnerProfileReviewItem.writerNickname    /*writerNickname*/
@@ -110,10 +107,9 @@ public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int positi
                 .load(partnerProfileReviewItem.writerProfilePhotoUrl)
                 .into(binding.profileImgIv)
         }
-
-//        fun noticebind() {
-//            binding.partnerProfileReviewItemListNonNullCl.visibility = View.GONE    /* 후기 없음 보이고, 후기 안 보이기*/
-//            binding.partnerProfileReviewItemListNullCl.visibility = View.VISIBLE
-//        }
     }
+        fun toRatingStr(ratingFloat: Float): String {
+            val ratingStr = Math.round(ratingFloat * 10) / 10
+            return ratingStr.toString()
+        }
 }

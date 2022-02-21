@@ -69,8 +69,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     private var partnerImgUrl: String = ""
     private var partnerNickname: String = ""
 
-    private var appointmentIsExisted : Boolean =false
-    private var appointmentIdx : Int = -1
+    private var appointmentIsExisted: Boolean = false
+    private var appointmentIdx: Int = -1
 
 
     override fun initAfterBinding() {
@@ -196,20 +196,22 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                 if (partnerProfileReviewItem.writerIdx != getUserIdx()) {
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-                                Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
-                                arguments =
-                                    Bundle().apply {/*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
-                                        putInt("partnerUserIdx", partnerProfileReviewItem.writerIdx!!)
-                                    }
-                            })
+                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_right_anim, 0, 0, R.anim.exit_to_right )
+                    fragmentTransaction.replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+                            Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
+                            arguments =
+                                Bundle().apply {/*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
+                                    putInt("partnerUserIdx", partnerProfileReviewItem.writerIdx!!)
+                                }
+                        })
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
+
 
                 } else { /* TO MyProfile (MyProfileFrag)  */
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+                            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
                     Log.d(TAG, "PlayerFrag -> MyProfileFrag")
 
                     fragmentTransaction.addToBackStack(null)
@@ -226,7 +228,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         binding.playerPlayingReviewCountTv.setOnClickListener {
             val fragmentTransaction: FragmentTransaction =
                 (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    .replace(com.example.duos.R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
+                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
                         arguments = Bundle().apply {
                             // 해당 회원의 프로필 정보를 gson.toJson 하여 보낸다.
                             val gson = Gson()
@@ -258,14 +260,15 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         val profileGenderStr = toGenderStr(partnerResDto.partnerInfoDto.gender)
         val locationName = partnerResDto.partnerInfoDto.locationName
         val locationCategory = partnerResDto.partnerInfoDto.locationCategory
-        val location = locationCategory + locationName
+        val location = "$locationCategory $locationName"
+        val profileRatingStr = toRatingStr(partnerResDto.partnerInfoDto.rating!!).toString()
 
         binding.playerNicknameTv.text = partnerNickname
         binding.playerGenerationTv.text = partnerResDto.partnerInfoDto.age
         binding.playerSexTv.text = profileGenderStr
         binding.profileLocationTv.text = location
         binding.partnerProfileGradeRb.rating = partnerResDto.partnerInfoDto.rating!!
-        binding.partnerProfileGradeNumTv.text = partnerResDto.partnerInfoDto.rating.toString()
+        binding.partnerProfileGradeNumTv.text = profileRatingStr
         binding.playerCareerYearNumTv.text = partnerResDto.partnerInfoDto.experience
         Glide.with(binding.playerProfileImgIv.context)
             .load(partnerImgUrl)
@@ -347,8 +350,10 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         targetChatRoomIdx = createChatRoomResultData.targetChatRoomIdx  // 생성한 채팅방 인덱스
         participantList = createChatRoomResultData.participantList      // 채팅방에 추가된 사람들 (나 포함임. 리스트 [1]이 나임.
 
-        Log.d(TAG, "채팅방이 이미 있어서 해당 채팅방 Idx 호출. createdNewChatRoom : $createdNewChatRoom," +
-                    "targetChatRoomIdx : $targetChatRoomIdx ," + " participantList : $participantList")
+        Log.d(
+            TAG, "채팅방이 이미 있어서 해당 채팅방 Idx 호출. createdNewChatRoom : $createdNewChatRoom," +
+                    "targetChatRoomIdx : $targetChatRoomIdx ," + " participantList : $participantList"
+        )
 
         Toast.makeText(context, "이미 채팅방이 있어 해당 채팅방으로 이동합니다.", Toast.LENGTH_SHORT).show()
         // chatDB 불러와서 해당 채팅 정보를 불러온다.
@@ -361,8 +366,10 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
             AppointmentService.isAppointmentExist(this, myUserIdx, partnerUserIdx)
 
             chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
-            lastChatRoom = ChatRoom(targetChatRoomIdx, partnerNickname, partnerImgUrl, participantList[0],
-                "", "", appointmentIsExisted, appointmentIdx)
+            lastChatRoom = ChatRoom(
+                targetChatRoomIdx, partnerNickname, partnerImgUrl, participantList[0],
+                "", "", appointmentIsExisted, appointmentIdx
+            )
             chatDB.chatRoomDao().insert(lastChatRoom)
             Log.d(TAG, "채팅방 정보를 RoomDB에 넣기 : $lastChatRoom")
 
@@ -454,7 +461,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     // 약속 유무 불러오기
-    override fun onAppointmentExistSuccess(isExisted : Boolean, appointmentIdx : Int){
+    override fun onAppointmentExistSuccess(isExisted: Boolean, appointmentIdx: Int) {
 
         this.appointmentIsExisted = isExisted
         this.appointmentIdx = appointmentIdx

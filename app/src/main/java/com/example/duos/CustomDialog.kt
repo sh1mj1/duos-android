@@ -97,4 +97,7 @@ class CustomDialog(context: Context) : Dialog(context) {
         fun onClick(dialog: CustomDialog, message: String)
 
     }
+
+
+
 }

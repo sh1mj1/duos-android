@@ -47,19 +47,20 @@ class EveryReviewRVAdapter(private val everyReveiwsItem: ArrayList<EveryReviewsI
     inner class ViewHolder(val binding: MyPlayingReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(everyReviewsItem: EveryReviewsItem) {
+
             binding.playerReviewNicknameTv.text = everyReviewsItem.writerNickname    /*writerNickname*/
             Glide.with(binding.profileImgIv.context)                                    /*writerProfilePhotoUrl*/
                 .load(everyReviewsItem.writerProfilePhotoUrl)
                 .into(binding.profileImgIv)
-            binding.playerGradeTv.text = everyReviewsItem.rating.toString()          /*rating*/
-            val playerGradeRate = binding.playerGradeTv.text.toString()
-            binding.playerGradeRb.rating = playerGradeRate.toFloat()
+            binding.playerGradeTv.text = toRatingStr(everyReviewsItem.rating!!)        /*rating*/
+            binding.playerGradeRb.rating = everyReviewsItem.rating!!
             binding.reviewDateTv.text = everyReviewsItem.createdAt                      /*createdAt*/
-            //TODO  이제 위 createedAt을 안드로이드 기기에서 감지하는 시간에 맞게 계산해서 어제, 오늘 등으로 만들어서 조건문에 따라 다르게 만들고
-            // 형식 파싱하기
-            
             binding.reviewContentTv.text = everyReviewsItem.reviewContent            /*reviewContent*/
 
         }
+    }
+    fun toRatingStr(ratingFloat: Float): String {
+        val ratingStr = Math.round(ratingFloat * 10) / 10
+        return ratingStr.toString()
     }
 }
