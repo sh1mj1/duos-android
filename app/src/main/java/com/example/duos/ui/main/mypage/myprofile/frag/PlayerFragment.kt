@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
@@ -24,7 +22,6 @@ import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.entities.PartnerResDto
 import com.example.duos.data.entities.ReviewResDto
-import com.example.duos.data.entities.StarredFriend
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
@@ -73,6 +70,11 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     private var appointmentIdx: Int = -1
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+    }
+
     override fun initAfterBinding() {
         Log.d(TAG, "Start_PlayerFragment")
 
@@ -84,14 +86,28 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
 
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv).setOnClickListener {
-            deleteStarredFriend()   /* 친구 찜 취소 */
-        }
-
+        (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv)
+            .setOnClickListener { deleteStarredFriend()   /* 친구 찜 취소 */ }
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv)
             .setOnClickListener { addStarredFriend()  /* 친구 찜하기 */ }
 
-        // 채팅하기 버튼 클릭/////////////////////////////////////////////////////////////////////////////////////////
+        // 채팅하기 버튼 클릭
+        clickListenerChat()
+
+        // 상단 뒤로 가기 버튼 클릭
+        val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
+        (context as MyProfileActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
+            if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
+                fragmentTransaction.popBackStack()
+            } else {  /* 없으면 finish() */
+                requireActivity().finish()
+            }
+        }
+
+    }
+
+    // 채팅하기 버튼 클릭
+    private fun clickListenerChat() {
         (context as MyProfileActivity).findViewById<AppCompatButton>(R.id.partner_profile_chatting_btn).setOnClickListener {
             Log.d(TAG, "이미 채팅 있다. : $hasChatRoomAlready")
             if (hasChatRoomAlready == true) {
@@ -108,21 +124,9 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
             else if (hasChatRoomAlready == false && todayChatAvaillCnt == 0) {   // 신규 채팅방이지만, 오늘 가능 횟수 없음
                 Log.d(TAG, "신규 채팅방 But, 채팅 가능 횟수 없음의 경우.")
                 setCreateNewDialogFail()
-//                    Toast.makeText(context, "오늘 할 수 있는 채팅 수를 초과하였습니다.", Toast.LENGTH_LONG).show()
+                //                    Toast.makeText(context, "오늘 할 수 있는 채팅 수를 초과하였습니다.", Toast.LENGTH_LONG).show()
             }
         }
-
-        // 상단 뒤로 가기 버튼 클릭
-        val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
-        (context as MyProfileActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
-
-            if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
-                fragmentTransaction.popBackStack()
-            } else {  /* 없으면 finish() */
-                requireActivity().finish()
-            }
-        }
-
     }
 
     private fun deleteStarredFriend() {
@@ -169,6 +173,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         Log.d(TAG, partnerResDto.toString())
         // 리사이클러뷰 어댑터 연결, 데이터 연결, 레이아웃 매니저 설정
         val profileReviewRVAdapter = initRecyclerView() // 리뷰 불러오기
+
         goPlayerProfile(profileReviewRVAdapter) /* 다른 회원 프로필로 이동 */
         goEveryReview(partnerResDto)            /* 해당 회원의 모든 후기 보기 페이지로 이동*/
     }
@@ -196,26 +201,44 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                 if (partnerProfileReviewItem.writerIdx != getUserIdx()) {
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_right_anim, 0, 0, R.anim.exit_to_right )
-                    fragmentTransaction.replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+                    fragmentTransaction.apply {
+                        setReorderingAllowed(true)
+                        setCustomAnimations(R.anim.enter_from_right_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_right)    // 애니메이션 효과 적용
+                        replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
                             Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
                             arguments =
                                 Bundle().apply {/*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
                                     putInt("partnerUserIdx", partnerProfileReviewItem.writerIdx!!)
                                 }
                         })
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
+                        addToBackStack(null)
+                        commit()
+                    }
 
-
+//                    fragmentTransaction.setReorderingAllowed(true)
+//                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_right_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_right)    // 애니메이션 효과 적용
+//                    fragmentTransaction.replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+//                        Log.d(TAG, "다른 회원 프로필에서 다른 회원 프로필로 이동")
+//                        arguments =
+//                            Bundle().apply {/*TODO : 후기를 작성한 writerIdx에 맞게 Fragment 이동 시 해당 Idx를 가진 회원의 프로필로 이동 그 Idx만 전달해도될 듯???*/
+//                                putInt("partnerUserIdx", partnerProfileReviewItem.writerIdx!!)
+//                            }
+//                    })
+//                    fragmentTransaction.addToBackStack(null)
+//                    fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
                 } else { /* TO MyProfile (MyProfileFrag)  */
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
-                    Log.d(TAG, "PlayerFrag -> MyProfileFrag")
-
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
+                    fragmentTransaction.apply {
+                        replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+                        fragmentTransaction.addToBackStack(null)
+                        fragmentTransaction.commit()
+                    }
+//                            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+//                    Log.d(TAG, "PlayerFrag -> MyProfileFrag")
+//
+//                    fragmentTransaction.addToBackStack(null)
+//                    fragmentTransaction.commit()
                 }
 
             }
@@ -228,26 +251,39 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         binding.playerPlayingReviewCountTv.setOnClickListener {
             val fragmentTransaction: FragmentTransaction =
                 (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
-                        arguments = Bundle().apply {
-                            // 해당 회원의 프로필 정보를 gson.toJson 하여 보낸다.
-                            val gson = Gson()
-                            val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
-                            putString("profile", profileJson)
-                            putBoolean("isFromPlayerProfile", true)
-                        }
-                    })
-            fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
-            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
-
+            fragmentTransaction.apply {
+                setReorderingAllowed(true)
+                setCustomAnimations(R.anim.enter_from_bottom_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_bottom)
+                replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
+                    arguments = Bundle().apply {
+                        // 해당 회원의 프로필 정보를 gson.toJson 하여 보낸다.
+                        val gson = Gson()
+                        val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
+                        putString("profile", profileJson)
+                        putBoolean("isFromPlayerProfile", true)
+                    }
+                })
+                addToBackStack(null)
+                commit()
+            }
+//            fragmentTransaction.setReorderingAllowed(true)
+//            fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_bottom)
+//            fragmentTransaction.replace(R.id.my_profile_into_fragment_container_fc, EveryReviewFragment().apply {
+//                arguments = Bundle().apply {
+//                    // 해당 회원의 프로필 정보를 gson.toJson 하여 보낸다.
+//                    val gson = Gson()
+//                    val profileJson = gson.toJson(partnerResDto.partnerInfoDto)
+//                    putString("profile", profileJson)
+//                    putBoolean("isFromPlayerProfile", true)
+//                }
+//            })
+//            fragmentTransaction.addToBackStack(null)// 해당 transaction 을 BackStack에 저장
+//            fragmentTransaction.commit()    // commit(): FragmentManager가 이미 상태를 저장하지는 않았는지를 검사. 이미 상태를 저장한 경우, IllegalStateException 예외 던짐.
             // 상단 텍스트 변경 (후기 갯수, 프로필 수정하기 버튼 없애기
             (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
                 "후기(${partnerResDto.partnerInfoDto.reviewCount.toString()})"
-            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility =
-                View.GONE
-            (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility =
-                View.GONE
-
+            (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
+            (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
         }
     }
 
@@ -261,7 +297,8 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         val locationName = partnerResDto.partnerInfoDto.locationName
         val locationCategory = partnerResDto.partnerInfoDto.locationCategory
         val location = "$locationCategory $locationName"
-        val profileRatingStr = toRatingStr(partnerResDto.partnerInfoDto.rating!!).toString()
+        val profileRatingStr = toRatingStr(partnerResDto.partnerInfoDto.rating!!)
+        Log.d(TAG,toRatingStr(partnerResDto.partnerInfoDto.rating!!) )
 
         binding.playerNicknameTv.text = partnerNickname
         binding.playerGenerationTv.text = partnerResDto.partnerInfoDto.age
@@ -284,6 +321,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         } else {
             initIsNotStarred()
         }
+        startPostponedEnterTransition()
 
     }
 

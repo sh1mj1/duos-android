@@ -59,8 +59,8 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
 
         }
     }
-    fun toRatingStr(ratingFloat: Float): String {
-        val ratingStr = Math.round(ratingFloat * 10) / 10
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
         return ratingStr.toString()
     }
 }
