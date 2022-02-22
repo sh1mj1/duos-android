@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<com.example.duos.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/partner_search_scroll_view_sv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
+    android:nestedScrollingEnabled="true"
     android:overScrollMode="never"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:scrollbars="none">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/partner_search_layout"
         android:layout_width="match_parent"
@@ -15,11 +17,11 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/partner_search_main_img"/>
+            android:src="@drawable/partner_search_main_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -45,6 +47,7 @@
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:text="@string/partner_search_user_id"
                 android:textSize="22sp"
+                android:textColor="@color/nero"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/partner_search_my_profile_iv" />
 
@@ -54,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:text="@string/partner_search_nim"
+                android:textColor="@color/nero"
                 android:textSize="22sp"
                 app:layout_constraintStart_toEndOf="@id/partner_search_user_id_tv"
                 app:layout_constraintTop_toTopOf="@id/partner_search_user_id_tv" />
@@ -63,10 +67,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:fontFamily="@font/applesdgothicneoregular"
+                android:fontFamily="@font/applesdgothicneosemibold"
                 android:text="@string/partner_search_my_partner"
                 android:textSize="25sp"
                 android:textStyle="bold"
+                android:textColor="@color/nero"
                 app:layout_constraintStart_toStartOf="@id/partner_search_my_profile_iv"
                 app:layout_constraintTop_toBottomOf="@id/partner_search_user_id_tv" />
 
@@ -77,41 +82,58 @@
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:text="@string/partner_search_lets_search"
                 android:textSize="25sp"
+                android:textColor="@color/nero"
                 app:layout_constraintStart_toEndOf="@+id/partner_search_my_partner_tv"
                 app:layout_constraintTop_toTopOf="@+id/partner_search_my_partner_tv" />
 
-            <TextView
-                android:id="@+id/partner_search_recommended_partner_tv"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/partner_search_fix_scroll_layout_cl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/applesdgothicneoregular"
-                android:text="@string/partner_search_recommended_partner"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/partner_search_filtering_ic"
-                app:layout_constraintStart_toStartOf="@id/partner_search_my_profile_iv"
-                app:layout_constraintTop_toTopOf="@id/partner_search_filtering_ic" />
-
-            <ImageView
-                android:id="@+id/partner_search_filtering_ic"
-                android:layout_width="37dp"
-                android:layout_height="33dp"
                 android:layout_marginTop="55dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_filtering"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/partner_search_my_partner_tv" />
+                android:background="@color/white"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/partner_search_my_partner_tv">
+
+                <TextView
+                    android:id="@+id/partner_search_recommended_partner_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:gravity="center_vertical"
+                    android:text="@string/partner_search_recommended_partner"
+                    android:textColor="@color/nero"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/partner_search_filtering_ic"
+                    android:layout_width="37dp"
+                    android:layout_height="33dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_filtering"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/partner_search_recommended_partner_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/partner_search_filtering_ic" />
+                app:layout_constraintTop_toBottomOf="@id/partner_search_fix_scroll_layout_cl"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -186,4 +208,4 @@
         <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</com.example.duos.CustomScrollView>

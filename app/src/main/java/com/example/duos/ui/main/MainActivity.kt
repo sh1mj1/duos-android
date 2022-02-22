@@ -19,6 +19,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
     override fun initAfterBinding() {
+        overridePendingTransition(R.anim.horizon_enter, R.anim.none)
+
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController: NavController = navHostFragment.findNavController()

@@ -153,6 +153,16 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun initAfterBinding() {
 
+        binding.partnerSearchScrollViewSv.run {
+            header = binding.partnerSearchFixScrollLayoutCl
+            stickListener = { _ ->
+                Log.d("LOGGER_TAG", "stickListener")
+            }
+            freeListener = { _ ->
+                Log.d("LOGGER_TAG", "freeListener")
+            }
+        }
+
         Log.d("유저idx", userIdx.toString())
 
         recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
@@ -173,8 +183,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
 //            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 //        binding.partnerSearchUserIdTv.text = "tennis1010"
-
-
 
 
 

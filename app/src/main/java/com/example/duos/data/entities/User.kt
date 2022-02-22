@@ -24,6 +24,4 @@ data class EditProfile(
     var location: Int,
     var experience: Int,
     var introduce: String?
-
-
 )

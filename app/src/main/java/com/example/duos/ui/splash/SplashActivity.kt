@@ -95,7 +95,12 @@ class SplashActivity: AppCompatActivity() {
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
-        }
+            else initSet()
+
+        } else initSet()
+    }
+
+    private fun initSet(){
         setContentView(binding.root)
         initViewpager()
         initStatus()
