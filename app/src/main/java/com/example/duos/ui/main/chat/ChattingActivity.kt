@@ -557,7 +557,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
 
         if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
-            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageItems[0].sentAt.toString()), "date", messageItems[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageItems[0].sentAt)
+            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[0].sentAt.toString()), "date", messageList[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
             messageItems.add(0, firstDateItem)
         }
 
@@ -601,9 +601,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
             }
         }
+
         Log.d("itemCount 확인", chattingMessagesRVAdapter.itemCount.toString())
         Log.d("pageNum 확인", pageNum.toString())
 
+        chattingRV.smoothScrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
         pageNum++
 
     }
