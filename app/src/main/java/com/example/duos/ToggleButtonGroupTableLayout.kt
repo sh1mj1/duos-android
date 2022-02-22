@@ -9,12 +9,9 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.os.Bundle
 import android.os.Parcelable
-import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
 import com.example.duos.ui.main.partnerSearch.PartnerFilterActivity
 import com.example.duos.ui.signup.SignUpActivity
-import okhttp3.internal.parseCookie
 
 class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
 

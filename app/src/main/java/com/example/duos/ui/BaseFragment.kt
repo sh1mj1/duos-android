@@ -87,7 +87,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     fun toMyPagePhoneNumber(phoneNumber: String): String {
-        return phoneNumber.substring(0, 3) + " " + phoneNumber.substring(3, 7) + " "
+        return phoneNumber.substring(0, 3) + " " + phoneNumber.substring(3, 7) + "  ****"
     }
 
     fun toLocationStr(locationIdx: Int): String? {

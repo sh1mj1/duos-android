@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.mypage
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
@@ -129,6 +130,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onGetMyPageItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
@@ -139,7 +141,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val myProfileDB = db!!.userDao().getUser(myUserIdx)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 
-        val phoneNumber = toMyPagePhoneNumber(myProfileDB.phoneNumber!!)    // 010 7441 형태로 binding
+        val phoneNumber = toMyPagePhoneNumber(myProfileDB.phoneNumber!!)    // 010 7441 **** 형태로 binding
         val myPageCareerStr = toCareerStr(myProfileDB.experience)   // CareerIdx -> CareerStr
 
         binding.myProfileHomeNicknameTv.text = myProfileDB.nickName

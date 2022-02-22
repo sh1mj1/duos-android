@@ -54,10 +54,12 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             val profile = gson.fromJson(profileData, PartnerInfoDto::class.java)
             setInit(profile)
             EveryReviewsService.getEveryReviews(this, myUserIdx, profile.userIdx!!)
+            startPostponedEnterTransition()
         } else if (isFromMyProfile == true) {
             val profile = gson.fromJson(profileData, MyProfileInfoItem::class.java)
             setInit(profile)
             EveryReviewsService.getEveryReviews(this, myUserIdx, profile.userIdx!!)
+            startPostponedEnterTransition()
         }
 
         // 상단 뒤로 가기 버튼 클릭
@@ -82,7 +84,6 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         val everyReviewRVAdapter = initRecyclerView()
 //        startPostponedEnterTransition()
         // 다른 PlayerProfile 로 이동
-        startPostponedEnterTransition()
         goPlayerProfile(everyReviewRVAdapter)
     }
 

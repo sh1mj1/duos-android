@@ -5,8 +5,6 @@ import com.example.duos.R
 import com.example.duos.ToggleButtonInterface
 import com.example.duos.databinding.ActivityEditProfileBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
-import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.utils.ViewModel
 
 class EditProfileActivity :
