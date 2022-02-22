@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.mypage.myprofile.frag
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,11 +34,15 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
     private var everyReviewDatas = ArrayList<EveryReviewsItem>()
     val myUserIdx = getUserIdx()!!
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+
+    }
+
     override fun initAfterBinding() {
 
         Log.d(TAG, "Start_EveryReviewFragment")
-
-
         // HomeFragment 에서 넘어온 데이터 받아오기 혹은 PlayerFragment에서 넘어온 데이터 받아오기
         // -> 조건문 사용해서 argument로 받아온 것의 key가 무엇인지 체크하고 그에 해당하는 argument를 gson.fromJsom으로 받기
 
@@ -58,8 +63,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         // 상단 뒤로 가기 버튼 클릭
         val fragmentTransaction : FragmentManager = requireActivity().supportFragmentManager
         (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.top_left_arrow_iv).setOnClickListener {
-            //TODO  : IF :  backstack Exist -> popbackstack    ELSE :   finish()
-
+            // IF :  backstack Exist -> popbackstack    ELSE :   finish()
             if(fragmentTransaction.backStackEntryCount >= 1){
                 fragmentTransaction.popBackStack()
             }else{
@@ -76,7 +80,9 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
         everyReviewDatas.addAll(everyReviewsResponse.result)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
         // 리사이클러뷰 어댑터 연결
         val everyReviewRVAdapter = initRecyclerView()
+//        startPostponedEnterTransition()
         // 다른 PlayerProfile 로 이동
+        startPostponedEnterTransition()
         goPlayerProfile(everyReviewRVAdapter)
     }
 
@@ -91,12 +97,20 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             override fun onItemClick(everyReveiwsItem: EveryReviewsItem) {
 
                 if(everyReveiwsItem.writerIdx == myUserIdx){    /* 내 프로필로 이동*/
-                    val fragmentTransaction: FragmentTransaction =
-                        (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
-
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
+                    val fragmentTransaction: FragmentTransaction = (context as MyProfileActivity).supportFragmentManager.beginTransaction()
+                    fragmentTransaction.apply{
+                        setReorderingAllowed(true)
+                        setCustomAnimations(R.anim.enter_from_right_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_right)
+                        replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+                        addToBackStack(null)
+                        commit()
+                    }
+//                    fragmentTransaction.setReorderingAllowed(true)
+//                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_right_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_right)
+//                    fragmentTransaction.replace(R.id.my_profile_into_fragment_container_fc, MyProfileFragment())
+//
+//                    fragmentTransaction.addToBackStack(null)
+//                    fragmentTransaction.commit()
                     (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
                     (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
                     (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
@@ -104,14 +118,25 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
                 }else{
                     val fragmentTransaction: FragmentTransaction =
                         (context as MyProfileActivity).supportFragmentManager.beginTransaction()
-                            .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
-                                arguments = Bundle().apply {
-                                    putInt("partnerUserIdx", everyReveiwsItem.writerIdx!!)
-                                }
-
-                            })
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
+                    fragmentTransaction.apply {
+                        setReorderingAllowed(true)
+                        setCustomAnimations(R.anim.enter_from_right_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_right)
+                        replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+                        arguments = Bundle().apply {
+                            putInt("partnerUserIdx", everyReveiwsItem.writerIdx!!)
+                        }
+                    })
+                        addToBackStack(null)
+                        commit()
+                    }
+//                            .replace(R.id.my_profile_into_fragment_container_fc, PlayerFragment().apply {
+//                                arguments = Bundle().apply {
+//                                    putInt("partnerUserIdx", everyReveiwsItem.writerIdx!!)
+//                                }
+//
+//                            })
+//                    fragmentTransaction.addToBackStack(null)
+//                    fragmentTransaction.commit()    // commit() : FragmentManager가 이미 상태를 저장하지는 않았는지를 검사 이미 상태를 저장한 경우 IllegalStateExceptoion이라는 예외 던짐
 
                     (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
                     (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
@@ -133,6 +158,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun setInit(profile: MyProfileInfoItem) {
         binding.playerNicknameTv.text = profile.nickname
         binding.playerGenerationTv.text = profile.age
@@ -144,8 +170,10 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             .into(binding.playerProfileImgIv)
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
             "후기(${profile.reviewCount.toString()})"
+//        startPostponedEnterTransition()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setInit(profile: PartnerInfoDto) {
         val locationFull = profile.locationCategory + " " + profile.locationName
         val ratingStr = toRatingStr(profile.rating!!)
@@ -160,6 +188,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             .into(binding.playerProfileImgIv)
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text =
             "후기(${profile.reviewCount.toString()})"
+//        startPostponedEnterTransition()
     }
 
 

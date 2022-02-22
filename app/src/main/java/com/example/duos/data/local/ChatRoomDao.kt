@@ -40,4 +40,9 @@ interface ChatRoomDao {
 
     @Query("SELECT chatRoomName FROM ChatRoomTable WHERE chatRoomIdx =:chatRoomIdx")
     fun getPartnerId(chatRoomIdx: String): String
+
+    @Query("DELETE FROM ChatRoomTable") // 테이블에 들어있는 모든 값을 지워라
+    fun clearAll()
+
+
 }

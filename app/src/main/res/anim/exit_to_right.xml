@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@android:integer/config_shortAnimTime"
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:fromXDelta="0%"
+    android:toXDelta="100%" />
+
+
+
+<!--origin-->
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<set xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    >-->
+<!--<translate-->
+<!--    android:fromXDelta="0%" android:toXDelta="100%"-->
+<!--    android:fromYDelta="0%" android:toYDelta="0%"-->
+<!--    android:duration="@android:integer/config_shortAnimTime" />-->
+<!--</set>-->
+
+
+
+
+<!--    &lt;!&ndash; res/anim/slide_out.xml &ndash;&gt;-->
+<!--<translate xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:duration="@android:integer/config_shortAnimTime"-->
+<!--android:interpolator="@android:anim/decelerate_interpolator"-->
+<!--android:fromXDelta="0%"-->
+<!--android:toXDelta="100%" />-->
+
+
+

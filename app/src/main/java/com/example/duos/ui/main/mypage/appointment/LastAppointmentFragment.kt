@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
@@ -34,6 +36,15 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
 
     override fun initAfterBinding() {
         AppointmentService.getAppointmentList(this, userIdx)
+
+        val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
+        (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
+            if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
+                fragmentTransaction.popBackStack()
+            } else {  /* 없으면 finish() */
+                requireActivity().finish()
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,6 +90,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         return previousGameReviewRVAdapter
     }
+
     private fun initMorePreviousRecyclerView(): MorePreviousGameReviewRVAdapter {
         val morePreviousGameReviewRVAdapter =
             MorePreviousGameReviewRVAdapter(morePreviousPlayerDatas)

@@ -21,9 +21,7 @@ object ChatService {
     fun createChatRoom(createChatRoomView: CreateChatRoomView, thisUserIdx: Int, targetUserIdx: Int) {
         val createChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
         val createChatRoomRequestInfo = CreateChatRoomData(thisUserIdx, targetUserIdx)
-
 //        createChatRoomView.onCreateChatRoomLoading()
-
         createChatRoomService.createChatRoom(createChatRoomRequestInfo).enqueue(object :
             Callback<CreateChatRoomResponse> {
             override fun onResponse(

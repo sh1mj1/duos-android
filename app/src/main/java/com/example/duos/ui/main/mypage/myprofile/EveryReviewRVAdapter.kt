@@ -1,11 +1,16 @@
 package com.example.duos.ui.main.mypage.myprofile
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.everyReviews.EveryReviewsItem
 import com.example.duos.databinding.MyPlayingReviewItemBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 // 어댑터의 parameter : 데이터리스트. 이 어댑터의 ViewHolder 상속받기
 class EveryReviewRVAdapter(private val everyReveiwsItem: ArrayList<EveryReviewsItem>) :
@@ -32,6 +37,7 @@ class EveryReviewRVAdapter(private val everyReveiwsItem: ArrayList<EveryReviewsI
     }
 
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: EveryReviewRVAdapter.ViewHolder, position: Int) {
         holder.bind(everyReveiwsItem[position])
         holder.binding.profileImgCv.setOnClickListener { mItemClickListener.onItemClick(everyReveiwsItem[position]) }
@@ -46,20 +52,49 @@ class EveryReviewRVAdapter(private val everyReveiwsItem: ArrayList<EveryReviewsI
     // 내부클래스 ViewHolder. bind 메서드 정의(리사이클러뷰의 아이템에 데이터리스트의 데이터 연결)
     inner class ViewHolder(val binding: MyPlayingReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(everyReviewsItem: EveryReviewsItem) {
+
             binding.playerReviewNicknameTv.text = everyReviewsItem.writerNickname    /*writerNickname*/
             Glide.with(binding.profileImgIv.context)                                    /*writerProfilePhotoUrl*/
                 .load(everyReviewsItem.writerProfilePhotoUrl)
                 .into(binding.profileImgIv)
-            binding.playerGradeTv.text = everyReviewsItem.rating.toString()          /*rating*/
-            val playerGradeRate = binding.playerGradeTv.text.toString()
-            binding.playerGradeRb.rating = playerGradeRate.toFloat()
+            binding.playerGradeTv.text = toRatingStr(everyReviewsItem.rating!!)        /*rating*/
+            binding.playerGradeRb.rating = everyReviewsItem.rating!!
             binding.reviewDateTv.text = everyReviewsItem.createdAt                      /*createdAt*/
-            //TODO  이제 위 createedAt을 안드로이드 기기에서 감지하는 시간에 맞게 계산해서 어제, 오늘 등으로 만들어서 조건문에 따라 다르게 만들고
-            // 형식 파싱하기
-            
+            binding.reviewDateTv.text = toDateStr(everyReviewsItem.createdAt.toString())
             binding.reviewContentTv.text = everyReviewsItem.reviewContent            /*reviewContent*/
 
         }
+    }
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
+        return ratingStr.toString()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun toDateStr(date : String):String{
+        val dateFromApi = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        val dateDifference = ChronoUnit.DAYS.between(dateFromApi, LocalDateTime.now())
+        var dateStr : String = ""
+        if(dateDifference <= 0){    /* 오늘이면*/
+            if(dateFromApi.hour <= 12){
+                dateStr = "오늘 오전 ${dateFromApi.hour}시"
+            }else{
+                dateStr = "오늘 오후 ${dateFromApi.hour}시"
+            }
+
+        } else if(dateDifference <= 1){
+            if(dateFromApi.hour <= 12){
+                dateStr = "어제 오전 ${dateFromApi.hour}시"
+            }else{
+                dateStr = "어제 오후 ${dateFromApi.hour}시"
+            }
+        } else{
+            dateStr = dateFromApi.toLocalDate().toString()
+            //DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm:ss.SSSX" )
+        }
+
+        return dateStr
     }
 }

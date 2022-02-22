@@ -1,13 +1,19 @@
 package com.example.duos.ui.main.mypage.myprofile
 
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.databinding.MyPlayingReviewItemBinding
 import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter.ViewHolder
+import com.example.duos.utils.DataToViewFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 // 어댑터의 parameter : 데이터리스트. 이 어댑터의 ViewHolder 상속받기
 class PartnerProfileReviewRVAdapter(private val partnerProfileReviewItemList: ArrayList<ReviewResDto>) :
@@ -35,6 +41,7 @@ class PartnerProfileReviewRVAdapter(private val partnerProfileReviewItemList: Ar
     }
 
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 //        if (getItemCount ()!= 0) {
         Log.d(TAG, "partnerProfileReviewItemList 가 null 이 아님")
@@ -60,60 +67,55 @@ class PartnerProfileReviewRVAdapter(private val partnerProfileReviewItemList: Ar
 
     }
 
-    /*
-    @Override
-public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
-    if (payloads.isEmpty()) {
-        super.onBindViewHolder(holder, position, payloads);
-    }else {
-        for (Object payload : payloads) {
-            if (payload instanceof String) {
-                String type = (String) payload;
-                if (TextUtils.equals(type, "click") && holder instanceof TextHolder) {
-                    TextHolder textHolder = (TextHolder) holder;
-                    textHolder.mFavorite.setVisibility(View.VISIBLE);
-                    textHolder.mFavorite.setAlpha(0f);
-                    textHolder.mFavorite.setScaleX(0f);
-                    textHolder.mFavorite.setScaleY(0f);
-
-                    //animation
-                    textHolder.mFavorite.animate()
-                            .scaleX(1f)
-                            .scaleY(1f)
-                            .alpha(1f)
-                            .setInterpolator(new OvershootInterpolator())
-                            .setDuration(300);
-
-                }
-            }
-        }
-    }
-     */
-
     // 데이터 리스트의 크기          /
     override fun getItemCount(): Int = partnerProfileReviewItemList.size
 
     // 내부클래스 ViewHolder. bind 메서드 정의(리사이클러뷰의 아이템에 데이터리스트의 데이터 연결)
     inner class ViewHolder(val binding: MyPlayingReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(partnerProfileReviewItem: ReviewResDto) {
-//            binding.partnerProfileReviewItemListNonNullCl.visibility = View.VISIBLE /* 후기 보이고, 후기 없음 안 보이기*/
-//            binding.partnerProfileReviewItemListNullCl.visibility = View.GONE
-
             /* writerIdx*/
-            binding.playerGradeTv.text = partnerProfileReviewItem.rating.toString()          /*rating*/
-            binding.playerGradeRb.rating = partnerProfileReviewItem.rating!!
+            binding.playerGradeTv.text = toRatingStr(partnerProfileReviewItem.rating!!)          /*rating*/
+            binding.playerGradeRb.rating = partnerProfileReviewItem.rating
             binding.reviewContentTv.text = partnerProfileReviewItem.reviewContent            /*reviewContent*/
-            binding.reviewDateTv.text = partnerProfileReviewItem.createdAt                        /*createdAt*/
+//            binding.reviewDateTv.text = partnerProfileReviewItem.createdAt
+            binding.reviewDateTv.text = toDateStr(partnerProfileReviewItem.createdAt)       /*createdAt*/
             binding.playerReviewNicknameTv.text = partnerProfileReviewItem.writerNickname    /*writerNickname*/
             Glide.with(binding.profileImgIv.context)                                    /*writerProfileImgUrl*/
                 .load(partnerProfileReviewItem.writerProfilePhotoUrl)
                 .into(binding.profileImgIv)
         }
-
-//        fun noticebind() {
-//            binding.partnerProfileReviewItemListNonNullCl.visibility = View.GONE    /* 후기 없음 보이고, 후기 안 보이기*/
-//            binding.partnerProfileReviewItemListNullCl.visibility = View.VISIBLE
-//        }
     }
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
+        return ratingStr.toString()
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun toDateStr(date : String):String{
+        val dateFromApi = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        val dateDifference = ChronoUnit.DAYS.between(dateFromApi, LocalDateTime.now())
+        var dateStr : String = ""
+        if(dateDifference <= 0){    /* 오늘이면*/
+            if(dateFromApi.hour <= 12){
+                dateStr = "오늘 오전 ${dateFromApi.hour}시"
+            }else{
+                dateStr = "오늘 오후 ${dateFromApi.hour}시"
+            }
+
+        } else if(dateDifference <= 1){
+            if(dateFromApi.hour <= 12){
+                dateStr = "어제 오전 ${dateFromApi.hour}시"
+            }else{
+                dateStr = "어제 오후 ${dateFromApi.hour}시"
+            }
+        } else{
+            dateStr = dateFromApi.toLocalDate().toString()
+            //DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm:ss.SSSX" )
+        }
+
+        return dateStr
+    }
+
+
 }

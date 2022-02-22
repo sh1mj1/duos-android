@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toStartOf="@+id/my_generation_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv" />
-<!--            android:text="@string/my_profile_my_nickname"-->
+        <!--            android:text="@string/my_profile_my_nickname"-->
 
 
         <TextView
@@ -147,13 +147,15 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:gravity="top"
-            android:lineSpacingExtra="3sp"
-            android:textSize="11sp"
+            android:text="오랜만에 테니스 연습해보려고 하는데 파트너 구하는게 너무 어렵네요.같이 플레이 하실 분 구합니다. 지역은 마포구 성산동인데 근처 계신 분이면 오시는데 부담없으실테니 좋고, 이쪽으로 오실 수 있다면 지역은 크게 상관없을 것 같습니다. 실력은 아주 초보만 아니시라면 좋을 것 같습니다. 관심 있으신 분 편하게 메시지 주세요."
+            android:lineHeight="20sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_place_iv" />
-<!--        android:text="@string/my_profile_my_introduction"-->
+            app:layout_constraintTop_toBottomOf="@+id/my_place_iv"
+            tools:targetApi="p" />
+        <!--        android:text="@string/my_profile_my_introduction"-->
 
         <!--구력, 게임 수, 구분선    -->
         <View
@@ -262,7 +264,7 @@
             android:id="@+id/playing_review_content_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
