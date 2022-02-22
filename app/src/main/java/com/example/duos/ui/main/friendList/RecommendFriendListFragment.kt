@@ -61,66 +61,71 @@ class RecommendFriendListFragment() :
 
             val period: Int = 7 - (Period.between(recommendedAt, LocalDate.now()).days)
 
-            var recyclerviewId: Int = resources.getIdentifier(
-                "recommend_friend_list_d_" + period.toString()
-                        + "_recyclerview_rv", "id", requireActivity().packageName
-            )
+            if (period >= 0) {
 
-            // recyclerview 설정 & VISIBLE 하게 하기
-            var recyclerview: RecyclerView = requireView().findViewById(recyclerviewId)
-            recyclerview.setHasFixedSize(true)
-            recyclerview.visibility = View.VISIBLE
-            recyclerview.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapterList[period] =
-                RecommendFriendListRVAdapter(friendList.pastRecommendPartnerDto as ArrayList<RecommendedFriend>)
-            recyclerview.adapter = adapterList[period]
-            recyclerview.itemAnimator = null
+                var recyclerviewId: Int = resources.getIdentifier(
+                    "recommend_friend_list_d_" + period.toString()
+                            + "_recyclerview_rv", "id", requireActivity().packageName
+                )
 
-            // D-day text 설정 & VISIBLE 하게 하기
-            var textviewId: Int = resources.getIdentifier(
-                "recommend_friend_list_d_" + period.toString()
-                        + "_text_tv", "id", requireActivity().packageName
-            )
-            var textview: TextView = requireView().findViewById(textviewId)
-            textview.visibility = View.VISIBLE
+                Log.d("recyclerviewId", recyclerviewId.toString())
 
-            adapterList[period]?.setMyItemClickListener(object :
-                RecommendFriendListRVAdapter.MyItemClickListener {
-                override fun onDeleteFriend(partnerIdx : Int) {
-                    Log.d("추천친구삭제","bye")
-                }
+                // recyclerview 설정 & VISIBLE 하게 하기
+                var recyclerview: RecyclerView = requireView().findViewById(recyclerviewId)
+                recyclerview.setHasFixedSize(true)
+                recyclerview.visibility = View.VISIBLE
+                recyclerview.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                adapterList[period] =
+                    RecommendFriendListRVAdapter(friendList.pastRecommendPartnerDto as ArrayList<RecommendedFriend>)
+                recyclerview.adapter = adapterList[period]
+                recyclerview.itemAnimator = null
 
-                override fun onAddFriend(friend: RecommendedFriend) {
-                    // 하트값을 viewModel 로 observe 해서 빈하트라면, 찜하기 , 채워져있는 하트라면, 찜하기 취소 api를 호출하자.
-                    if (friend.recommendedFriendIsStarred == true){
-                        Log.d("찜삭제","api 호출하기")
-                        viewModel.friendCount.value = viewModel.friendCount.value?.minus(1)
-                        deleteStarredFriend(friend.partnerIdx!!)
-                    } else{
-                        Log.d("찜하기","api 호출하기")
-                        viewModel.friendCount.value = viewModel.friendCount.value?.plus(1)
-                        addStarredFriend(friend.partnerIdx!!)
+                // D-day text 설정 & VISIBLE 하게 하기
+                var textviewId: Int = resources.getIdentifier(
+                    "recommend_friend_list_d_" + period.toString()
+                            + "_text_tv", "id", requireActivity().packageName
+                )
+                var textview: TextView = requireView().findViewById(textviewId)
+                textview.visibility = View.VISIBLE
+
+                adapterList[period]?.setMyItemClickListener(object :
+                    RecommendFriendListRVAdapter.MyItemClickListener {
+                    override fun onDeleteFriend(partnerIdx: Int) {
+                        Log.d("추천친구삭제", "bye")
                     }
-                }
 
-                override fun onDeleteText() {
-                    textview.visibility = View.GONE
-                }
-
-                override fun gotoPartnerProfileActivity(partnerIdx: Int) {
-                    // 파트너 세부 화면으로 이동
-                    Log.d("그리드","itemClick")
-                    val intent = Intent(activity, MyProfileActivity::class.java)
-                    intent.apply {
-                        this.putExtra("isFromSearch", true)
-                        this.putExtra("partnerUserIdx", partnerIdx)
+                    override fun onAddFriend(friend: RecommendedFriend) {
+                        // 하트값을 viewModel 로 observe 해서 빈하트라면, 찜하기 , 채워져있는 하트라면, 찜하기 취소 api를 호출하자.
+                        if (friend.recommendedFriendIsStarred == true) {
+                            Log.d("찜삭제", "api 호출하기")
+                            viewModel.friendCount.value = viewModel.friendCount.value?.minus(1)
+                            deleteStarredFriend(friend.partnerIdx!!)
+                        } else {
+                            Log.d("찜하기", "api 호출하기")
+                            viewModel.friendCount.value = viewModel.friendCount.value?.plus(1)
+                            addStarredFriend(friend.partnerIdx!!)
+                        }
                     }
-                    startActivity(intent)
-                }
 
-            })
+                    override fun onDeleteText() {
+                        textview.visibility = View.GONE
+                    }
 
+                    override fun gotoPartnerProfileActivity(partnerIdx: Int) {
+                        // 파트너 세부 화면으로 이동
+                        Log.d("그리드", "itemClick")
+                        val intent = Intent(activity, MyProfileActivity::class.java)
+                        intent.apply {
+                            this.putExtra("isFromSearch", true)
+                            this.putExtra("partnerUserIdx", partnerIdx)
+                        }
+                        startActivity(intent)
+                    }
+
+                })
+
+            }
         }
     }
 
