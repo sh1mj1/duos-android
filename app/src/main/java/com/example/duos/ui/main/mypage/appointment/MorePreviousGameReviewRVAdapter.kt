@@ -78,7 +78,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
             if(dateFromApi.hour <= 12){
                 dateStr = "어제 오전 ${dateFromApi.hour}시"
             }else{
-                dateStr = "어제 오후 ${dateFromApi.hour}시"
+                dateStr = "어제 오후 ${dateFromApi.hour - 12}시"
             }
         } else{
             dateStr = dateFromApi.toLocalDate().toString()

@@ -85,7 +85,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.VISIBLE
         (context as MyProfileActivity).findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.GONE
         (context as MyProfileActivity).findViewById<TextView>(R.id.top_myProfile_tv).text = "프로필"
-
+        startPostponedEnterTransition()
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_starred_iv)
             .setOnClickListener { deleteStarredFriend()   /* 친구 찜 취소 */ }
         (context as MyProfileActivity).findViewById<ImageView>(R.id.player_is_not_starred_iv)
@@ -321,7 +321,6 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         } else {
             initIsNotStarred()
         }
-        startPostponedEnterTransition()
 
     }
 

@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ALL_APPS
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -49,12 +50,16 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
             mContext = context
         }
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initAfterBinding() {
         Log.d(TAG, "Start_AppointmentReviewFragment")
 //        partnerUserIdx = requireArguments().getInt("partnerUserIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
-
+        (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setImageResource(R.drawable.ic_btn_close_iv    )
         /* 해당 화면에 회원 프로필 사진, 회원 nickname, binding 하기 */
         val profileData =
             arguments?.getString("profile")   /* From player's userIdx From AppointFrag */
@@ -94,7 +99,6 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
                 (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
                     .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment()).commitAllowingStateLoss()
             (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setImageResource(R.drawable.ic_back_30)
-            (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "지난 약속"
         }
     }
 
@@ -145,7 +149,6 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
                         binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
                         binding.countTextLengthTv.text = "내용을 입력해주세요."
 
-//                        }
                     }
                 }
             }
@@ -159,6 +162,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
             .load(profile.profilePhotoUrl)
             .into(binding.imgWriteReviewPlayerIv)
         binding.writeReviewPlayerNicknameTv.text = profile.nickname
+        startPostponedEnterTransition()
     }
 
 

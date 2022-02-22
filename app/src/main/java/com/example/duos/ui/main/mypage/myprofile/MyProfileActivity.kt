@@ -1,21 +1,14 @@
 package com.example.duos.ui.main.mypage.myprofile
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.example.duos.R
 import com.example.duos.data.local.UserDatabase
-import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.chat.ChattingActivity
-import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
 import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 import com.example.duos.utils.getUserIdx

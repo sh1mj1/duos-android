@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -34,10 +35,19 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     private var morePreviousPlayerDatas = ArrayList<AppointmentResDto>()
     val userIdx = getUserIdx()!!  // sharedPreference 에 있는 내 userIdx
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+    }
+
     override fun initAfterBinding() {
         AppointmentService.getAppointmentList(this, userIdx)
 
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
+        (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv)
+            .setImageResource(R.drawable.ic_my_page_back_btn)
+        startPostponedEnterTransition()
+        (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "지난 약속"
         (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
             if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
                 fragmentTransaction.popBackStack()
@@ -73,14 +83,14 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
         // 어댑터 설정
         val previousGameReviewRVAdapter = initPreviousRecyclerView()
         val morePreviousGameReviewRVAdapter = initMorePreviousRecyclerView()
-
         previousGameClickListener(previousGameReviewRVAdapter)
         morePreviousGameClickListener(morePreviousGameReviewRVAdapter)
 
     }
 
     override fun onGetAppointmentFailure(code: Int, message: String) {
-        Toast.makeText(context, " $TAG onGetAppointmentFailure",Toast.LENGTH_LONG).show()
+        startPostponedEnterTransition()
+        Toast.makeText(context, " $TAG onGetAppointmentFailure", Toast.LENGTH_LONG).show()
     }
 
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {
@@ -115,7 +125,11 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
 
             override fun onWriteBtnClick(appointmentItem: AppointmentResDto) {  /* 후기 작성 클릭!*/
                 val fragmentTransaction: FragmentTransaction =
-                    (context as LastAppointmentActivity).supportFragmentManager.beginTransaction().replace(
+                    (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
+                fragmentTransaction.apply {
+                    setReorderingAllowed(true)
+                    setCustomAnimations(R.anim.enter_from_bottom_anim, R.anim.fade_out, R.anim.fade_in, R.anim.exit_to_bottom)
+                    replace(
                         R.id.previous_game_into_fragment_container_fc,
                         LastAppointmentReviewFragment().apply {
                             arguments = Bundle().apply {
@@ -124,8 +138,9 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
                                 putString("profile", profileJson)
                             }
                         })
-                fragmentTransaction.addToBackStack(null)
-                fragmentTransaction.commit()
+                    addToBackStack(null)
+                    commit()
+                }
                 (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "후기 작성"
             }
         })
@@ -149,5 +164,4 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
     }
 
 
-    
 }

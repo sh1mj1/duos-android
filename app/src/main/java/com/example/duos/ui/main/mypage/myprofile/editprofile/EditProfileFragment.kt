@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile.frag
+package com.example.duos.ui.main.mypage.myprofile.editprofile
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -29,14 +29,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.duos.R
-import com.example.duos.ToggleButtonInterface
 import com.example.duos.data.entities.duplicate.DuplicateNicknameListView
 import com.example.duos.data.entities.editProfile.*
 import com.example.duos.data.local.UserDatabase
@@ -47,11 +44,9 @@ import com.example.duos.data.remote.editProfile.EditProfilePutResponse
 import com.example.duos.data.remote.editProfile.EditProfilePutService
 import com.example.duos.databinding.FragmentEditProfileBinding
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
 import com.example.duos.ui.signup.localSearch.LocationDialogFragment
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
-import org.w3c.dom.Text
 import java.util.regex.Pattern
 
 class EditProfileFragment : Fragment(), EditProfileListView,
@@ -108,7 +103,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*TODO : 아래 왼쪽 userIdx에 내 userIdx 넣기 (Room)*/
         EditProfileGetService.getEditProfile(this, myUserIdx)
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
@@ -142,6 +136,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             viewModel.setEditProfileLocation.value = false
             viewModel.setEditProfileIntroduction.value = false
             viewModel.setEditProfileExperience.value = false
+            viewModel.setEditProfileIsDuplicated.value = false
+            viewModel.isChangedNickname.value = false
         }
         savedState = null
 
@@ -267,11 +263,56 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
             checkStore = false
         })
+//        if(viewModel.editProfileNickname.value == myProfileDB.nickName){
+//            viewModel.isValidNicknameEditCondition.value = true
+//        }
+
+        val nicknameEt = binding.nicknameEt
+        nicknameEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                if (hasFocus) {
+                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
+                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
+                }else{
+                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
+                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
+                }
+            }
+        })
+
+        nicknameEt.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+            override fun afterTextChanged(s: Editable?) {
+                if (s == viewModel.editProfileNickname){
+                    viewModel.isChangedNickname.value = false
+                }else{
+                    viewModel.isChangedNickname.value = true
+                }
+            }
+        })
+        //        /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
+//        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+//            if (it != myProfileDB.nickName) {   /* 작성한 닉네임이 기존 닉네임과 다를 떄 */
+//                viewModel.setEditProfileNickName.observe(viewLifecycleOwner, { it2 ->    /* 중복확인이 안됨 */
+//                    if (!it2) {
+//                        viewModel.isValidNicknameEditCondition .value = true
+//                    } else { /* 닉네임 중복확인이 되었을 때 */
+//                        viewModel.isValidNicknameEditCondition .value = false
+//                    }
+//                })
+//            }
+//        })
 
 
         binding.btnCheckDuplicationTv.setOnClickListener {  /* 중복 확인 */
             DuplicateNicknameService.getDuplicateNickname(this, myUserIdx, binding.nicknameEt.text.toString())
         }
+
+
 
         locationText = binding.locationInfoTv
 
@@ -286,8 +327,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
         }
 
-        viewModel.editProfileLocationDialogShowing.observe(
-            viewLifecycleOwner,
+        viewModel.editProfileLocationDialogShowing.observe(viewLifecycleOwner,
             Observer {   /* 다이얼로그의 값 observe 해서 값 띄우기*/
                 if (it) {
                     binding.locationInfoTv.text =
@@ -304,8 +344,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                         viewModel.setEditProfileLocation.value = false
                         Log.d(TAG, "viewModel.setEditProfileLocation.value : ${viewModel.setEditProfileLocation.value}")
                     }
-
-
                 }
             })
 
@@ -327,19 +365,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             )
             btn.tag = i.toString()
         }
-//binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.primary))
+
+
         /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
-        binding.nicknameEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
-                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
-                }else{
-                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
-                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
-                }
-            }
-        })
 
         binding.contentIntroductionEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
@@ -351,75 +379,54 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     binding.contentIntroductionEt.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
                 }
             }
-
         })
 
-
-//        /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
-        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
-            if (it != myProfileDB.nickName) {   /* 작성한 닉네임이 기존 닉네임과 다를 떄 */
-                viewModel.setEditProfileNickName.observe(viewLifecycleOwner, { it2 ->    /* 중복확인이 안됨 */
-                    if (!it2) {
-                        onApplyDisable()
-                    } else { /* 닉네임 중복확인이 되었을 때 */
-                        onApplyEnable()
-                    }
-                })
+        val introductionEt = binding.contentIntroductionEt
+        introductionEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-        })
-
-        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
-            if (it == myProfileDB.nickName) {
-                viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner, { it3 -> /* 프로필 이미지 변경됨 */
-                    if (it3) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileLocation.observe(viewLifecycleOwner, { it4 -> /* 프로필 지역 변경됨 */
-                    if (it4) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileIntroduction.observe(viewLifecycleOwner, { it5 ->  /* 프로필 소개글 변경됨 */
-                    if (it5) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileExperience.observe(viewLifecycleOwner, { it6 -> /* 프로필 구력 변경됨 */
-                    if (it6) {
-                        onApplyEnable()
-                    }
-                })
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.toString().length > 0 && s.toString().length < 300) { /* EditText 에 글이 1 ~ 300 자면 파란 작성완료 버튼*/
+                        viewModel.setEditProfileIntroduction.value = true
+                    } else if (s.toString().length >= 300) {    /* EditText 에 글이 400 자보다 길면 */
+                        viewModel.setEditProfileIntroduction.value = false
+                        Toast.makeText(context, "자기소개는 최대 300자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
+                    } else { /* EditText 에 글이 없으면 회색 작성완료 버튼*/
+                        viewModel.setEditProfileIntroduction.value = false
+                    }
+                }
+            }
+
         })
 
+        if(viewModel.setEditProfileIntroduction.value == true || viewModel.setEditProfileExperience.value == true
+            || viewModel.setEditProfileLocation.value == true){ /* 프로필 이미지 추가해야 해*/
+            viewModel.isValidNonNicknameEditCondition.value = true
+        }
+//        if(viewModel.isValidNicknameEditCondition.value == true && viewModel.isValidNonNicknameEditCondition.value == false){
+//            onApplyEnable()
+//        }else if(viewModel.isValidNicknameEditCondition.value == false && viewModel.isValidNonNicknameEditCondition.value == true){
+//            onApplyEnable()
+//        }
+//        else{
+//            onApplyDisable()
+//        }
 
-        /*
-         viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner, { it3 -> /* 프로필 이미지 변경됨 */
-                    if (it3) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileLocation.observe(viewLifecycleOwner, { it4 -> /* 프로필 지역 변경됨 */
-                    if (it4) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileIntroduction.observe(viewLifecycleOwner, { it5 ->  /* 프로필 소개글 변경됨 */
-                    if (it5) {
-                        onApplyEnable()
-                    }
-                })
-                viewModel.setEditProfileExperience.observe(viewLifecycleOwner, { it6 -> /* 프로필 구력 변경됨 */
-                    if (it6) {
-                        onApplyEnable()
-                    }
-                })
-         */
-
-        //TODO : 닉네임 입력 칸 TextWatcher 써서 viewModel에 값 계속 동기화 시켜주기
-
-        // TODO : 소개글 칸 textWatcher 써서 viewModel에 값 계속 동기화 시켜주기
+        if(viewModel.isChangedNickname.value == false && viewModel.isValidNonNicknameEditCondition.value == true){
+            // 닉네밍 그대로, 다른 정보 수정됨
+            onApplyEnable()
+        }else if(viewModel.isChangedNickname.value == true && viewModel.setEditProfileIsDuplicated.value == false){
+            // 닉네임 바뀌었는데 중복화인이 안됨.
+            onApplyDisable()
+        }else if(viewModel.isChangedNickname.value == true && viewModel.setEditProfileIsDuplicated.value == true){
+            // 닉네임 바뀌었는데 중복확인이 됨
+            onApplyEnable()
+        }else{
+            onApplyDisable()
+        }
 
 
         binding.activatingApplyBtn.setOnClickListener {
@@ -433,10 +440,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             val introduction = binding.contentIntroductionEt.text.toString()            ////
 
             //TODO : 프로필 이미지 변경 X 나머지 변경됨.
-            EditProfilePutService.putEditProfile(
-                this, phoneNumber, nickname, birth, gender, locationIdx,
-                experienceIdx, introduction, myUserIdx
-            )
+            EditProfilePutService.putEditProfile(this, phoneNumber, nickname, birth, gender, locationIdx,
+                experienceIdx, introduction, myUserIdx)
 
 
             //TODO : 프로필 이미지 변경되고 나머지도 변경됨
@@ -444,10 +449,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             //TODO : 프로필 이미지만 변경됨
 
 
-            Log.d(
-                TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
-                        " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
-            )
+            Log.d(TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
+                        " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  ")
 
         }
 
@@ -625,7 +628,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
 
         }
-
     }
 
 
@@ -776,6 +778,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     // 중복 확인 됨!!
     override fun onGetDuplicateNicknameSuccess(duplicateNicknameResponse: DuplicateNicknameResponse) {
         viewModel.setEditProfileNickName.value = true
+        viewModel.isValidNicknameEditCondition.value = true
+        viewModel.setEditProfileIsDuplicated.value = true
         Log.d(TAG, "viewModel.setEditProfileNickName.value : ${viewModel.setEditProfileNickName.value}")
         binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
         binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
@@ -784,6 +788,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     override fun onGetDuplicateNicknameFailure(code: Int, message: String) {
+        viewModel.setEditProfileIsDuplicated.value = false
         binding.nickNameErrorTv.visibility = View.VISIBLE
         binding.nickNameErrorTv.text = message
         binding.nicknameCheckIconIv.visibility = View.VISIBLE

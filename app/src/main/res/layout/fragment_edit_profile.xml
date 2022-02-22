@@ -250,13 +250,13 @@
                 android:gravity="top"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textNoSuggestions"
+                android:text="@={viewmodel.editProfileIntroduce}"
                 android:letterSpacing="0.05"
                 android:textColor="@color/dark_gray_B4"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
                 app:layout_constraintStart_toStartOf="@+id/dimension_introduction_iv"
                 app:layout_constraintTop_toTopOf="@+id/dimension_introduction_iv" />
-<!--                android:text="@={viewmodel.editProfileIntroduce}"-->
 
 
             <TextView
