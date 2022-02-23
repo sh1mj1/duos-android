@@ -87,6 +87,7 @@ class SplashActivity: AppCompatActivity() {
 
     private fun autoLogin() {
         val userDB = UserDatabase.getInstance(this)
+        Log.d("Splash",userDB.toString())
         if (getAccessToken() != null || userDB != null){
             Log.d("jwt", getAccessToken().toString())
             if(userDB?.userDao()?.getUser(getUserIdx()!!) != null){
