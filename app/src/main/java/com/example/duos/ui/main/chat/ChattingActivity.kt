@@ -22,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.duos.FirebaseMessagingServiceUtil
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
@@ -38,6 +39,8 @@ import com.example.duos.ui.main.appointment.AppointmentInfoActivity
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -383,7 +386,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
 //            val senderId = bundle.getString("senderId").toString()
 //            partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
+            Log.d("chatRoomIdxByFCM", chatRoomIdxByFCM)
             val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
+            Log.d("chatRoomData", chatRoomData.toString())
             val senderId = chatRoomData.chatRoomName
             partnerIdx = chatRoomData.participantIdx!!
             val type = bundle.getString("type").toString()
