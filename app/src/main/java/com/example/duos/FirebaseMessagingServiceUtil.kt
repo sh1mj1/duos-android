@@ -625,7 +625,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
                 }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
                     chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
                 }
-
             }
             Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }else{
