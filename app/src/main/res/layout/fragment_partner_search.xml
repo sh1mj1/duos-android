@@ -129,11 +129,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/partner_search_fix_scroll_layout_cl"/>
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintTop_toBottomOf="@id/partner_search_fix_scroll_layout_cl" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
