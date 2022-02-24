@@ -75,7 +75,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var dateTimeOfFirstMessageOfLastPage: LocalDateTime
     private var isNextPageAvailable = false // 다음 페이지 유무
     private var pageNum = 0     // 조회할 페이지 page
-    private var listNum = 10     // 조회할 페이지 당 채팅 메세지 개수 limit
+    private var listNum = 15     // 조회할 페이지 당 채팅 메세지 개수 limit
+    var lastVisiblePosition = -1
 
 
 
@@ -172,6 +173,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
         var sendBtn: ImageView = binding.chattingSendBtn
+
+
         //val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
         //val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
@@ -273,6 +276,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
         chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+        chattingEt.setText("")
         chatDB.chatMessageItemDao().insert(chatMessageItem)
         lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
         Log.d("채팅보내기 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
@@ -287,7 +291,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     override fun onSendMessageSuccess(sendMessageResultData: SendMessageResultData) {
         Log.d("채팅 메세지 보내기 POST", "성공")
 
-        chattingEt.setText("")
         sendMessage(sendMessageResultData.chatMessageIdx)
         //progressOFF()
     }
@@ -555,6 +558,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onPagingChatMessageSuccess(pagingChatMessageResult: PagingChatMessageResult) {
+        layoutManager = chattingRV.layoutManager
+        val _lastVisiblePosition = (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
         val listSize = pagingChatMessageResult.currentItemCnt
         isNextPageAvailable = pagingChatMessageResult.isNextPageAvailable
         //var messageList : ArrayList<MessageListData> = ArrayList<MessageListData>()
@@ -603,16 +609,20 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chattingMessagesRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(messageItems)
-
             }
         }
+
+
 
         Log.d("itemCount 확인", chattingMessagesRVAdapter.itemCount.toString())
         Log.d("pageNum 확인", pageNum.toString())
 
-        chattingRV.smoothScrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
-        pageNum++
+         Log.d("smmothScrollToPosition - itemCount", chattingMessagesRVAdapter.itemCount.toString())
+        Log.d("smmothScrollToPosition - pageNum", pageNum.toString())
+        Log.d("smmothScrollToPosition - listNum", listNum.toString())
+        Log.d("smmothScrollToPosition - scroll position", (chattingMessagesRVAdapter.itemCount - pageNum*listNum - 1).toString())
 
+        pageNum++
     }
 
     override fun onPagingChatMessageFailure(code: Int, message: String) {
@@ -674,7 +684,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.addOnScrollListener(object: RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                    layoutManager = chattingRV.layoutManager
                     if(hasNextPage()){
                         val firstVisibleItem = (layoutManager as LinearLayoutManager)
                             .findFirstCompletelyVisibleItemPosition()
