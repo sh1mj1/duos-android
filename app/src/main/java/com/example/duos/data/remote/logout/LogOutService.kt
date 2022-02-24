@@ -8,7 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object LogOutService {
-    val retrofit = NetworkModule.getRetrofit()
+    val retrofit = ApplicationClass.retrofit
     fun postLogOut(logoutListView: LogoutListView, userIdx: Int) {
         val logOutService = retrofit.create(LogoutRetrofitInterface::class.java)
 
@@ -19,7 +19,6 @@ object LogOutService {
                 when (resp.code) {
                     1000 -> logoutListView.onLogOutSuccess()
                     else -> logoutListView.onLogOutFailure(resp.code, resp.message)
-
                 }
             }
 

@@ -109,7 +109,7 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
             builder.header(ApplicationClass.X_ACCESS_TOKEN, token)
     }
 
-    fun getRefreshToken() {
+    private fun getRefreshToken() {
         AccessTokenService.getAccessToken(this)
     }
 
@@ -138,29 +138,5 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
         Log.d("onAccessTokenCode", boolean.toString())
         viewModel.jwtRefreshSuccess.value = boolean
     }
-
-
 }
 
-
-//
-//object NetworkModule {
-//    fun getRetrofit(): Retrofit {
-//        val client: OkHttpClient = OkHttpClient.Builder()
-//            .readTimeout(30000, TimeUnit.MILLISECONDS)
-//            .connectTimeout(30000, TimeUnit.MILLISECONDS)
-//            .writeTimeout(30000, TimeUnit.MILLISECONDS)
-//            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
-//            .build()
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(BASE_URL) // 기본 URL 세팅
-//            .client(client) //Logger 세팅
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//
-//        return retrofit
-//    }
-//}

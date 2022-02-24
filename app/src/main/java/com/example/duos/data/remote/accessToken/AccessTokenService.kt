@@ -8,10 +8,7 @@ import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.logout.LogOutService
 import com.example.duos.data.remote.logout.LogoutListView
 import com.example.duos.ui.splash.SplashActivity
-import com.example.duos.utils.getRefreshToken
-import com.example.duos.utils.getUserIdx
-import com.example.duos.utils.saveJwt
-import com.example.duos.utils.deleteSharedPreferenceData
+import com.example.duos.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,6 +33,7 @@ object AccessTokenService : LogoutListView {
                 when (resp.code) {
                     1000 -> {
                         saveJwt(resp.result.jwtAccessToken)
+                        saveRefreshJwt(resp.result.jwtRefreshToken)
                         accessTokenView.onAccessTokenCode(true)
                     }
                     else -> {
