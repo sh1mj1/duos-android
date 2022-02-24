@@ -31,6 +31,9 @@ interface ChatMessageItemDao {
 
     @Query("DELETE FROM ChatMessageItemTable")  // 테이블에 있는 모든 값을 지워라
     fun clearAll()
+
+    @Insert
+    fun insertAll(chatMessageItemList: ArrayList<ChatMessageItem>)
 }
 
 /*

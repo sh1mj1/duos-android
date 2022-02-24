@@ -41,9 +41,7 @@ import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
+import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -260,16 +258,15 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 첫 메세지일때 날짜변경선 추가 ... 채팅방 자체의 첫 메세지 일 떄 말고, 자정 지나고 첫 메세지일때도 추가되도록 수정 필요
         if(chattingMessagesRVAdapter.itemCount == 0){  //지금 보내는 메세지가 채팅방의 처음 메세지일 때
             val parsedLocalDateTime = LocalDateTime.now()
-
             val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-            val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
+            val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime.toEpochSecond(ZoneOffset.UTC), ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
             chattingMessagesRVAdapter.addItem(dateItem)
             chatDB.chatMessageItemDao().insert(dateItem)
             lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId
             Log.d("채팅보내기 - 날짜변경선 추가 후 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         }
 
-        val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
+        val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
         chattingRV.scrollToPosition(0)
         chattingEt.setText("")
@@ -564,7 +561,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         for(i: Int in 0..listSize - 2){
             messageItems.add(convertMessageListDataToChatMessageItem(messageList[i]))
             if(isDateChanged(messageList[i].sentAt, messageList[i+1].sentAt)){
-                val sentAt = messageList[i].sentAt
+                val sentAt = messageList[i].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
                 val dateItem = ChatMessageItem("date", getFormattedDate(sentAt.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
                 messageItems.add(dateItem)
             }
@@ -574,7 +571,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
 
         if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
-            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[messageList.size - 1].sentAt.toString()), "date", messageList[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
+            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[messageList.size - 1].sentAt.toString()), "date", messageList[0].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
             messageItems.add(firstDateItem)
         }
 
@@ -585,7 +582,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         } else {     // 불러온 페이지의 마지막 메세지의 날짜와 그 아래 이미 로드된 페이지의 첫 메세지의 날짜가 다르면 날짜변경선을 두 페이지 사이에 추가
             Log.d("날짜변경선 추가 전", messageItems.toString())
             if (isDateChanged(messageList[0].sentAt, dateTimeOfFirstMessageOfLastPage)){
-                val sentAt = messageList[0].sentAt
+                val sentAt = messageList[0].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
                 val dateItem = ChatMessageItem(
                     "date",
                     getFormattedDate(sentAt.toString()),
@@ -603,12 +600,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chattingMessagesRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(messageItems)
-                chattingRV.smoothScrollToPosition(lastVisibleItemPosition - 1)
+                chattingRV.smoothScrollToPosition(lastVisibleItemPosition - 1)  // -1하든 안하든, 아예 이 줄 생략하든 똑같은듯........
             }
-
-            Log.d("lastVisibleItemPosition - 새페이지 추가 전", lastVisibleItemPosition.toString())
-            Log.d("lastVisibleItemPosition - 새페이지 추가 후", (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition().toString())
-
         }
 
         pageNum++
@@ -657,13 +650,13 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     fun convertMessageListDataToChatMessageItem(messageListData: MessageListData): ChatMessageItem{
-
         val chatRoomIdx = messageListData.chatRoomIdx
         val senderIdx = messageListData.senderIdx
 
         val senderId = getSenderId(chatRoomIdx, senderIdx)
         val body = messageListData.message
-        val sentAt = messageListData.sentAt
+        val sentAt = messageListData.sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        //val sentAt = messageListData.sentAt
         val formattedSentAt = getFormattedDateTime(sentAt.toString())
         val viewType = getViewType(senderIdx)
         val chatMessageIdx = messageListData.uuid

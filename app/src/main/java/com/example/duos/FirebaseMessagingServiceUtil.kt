@@ -35,7 +35,10 @@ import com.example.duos.ui.main.chat.ChatMessageView
 import com.example.duos.utils.getCurrentChatRoomIdx
 import com.example.duos.utils.getUserIdx
 import okhttp3.internal.format
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
@@ -123,7 +126,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
 
                     val parsedSentAtStringArray = sentAtString.split(".")
                     var parsedSentAtString = parsedSentAtStringArray[0]
-                    val sentDateTime = LocalDateTime.parse(parsedSentAtString)
+                    val sentEpochMilli = LocalDateTime.parse(parsedSentAtString).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
                     val chatIdx = messageData.get("dataIdx").toString()
                     var parsedChatMessageIdx = chatIdx.split("@")
@@ -140,12 +143,11 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
                     Log.d("날짜변경선 무조건 추가 - 시간포매팅 3", parsedLocalDateTime.toString())
 
                     val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-                    val dateItem = ChatMessageItem("date", date, "date", sentDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
+                    val dateItem = ChatMessageItem("date", date, "date", sentEpochMilli, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
                     chatDB.chatMessageItemDao().insert(dateItem)
 
-
                      //여기서 받은 메세지를 룸디비에 저장
-                    val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
+                    val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentEpochMilli, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
                     chatDB.chatMessageItemDao().insert(chatMessageItem)
                     setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
                 }
@@ -258,11 +260,13 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
                 Log.d("for문","으아")
                 val messageItem = convertMessageListDataToChatMessageItem(syncChatMessageData.messageList[i])
                 val sentAt = messageItem.sentAt
+                val sentAtLocalDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(messageItem.sentAt), ZoneId.systemDefault())
                 val chatRoomIdx = messageItem.chatRoomIdx
                 val lastSentAt = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).sentAt
+                val lastSentAtLocalDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).sentAt), ZoneId.systemDefault())
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if(!sentAt.toLocalDate().isEqual(lastSentAt.toLocalDate())){    // 같은 날짜가 아닐 때 (날짜 변경선 roomDB에 insert)
+                    if(!sentAtLocalDate.toLocalDate().isEqual(lastSentAtLocalDate.toLocalDate())){    // 같은 날짜가 아닐 때 (날짜 변경선 roomDB에 insert)
                         //val dateString = sentAt.dayOfYear.toString() + "년 " + (sentAt.dayOfMonth+1).toString()
                         val dateString = sentAt.toString()
                         Log.d("날짜 변경선 포매팅 1",dateString)
@@ -360,7 +364,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
 
         val senderId = getSenderId(chatRoomIdx, senderIdx)
         val body = messageListData.message
-        val sentAt = messageListData.sentAt
+        val sentAt = messageListData.sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         val formattedSentAt = getFormattedDateTime(sentAt.toString())
         val viewType = getViewType(senderIdx)
         val chatMessageIdx = messageListData.uuid
