@@ -268,7 +268,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if(!sentAtLocalDate.toLocalDate().isEqual(lastSentAtLocalDate.toLocalDate())){    // 같은 날짜가 아닐 때 (날짜 변경선 roomDB에 insert)
                         //val dateString = sentAt.dayOfYear.toString() + "년 " + (sentAt.dayOfMonth+1).toString()
-                        val dateString = sentAt.toString()
+                        val dateString = sentAtLocalDate.toString()
                         Log.d("날짜 변경선 포매팅 1",dateString)
                         var parsedDateTimeArray = dateString.split(".")
                         var parsedDateTime = parsedDateTimeArray[0]
@@ -365,7 +365,8 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
         val senderId = getSenderId(chatRoomIdx, senderIdx)
         val body = messageListData.message
         val sentAt = messageListData.sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        val formattedSentAt = getFormattedDateTime(sentAt.toString())
+        val sentAtLocalDateTime  = messageListData.sentAt
+        val formattedSentAt = getFormattedDateTime(sentAtLocalDateTime.toString())
         val viewType = getViewType(senderIdx)
         val chatMessageIdx = messageListData.uuid
         return ChatMessageItem(senderId, body, formattedSentAt, sentAt, viewType, chatRoomIdx, chatMessageIdx)

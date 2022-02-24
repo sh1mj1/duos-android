@@ -562,7 +562,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             messageItems.add(convertMessageListDataToChatMessageItem(messageList[i]))
             if(isDateChanged(messageList[i].sentAt, messageList[i+1].sentAt)){
                 val sentAt = messageList[i].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                val dateItem = ChatMessageItem("date", getFormattedDate(sentAt.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
+                val sentAtLocalDateTime = messageList[i].sentAt
+                val dateItem = ChatMessageItem("date", getFormattedDate(sentAtLocalDateTime.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
                 messageItems.add(dateItem)
             }
             Log.d("for문 "+i, messageItems.toString())
@@ -583,9 +584,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             Log.d("날짜변경선 추가 전", messageItems.toString())
             if (isDateChanged(messageList[0].sentAt, dateTimeOfFirstMessageOfLastPage)){
                 val sentAt = messageList[0].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val sentAtLocalDateTime = messageList[0].sentAt
                 val dateItem = ChatMessageItem(
                     "date",
-                    getFormattedDate(sentAt.toString()),
+                    getFormattedDate(sentAtLocalDateTime.toString()),
                     "date",
                     sentAt,
                     ChatType.CENTER_MESSAGE,
@@ -656,8 +658,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val senderId = getSenderId(chatRoomIdx, senderIdx)
         val body = messageListData.message
         val sentAt = messageListData.sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val sentAtLocalDateTime = messageListData.sentAt
         //val sentAt = messageListData.sentAt
-        val formattedSentAt = getFormattedDateTime(sentAt.toString())
+        val formattedSentAt = getFormattedDateTime(sentAtLocalDateTime.toString())
         val viewType = getViewType(senderIdx)
         val chatMessageIdx = messageListData.uuid
         return ChatMessageItem(senderId, body, formattedSentAt, sentAt, viewType, chatRoomIdx, chatMessageIdx)
