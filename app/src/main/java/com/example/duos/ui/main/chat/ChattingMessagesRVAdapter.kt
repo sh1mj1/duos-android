@@ -76,7 +76,7 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
     override fun getItemCount(): Int = chatMessageItem.size
 
     fun addItem(item: ChatMessageItem) {
-        chatMessageItem.add(item)
+        chatMessageItem.add(0, item)
         notifyDataSetChanged()
     }
 
@@ -90,20 +90,20 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
     }
 
     fun addPagingMessages(pagingMessages: List<ChatMessageItem>){   // 페이징
-        this.chatMessageItem.addAll(0, pagingMessages)
+        this.chatMessageItem.addAll(pagingMessages)
         notifyDataSetChanged()
     }
 
     fun setLoadingView(b: Boolean){
         if(b){
             Handler(Looper.getMainLooper()).post{
-                this.chatMessageItem.add(0, null)
-                notifyItemInserted(0)
+                this.chatMessageItem.add(null)
+                notifyItemInserted(chatMessageItem.size - 1)
             }
         } else {
-            if(this.chatMessageItem[0] == null){
-                this.chatMessageItem.removeAt(0)
-                notifyItemRemoved(0)
+            if(this.chatMessageItem[chatMessageItem.size - 1] == null){
+                this.chatMessageItem.removeAt(chatMessageItem.size - 1)
+                notifyItemRemoved(chatMessageItem.size - 1)
             }
         }
     }

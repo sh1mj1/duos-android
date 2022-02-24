@@ -116,7 +116,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
-        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
+        (layoutManager as LinearLayoutManager).reverseLayout = true
+        (layoutManager as LinearLayoutManager).stackFromEnd = true
         chattingRV.setLayoutManager(layoutManager)
         chattingRV.setItemAnimator(DefaultItemAnimator())
         chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
@@ -275,7 +276,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
-        chattingRV.scrollToPosition(chattingMessagesRVAdapter.itemCount - 1)
+        chattingRV.scrollToPosition(0)
         chattingEt.setText("")
         chatDB.chatMessageItemDao().insert(chatMessageItem)
         lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
@@ -558,24 +559,16 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onPagingChatMessageSuccess(pagingChatMessageResult: PagingChatMessageResult) {
-        layoutManager = chattingRV.layoutManager
-        val _lastVisiblePosition = (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-
         val listSize = pagingChatMessageResult.currentItemCnt
         isNextPageAvailable = pagingChatMessageResult.isNextPageAvailable
         //var messageList : ArrayList<MessageListData> = ArrayList<MessageListData>()
-        var messageList = pagingChatMessageResult.messageList.asReversed()
+        var messageList = pagingChatMessageResult.messageList
         var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
-
-        if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
-            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[0].sentAt.toString()), "date", messageList[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
-            messageItems.add(0, firstDateItem)
-        }
 
         for(i: Int in 0..listSize - 2){
             messageItems.add(convertMessageListDataToChatMessageItem(messageList[i]))
             if(isDateChanged(messageList[i].sentAt, messageList[i+1].sentAt)){
-                val sentAt = messageList[i+1].sentAt
+                val sentAt = messageList[i].sentAt
                 val dateItem = ChatMessageItem("date", getFormattedDate(sentAt.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
                 messageItems.add(dateItem)
             }
@@ -584,14 +577,19 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
 
-        if(pageNum == 0){   // 제일 최근페이지일 때 페이지의 첫번째 메세지의 dateTime 저장함. 제일 최근페이지이므로 마지막에 날짜변경선 추가되는지 확인 불필요
-            dateTimeOfFirstMessageOfLastPage = messageList[0].sentAt
-            chattingMessagesRVAdapter.setPagingMessages(messageItems)
+        if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
+            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[messageList.size - 1].sentAt.toString()), "date", messageList[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
+            messageItems.add(firstDateItem)
+        }
 
+        if(pageNum == 0){   // 제일 최근페이지일 때 페이지의 첫번째 메세지(오래된 메세지)의 dateTime 저장함. 제일 최근페이지이므로 마지막에 날짜변경선 추가되는지 확인 불필요
+            dateTimeOfFirstMessageOfLastPage = messageList[messageList.size - 1].sentAt
+            chattingMessagesRVAdapter.setPagingMessages(messageItems)
+            chattingRV.smoothScrollToPosition(0)
         } else {     // 불러온 페이지의 마지막 메세지의 날짜와 그 아래 이미 로드된 페이지의 첫 메세지의 날짜가 다르면 날짜변경선을 두 페이지 사이에 추가
             Log.d("날짜변경선 추가 전", messageItems.toString())
-            if (isDateChanged(messageList[listSize - 1].sentAt, dateTimeOfFirstMessageOfLastPage)){
-                val sentAt = messageList[listSize - 1].sentAt
+            if (isDateChanged(messageList[0].sentAt, dateTimeOfFirstMessageOfLastPage)){
+                val sentAt = messageList[0].sentAt
                 val dateItem = ChatMessageItem(
                     "date",
                     getFormattedDate(sentAt.toString()),
@@ -601,10 +599,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     chatRoomIdx,
                     "date" + sentAt
                 )
-                messageItems.add(dateItem)
+                messageItems.add(0, dateItem)
                 Log.d("날짜변경선 추가 후", messageItems.toString())
             }
-            dateTimeOfFirstMessageOfLastPage = pagingChatMessageResult.messageList[0].sentAt
+            dateTimeOfFirstMessageOfLastPage = pagingChatMessageResult.messageList[messageList.size - 1].sentAt
             // 위의 조건문에서 기존 dateTimeOfFirstMessageOfLastPage가 필요하므로 pageNum == 0일때랑은 다르게 분기처리해줌. 조건문 끝나고 첫메세지의 dateTime 저장
             chattingMessagesRVAdapter.run {
                 setLoadingView(false)
@@ -621,6 +619,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         Log.d("smmothScrollToPosition - pageNum", pageNum.toString())
         Log.d("smmothScrollToPosition - listNum", listNum.toString())
         Log.d("smmothScrollToPosition - scroll position", (chattingMessagesRVAdapter.itemCount - pageNum*listNum - 1).toString())
+
 
         pageNum++
     }
@@ -694,8 +693,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                         // 마지막으로 보여진 item position이 전체 아이템 개수보다 n개 모자란 경우, 데이터를 loadMore 한다
                         val n = 5
                         //Log.d("initScrollListener - itemCount", (layoutManager as LinearLayoutManager).itemCount.toString())
-                        //Log.d("initScrollListener - lastVisibleItem + 5", (lastVisibleItem + n).toString())
-                        if (dy < 0 && firstVisibleItem == 0 && isNextPageAvailable) {
+                        Log.d("initScrollListener - lastVisibleItem", (lastVisibleItem).toString())
+                        if (dy < 0 && lastVisibleItem == chattingMessagesRVAdapter.itemCount - 1 && isNextPageAvailable) {
                             loadMoreMessages()
                             setHasNextPage(false)
                         }
