@@ -29,6 +29,8 @@ import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.chat.chat.MessageListData
 import com.example.duos.data.remote.chat.chat.SyncChatMessageData
+import com.example.duos.data.remote.chat.chatList.ChatListService
+import com.example.duos.ui.main.chat.ChatListView
 import com.example.duos.ui.main.chat.ChatMessageView
 import com.example.duos.utils.getCurrentChatRoomIdx
 import com.example.duos.utils.getUserIdx
@@ -38,9 +40,9 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView{
+class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, ChatMessageView{
     val mContext : Context = this
-    var chatDB = ChatDatabase.getInstance(mContext, ChatDatabase.provideGson())!!
+    lateinit var chatDB: ChatDatabase
     lateinit var chatRoomIdx:String
     lateinit var partnerIdx:String
     lateinit var type:String
@@ -51,6 +53,8 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
     // 메시지를 수신하는 메서드
     // [START receive_message]
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
+        chatDB = ChatDatabase.getInstance(applicationContext, ChatDatabase.provideGson())!!
         // [START_EXCLUDE]
 
         // onMessageReceived는 백그라운드 상태일 때 데이터 페이로드가 포함되어있지 않고 알림 페이로드만 포함하고 있다면(알림 메세지라면) 호출되지 않음.
@@ -64,38 +68,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
          알림 및 데이터 페이로드가 모두 포함된 메시지는 알림 메시지로 간주됩니다. Firebase 콘솔은 항상 알림 메시지를 보냅니다.
          */
         // [END_EXCLUDE]
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-
-        Log.d(TAG, "메세지수신 From: ${remoteMessage.from}")
-
-        // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
-            if (/* 장기 실행 작업으로 데이터를 처리해야 하는지 확인 */ true) {
-                // 장기 실행 태스크(10초 이상)의 경우 WorkManager를 사용함.
-                scheduleJob()
-            } else {
-                // 10초 이내에 메시지 처리
-                handleNow()
-            }
-        }
-
-        // 메시지에 notification payload가 포함되어있는지 확인
-//        remoteMessage.notification?.let {
-//            Log.d(TAG, "Message Notification Body: ${it.body}")
-//            val title = it.title
-//            val messageBody = it.body
-//            val time = it.eventTime //null값을 받아옴..
-//
-//            Log.d("알림 확인", "1")
-//            if (title != null && messageBody != null) {
-//                Log.d("알림 확인", "2")
-//                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
-//            }
-//        }
 
         if (remoteMessage.notification != null) {
 //            ChatListService.chatList(this, 0) // get 가능 확인함
@@ -115,15 +87,13 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
             notificationManagerCompat.notify(0x1001, notificationBuilder.build())
         }
 
-        val body = remoteMessage.data.get("message")
-
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
             messageData = remoteMessage.data
 
-//            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
-//                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
-//                messageData.get("sentAt").toString(), messageData.get("title").toString())
+            if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+                ChatListService.chatList(this, getUserIdx()!!)
+            }
 
             val chatRoom : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
             Log.d("채팅방리스트", chatRoom.toString())
@@ -633,6 +603,38 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
+        var chatListGotten = chatList   // 서버에서 불러온 채팅방 목록
+
+        Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
+
+        // 룸디비에 변경된/추가된 채팅방 저장
+        var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
+        var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+
+        if(!chatListUpdated.isEmpty()){
+            Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
+            for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
+                if(chatDB.chatRoomDao().getChatRoomIdx(chatListUpdated[i].chatRoomIdx).isNullOrEmpty()){    // 새로 생성된 채팅방일 때 ---- 이 부분은 채팅방 생성 fcm 구현 후 수정 필요할 듯
+                    chatDB.chatRoomDao().insert(chatListUpdated[i]) // 새로 생성된 채팅방 룸DB에 추가
+//                    if(chatListUpdated[i].lastAddedChatMessageId <= 0){
+//                        chatDB.chatRoomDao().updateLastAddedChatMessageId(chatListUpdated[i].chatRoomIdx, -1)
+//                    }
+                }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
+                    chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
+                }
+            }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("업데이트된 채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }
+    }
+
+    override fun onGetChatListFailure(code: Int, message: String) {
+        Log.d("FirebaseMessagingServiceUtil", "onGetChatListFailure")
     }
 }
 

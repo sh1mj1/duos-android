@@ -79,16 +79,6 @@
             app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
             app:layout_constraintStart_toStartOf="@id/my_profile_home_nickname_tv" />
 
-        <TextView
-            android:id="@+id/my_profile_home_phone_number_middle_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white_smoke_F"
-            android:textSize="13sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/my_profile_home_phone_number_first_tv"
-            app:layout_constraintBottom_toBottomOf="@id/my_profile_card_view_cv"
-            app:layout_constraintStart_toEndOf="@id/my_profile_home_phone_number_first_tv" />
-
         <ImageView
             android:id="@+id/my_page_home_profile_arrow_01_iv"
             android:layout_width="24dp"

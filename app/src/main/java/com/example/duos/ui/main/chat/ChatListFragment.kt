@@ -171,7 +171,8 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {

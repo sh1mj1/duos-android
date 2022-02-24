@@ -40,7 +40,7 @@ object AppointmentService {
         })
     }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
     fun isAppointmentExist(appointmentExistView : AppointmentExistView, userIdx : Int, partnerIdx : Int){
         val isAppointmentExistService = retrofit.create(AppointmentRetrofitInterface::class.java)
 
@@ -55,7 +55,7 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1000 -> appointmentExistView.onAppointmentExistSuccess(resp.result.appointmentIdx)
+                    1000 -> appointmentExistView.onAppointmentExistSuccess(resp.result.isExisted, resp.result.appointmentIdx)
                     else -> appointmentExistView.onAppointmentExistFailure(resp.code, resp.message)
                 }
             }
@@ -82,9 +82,9 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1122 -> {
+                    1000 -> {
                         Log.d("약속잡기 api","성공")
-                        makeAppointmentView.onMakeAppointmentSuccess()
+                        makeAppointmentView.onMakeAppointmentSuccess(resp.result)
                     }
                     else -> makeAppointmentView.onMakeAppointmentFailure(resp.code, resp.message)
                 }

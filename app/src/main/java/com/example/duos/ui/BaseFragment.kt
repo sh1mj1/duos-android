@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 ) : Fragment() {
     private var _binding: VB? = null
     protected val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +87,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     fun toMyPagePhoneNumber(phoneNumber: String): String {
-        return phoneNumber.substring(0, 3) + " " + phoneNumber.substring(3, 7) + " "
+        return phoneNumber.substring(0, 3) + " " + phoneNumber.substring(3, 7) + "  ****"
     }
 
     fun toLocationStr(locationIdx: Int): String? {
@@ -122,9 +124,20 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     fun toRatingStr(ratingFloat : Float): String{
-        val ratingStr = round(ratingFloat * 10) /10
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
         return ratingStr.toString()
     }
+
+    /*
+    	println(round(dNum))	// 454.0
+
+	println(String.format("%.0f", dNum/100).toDouble() * 100)	// 500.0
+
+
+    	val dNum:Double = 454.14600
+
+	println(String.format("%.0f", dNum/100).toDouble() * 100)	// 500.0
+     */
 
     fun strToInt(str: String):Int{
         val resultInt : Int = str.replace("[^0-9]".toRegex(), "").toInt()

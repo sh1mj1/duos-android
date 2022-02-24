@@ -142,7 +142,8 @@ class RecommendFriendListFragment() :
     }
 
     override fun onGetRecommendedFriendListFailure(code: Int, message: String) {
-        showToast("code : $code, message : $message")
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //showToast("code : $code, message : $message")
     }
 
     override fun onAddStarredFriendSuccess() {
@@ -150,7 +151,8 @@ class RecommendFriendListFragment() :
     }
 
     override fun onAddStarredFriendFailure(code: Int, message: String) {
-        showToast("code : $code, message : $message")
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //showToast("code : $code, message : $message")
     }
 
     override fun onDeleteStarredFriendSuccess() {
@@ -158,6 +160,7 @@ class RecommendFriendListFragment() :
     }
 
     override fun onDeleteStarredFriendFailure(code: Int, message: String) {
-        showToast("code : $code, message : $message")
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //showToast("code : $code, message : $message")
     }
 }

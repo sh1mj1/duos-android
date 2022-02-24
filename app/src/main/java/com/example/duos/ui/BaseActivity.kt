@@ -125,11 +125,10 @@ abstract class BaseActivity<T : ViewBinding>(private val inflate: (LayoutInflate
         return myPageCareerStr
     }
 
-    fun toRatingStr(ratingFloat: Float): String {
-        val ratingStr = Math.round(ratingFloat * 10) / 10
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
         return ratingStr.toString()
     }
-
     fun strToInt(str: String):Int{
         val resultInt : Int = str.replace("[^0-9]".toRegex(), "").toInt()
         return resultInt

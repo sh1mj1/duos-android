@@ -102,8 +102,9 @@
                     android:inputType="textNoSuggestions"
                     android:maxLength="13"
                     android:singleLine="true"
-                    android:textColor="@color/nero"
+                    android:textColor="@color/grey"
                     android:textColorHint="@color/dim_gray"
+                    android:text="@={viewmodel.editProfileNickname}"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -249,13 +250,13 @@
                 android:gravity="top"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textNoSuggestions"
+                android:text="@={viewmodel.editProfileIntroduce}"
                 android:letterSpacing="0.05"
                 android:textColor="@color/dark_gray_B4"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
                 app:layout_constraintStart_toStartOf="@+id/dimension_introduction_iv"
                 app:layout_constraintTop_toTopOf="@+id/dimension_introduction_iv" />
-<!--                android:text="@={viewmodel.editProfileIntroduce}"-->
 
 
             <TextView

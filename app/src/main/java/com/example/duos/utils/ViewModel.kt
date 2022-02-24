@@ -51,7 +51,7 @@ class ViewModel : ViewModel() {
 
     // editProfile
 
-    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+//    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
 
     var editProfileNickname = MutableLiveData<String?>()
 
@@ -63,9 +63,21 @@ class ViewModel : ViewModel() {
 
     var editProfileIntroduce = MutableLiveData<String>()
     var editProfileExperience = MutableLiveData<Int?>()
-
+    var editProfileImg = MutableLiveData<String?>()
     var appointmentReviewContent = MutableLiveData<String>()
 
+    var setEditProfileNickName : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileImgUrl : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileLocation : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileIntroduction : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileExperience : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileIsDuplicated : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isChangedNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+
+    // 수정 조건 1
+    var isValidNicknameEditCondition : MutableLiveData<Boolean> = MutableLiveData(false)
+    // 수정 조건 2
+    var isValidNonNicknameEditCondition : MutableLiveData<Boolean> = MutableLiveData(false)
 
 
     // Appointment

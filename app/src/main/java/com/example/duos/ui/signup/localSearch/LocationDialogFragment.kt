@@ -87,6 +87,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
                 viewModel.editProfileLocationName.value = myLocation.locationName
                 viewModel.editProfileLocationDialogShowing.value = true
 
+
             }
         }
     }

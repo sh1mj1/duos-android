@@ -8,6 +8,7 @@ import com.example.duos.data.entities.MakeAppointment
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.appointment.AppointmentService
+import com.example.duos.data.remote.appointment.MakeAppointmentResult
 import com.example.duos.databinding.ActivityAppointmentBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.ChattingActivity
@@ -139,14 +140,20 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
 
     }
 
-    override fun onMakeAppointmentSuccess() {
+    override fun onMakeAppointmentSuccess(makeAppointmentResult: MakeAppointmentResult) {
         Log.d("약속잡기","성공")
         chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, true)
+        Log.d("약속잡기 - appointmentIdx", makeAppointmentResult.appointmentIdx.toString())
+        chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx,  makeAppointmentResult.appointmentIdx)
         // response result로 오는 것이 없어, updateAppointmentIdx는 약속 현황에서 update함
         finish()
     }
 
     override fun onMakeAppointmentFailure(code: Int, message: String) {
-        showToast(message)
+        if(code == 2118){
+            showToast("당일 약속의 경우, 약속 시간은 현재 시각으로부터 한시간 이후로 설정할 수 있습니다.")
+        }else{
+            showToast(message)
+        }
     }
 }

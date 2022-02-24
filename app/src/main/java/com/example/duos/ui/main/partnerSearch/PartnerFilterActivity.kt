@@ -253,7 +253,8 @@ class PartnerFilterActivity :
                 }
 
                 override fun onGetPartnerFilterFailure(code: Int, message: String) {
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                    showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+                    //Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
                 }
             })
             .setLeftButton(object : PartnerFilterDialog.PartnerFilterDialogCallbackLeft {
@@ -288,7 +289,7 @@ class PartnerFilterActivity :
     }
 
     override fun onPartnerSearchFilterCountFailure(code: Int, message: String) {
-        showToast(code.toString() + " : " + message)
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
 //    override fun onGetPartnerFilterSuccess(recommendedPartner: List<RecommendedPartner>) {

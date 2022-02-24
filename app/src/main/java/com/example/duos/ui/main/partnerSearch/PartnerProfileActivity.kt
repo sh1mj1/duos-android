@@ -61,7 +61,8 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
 //    }
 
     override fun onCreateChatRoomFailure(code: Int, message: String) {
-        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG).show()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
 
