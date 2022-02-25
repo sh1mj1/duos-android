@@ -70,6 +70,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
             param.marginEnd = 20.toDp(requireContext())
             binding.signup01ConstraintLayout01Cl.layoutParams = param
         } else{
+            Log.d("SignUp", "else")
             viewModel.phoneNumber.value = ""
             signupNextBtnListener.onNextBtnUnable()
         }

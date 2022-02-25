@@ -1,14 +1,16 @@
 package com.example.duos.data.entities.editProfile
 
+import com.google.gson.annotations.SerializedName
+
 data class EditProfilePutReqDto(
 
-    val phoneNumber: String,
-    val nickname: String,
-    val birth: String,
-    val gender: Int,
-    val locationIdx: Int,
-    val experienceIdx: Int ,
-    val introbduction: String
+    @SerializedName("phoneNumber")val phoneNumber: String,
+    @SerializedName("nickname")val nickname: String,
+    @SerializedName("birth")val birth: String,
+    @SerializedName("gender")val gender: Int,
+    @SerializedName("locationIdx")val locationIdx: Int,
+    @SerializedName("experienceIdx")val experienceIdx: Int,
+    @SerializedName("introduction")val introduction: String
 
 )
 //        phoneNumber: String,
