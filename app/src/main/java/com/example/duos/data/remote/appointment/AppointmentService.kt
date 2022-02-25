@@ -82,9 +82,9 @@ object AppointmentService {
                 Log.d("resp", resp.toString())
 
                 when(resp.code){
-                    1122 -> {
+                    1000 -> {
                         Log.d("약속잡기 api","성공")
-                        makeAppointmentView.onMakeAppointmentSuccess()
+                        makeAppointmentView.onMakeAppointmentSuccess(resp.result)
                     }
                     else -> makeAppointmentView.onMakeAppointmentFailure(resp.code, resp.message)
                 }

@@ -92,7 +92,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     ): View? {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
-        onApplyDisable()
+        onApplyDisable()    // 적용하기 비활
 
 
         return binding.root
@@ -103,7 +103,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        EditProfileGetService.getEditProfile(this, myUserIdx)
+        EditProfileGetService.getEditProfile(this, myUserIdx)   // API 로 내 데이터 불러오기
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
         originExperience = myProfileDB.experience
@@ -660,6 +660,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         binding.editProfileTableLayoutTl.checkedRadioButtonId = myProfileDB.experience!!
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태를 확인하세요", Toast.LENGTH_LONG).show()
 
     }
 

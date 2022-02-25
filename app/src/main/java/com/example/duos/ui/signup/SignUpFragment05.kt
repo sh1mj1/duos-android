@@ -413,9 +413,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
             multiplePermissionsCode2 -> {
                 if (resultCode == RESULT_OK) {
                     // 선택한 이미지의 경로 데이터를 관리하는 Uri 객체를 추출
-
                     val uri = data?.data
-
                     if (uri != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             // 안드로이드 10버전 이상

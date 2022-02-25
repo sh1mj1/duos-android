@@ -123,6 +123,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
         val userDB = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
         Log.d(TAG, userDB!!.userDao().getUser(myUserIdx).toString())
         userDB.userDao().clearAll()
+        Log.d(TAG, "userTable 삭제됨 ${userDB.userDao()}")
 
         val chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!   //ChatDB
         chatDB.chatRoomDao().clearAll()
@@ -146,6 +147,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     }
 
     override fun onWithdrawalFailure(code: Int, message: String) {
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         Log.d(TAG, "code: $code , message : $message ")
     }
 
@@ -172,7 +174,9 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     }
 
     override fun onLogOutFailure(code: Int, message: String) {
-        showToast("code : $code, message : $message")
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        Log.d(TAG, "${code}  ${message}")
+        //showToast("code : $code, message : $message")
     }
 
 }

@@ -65,38 +65,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
          */
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-
-        Log.d(TAG, "메세지수신 From: ${remoteMessage.from}")
-
-        // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
-            if (/* 장기 실행 작업으로 데이터를 처리해야 하는지 확인 */ true) {
-                // 장기 실행 태스크(10초 이상)의 경우 WorkManager를 사용함.
-                scheduleJob()
-            } else {
-                // 10초 이내에 메시지 처리
-                handleNow()
-            }
-        }
-
-        // 메시지에 notification payload가 포함되어있는지 확인
-//        remoteMessage.notification?.let {
-//            Log.d(TAG, "Message Notification Body: ${it.body}")
-//            val title = it.title
-//            val messageBody = it.body
-//            val time = it.eventTime //null값을 받아옴..
-//
-//            Log.d("알림 확인", "1")
-//            if (title != null && messageBody != null) {
-//                Log.d("알림 확인", "2")
-//                sendNotification("957cfc80-481c-4ae4-88a0-25a9599dd511", "MESSAGE", title, "tennis11", messageBody, System.currentTimeMillis())
-//            }
-//        }
-
         if (remoteMessage.notification != null) {
 //            ChatListService.chatList(this, 0) // get 가능 확인함
 
@@ -115,15 +83,9 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatMessageView
             notificationManagerCompat.notify(0x1001, notificationBuilder.build())
         }
 
-        val body = remoteMessage.data.get("message")
-
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
             messageData = remoteMessage.data
-
-//            sendMessageData(messageData.get("chatRoomIdx").toString(), messageData.get("type").toString(),
-//                messageData.get("body").toString(), messageData.get("senderIdx").toString(),
-//                messageData.get("sentAt").toString(), messageData.get("title").toString())
 
             val chatRoom : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
             Log.d("채팅방리스트", chatRoom.toString())

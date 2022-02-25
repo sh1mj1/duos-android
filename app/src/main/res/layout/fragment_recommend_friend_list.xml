@@ -208,6 +208,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
