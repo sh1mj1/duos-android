@@ -259,14 +259,14 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         if(chattingMessagesRVAdapter.itemCount == 0){  //지금 보내는 메세지가 채팅방의 처음 메세지일 때
             val parsedLocalDateTime = LocalDateTime.now()
             val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-            val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime.toEpochSecond(ZoneOffset.UTC), ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
+            val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
             chattingMessagesRVAdapter.addItem(dateItem)
             chatDB.chatMessageItemDao().insert(dateItem)
             lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId
             Log.d("채팅보내기 - 날짜변경선 추가 후 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         }
 
-        val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
+        val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
         chattingMessagesRVAdapter.addItem(chatMessageItem)
         chattingRV.scrollToPosition(0)
         chattingEt.setText("")
@@ -334,6 +334,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                         chatRoomIdx = chatRoomIdxOfReceivcedMessage
                         chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
                         pageNum = 0
+
                     }
                 }
 
@@ -562,9 +563,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         for(i: Int in 0..listSize - 2){
             messageItems.add(convertMessageListDataToChatMessageItem(messageList[i]))
             if(isDateChanged(messageList[i].sentAt, messageList[i+1].sentAt)){
-                val sentAt = messageList[i].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
                 val sentAtLocalDateTime = messageList[i].sentAt
-                val dateItem = ChatMessageItem("date", getFormattedDate(sentAtLocalDateTime.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
+                val dateItem = ChatMessageItem("date", getFormattedDate(sentAtLocalDateTime.toString()), "date", sentAtLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date" + sentAtLocalDateTime)
                 messageItems.add(dateItem)
             }
             Log.d("for문 "+i, messageItems.toString())
@@ -573,7 +573,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
 
         if(!isNextPageAvailable){   // 제일 오래된 페이지(마지막 페이지)라면 맨 첫 메세지 위에 날짜변경선 추가
-            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[messageList.size - 1].sentAt.toString()), "date", messageList[0].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
+            val firstDateItem = ChatMessageItem("date", getFormattedDate(messageList[messageList.size - 1].sentAt.toString()), "date", messageList[0].sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+messageList[0].sentAt)
             messageItems.add(firstDateItem)
         }
 
@@ -584,7 +584,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         } else {     // 불러온 페이지의 마지막 메세지의 날짜와 그 아래 이미 로드된 페이지의 첫 메세지의 날짜가 다르면 날짜변경선을 두 페이지 사이에 추가
             Log.d("날짜변경선 추가 전", messageItems.toString())
             if (isDateChanged(messageList[0].sentAt, dateTimeOfFirstMessageOfLastPage)){
-                val sentAt = messageList[0].sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val sentAt = messageList[0].sentAt
                 val sentAtLocalDateTime = messageList[0].sentAt
                 val dateItem = ChatMessageItem(
                     "date",
@@ -658,7 +658,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         val senderId = getSenderId(chatRoomIdx, senderIdx)
         val body = messageListData.message
-        val sentAt = messageListData.sentAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val sentAt = messageListData.sentAt
         val sentAtLocalDateTime = messageListData.sentAt
         //val sentAt = messageListData.sentAt
         val formattedSentAt = getFormattedDateTime(sentAtLocalDateTime.toString())
