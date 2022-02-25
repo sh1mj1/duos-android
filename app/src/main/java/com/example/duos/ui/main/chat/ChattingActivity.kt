@@ -32,6 +32,7 @@ import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.data.remote.chat.chat.*
+import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
@@ -50,7 +51,7 @@ import kotlin.collections.ArrayList
 //import java.util.*
 
 
-class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView, PagingChatMessageView {
+class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView, PagingChatMessageView, ChatListView {
     //lateinit var binding: ActivityChattingBinding
     private var chatRoomListDatas = ArrayList<ChatRoom>()
     var roomIdx: Int = 0
@@ -68,7 +69,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var chatDB: ChatDatabase
     //lateinit var chatRoom : ChatRoom
     //lateinit var viewModel: ViewModel
-    var lastAddedChatMessageId: Int = -1 // 마지막으로 화면에 업데이트된 채팅메세지 번호 기록
+    //var lastAddedChatMessageId: Int = -1 // 마지막으로 화면에 업데이트된 채팅메세지 번호 기록
     //var dateTimeOfFirstMessageOfLastPage: LocalDateTime = LocalDateTime.of(1998, 10, 10, 10, 10)
     lateinit var dateTimeOfFirstMessageOfLastPage: LocalDateTime
     private var isNextPageAvailable = false // 다음 페이지 유무
@@ -117,12 +118,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
-        loadMessages()
-        initScrollListener()
-
-        // 약속 여부 받아오기
+        // 약속 여부 받아오기 & 메세지 페이징 or 룸디비에서 load
         if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
             AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
+            loadMessages()
             Log.d("인터넷 연결 확인", "CONNECTED")
         }else{
             Log.d("인터넷 연결 확인", "DISCONNECTED")
@@ -131,7 +130,16 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             }else{
                 setAppointmentBtnNotExist()
             }
+
+            val storedMessages = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+            if(storedMessages != null){
+                chattingMessagesRVAdapter.addPagingMessages(storedMessages)
+            } else{
+                Log.d("ChattingActivity - onStart","채팅방 생성 이후 아무 메세지도 주고받지 않음")
+            }
         }
+
+        initScrollListener()
 
         binding.chattingMakePlanBtn.setOnClickListener ({
 
@@ -185,7 +193,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            partnerIdx = intent.getIntExtra("partnerIdx", 0)
 //        }
 
-
         // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
         chattingEt.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -225,7 +232,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             } else {    // 받은 메세지일때
                 chattingMessagesRVAdapter.addItem(chatMessageItemData)  // 리사이클러뷰에 띄움
                 chattingRV.scrollToPosition(0)
-                lastAddedChatMessageId = chatMessageItemData.chatMessageId    // 마지막으로 화면에 띄운 채팅메세지 번호 기록
+                //lastAddedChatMessageId = chatMessageItemData.chatMessageId    // 마지막으로 화면에 띄운 채팅메세지 번호 기록
                 // FirebaseMessagingServiceUtil에서 지난메세지 불러오는 API 호출 성공하면 룸DB에 저장되므로 여기서 저장 안해도 됨!
             }
         }
@@ -254,7 +261,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         var parsedChatMessageIdx = chatMessageIdx.split("@")
         var uuid = parsedChatMessageIdx[1]
 
-        Log.d("ChattingActvity - sendMessage 날짜변경선 추가 전 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
+        //Log.d("ChattingActvity - sendMessage 날짜변경선 추가 전 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         // 첫 메세지일때 날짜변경선 추가 ... 채팅방 자체의 첫 메세지 일 떄 말고, 자정 지나고 첫 메세지일때도 추가되도록 수정 필요
         if(chattingMessagesRVAdapter.itemCount == 0){  //지금 보내는 메세지가 채팅방의 처음 메세지일 때
             val parsedLocalDateTime = LocalDateTime.now()
@@ -262,8 +269,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
             chattingMessagesRVAdapter.addItem(dateItem)
             chatDB.chatMessageItemDao().insert(dateItem)
-            lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId
-            Log.d("채팅보내기 - 날짜변경선 추가 후 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
+//            lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId
+//            Log.d("채팅보내기 - 날짜변경선 추가 후 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
         }
 
         val chatMessageItem = ChatMessageItem(userId, chattingEt.text.toString(), toDate(sendTime), LocalDateTime.now(), ChatType.RIGHT_MESSAGE, chatRoomIdx, uuid)
@@ -271,9 +278,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.scrollToPosition(0)
         chattingEt.setText("")
         chatDB.chatMessageItemDao().insert(chatMessageItem)
-        lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
-        Log.d("채팅보내기 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
-
+//        lastAddedChatMessageId = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).chatMessageId    // 마지막으로 화면에 띄운 채팅메세지번호 기록
+//        Log.d("채팅보내기 - lastAddedChatMessageId", lastAddedChatMessageId.toString())
     }
 
     override fun onSendMessageLoading() {
@@ -334,24 +340,74 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                         chatRoomIdx = chatRoomIdxOfReceivcedMessage
                         chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
                         pageNum = 0
-
+                        loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
                     }
                 }
 
                 if(type.equals("MESSAGE")){
-                    //addChatItem(senderId, body, sendTime, LocalDateTime.now(), "MESSAGE")
-                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
-                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
-                    Log.d("updatedChatMessageList", updatedChatMessageList.toString())
-                    val updatedChatMessageListSize = updatedChatMessageList.size
-                    if(updatedChatMessageListSize != 0){
-                        for(i: Int in 0..updatedChatMessageListSize-1){
-                            addChatItem(updatedChatMessageList[i])
-                            Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
+                    //var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
+//                        val sentAtString = bundle.getString("sentAt").toString()
+//                    val formattedSentAt = getFormattedDateTime(sentAtString)
+//
+//                    val parsedSentAtStringArray = sentAtString.split(".")
+//                    var parsedSentAtString = parsedSentAtStringArray[0]
+//                    val sentDateTime = LocalDateTime.parse(parsedSentAtString)
+
+
+                    // intent로 messageItem 객체 받아서 messageItems에 add하기
+                    val chatMessageItem = bundle.getParcelable<ChatMessageItem>("messageItem")!!
+
+
+                    val sentDateTime = chatMessageItem.sentAt
+
+                    // 날짜가 바뀌었다면 날짜변경선 추가
+                    if(chattingMessagesRVAdapter.itemCount != 0){
+                        val lastDateTime = chattingMessagesRVAdapter.getItem(0)?.sentAt!!
+                        if (isDateChanged(sentDateTime, lastDateTime)){
+                            val dateItem = ChatMessageItem(
+                                "date",
+                                getFormattedDate(sentDateTime.toString()),
+                                "date",
+                                sentDateTime,
+                                ChatType.CENTER_MESSAGE,
+                                chatRoomIdx,
+                                "date" + sentDateTime
+                            )
+                            chattingMessagesRVAdapter.addItem(dateItem)
+                            //messageItems.add(dateItem)
+                            Log.d("날짜변경선 추가 후", dateItem.toString())
                         }
-                    }else{
-                        Log.d("주고받은 채팅메세지가","없음~")
+                    } else {    // 첫 메세지면 무조건 날짜변경선 추가
+                        val dateItem = ChatMessageItem(
+                            "date",
+                            getFormattedDate(sentDateTime.toString()),
+                            "date",
+                            sentDateTime,
+                            ChatType.CENTER_MESSAGE,
+                            chatRoomIdx,
+                            "date" + sentDateTime
+                        )
+                        chattingMessagesRVAdapter.addItem(dateItem)
+                        //messageItems.add(dateItem)
+                        Log.d("첫 메세지 - 날짜변경선 추가 후", dateItem.toString())
                     }
+
+                    chattingMessagesRVAdapter.addItem(chatMessageItem)
+
+                    chattingRV.smoothScrollToPosition(0)
+
+//                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+//                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
+//                    Log.d("updatedChatMessageList", updatedChatMessageList.toString())
+//                    val updatedChatMessageListSize = updatedChatMessageList.size
+//                    if(updatedChatMessageListSize != 0){
+//                        for(i: Int in 0..updatedChatMessageListSize-1){
+//                            addChatItem(updatedChatMessageList[i])
+//                            Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
+//                        }
+//                    }else{
+//                        Log.d("주고받은 채팅메세지가","없음~")
+//                    }
 
                 } else if(type.equals("CREATE_APPOINTMENT")){
                     // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼) // FirebaseMessagingServiceUtil에서 이미 약속정보 roomDB에 저장해줌!!
@@ -385,12 +441,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            val senderId = bundle.getString("senderId").toString()
 //            partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
             Log.d("chatRoomIdxByFCM", chatRoomIdxByFCM)
+
+            // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+            if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+                ChatListService.chatList(this, getUserIdx()!!)
+            }
+
             val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
             Log.d("chatRoomData", chatRoomData.toString())
             val senderId = chatRoomData.chatRoomName
             partnerIdx = chatRoomData.participantIdx!!
             val type = bundle.getString("type").toString()
-            Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")
+            Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")  // 페이징 처리해주니까 chatRoomIdx, partnerIdx, chatRoomName 세팅해주는거말고 할일 X
             Log.d("getFCMIntent - chatRoomIdx", chatRoomIdxByFCM)
             Log.d("getFCMIntent - senderId", senderId)
             Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
@@ -406,7 +468,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             // 포그라운드에서 온 경우 인텐트를 받음
         }
 
-        setLastAddedChatMessageId(chatRoomIdx)
+        //setLastAddedChatMessageId(chatRoomIdx)
 
         // 원래는 update된 걸 아래 코드로 띄워줘야하는데, 일단 주석처리
 //        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
@@ -436,7 +498,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            Log.d("onStart - 주고받은 채팅메세지가","없음~")
 //        }
 
-        setLastAddedChatMessageId(chatRoomIdx)
+        //setLastAddedChatMessageId(chatRoomIdx)
 
     }
 
@@ -504,6 +566,17 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         super.onDestroy()
         Log.d("생명주기","onDestroy")
         saveCurrentChatRoomIdx("")
+        chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
+        val itemCount = chattingMessagesRVAdapter.itemCount
+        if(itemCount >= 50){  // 리사이클러뷰에 데이터가 50개보다 많거나 같으면 listNum(=50)만큼 룸디비에 저장
+            for(i: Int in 0..listNum){
+                chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
+            }
+        } else{ // 50개보다 적으면 itemCount만큼 룸디비에 저장
+            for(i: Int in 0..itemCount){
+                chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
+            }
+        }
     }
 
     override fun onAppointmentExistSuccess(isExisted : Boolean, appointmentIdx : Int) {
@@ -545,12 +618,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         binding.chattingMakePlanBtn.setText(getString(R.string.chatting_make_plan))
     }
 
-    fun setLastAddedChatMessageId(chatRoomIdx: String){
-        val lastMessageData = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx)
-        if(lastMessageData != null){
-            lastAddedChatMessageId = lastMessageData.chatMessageId
-        }
-    }
+//    fun setLastAddedChatMessageId(chatRoomIdx: String){
+//        val lastMessageData = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx)
+//        if(lastMessageData != null){
+//            lastAddedChatMessageId = lastMessageData.chatMessageId
+//        }
+//    }
 
     override fun onPagingChatMessageSuccess(pagingChatMessageResult: PagingChatMessageResult) {
         val lastVisibleItemPosition = (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
@@ -702,5 +775,37 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         Log.d("isDateChanged - lastMessageDate", lastMessageDate.toString())
         Log.d("isDateChanged - currentMessageDate", currentMessageDate.toString())
         return !lastMessageDate.isEqual(currentMessageDate) // 이전 날짜랑 다르면 true 반환
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
+        var chatListGotten = chatList   // 서버에서 불러온 채팅방 목록
+
+        Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
+
+        // 룸디비에 변경된/추가된 채팅방 저장
+        var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
+        var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+
+        if(!chatListUpdated.isEmpty()){
+            Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
+            for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
+                if(chatDB.chatRoomDao().getChatRoomIdx(chatListUpdated[i].chatRoomIdx).isNullOrEmpty()){    // 새로 생성된 채팅방일 때 ---- 이 부분은 채팅방 생성 fcm 구현 후 수정 필요할 듯
+                    chatDB.chatRoomDao().insert(chatListUpdated[i]) // 새로 생성된 채팅방 룸DB에 추가
+//                    if(chatListUpdated[i].lastAddedChatMessageId <= 0){
+//                        chatDB.chatRoomDao().updateLastAddedChatMessageId(chatListUpdated[i].chatRoomIdx, -1)
+//                    }
+                }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
+                    chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
+                }
+            }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("업데이트된 채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }
+    }
+
+    override fun onGetChatListFailure(code: Int, message: String) {
+        Log.d("FirebaseMessagingServiceUtil", "onGetChatListFailure")
     }
 }
