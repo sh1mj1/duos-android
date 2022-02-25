@@ -33,12 +33,12 @@ object EditProfilePutService {
         editProfilePutService.onPutProfileWithoutPic(editProfilePutReqDto, userIdx).enqueue(object : Callback<EditProfilePutResponse> {
             override fun onResponse(call: Call<EditProfilePutResponse>, response: Response<EditProfilePutResponse>) {
                 val resp = response.body()!!
+                Log.d("EditProfileFrag", "${resp.toString()} , ${editProfilePutReqDto}")
                 when (resp.code) {
                     1100 -> {
                         resp.let {
                             editProfilePutListView.onPutEditProfileItemSuccess(it, resp.message)
                             Log.d(TAG, resp.toString())
-
                         }
                     }
                     else -> {
