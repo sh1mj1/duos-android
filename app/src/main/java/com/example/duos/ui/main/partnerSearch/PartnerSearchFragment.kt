@@ -115,10 +115,12 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
             recommendedPartnerDatas.clear()
             var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
+            Log.d("파트너 추천 목록 확인확인", storedRecommendedPartnerList.toString())
             recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
             binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
             Log.d("필터를 한번이라도 적용한 적 있음", "ㅎ")
+            Log.d("파트너 추천 목록 확인확인", recommendedPartnerDatas.toString())
 
         }else{  // 필터를 한 번도 적용한 적이 없는 사용자일때
             //날짜 확인
