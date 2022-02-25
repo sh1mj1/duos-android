@@ -131,9 +131,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 setAppointmentBtnNotExist()
             }
 
+            showToast("네트워크 상태를 확인해주세요.")
+
             val storedMessages = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
             if(storedMessages != null){
                 chattingMessagesRVAdapter.addPagingMessages(storedMessages)
+                chattingRV.scrollToPosition(0)
             } else{
                 Log.d("ChattingActivity - onStart","채팅방 생성 이후 아무 메세지도 주고받지 않음")
             }
@@ -569,11 +572,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
         val itemCount = chattingMessagesRVAdapter.itemCount
         if(itemCount >= 50){  // 리사이클러뷰에 데이터가 50개보다 많거나 같으면 listNum(=50)만큼 룸디비에 저장
-            for(i: Int in 0..listNum){
+            for(i: Int in 0..listNum-1){
                 chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
             }
         } else{ // 50개보다 적으면 itemCount만큼 룸디비에 저장
-            for(i: Int in 0..itemCount){
+            for(i: Int in 0..itemCount-1){
                 chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
             }
         }
