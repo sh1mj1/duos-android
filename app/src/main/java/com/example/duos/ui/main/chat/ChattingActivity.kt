@@ -333,6 +333,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                         Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
                         chatRoomIdx = chatRoomIdxOfReceivcedMessage
                         chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+                        pageNum = 0
                     }
                 }
 
