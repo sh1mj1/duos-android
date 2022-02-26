@@ -74,7 +74,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     lateinit var dateTimeOfFirstMessageOfLastPage: LocalDateTime
     private var isNextPageAvailable = false // 다음 페이지 유무
     private var pageNum = 0     // 조회할 페이지 page
-    private var listNum = 50     // 조회할 페이지 당 채팅 메세지 개수 limit
+    private var listNum = 20     // 조회할 페이지 당 채팅 메세지 개수 limit
 
     override fun onStart() {
         super.onStart()
@@ -82,6 +82,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 사용자가 백그라운드에서 돌아왔을 때 호출됨
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
+
+        pageNum = 0
+
         val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
@@ -342,8 +345,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                         Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
                         chatRoomIdx = chatRoomIdxOfReceivcedMessage
                         chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+                        partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
                         pageNum = 0
                         loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
+
                     }
                 }
 
@@ -397,7 +402,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
                     chattingMessagesRVAdapter.addItem(chatMessageItem)
 
-                    chattingRV.smoothScrollToPosition(0)
+                    chattingRV.scrollToPosition(0)
 
 //                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
 //                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
@@ -560,7 +565,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //        println(yyyy)
 //        println(MM)
 //        println(dd)
-        Log.d("채팅메세지수신시간포매팅 4",time)
+        //Log.d("채팅메세지수신시간포매팅 4",time)
 
         return time
     }
@@ -643,7 +648,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 val dateItem = ChatMessageItem("date", getFormattedDate(sentAtLocalDateTime.toString()), "date", sentAtLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date" + sentAtLocalDateTime)
                 messageItems.add(dateItem)
             }
-            Log.d("for문 "+i, messageItems.toString())
+            //Log.d("for문 "+i, messageItems.toString())
         }
 
         messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
@@ -658,7 +663,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chattingMessagesRVAdapter.setPagingMessages(messageItems)
             chattingRV.scrollToPosition(0)
         } else {     // 불러온 페이지의 마지막 메세지의 날짜와 그 아래 이미 로드된 페이지의 첫 메세지의 날짜가 다르면 날짜변경선을 두 페이지 사이에 추가
-            Log.d("날짜변경선 추가 전", messageItems.toString())
+            //Log.d("날짜변경선 추가 전", messageItems.toString())
             if (isDateChanged(messageList[0].sentAt, dateTimeOfFirstMessageOfLastPage)){
                 val sentAt = messageList[0].sentAt
                 val sentAtLocalDateTime = messageList[0].sentAt
@@ -672,7 +677,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     "date" + sentAt
                 )
                 messageItems.add(0, dateItem)
-                Log.d("날짜변경선 추가 후", messageItems.toString())
+                //Log.d("날짜변경선 추가 후", messageItems.toString())
             }
             dateTimeOfFirstMessageOfLastPage = pagingChatMessageResult.messageList[messageList.size - 1].sentAt
             // 위의 조건문에서 기존 dateTimeOfFirstMessageOfLastPage가 필요하므로 pageNum == 0일때랑은 다르게 분기처리해줌. 조건문 끝나고 첫메세지의 dateTime 저장
@@ -775,8 +780,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     private fun isDateChanged(lastMessageDateTime: LocalDateTime, currentMessageDateTime: LocalDateTime): Boolean{
         val lastMessageDate = lastMessageDateTime.toLocalDate()
         val currentMessageDate = currentMessageDateTime.toLocalDate()
-        Log.d("isDateChanged - lastMessageDate", lastMessageDate.toString())
-        Log.d("isDateChanged - currentMessageDate", currentMessageDate.toString())
+        //Log.d("isDateChanged - lastMessageDate", lastMessageDate.toString())
+        //Log.d("isDateChanged - currentMessageDate", currentMessageDate.toString())
         return !lastMessageDate.isEqual(currentMessageDate) // 이전 날짜랑 다르면 true 반환
     }
 
