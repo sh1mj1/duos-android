@@ -1,7 +1,6 @@
 package com.example.duos.data.local
 
 import androidx.room.*
-import com.example.duos.data.entities.EditProfile
 import com.example.duos.data.entities.User
 
 @Dao

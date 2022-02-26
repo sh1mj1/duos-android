@@ -19,9 +19,3 @@ data class User(
     @PrimaryKey var userIdx: Int? = null
 )
 
-data class EditProfile(
-    var nickName: String,
-    var location: Int,
-    var experience: Int,
-    var introduce: String?
-)

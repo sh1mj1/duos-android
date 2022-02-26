@@ -48,7 +48,6 @@ import com.example.duos.ui.signup.localSearch.LocationDialogFragment
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.util.regex.Pattern
 
@@ -58,14 +57,15 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     lateinit var binding: FragmentEditProfileBinding
 
     lateinit var mContext: EditProfileActivity
+
     lateinit var viewModel: ViewModel
     var savedState: Bundle? = null
     val myUserIdx = getUserIdx()!!
     var locationText: TextView? = null
     var checkStore: Boolean = false
     var inputIntroduction: String = ""
-
     var originExperience: Int? = null
+
 
     // 카메라 접근 권한
     lateinit var contentUri: Uri
@@ -95,9 +95,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     ): View? {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
-        onApplyDisable()    // 적용하기 비활
-
-
         return binding.root
     }
 
@@ -105,9 +102,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     @SuppressLint("SetTextI18n", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        onApplyDisable()    // 적용하기 비활
         EditProfileGetService.getEditProfile(this, myUserIdx)   // API 로 내 데이터 불러오기
-        val db = UserDatabase.getInstance(requireContext())
+        val db = UserDatabase.getInstance(requireContext().applicationContext)
+//        val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
         originExperience = myProfileDB.experience
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
@@ -116,6 +114,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         if (savedInstanceState != null && savedState == null) {
             Log.d(TAG, "savedInstanceState != null && savedState == null")
             savedState = savedInstanceState.getBundle("savedState")
+            Log.d(TAG, " savedState : ${savedState}")
         }
         if (savedInstanceState != null) {
             Log.d(TAG, "savedInstanceState != null")
@@ -126,9 +125,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
 
         } else {
-            Log.d(TAG, "saveInstanceState == null Or savedState != null")
             //  저장 X
-            viewModel.editProfileNickname.value = myProfileDB.nickName
+//            viewModel.editProfileNickname.value = myProfileDB.nickName
             viewModel.editProfileLocationDialogShowing.value = false
             viewModel.editProfileExperience.value = myProfileDB.experience!!.toInt()
             viewModel.editProfileLocation.value = myProfileDB.location
@@ -140,11 +138,25 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             viewModel.setEditProfileExperience.value = false
             viewModel.setEditProfileIsDuplicated.value = false
             viewModel.isChangedNickname.value = false
+            Log.d(
+                TAG,
+                "saveInstanceState == null Or savedState != null : viewModel.editProfileNickname : ${viewModel.editProfileNickname.value}"
+            )
         }
         savedState = null
 
 
         Log.d(TAG, " 원래 내 DB 데이터 $myProfileDB")
+        Log.d(
+            TAG,
+            "setEditProfileNickname : ${viewModel.setEditProfileNickName.value}  " +
+                    "setEditProfileLocation : ${viewModel.setEditProfileLocation.value}" +
+                    "setEditProfileIntroduction : ${viewModel.setEditProfileIntroduction.value} " +
+                    "setEditProfileExperience : ${viewModel.setEditProfileExperience.value} " +
+                    "setEditProfileIsDuplicated : ${viewModel.setEditProfileIsDuplicated.value}  " +
+                    "editProfileNickname : ${viewModel.editProfileNickname.value} "
+
+        )
 
         // 소개글 전체 삭제 클릭 리스너
         binding.btnClearIntroductionTv.setOnClickListener {
@@ -291,9 +303,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 if (s.toString() == myProfileDB.nickName) {
                     viewModel.isChangedNickname.value = false
                     viewModel.setEditProfileNickName.value = false
+                    viewModel.editProfileNickname.value = s.toString()
                 } else {
                     viewModel.isChangedNickname.value = true
-                    viewModel.setEditProfileNickName.value = false
+                    viewModel.setEditProfileNickName.value = true
+                    viewModel.editProfileNickname.value = s.toString()
                 }
             }
         })
@@ -440,47 +454,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
         })
 
-//        viewModel.isChangedNickname.observe(viewLifecycleOwner, {
-//            if (it) { /* 닉네임이 바뀌었으면*/
-//                viewModel.setEditProfileIsDuplicated.observe(viewLifecycleOwner, { it2 ->
-//                    if (it2) {    /* 중복확인 완료*/
-//                        onApplyEnable()
-//                    }
-//                })
-//            } else if (!it) {   /* 닉네임이 안 바뀌었으면 */
-//                viewModel.setEditProfileIsDuplicated.observe(viewLifecycleOwner, { it3 ->
-//                    if (it3) {    /* 중복확인 완료*/
-//                        onApplyEnable()
-//                    }
-//                })
-//                viewModel.setEditProfileIntroduction.observe(viewLifecycleOwner, { it4 ->
-//                    if (it4) {    /* 소개글 변경됨 */
-//                        onApplyEnable()
-//                    }
-//                })
-//                viewModel.setEditProfileExperience.observe(viewLifecycleOwner, { it5 ->
-//                    if (it5) {    /* 구력 변경됨 */
-//                        onApplyEnable()
-//                    }
-//                })
-//                viewModel.setEditProfileLocation.observe(viewLifecycleOwner, { it6 ->
-//                    if (it6) {    /* 지역 변경됨 */
-//                        onApplyEnable()
-//                    }
-//                })
-////                viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner, {it6 ->
-////                    if(it6){        /* 이미지 변경됨 */
-////                        onApplyEnable()
-////                    }
-////                })
-//            }
-//        })
-
 
         binding.activatingApplyBtn.setOnClickListener {
-            val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
-            val json = JSONObject()
-
             val phoneNumber = myProfileDB.phoneNumber.toString()
             val nickname = binding.nicknameEt.text.toString()    ////
             val birth = myProfileDB.birth.toString()
@@ -489,22 +464,17 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             val experienceIdx = viewModel.editProfileExperience.value!!.toInt()     ////
             val profileImg = viewModel.editProfileImg.value
             val introduction = binding.contentIntroductionEt.text.toString()            ////
-//            json.put("phoneNumber", phoneNumber)
-//            json.put("nickname", nickname)
-//            json.put("birthDate", birth)
-//            json.put("gender", gender)
-//            json.put("locationIdx", locationIdx)
-//            json.put("experienceIdx", experienceIdx)
-//            json.put("introduction", introduction)
-//            val userEditInfo = json.toString().toRequestBody(JSON)
 
             Log.d(
                 TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
-                        " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction," )
+                        " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction,"
+            )
 
             //TODO : 프로필 이미지 변경 X 나머지 변경됨.
-            EditProfilePutService.putEditProfile(this, phoneNumber, nickname, birth, gender,
-                locationIdx, experienceIdx, introduction, myUserIdx)
+            EditProfilePutService.putEditProfile(
+                this, phoneNumber, nickname, birth, gender,
+                locationIdx, experienceIdx, introduction, myUserIdx
+            )
 
             //TODO : 프로필 이미지 변경되고 나머지도 변경됨
 
@@ -687,19 +657,21 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                         }
                     }
                 }
-
-
             }
-
         }
     }
 
 
     override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
-        val db = UserDatabase.getInstance(requireContext())
+        val db = UserDatabase.getInstance(requireContext().applicationContext)
+//        val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        Log.d(TAG,"처음 내 데이터 가져왔을 때 내 UserDB : ${myProfileDB}")
         // 닉네임, 지역, 소개, 프로필 이미지, 구력
         binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
+        viewModel.editProfileNickname.value = getEditProfileResDto.existingProfileInfo.nickname
+        Log.d(TAG, "처음 API로 내 프로필 데이터 가져왔을 때 editProfileNickname : ${viewModel.editProfileNickname.value}")
+//        binding.nicknameEt.text = getEditProfileResDto.existingProfileInfo.nickname
         binding.locationInfoTv.text = toLocationStr(myProfileDB.location!!)
         // 소개글 API 로 값 가져오기, Editable 형태로 넣기
         inputIntroduction = getEditProfileResDto.existingProfileInfo.introduction
@@ -709,16 +681,18 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             .into(binding.myProfileImgIv)
         binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx
 
+
+
     }
 
     override fun onGetEditItemFailure(code: Int, message: String) {
         Log.d(TAG, "code: $code , message : $message ")
-        val db = UserDatabase.getInstance(requireContext())
+        val db = UserDatabase.getInstance(requireContext().applicationContext)
+//        val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
 
         binding.nicknameEt.hint = myProfileDB.nickName
         binding.locationInfoTv.hint = toLocationStr(myProfileDB.location!!)
-//        binding.contentIntroductionEt.hint = myProfileDB.introduce
         inputIntroduction = myProfileDB.introduce.toString()
         binding.contentIntroductionEt.text = Editable.Factory.getInstance().newEditable(inputIntroduction)
         binding.editProfileTableLayoutTl.checkedRadioButtonId = myProfileDB.experience!!
@@ -734,12 +708,24 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         message: String
     ) {
         Log.d(TAG, "onPutEditProfileItemSuccess")
+        // DB 업데이트
+        val db = UserDatabase.getInstance(requireContext().applicationContext)
+//        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+
+        myProfileDB.nickName = viewModel.editProfileNickname.value!!
+        myProfileDB.gender = myProfileDB.gender!!.toInt()
+        myProfileDB.location = viewModel.editProfileLocation.value!!.toInt()     ////
+        myProfileDB.experience = viewModel.editProfileExperience.value!!.toInt()     ////
+        myProfileDB.introduce = viewModel.editProfileIntroduce.value            ////
+        Log.d(TAG, "현재 뷰모델의 editProfileIntroduce는 ? ${viewModel.editProfileIntroduce.value}")
+        Log.d(TAG, "현재 뷰모델의 editProfileNickname ? ${viewModel.editProfileNickname.value}")
+        Log.d(TAG, "Put 이후에 DB에 데이터 ${myProfileDB.toString()}")
         // go to MyPageFrag!
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-
         val intent = Intent(activity, MyProfileActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
-
     }
 
     override fun onPutEditProfileItemFailure(code: Int, message: String) {
@@ -817,15 +803,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     }
 
-    //binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyEnable() {
         binding.activatingApplyBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
         binding.activatingApplyBtn.background =
             requireActivity().getDrawable(R.drawable.signup_next_btn_done_rectangular)
         binding.activatingApplyBtn.isEnabled = true
-//        binding.activatingApplyBtn.visibility = View.VISIBLE
-//        binding.inactivatingApplyBtn.visibility = View.GONE
+
 
     }
 
@@ -835,8 +819,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             requireActivity().getDrawable(R.drawable.signup_next_btn_rectangular)
         binding.activatingApplyBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
         binding.activatingApplyBtn.isEnabled = false
-//        binding.activatingApplyBtn.visibility = View.GONE
-//        binding.inactivatingApplyBtn.visibility = View.VISIBLE
+
     }
 
 

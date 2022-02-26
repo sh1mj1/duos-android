@@ -44,6 +44,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         // 룸에 내 idx에 맞는 데이터 있으면 불러오기...
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(getUserIdx()!!)
+        Log.d(TAG, "myProfileDB : ${myProfileDB}")
         binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
         Log.d(TAG, "Start_MypageFragment : 현재 user의 userIdx : $myUserIdx")

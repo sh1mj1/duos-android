@@ -61,7 +61,7 @@ class ViewModel : ViewModel() {
     var editProfileLocationName = MutableLiveData<String?>()
     var editProfileLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
 
-    var editProfileIntroduce = MutableLiveData<String>()
+    var editProfileIntroduce = MutableLiveData<String?>()
     var editProfileExperience = MutableLiveData<Int?>()
     var editProfileImg = MutableLiveData<String?>()
     var appointmentReviewContent = MutableLiveData<String>()

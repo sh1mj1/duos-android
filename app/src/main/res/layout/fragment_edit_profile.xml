@@ -108,7 +108,6 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:layout_gravity="center"
-                        android:hint="@string/signup_nick_name"
                         android:inputType="textNoSuggestions"
                         android:maxLength="13"
                         android:singleLine="true"
@@ -578,7 +577,7 @@
                 android:background="@drawable/signup_next_btn_rectangular"
                 android:gravity="center"
                 android:text="@string/edit_profile_apply"
-                android:textColor="@color/white"
+                android:textColor="@color/dark_gray_B0"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent" />
