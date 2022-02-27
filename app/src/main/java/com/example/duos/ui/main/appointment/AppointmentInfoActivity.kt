@@ -31,6 +31,9 @@ ShowAppointmentView, DeleteAppointmentView{
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
         chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+        val partnerId = binding.planInfoTitleIdTv
+
+        partnerId.text = chatRoom.chatRoomName
 
         setDialog()
 

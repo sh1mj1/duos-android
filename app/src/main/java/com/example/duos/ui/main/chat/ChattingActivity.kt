@@ -58,7 +58,7 @@ import kotlin.collections.ArrayList
 
 class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate), SendMessageView, AppointmentExistView, PagingChatMessageView, ChatListView {
     lateinit var userId: String
-    private var thisUserIdx = getUserIdx()!!
+    private var thisUserIdx = 0
     var partnerIdx: Int = 0 // initAfterBinding에서 ChatListFragment에서 partnerIdx 인텐트 넘겨받음
     var createdNewChatRoom : Boolean = false
     private var layoutManager: LayoutManager? = null
@@ -88,6 +88,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 Log.d("약속버튼 업데이트", "startForResult 실패")
             }
         }
+
+        // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+        // 재설치 후 채팅방목록 본 적 없는 상태에서 채팅을 한 번도 주고받은 적이 없는 사용자에게 채팅메세지가 와서 푸시알림을 눌렀을 때도 룸디비에 chatRoom 데이터 없으므로 여기서 넣어줌
+        if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+            ChatListService.chatList(this, getUserIdx()!!)
+        }
     }
 
     override fun initAfterBinding() {
@@ -96,6 +102,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
         var sendBtn: ImageView = binding.chattingSendBtn
+
+        thisUserIdx = getUserIdx()!!
+        Log.d("ChattingActivity - initAfterBinding - thisUserIdx", thisUserIdx.toString())
 
         val userDB = UserDatabase.getInstance(this)!!
         userId = userDB.userDao().getUserNickName(thisUserIdx)  // 내 인덱스로 내 닉네임 가져오기
@@ -132,7 +141,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.setAdapter(chattingMessagesRVAdapter)
 
         // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
-        if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+        if(chatDB.chatRoomDao().getChatRoomList().isEmpty() ){
             ChatListService.chatList(this, getUserIdx()!!)
         }
 
@@ -406,6 +415,26 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                     }
                 } else{
                     Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때")
+
+                    // 해당 채팅방이 현재 룸디비에 존재하는지 확인 (채팅을 한번도 주고받은 적 없는 사용자에게 온 알림이라면, 아직 룸디비에 없을 수 있기 때문!)
+                    val chatRoomList = chatDB.chatRoomDao().getChatRoomList()
+                    var isChatRoomIdxOfReceivcedMessageExist = false
+                    for(i: Int in 0..chatRoomList.size-1){
+                        val _chatRoomIdx = chatDB.chatRoomDao().getChatRoomList().get(i).chatRoomIdx
+                        if(_chatRoomIdx.equals(chatRoomIdxOfReceivcedMessage)){
+                            isChatRoomIdxOfReceivcedMessageExist = true
+                        }
+                    }
+
+                    if(!isChatRoomIdxOfReceivcedMessageExist){
+                        // 재설치 후 채팅방 목록을 봤는지와는 상관없이 아래 경우에 다 작동해야 정상.. 테스트 필요
+                            // 사용자 A와의 채팅화면에 있는데 채팅을 한 번도 주고받은 적이 없는 사용자 B에게 채팅메세지가 와서 푸시알림을 눌렀을 때
+                            // 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+                        if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+                            ChatListService.chatList(this, getUserIdx()!!)
+                        }
+                    }
+
                     chatRoomIdx = chatRoomIdxOfReceivcedMessage
                     chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
                     partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
@@ -434,11 +463,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            partnerIdx = bundle.getString("partnerIdx")?.toInt() ?: 0
             Log.d("chatRoomIdxByFCM", chatRoomIdxByFCM)
 
-            // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
-            if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
-                ChatListService.chatList(this, getUserIdx()!!)
-            }
-
             val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
             Log.d("chatRoomData", chatRoomData.toString())
             val senderId = chatRoomData.chatRoomName
@@ -452,7 +476,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
             chatRoomIdx = chatRoomIdxByFCM
             chatRoomName.text = senderId
-
         }else{
             Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
             // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
@@ -636,7 +659,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onPagingChatMessageFailure(code: Int, message: String) {
-        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        showToast(message)
     }
 
     private fun loadMessages(){

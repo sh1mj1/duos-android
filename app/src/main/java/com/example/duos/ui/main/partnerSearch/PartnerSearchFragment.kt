@@ -2,7 +2,6 @@ package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -10,12 +9,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.duos.ApplicationClass.Companion.TAG
 import com.example.duos.data.entities.PartnerSearchData
 import com.example.duos.data.entities.RecommendedPartner
+import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.RecommendedPartnerDatabase
 import com.example.duos.data.local.UserDatabase
+import com.example.duos.data.remote.chat.chatList.ChatListService
 import com.example.duos.data.remote.partnerSearch.PartnerSearchService
 import com.example.duos.databinding.FragmentPartnerSearchBinding
 import com.example.duos.ui.BaseFragment
+import com.example.duos.ui.main.chat.ChatListView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.*
 import com.google.android.gms.tasks.OnCompleteListener
@@ -24,12 +26,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), PartnerSearchView {
+class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(FragmentPartnerSearchBinding::inflate), ChatListView, PartnerSearchView {
     private var recommendedPartnerDatas = ArrayList<RecommendedPartner>()
     private lateinit var partnerSearchRVGridAdapter:PartnerSearchRVGridAdapter
     private lateinit var partnerSearchRecommendedPartnerRv:RecyclerView
     var userIdx: Int = getUserIdx()!!
     lateinit var recommendedPartnerDatabase: RecommendedPartnerDatabase
+    lateinit var chatDB: ChatDatabase
 
     companion object {
         fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
@@ -154,6 +157,20 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun initAfterBinding() {
+        if(isFirstRunAfterInstalling()){
+            // 채팅방 목록을 확인한 적 없이 푸시알림 받는 경우를 대비해, 채팅방 목록이 비어있으면 채팅방 목록 api를 호출하여 미리 저장
+            // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+            // 재설치 후 채팅방목록 본 적 없는 상태에서 채팅을 한 번도 주고받은 적이 없는 사용자에게 채팅메세지가 와서 푸시알림을 눌렀을 때도 룸디비에 chatRoom 데이터 없으므로 여기서 넣어줌
+            Log.d("isFirstRunAfterInstalling 확인", isFirstRunAfterInstalling().toString())
+            chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
+            if(chatDB.chatRoomDao().getChatRoomList().isNullOrEmpty()){
+                Log.d("isFirstRunAfterInstalling - 룸디비.isNullOrEmpty", "true")
+                ChatListService.chatList(this, getUserIdx()!!)
+            }else{
+                Log.d("isFirstRunAfterInstalling - 룸디비.isNullOrEmpty", "false")
+            }
+            Log.d("isFirstRunAfterInstalling - 룸디비 확인", chatDB.chatRoomDao().getChatRoomList().toString())
+        }
 
         binding.partnerSearchScrollViewSv.run {
             header = binding.partnerSearchFixScrollLayoutCl
@@ -180,6 +197,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
         Glide.with(this).load(userDB.userDao().getUserProfileImgUrl(userIdx))
             .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
+
 
         // 임시로 사용자의 프로필이미지와 닉네임 세팅함
 //        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
@@ -215,5 +233,23 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             Log.d("토큰 확인", token)
             //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
         })
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
+        if(!chatList.isEmpty()){
+            Log.d("채팅방 확인", chatList.toString())
+            for (i: Int in 0..chatList.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
+                chatDB.chatRoomDao().insert(chatList[i])
+            }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", "없음")
+        }
+        saveIsFirstRunAfterInstalling(false)
+    }
+
+    override fun onGetChatListFailure(code: Int, message: String) {
+        saveIsFirstRunAfterInstalling(true) //채팅방리스트를 룸디비에 정상적으로 저장 못했으니 다음 실행때 다시 저장하도록
     }
 }
