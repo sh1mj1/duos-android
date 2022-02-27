@@ -1,6 +1,7 @@
 package com.example.duos.data.entities
 
 import android.graphics.Bitmap
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

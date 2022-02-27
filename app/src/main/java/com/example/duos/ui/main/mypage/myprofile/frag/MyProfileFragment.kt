@@ -26,6 +26,7 @@ import com.example.duos.databinding.FragmentMyProfileBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.myprofile.ProfileReviewRVAdapter
+import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileFragment
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
 
@@ -45,6 +46,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(getUserIdx()!!)
         Log.d(TAG, "myProfileDB : ${myProfileDB}")
+        Log.d("EditProfileFragment", "myProfileDB : ${myProfileDB}")
         binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
         Log.d(TAG, "Start_MypageFragment : 현재 user의 userIdx : $myUserIdx")
@@ -93,7 +95,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     }
 
     private fun setMyProfileInfoWithoutAPI() {
-        val db = UserDatabase.getInstance(requireContext())
+        val db = UserDatabase.getInstance(requireContext().applicationContext)
         val myProfileDB = db!!.userDao().getUser(myUserIdx)
         Log.d(TAG, "myProfileDB :  $myProfileDB")
 
