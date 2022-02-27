@@ -132,7 +132,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             getFCMIntent()
         }
 
-        //chattingRV.setHasFixedSize(true)
+        chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
         (layoutManager as LinearLayoutManager).reverseLayout = true
         (layoutManager as LinearLayoutManager).stackFromEnd = true
