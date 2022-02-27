@@ -78,10 +78,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun onStart() {
         super.onStart()
-        Log.d("생명주기","onStart")
+        Log.d("ChattingActivity 생명주기","onStart")
         // 사용자가 백그라운드에서 돌아왔을 때 호출됨
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
-        // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯
+        // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯 -> 아님... 백그라운드에서 온 경우 onRestart를 onStart 전에 호출하므로 initAfterBinding, onRestart에서 메세지 띄워주면 될듯
 
         pageNum = 0
 
@@ -89,18 +89,21 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
         val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
 
+
         if(isFromChatList){
+            Log.d("ChattingActivity 생명주기", "onStart - isFromChatList "+isFromChatList)
             chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
             chatRoomName.text = intent.getStringExtra("senderId")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
         } else if (isFromPlayerProfile){
-
+            Log.d("ChattingActivity 생명주기", "onStart - isFromPlayerProfile "+isFromPlayerProfile)
             chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
             chatRoomName.text = intent.getStringExtra("partnerNickName")!!
             partnerIdx = intent.getIntExtra("partnerIdx", 0)
 
         } else{ // 푸시알림을 '눌러서' 온 경우
+            Log.d("ChattingActivity 생명주기", "onStart - getFCMIntent 호출")
             getFCMIntent()
         }
 
@@ -177,7 +180,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun initAfterBinding() {
-        Log.d("생명주기","onCreate(initAfterBinding)")
+        Log.d("ChattingActivity 생명주기","onCreate(initAfterBinding)")
         chattingEt = binding.chattingEt
         chattingRV = binding.chattingMessagesRv
         chatRoomName = binding.chattingTitlePartnerIdTv
@@ -306,6 +309,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onNewIntent(intent: Intent?) {
+        // 아래 두줄 변경됨 -> 채팅화면에 있지만 다른 채팅방의 메세지를 받았을 때, 푸시알림을 눌렀을때 말고 받았을 때 onNewIntent는 호출되지 않는 것 확인. 언제고쳤지?
         // 채팅화면에 있지만 다른 채팅방의 메세지를 받았을 때 onNewIntent는 호출되지만, 아직 푸시알림을 누르지 않았기 때문에 isAlarmed=false이며 아무것도 안하고 끝나야 맞음.
         // 푸시알림을 누른 순간에 또 onNewIntent가 호출될 것임. 그 때 isAlarmed가 true가 됨
         if (intent == null){
@@ -324,7 +328,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //            val sentAtString = bundle.getString("sentAt")
 //            var sendTime = bundle.getString("sentAt")?.let { getFormattedDateTime(it) }!!
             //var currentTime = toDate(System.currentTimeMillis())
-            val byPushAlarmClick = bundle.getBoolean("byPushAlarmClick", false)
+            val byPushAlarmClick = bundle.getBoolean("byPushAlarmClick", true)
 
             Log.d("onNewIntent - type", type.toString())
             Log.d("onNewIntent - byPushAlarmClick", byPushAlarmClick.toString())
@@ -336,20 +340,28 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                Log.d("채팅화면일때", "3")
                 //Log.d("발신자 아이디", senderId)
                 if(chatRoomIdxOfReceivcedMessage.equals(chatRoomIdx)){
-                    Log.d("onNewIntent","채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
+                    Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
+                    //Log.d("onNewIntent","채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
                 } else{
                     Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때")
-                    if(!byPushAlarmClick){
-                        Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
-                    } else{ // 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때
-                        Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
-                        chatRoomIdx = chatRoomIdxOfReceivcedMessage
-                        chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
-                        partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
-                        pageNum = 0
-                        loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
-
-                    }
+                    chatRoomIdx = chatRoomIdxOfReceivcedMessage
+                    chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+                    partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
+                    pageNum = 0
+                    loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
+//                    if(!byPushAlarmClick){
+//                        Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
+//                        //Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
+//                    } else{ // 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때
+//                        Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
+//                        //Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림을 눌렀을 때")
+//                        chatRoomIdx = chatRoomIdxOfReceivcedMessage
+//                        chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+//                        partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
+//                        pageNum = 0
+//                        loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
+//
+//                    }
                 }
 
                 if(type.equals("MESSAGE")){
@@ -440,6 +452,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     fun getFCMIntent(){
+        Log.d("ChattingActivivty 생명주기", "getFCMIntent(푸시알림을 눌러서 온 경우) - onStart에서 호출되도록 해놓음")
         Log.d("getFCMIntent 시작", "즉 푸시알림을 눌러서 온 경우 / ")
         // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
         var bundle = intent?.extras
@@ -468,6 +481,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
             chatRoomIdx = chatRoomIdxByFCM
             chatRoomName.text = senderId
+
 
         }else{
             Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
@@ -572,7 +586,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("생명주기","onDestroy")
+        Log.d("ChattingActivity 생명주기","onDestroy")
         saveCurrentChatRoomIdx("")
         chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
         val itemCount = chattingMessagesRVAdapter.itemCount
@@ -815,5 +829,25 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
     override fun onGetChatListFailure(code: Int, message: String) {
         Log.d("FirebaseMessagingServiceUtil", "onGetChatListFailure")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d("ChattingActivity 생명주기","onRestart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("ChattingActivity 생명주기","onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ChattingActivity 생명주기","onPause")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("ChattingActivity 생명주기","onResume")
     }
 }
