@@ -14,7 +14,6 @@ import retrofit2.Response
 object EditProfilePutService {
     val TAG = "EditProfilePutService"
     val retrofit = NetworkModule.getRetrofit()
-
     fun putEditNonPicProfile(
         editProfilePutListView: EditProfilePutListView,
         phoneNumber: String,
@@ -56,7 +55,6 @@ object EditProfilePutService {
 
             })
     }
-
 
     fun putPicEditProfile(editProfilePicPutListView: EditProfilePicPutListView, mFile: MultipartBody.Part?, userIdx: Int) {
         val putPicEditProfileService = retrofit.create(EditProfileRetrofitInterface::class.java)

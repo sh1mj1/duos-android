@@ -30,6 +30,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -145,7 +146,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             viewModel.editProfileExperience.value = myProfileDB.experience!!.toInt()
             viewModel.editProfileLocation.value = myProfileDB.location
             viewModel.setEditProfileNickName.value = false
-//            viewModel.editProfileImg.value = myProfileDB.profileImg
             viewModel.setEditProfileImgUrl.value = false
             viewModel.setEditProfileLocation.value = false
             viewModel.setEditProfileIntroduction.value = false
@@ -464,7 +464,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     }
                 })
                 viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner, { it6 ->
-                    if (it6 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileImgUrl.value == true)) {
+                    if (it6 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileIsDuplicated.value == true)) {
                         onApplyEnable()
                     }
                 })
@@ -519,6 +519,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
         }
 
+        val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
+        (context as EditProfileActivity).findViewById<ImageView>(R.id.edit_top_left_arrow_iv).setOnClickListener {
+                requireActivity().finish()
+        }
     }
 
 
@@ -596,6 +600,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 if (resultCode == Activity.RESULT_OK) {
                     // data : Intent 안에 사진 정보가 들어감
                     val bitmap = data?.getParcelableExtra<Bitmap>("data")
+
                     profileBitmap = bitmap!!
                     viewModel.editProfileImg.value = profileBitmap
                     viewModel.setEditProfileImgUrl.value = true
@@ -613,9 +618,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     if (uri != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             // 안드로이드 10버전 이상
-                            val source =
-                                ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+                            var bitmap = ImageDecoder.decodeBitmap(source)
+                            bitmap = resizeBitmap(1024, bitmap)
                             profileBitmap = bitmap
                             viewModel.editProfileImg.value = profileBitmap
                             viewModel.setEditProfileImgUrl.value = true
@@ -629,7 +634,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                                 val index = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
                                 val source = cursor.getString(index)
                                 // 이미지 생성
-                                val bitmap = BitmapFactory.decodeFile(source)
+                                var bitmap = BitmapFactory.decodeFile(source)
+                                bitmap = resizeBitmap(1024, bitmap)
                                 profileBitmap = bitmap
                                 viewModel.editProfileImg.value = profileBitmap
                                 viewModel.setEditProfileImgUrl.value = true
@@ -637,9 +643,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
                             }
                         }
-                        contentUri = uri
-                    } else {
-                        contentUri = null
                     }
                 }
             }
@@ -678,9 +681,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         binding.contentIntroductionEt.text = Editable.Factory.getInstance().newEditable(inputIntroduction)
         binding.editProfileTableLayoutTl.checkedRadioButtonId = myProfileDB.experience!!
 
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        Toast.makeText(context, "네트워크 상태를 확인하세요", Toast.LENGTH_LONG).show()
-
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
 
@@ -692,15 +693,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         // DB 업데이트
         val db = UserDatabase.getInstance(requireContext().applicationContext)
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-//        val phoneNumber = myProfileDB.phoneNumber
-//        val nickName = viewModel.editProfileNickname.value!!
-//        val gender = myProfileDB.gender
-//        val birth = myProfileDB.birth
-//        val location = viewModel.editProfileLocation.value
-//        val experience = viewModel.editProfileExperience.value
-//        val profileImg = myProfileDB.profileImg
-//        val introduce = viewModel.editProfileIntroduce.value
-//        val fcmToken = myProfileDB.fcmToken
 
         user = User(
             phoneNumber = myProfileDB.phoneNumber,
@@ -743,42 +735,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         val result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false)
         return result
 
-    }
-
-    // 이미지의 회전 각도값을 구하기
-    // 11버전 이상부터 달라짐 (외부저장소 보안 때문에)
-    fun getDegree(uri: Uri, source: String): Float {
-        var exif: ExifInterface? = null
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val photoUri = MediaStore.setRequireOriginal(uri)
-            val stream = requireActivity().contentResolver.openInputStream(photoUri)
-            exif = ExifInterface(source)
-        } else {
-            exif = ExifInterface(source)
-        }
-        var degree = 0
-        val ori = exif.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            -1
-        )   // 만약 회전값이 저장이 안되어 있으면 default값으로 -1 넣기 (0 넣으면 안댐)
-        when (ori) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
-        }
-        return degree.toFloat()
-    }
-
-    // 사진 돌리기
-    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
-
-        // 각도값을 관리하는 객체
-        val matrix = Matrix()
-        matrix.postRotate(degree)
-        // 회전된 이미지를 받아온다.
-        val bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        return bitmap2
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -829,11 +785,12 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         viewModel.isValidNicknameEditCondition.value = true
         viewModel.setEditProfileIsDuplicated.value = true
         Log.d(TAG, "viewModel.setEditProfileNickName.value : ${viewModel.setEditProfileNickName.value}")
-        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
         binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
         binding.btnCheckDuplicationTv.isEnabled = false
         binding.nicknameEtField.isEndIconVisible = false
         binding.nicknameEt.isEnabled = false
+        Toast.makeText(context, "닉네임 중복 확인 성공!", Toast.LENGTH_LONG).show()
     }
 
     override fun onGetDuplicateNicknameFailure(code: Int, message: String) {
@@ -842,8 +799,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         binding.nickNameErrorTv.text = message
         binding.nicknameCheckIconIv.visibility = View.VISIBLE
         binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
-        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
+        binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
         binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+
     }
 
     fun setRadioButton(tag: Int) {
@@ -861,9 +820,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
 //        DB에 사진 Uri 업데이트 -> RESULT 값으로 uri 값 요청하기
         val db = UserDatabase.getInstance(requireContext())
-        db!!.userDao().update(myUserIdx, contentUri.toString())
-        val myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀌는지 확인하자 ${myProfileDB}")
+        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀌기 전 ${myProfileDB}")
+        db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
+        val myProfileDB2 = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB2}")
         Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
         putSuccess = true
         val intent = Intent(activity, MyProfileActivity::class.java)
@@ -874,8 +835,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     override fun onPutPicEditProfileItemFailure(code: Int, message: String) {
-        Log.d(TAG, "onPutPicEditProfileItemFailure")
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Log.d(TAG, "onPutPicEditProfileItemFailure : $message")
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
     inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {

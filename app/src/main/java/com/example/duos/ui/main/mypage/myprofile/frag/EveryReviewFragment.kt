@@ -23,6 +23,7 @@ import com.example.duos.databinding.FragmentEveryReviewBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.myprofile.EveryReviewRVAdapter
 import com.example.duos.data.entities.everyReviews.EveryReviewsItemView
+import com.example.duos.data.local.UserDatabase
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
@@ -42,6 +43,7 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
 
     override fun initAfterBinding() {
 
+        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
         Log.d(TAG, "Start_EveryReviewFragment")
         // HomeFragment 에서 넘어온 데이터 받아오기 혹은 PlayerFragment에서 넘어온 데이터 받아오기
         // -> 조건문 사용해서 argument로 받아온 것의 key가 무엇인지 체크하고 그에 해당하는 argument를 gson.fromJsom으로 받기
@@ -54,25 +56,23 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
             val profile = gson.fromJson(profileData, PartnerInfoDto::class.java)
             setInit(profile)
             EveryReviewsService.getEveryReviews(this, myUserIdx, profile.userIdx!!)
-            startPostponedEnterTransition()
         } else if (isFromMyProfile == true) {
             val profile = gson.fromJson(profileData, MyProfileInfoItem::class.java)
             setInit(profile)
             EveryReviewsService.getEveryReviews(this, myUserIdx, profile.userIdx!!)
-            startPostponedEnterTransition()
         }
+
 
         // 상단 뒤로 가기 버튼 클릭
         val fragmentTransaction : FragmentManager = requireActivity().supportFragmentManager
-        (context as MyProfileActivity).findViewById<ImageView>(com.example.duos.R.id.top_left_arrow_iv).setOnClickListener {
-            // IF :  backstack Exist -> popbackstack    ELSE :   finish()
+        (context as MyProfileActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
             if(fragmentTransaction.backStackEntryCount >= 1){
                 fragmentTransaction.popBackStack()
             }else{
                 requireActivity().finish()
             }
         }
-        (context as MyProfileActivity).findViewById<ConstraintLayout>(R.id.profile_bottom_chat_btn_cl).visibility = View.GONE
+
 
 
     }
@@ -80,9 +80,9 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
     override fun onGetEveryReviewsItemSuccess(everyReviewsResponse: EveryReviewsResponse) {
         everyReviewDatas.clear()
         everyReviewDatas.addAll(everyReviewsResponse.result)   // API 로 받아온 데이터 다 넣어주기 (더미데이터 넣듯이)
+        startPostponedEnterTransition()
         // 리사이클러뷰 어댑터 연결
         val everyReviewRVAdapter = initRecyclerView()
-//        startPostponedEnterTransition()
         // 다른 PlayerProfile 로 이동
         goPlayerProfile(everyReviewRVAdapter)
     }
@@ -161,11 +161,14 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
 
     @SuppressLint("SetTextI18n")
     private fun setInit(profile: MyProfileInfoItem) {
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
         binding.playerNicknameTv.text = profile.nickname
         binding.playerGenerationTv.text = profile.age
         binding.playerLocationTv.text = profile.location
         binding.profileGradeRb.rating = profile.rating!!.toFloat()
         binding.profileGradeNumTv.text = toRatingStr(profile.rating!!)
+        binding.playerSexTv.text = toGenderStr(myProfileDB.gender!!)
         Glide.with(binding.playerProfileImgIv.context)
             .load(profile.profileImgUrl)
             .into(binding.playerProfileImgIv)
@@ -176,14 +179,13 @@ class EveryReviewFragment : BaseFragment<FragmentEveryReviewBinding>(FragmentEve
 
     @SuppressLint("SetTextI18n")
     private fun setInit(profile: PartnerInfoDto) {
-        val locationFull = profile.locationCategory + " " + profile.locationName
-        val ratingStr = toRatingStr(profile.rating!!)
 
         binding.playerNicknameTv.text = profile.nickname
         binding.playerGenerationTv.text = profile.age
-        binding.playerLocationTv.text = locationFull
+        binding.playerLocationTv.text = profile.locationCategory + " " + profile.locationName
         binding.profileGradeRb.rating = profile.rating!!.toFloat()
-        binding.profileGradeNumTv.text = ratingStr
+        binding.profileGradeNumTv.text = toRatingStr(profile.rating!!)
+        binding.playerSexTv.text = toGenderStr(profile.gender)
         Glide.with(binding.playerProfileImgIv.context)
             .load(profile.profilePhotoUrl)
             .into(binding.playerProfileImgIv)

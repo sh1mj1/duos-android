@@ -27,12 +27,3 @@ interface EditProfileRetrofitInterface {
     ) : Call<EditProfilePutPicResponse>
 
 }
-
-/*
-    @Multipart
-    @POST("api/signup")
-    fun signUpRequest(
-        @Part profileImg : MultipartBody.Part?,
-        @Part("createUserReqDTO") signUpRequestInfo : RequestBody
-    ): Call<SignUpRequestResponse>
- */

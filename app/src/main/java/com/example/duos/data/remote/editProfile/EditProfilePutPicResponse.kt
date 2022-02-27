@@ -6,6 +6,11 @@ data class EditProfilePutPicResponse(
     @SerializedName("isSuccess") val isSuccess: Boolean,
     @SerializedName("code") val code: Int,
     @SerializedName("message") val message: String,
+    @SerializedName("result") val result: ProfilePhotoUrl
+)
+
+data class ProfilePhotoUrl(
+    @SerializedName("profilePhotoUrl") val profilePhotoUrl : String
 )
 
 
