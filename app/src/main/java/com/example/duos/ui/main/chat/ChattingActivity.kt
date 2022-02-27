@@ -83,90 +83,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         // 즉 백그라운드에서 푸시알림을 눌러 ChattingActivity로 왔을 때 onCreate가 아닌 onStart부터 호출됨
         // initAfterBinding이 아닌 여기서 api를 호출해서 지난 채팅 메세지 데이터를 띄워줘야할 듯 -> 아님... 백그라운드에서 온 경우 onRestart를 onStart 전에 호출하므로 initAfterBinding, onRestart에서 메세지 띄워주면 될듯
 
-        pageNum = 0
+        //pageNum = 0
 
-        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
-        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
-        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
-
-
-        if(isFromChatList){
-            Log.d("ChattingActivity 생명주기", "onStart - isFromChatList "+isFromChatList)
-            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
-            chatRoomName.text = intent.getStringExtra("senderId")!!
-            partnerIdx = intent.getIntExtra("partnerIdx", 0)
-
-        } else if (isFromPlayerProfile){
-            Log.d("ChattingActivity 생명주기", "onStart - isFromPlayerProfile "+isFromPlayerProfile)
-            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
-            chatRoomName.text = intent.getStringExtra("partnerNickName")!!
-            partnerIdx = intent.getIntExtra("partnerIdx", 0)
-
-        } else{ // 푸시알림을 '눌러서' 온 경우
-            Log.d("ChattingActivity 생명주기", "onStart - getFCMIntent 호출")
-            getFCMIntent()
-        }
+        setAppointmentBtn()
 
         saveCurrentChatRoomIdx(chatRoomIdx)                     // 현재 chatRoomIdx를 SharedPreference에 저장
-
-        //delete All
-
-
-        //chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
-
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ViewModel::class.java)
-
-        chattingRV.setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(this)
-        (layoutManager as LinearLayoutManager).reverseLayout = true
-        (layoutManager as LinearLayoutManager).stackFromEnd = true
-        chattingRV.setLayoutManager(layoutManager)
-        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
-        chattingRV.setAdapter(chattingMessagesRVAdapter)
-
-        // 약속 여부 받아오기 & 메세지 페이징 or 룸디비에서 load
-        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
-            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
-            loadMessages()
-            Log.d("인터넷 연결 확인", "CONNECTED")
-        }else{
-            Log.d("인터넷 연결 확인", "DISCONNECTED")
-            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
-                setAppointmentBtnExist()
-            }else{
-                setAppointmentBtnNotExist()
-            }
-
-            showToast("네트워크 상태를 확인해주세요.")
-
-            val storedMessages = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
-            if(storedMessages != null){
-                chattingMessagesRVAdapter.addPagingMessages(storedMessages)
-                chattingRV.scrollToPosition(0)
-            } else{
-                Log.d("ChattingActivity - onStart","채팅방 생성 이후 아무 메세지도 주고받지 않음")
-            }
-        }
-
-        initScrollListener()
-
-        binding.chattingMakePlanBtn.setOnClickListener ({
-
-            if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
-                // 약속현황 보기
-                val intent = Intent(this, AppointmentInfoActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoomIdx)
-                intent.putExtra("partnerIdx", partnerIdx)
-                startActivity(intent)
-            }
-            else {
-                // 약속 잡기
-                val intent = Intent(this, AppointmentActivity::class.java)
-                intent.putExtra("chatRoomIdx", chatRoomIdx)
-                intent.putExtra("partnerIdx", partnerIdx)
-                startActivity(intent)
-            }
-        })
 
 //        val chatMessageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
 //        if(!chatMessageList.isEmpty()){
@@ -196,11 +117,68 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
 
+        val isFromChatList = intent.getBooleanExtra("isFromChatList", false)
+        createdNewChatRoom = intent.getBooleanExtra("createdNewChatRoom", false)
+        val isFromPlayerProfile = intent.getBooleanExtra("isFromPlayerProfile", false)
+
+
+        if(isFromChatList){
+            Log.d("ChattingActivity 생명주기", "onStart - isFromChatList "+isFromChatList)
+            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
+            chatRoomName.text = intent.getStringExtra("senderId")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
+        } else if (isFromPlayerProfile){
+            Log.d("ChattingActivity 생명주기", "onStart - isFromPlayerProfile "+isFromPlayerProfile)
+            chatRoomIdx = intent.getStringExtra("targetChatRoomIdx")!!
+            chatRoomName.text = intent.getStringExtra("partnerNickName")!!
+            partnerIdx = intent.getIntExtra("partnerIdx", 0)
+
+        } else{ // 푸시알림을 '눌러서' 온 경우
+            Log.d("ChattingActivity 생명주기", "onStart - getFCMIntent 호출")
+            getFCMIntent()
+        }
+
+        chattingRV.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(this)
+        (layoutManager as LinearLayoutManager).reverseLayout = true
+        (layoutManager as LinearLayoutManager).stackFromEnd = true
+        chattingRV.setLayoutManager(layoutManager)
+        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
+        chattingRV.setAdapter(chattingMessagesRVAdapter)
+
+        // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+        if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+            ChatListService.chatList(this, getUserIdx()!!)
+        }
+
+        initView(chatRoomIdx, partnerIdx)
+
 //        if(intent != null){
 //            chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
 //            chatRoomName.text = intent.getStringExtra("senderId")!!
 //            partnerIdx = intent.getIntExtra("partnerIdx", 0)
 //        }
+
+        initScrollListener()
+
+        binding.chattingMakePlanBtn.setOnClickListener ({
+
+            if (chatDB.chatRoomDao().getChatRoom(chatRoomIdx).isAppointmentExist) {
+                // 약속현황 보기
+                val intent = Intent(this, AppointmentInfoActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
+                startActivity(intent)
+            }
+            else {
+                // 약속 잡기
+                val intent = Intent(this, AppointmentActivity::class.java)
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("partnerIdx", partnerIdx)
+                startActivity(intent)
+            }
+        })
 
         // 채팅 EditText focus되면 전송 아이콘(비행기 아이콘) primary색으로 활성화, 아닐때 비활성화
         chattingEt.addTextChangedListener(object: TextWatcher {
@@ -229,6 +207,61 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         binding.chattingBackIv.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun initView(chatRoomIdx: String, partnerIdx: Int){
+        pageNum = 0
+
+        chattingRV.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(this)
+        (layoutManager as LinearLayoutManager).reverseLayout = true
+        (layoutManager as LinearLayoutManager).stackFromEnd = true
+        chattingRV.setLayoutManager(layoutManager)
+        chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
+        chattingRV.setAdapter(chattingMessagesRVAdapter)
+
+        // 약속 여부 받아오기 & 메세지 페이징 or 룸디비에서 load
+        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
+            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
+            loadMessages()
+            Log.d("인터넷 연결 확인", "CONNECTED")
+        }else{
+            Log.d("인터넷 연결 확인", "DISCONNECTED")
+            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
+                setAppointmentBtnExist()
+            }else{
+                setAppointmentBtnNotExist()
+            }
+
+            showToast("네트워크 상태를 확인해주세요.")
+
+            val storedMessages = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+            if(storedMessages != null){
+                chattingMessagesRVAdapter.addPagingMessages(storedMessages)
+                chattingRV.scrollToPosition(0)
+            } else{
+                showToast("주고받은 채팅 메세지가 없습니다.")
+                Log.d("ChattingActivity - initView","채팅방 생성 이후 아무 메세지도 주고받지 않음")
+            }
+        }
+    }
+
+    private fun setAppointmentBtn(){
+
+        // 약속 여부 받아오기 & 메세지 페이징 or 룸디비에서 load
+        if(isNetworkAvailable(this)){   // 인터넷 연결 돼있을 때
+            AppointmentService.isAppointmentExist(this, thisUserIdx, partnerIdx)
+            Log.d("인터넷 연결 확인", "CONNECTED")
+        }else{
+            Log.d("인터넷 연결 확인", "DISCONNECTED")
+            if (chatDB.chatRoomDao().getAppointmentExist(chatRoomIdx)){ // 잡혀있는 약속이 있을 때
+                setAppointmentBtnExist()
+            }else{
+                setAppointmentBtnNotExist()
+            }
+
+            showToast("네트워크 상태를 확인해주세요.")
         }
     }
 
@@ -342,13 +375,95 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 if(chatRoomIdxOfReceivcedMessage.equals(chatRoomIdx)){
                     Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
                     //Log.d("onNewIntent","채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
+                    if(type.equals("MESSAGE")){
+                        //var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
+//                        val sentAtString = bundle.getString("sentAt").toString()
+//                    val formattedSentAt = getFormattedDateTime(sentAtString)
+//
+//                    val parsedSentAtStringArray = sentAtString.split(".")
+//                    var parsedSentAtString = parsedSentAtStringArray[0]
+//                    val sentDateTime = LocalDateTime.parse(parsedSentAtString)
+
+                        val messageItem = bundle.getParcelable<ChatMessageItem>("messageItem")
+                        if(messageItem != null){    // 포그라운드에서
+                            Log.d("ChattingActivitiy - messageItem", "is not null")
+                            // intent로 messageItem 객체 받아서 messageItems에 add하기
+                            val chatMessageItem = bundle.getParcelable<ChatMessageItem>("messageItem")!!
+
+
+                            val sentDateTime = chatMessageItem.sentAt
+
+                            // 날짜가 바뀌었다면 날짜변경선 추가
+                            if(chattingMessagesRVAdapter.itemCount != 0){
+                                val lastDateTime = chattingMessagesRVAdapter.getItem(0)?.sentAt!!
+                                if (isDateChanged(sentDateTime, lastDateTime)){
+                                    val dateItem = ChatMessageItem(
+                                        "date",
+                                        getFormattedDate(sentDateTime.toString()),
+                                        "date",
+                                        sentDateTime,
+                                        ChatType.CENTER_MESSAGE,
+                                        chatRoomIdx,
+                                        "date" + sentDateTime
+                                    )
+                                    chattingMessagesRVAdapter.addItem(dateItem)
+                                    //messageItems.add(dateItem)
+                                    Log.d("날짜변경선 추가 후", dateItem.toString())
+                                }
+                            } else {    // 첫 메세지면 무조건 날짜변경선 추가
+                                val dateItem = ChatMessageItem(
+                                    "date",
+                                    getFormattedDate(sentDateTime.toString()),
+                                    "date",
+                                    sentDateTime,
+                                    ChatType.CENTER_MESSAGE,
+                                    chatRoomIdx,
+                                    "date" + sentDateTime
+                                )
+                                chattingMessagesRVAdapter.addItem(dateItem)
+                                //messageItems.add(dateItem)
+                                Log.d("첫 메세지 - 날짜변경선 추가 후", dateItem.toString())
+                            }
+
+                            chattingMessagesRVAdapter.addItem(chatMessageItem)
+
+                            chattingRV.scrollToPosition(0)
+                        } else{
+                            // 백그라운드에서 왔으므로 onMessageReceived를 거치지 않음(messageItem이 null) -> page 다시 load
+                            initView(chatRoomIdx, partnerIdx)
+                        }
+
+
+//                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
+//                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
+//                    Log.d("updatedChatMessageList", updatedChatMessageList.toString())
+//                    val updatedChatMessageListSize = updatedChatMessageList.size
+//                    if(updatedChatMessageListSize != 0){
+//                        for(i: Int in 0..updatedChatMessageListSize-1){
+//                            addChatItem(updatedChatMessageList[i])
+//                            Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
+//                        }
+//                    }else{
+//                        Log.d("주고받은 채팅메세지가","없음~")
+//                    }
+
+                    } else if(type.equals("CREATE_APPOINTMENT")){
+                        // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼) // FirebaseMessagingServiceUtil에서 이미 약속정보 roomDB에 저장해줌!!
+                        setAppointmentBtnExist()
+                    } else if(type.equals("DELETE_APPOINTMENT")){
+                        // 약속 취소 ("약속" 버튼 -> "약속 잡기" 버튼)
+                        setAppointmentBtnNotExist()
+                    } else{
+                        // 약속 수정 - 딱히 해줄 거 없을듯?
+                    }
                 } else{
                     Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때")
                     chatRoomIdx = chatRoomIdxOfReceivcedMessage
                     chatRoomName.text = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
                     partnerIdx = chatDB.chatRoomDao().getChatRoom(chatRoomIdx).participantIdx!!
-                    pageNum = 0
-                    loadMessages()  // 새로운 채팅방의 첫 페이지 불러오도록 함
+                    initView(chatRoomIdx, partnerIdx)
+
+
 //                    if(!byPushAlarmClick){
 //                        Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
 //                        //Log.d("onNewIntent","채팅화면이며, 받은 메세지가 다른 사용자와의 채팅방일 때 - 푸시알림이 왔지만 아직 안누른 상태")
@@ -364,80 +479,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 //                    }
                 }
 
-                if(type.equals("MESSAGE")){
-                    //var messageItems : ArrayList<ChatMessageItem> = ArrayList<ChatMessageItem>()
-//                        val sentAtString = bundle.getString("sentAt").toString()
-//                    val formattedSentAt = getFormattedDateTime(sentAtString)
-//
-//                    val parsedSentAtStringArray = sentAtString.split(".")
-//                    var parsedSentAtString = parsedSentAtStringArray[0]
-//                    val sentDateTime = LocalDateTime.parse(parsedSentAtString)
 
-
-                    // intent로 messageItem 객체 받아서 messageItems에 add하기
-                    val chatMessageItem = bundle.getParcelable<ChatMessageItem>("messageItem")!!
-
-
-                    val sentDateTime = chatMessageItem.sentAt
-
-                    // 날짜가 바뀌었다면 날짜변경선 추가
-                    if(chattingMessagesRVAdapter.itemCount != 0){
-                        val lastDateTime = chattingMessagesRVAdapter.getItem(0)?.sentAt!!
-                        if (isDateChanged(sentDateTime, lastDateTime)){
-                            val dateItem = ChatMessageItem(
-                                "date",
-                                getFormattedDate(sentDateTime.toString()),
-                                "date",
-                                sentDateTime,
-                                ChatType.CENTER_MESSAGE,
-                                chatRoomIdx,
-                                "date" + sentDateTime
-                            )
-                            chattingMessagesRVAdapter.addItem(dateItem)
-                            //messageItems.add(dateItem)
-                            Log.d("날짜변경선 추가 후", dateItem.toString())
-                        }
-                    } else {    // 첫 메세지면 무조건 날짜변경선 추가
-                        val dateItem = ChatMessageItem(
-                            "date",
-                            getFormattedDate(sentDateTime.toString()),
-                            "date",
-                            sentDateTime,
-                            ChatType.CENTER_MESSAGE,
-                            chatRoomIdx,
-                            "date" + sentDateTime
-                        )
-                        chattingMessagesRVAdapter.addItem(dateItem)
-                        //messageItems.add(dateItem)
-                        Log.d("첫 메세지 - 날짜변경선 추가 후", dateItem.toString())
-                    }
-
-                    chattingMessagesRVAdapter.addItem(chatMessageItem)
-
-                    chattingRV.scrollToPosition(0)
-
-//                        val updatedChatMessageList = chatDB.chatMessageItemDao().getUpdatedMessages(chatRoomIdx, lastAddedChatMessageId)
-//                    Log.d("lastAddedChatMessageId", lastAddedChatMessageId.toString())
-//                    Log.d("updatedChatMessageList", updatedChatMessageList.toString())
-//                    val updatedChatMessageListSize = updatedChatMessageList.size
-//                    if(updatedChatMessageListSize != 0){
-//                        for(i: Int in 0..updatedChatMessageListSize-1){
-//                            addChatItem(updatedChatMessageList[i])
-//                            Log.d("onNewIntent - addChatItem", updatedChatMessageList[i].toString())
-//                        }
-//                    }else{
-//                        Log.d("주고받은 채팅메세지가","없음~")
-//                    }
-
-                } else if(type.equals("CREATE_APPOINTMENT")){
-                    // 약속 생성 ("약속 잡기" 버튼 -> "약속" 버튼) // FirebaseMessagingServiceUtil에서 이미 약속정보 roomDB에 저장해줌!!
-                    setAppointmentBtnExist()
-                } else if(type.equals("DELETE_APPOINTMENT")){
-                    // 약속 취소 ("약속" 버튼 -> "약속 잡기" 버튼)
-                    setAppointmentBtnNotExist()
-                } else{
-                    // 약속 수정 - 딱히 해줄 거 없을듯?
-                }
 
             }else{  // 채팅화면을 마지막으로 백그라운드로 전환했다가 푸시알림을 통해 다시 왔을 때 여기로 옴, onStart에서 api 호출해줄 것이므로 비워두면 됨
                 Log.d("채팅화면일때", "3 - null 존재")
@@ -452,8 +494,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     fun getFCMIntent(){
-        Log.d("ChattingActivivty 생명주기", "getFCMIntent(푸시알림을 눌러서 온 경우) - onStart에서 호출되도록 해놓음")
-        Log.d("getFCMIntent 시작", "즉 푸시알림을 눌러서 온 경우 / ")
+        Log.d("ChattingActivivty 생명주기", "getFCMIntent - onStart에서 호출되도록 해놓음")
+        Log.d("getFCMIntent 시작", "채팅화면 외 화면을 마지막으로 백그라운드 or 앱 종료 후 백그라운드에서 푸시알림 누른 경우")
         // 원래는 페이징으로 띄워주거나 update된 걸 저 아래 코드로 띄워줘야하는데, 일단 모든 채팅 메세지 가져오도록 함
         var bundle = intent?.extras
 
@@ -481,7 +523,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
             chatRoomIdx = chatRoomIdxByFCM
             chatRoomName.text = senderId
-
 
         }else{
             Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
