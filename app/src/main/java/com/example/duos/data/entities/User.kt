@@ -1,6 +1,7 @@
 package com.example.duos.data.entities
 
 import android.graphics.Bitmap
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -19,9 +20,3 @@ data class User(
     @PrimaryKey var userIdx: Int? = null
 )
 
-data class EditProfile(
-    var nickName: String,
-    var location: Int,
-    var experience: Int,
-    var introduce: String?
-)
