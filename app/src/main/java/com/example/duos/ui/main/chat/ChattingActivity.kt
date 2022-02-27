@@ -132,7 +132,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             getFCMIntent()
         }
 
-        chattingRV.setHasFixedSize(true)
+        //chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
         (layoutManager as LinearLayoutManager).reverseLayout = true
         (layoutManager as LinearLayoutManager).stackFromEnd = true
@@ -315,8 +315,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onSendMessageFailure(code: Int, message: String) {
-        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
-        //Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
+        showToast(message)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -550,11 +549,20 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         saveCurrentChatRoomIdx("")
         chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
         val itemCount = chattingMessagesRVAdapter.itemCount
-        if(itemCount >= 50){  // 리사이클러뷰에 데이터가 50개보다 많거나 같으면 listNum(=50)만큼 룸디비에 저장
+        if(itemCount >= listNum){  // 리사이클러뷰에 데이터가 50개보다 많거나 같으면 listNum(=50)만큼 룸디비에 저장
             for(i: Int in 0..listNum-1){
                 chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
             }
-        } else{ // 50개보다 적으면 itemCount만큼 룸디비에 저장
+            val lastChatMessageItem = chattingMessagesRVAdapter.getItem(listNum-1)
+            if (lastChatMessageItem != null) {
+                if(lastChatMessageItem.viewType != ChatType.CENTER_MESSAGE){
+                    val parsedLocalDateTime = lastChatMessageItem.sentAt
+                    val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
+                    val dateItem = ChatMessageItem("date", date, "date", parsedLocalDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date")
+                    chatDB.chatMessageItemDao().insert(dateItem)
+                }
+            }
+        } else{ // 20개보다 적으면 itemCount만큼 룸디비에 저장
             for(i: Int in 0..itemCount-1){
                 chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
             }
