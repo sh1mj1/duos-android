@@ -91,7 +91,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
         // 재설치 후 채팅방목록 본 적 없는 상태에서 채팅을 한 번도 주고받은 적이 없는 사용자에게 채팅메세지가 와서 푸시알림을 눌렀을 때도 룸디비에 chatRoom 데이터 없으므로 여기서 넣어줌
-        if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
+        if(chatDB.chatRoomDao().getChatRoomList().isNullOrEmpty()){
             ChatListService.chatList(this, getUserIdx()!!)
         }
     }
