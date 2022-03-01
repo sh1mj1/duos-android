@@ -55,6 +55,7 @@ class ApplicationClass : Application() {
         const val REVIEW_API = "api/reviews"
         const val EDIT_GET_API = "api/mypage/myprofile/previous"
         const val EDIT_PUT_NON_PIC_API = "api/mypage/myprofile/info"
+        const val EDIT_PUT_PIC_API = "api/mypage/myprofile/photo"
         const val DUPLICATE_NICKNAME_API = "api/nickname/duplication"
         const val NOTICE_GET_API = "api/notices"
         const val NOTICE_API = "api/notice"

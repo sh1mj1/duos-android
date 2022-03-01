@@ -46,7 +46,6 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
         (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv)
             .setImageResource(R.drawable.ic_my_page_back_btn)
-        startPostponedEnterTransition()
         (context as LastAppointmentActivity).findViewById<TextView>(R.id.top_previous_game_tv).text = "지난 약속"
         (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
             if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
@@ -79,7 +78,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
             }
             i++
         }
-
+        startPostponedEnterTransition()
         // 어댑터 설정
         val previousGameReviewRVAdapter = initPreviousRecyclerView()
         val morePreviousGameReviewRVAdapter = initMorePreviousRecyclerView()
@@ -90,7 +89,7 @@ class LastAppointmentFragment : BaseFragment<FragmentLastAppointmentGameBinding>
 
     override fun onGetAppointmentFailure(code: Int, message: String) {
         startPostponedEnterTransition()
-        Toast.makeText(context, " $TAG onGetAppointmentFailure", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {
