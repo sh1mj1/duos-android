@@ -25,13 +25,15 @@ import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.chat.chat.MessageListData
+import com.example.duos.data.remote.chat.chatList.ChatListService
+import com.example.duos.ui.main.chat.ChatListView
 import com.example.duos.utils.getCurrentChatRoomIdx
 import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
+class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView {
     val mContext : Context = this
     lateinit var chatDB: ChatDatabase
     lateinit var chatRoomIdx:String
@@ -81,6 +83,11 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         if(remoteMessage.data != null){
             Log.d("데이터메세지", remoteMessage.data.toString())
             messageData = remoteMessage.data
+
+            // 재설치 후 채팅방목록 본 적 없는 상태에서 푸시알림 받아서 눌렀을 때 채팅화면으로 이동하면 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+            if(chatDB.chatRoomDao().getChatRoomList().isEmpty() ){
+                ChatListService.chatList(this, getUserIdx()!!)
+            }
 
             val chatRoomList : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
             Log.d("채팅방리스트", chatRoomList.toString())
@@ -612,5 +619,22 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
+    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
+        if(!chatList.isEmpty()){
+            Log.d("채팅방 확인", chatList.toString())
+            for (i: Int in 0..chatList.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
+                chatDB.chatRoomDao().insert(chatList[i])
+            }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", "없음")
+        }
+    }
+
+    override fun onGetChatListFailure(code: Int, message: String) {
+        Log.d("onGetChatListFailure", "fail")
     }
 }
