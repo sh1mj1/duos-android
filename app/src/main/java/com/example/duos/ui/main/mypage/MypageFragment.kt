@@ -160,12 +160,30 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val textExperienceBuilder = SpannableStringBuilder(textExperienceData)
         // index=0 에 해당하는 문자열(0)에 볼드체, 크기 적용
         val boldSpanEx = StyleSpan(Typeface.BOLD)
-        textExperienceBuilder.setSpan(boldSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val sizeBigSpanEx = RelativeSizeSpan(1.50f)
-        textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if(textExperienceData == "10년 이상" || textExperienceData == "10년 미만"){
+            textExperienceBuilder.setSpan(boldSpanEx, 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val sizeBigSpanEx = RelativeSizeSpan(1.56f)
+            textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }else{
+            textExperienceBuilder.setSpan(boldSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val sizeBigSpanEx = RelativeSizeSpan(1.56f)
+            textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
         // TextView에 적용
         textExperience.text = textExperienceBuilder
     }
 
 }
 
+
+/*
+if(textExperienceData == "10년 이상" || textExperienceData == "10년 미만"){
+            textExperienceBuilder.setSpan(boldSpanEx, 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val sizeBigSpanEx = RelativeSizeSpan(1.56f)
+            textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }else{
+        textExperienceBuilder.setSpan(boldSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val sizeBigSpanEx = RelativeSizeSpan(1.56f)
+        textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+ */

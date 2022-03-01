@@ -493,35 +493,43 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             // 프로필 이미지만 변경됨
             if (viewModel.setEditProfileImgUrl.value == true && viewModel.setEditProfileNonPic.value == false) {
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
+                Log.d(TAG, "putSuccess : ${putSuccess}")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
             }
             //프로필 이미지 변경 X 나머지 변경됨.
             else if (viewModel.setEditProfileImgUrl.value == false && viewModel.setEditProfileNonPic.value == true) {
-                EditProfilePutService.putEditNonPicProfile(
-                    this, phoneNumber, nickname, birth, gender,
-                    locationIdx, experienceIdx, introduction, myUserIdx
-                )
-
+                EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
+                    locationIdx, experienceIdx, introduction, myUserIdx)
+                Log.d(TAG, "putSuccess : ${putSuccess}")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
             } else {  // 프로필 이미지 변경되고 나머지도 변경됨
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
-                EditProfilePutService.putEditNonPicProfile(
-                    this, phoneNumber, nickname, birth, gender,
-                    locationIdx, experienceIdx, introduction, myUserIdx
-                )
+                EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
+                    locationIdx, experienceIdx, introduction, myUserIdx)
+                Log.d(TAG, "putSuccess : ${putSuccess}")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
             }
             Log.d(
                 TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
                         " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
             )
-            if (putSuccess) {
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-            }
+//            if (putSuccess) {
+//                Log.d(TAG, "putSuccess : ${putSuccess}")
+//                val intent = Intent(activity, MyProfileActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                startActivity(intent)
+//            }
         }
 
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
         (context as EditProfileActivity).findViewById<ImageView>(R.id.edit_top_left_arrow_iv).setOnClickListener {
-                requireActivity().finish()
+            requireActivity().finish()
         }
     }
 
@@ -712,7 +720,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             TAG, "현재 뷰모델의 editProfileIntroduce는 ? ${viewModel.editProfileIntroduce.value} " +
                     ",현재 뷰모델의 editProfileNickname ? ${viewModel.editProfileNickname.value}"
         )
-//        Log.d(TAG, "Put 이후에 DB에 데이터 ${myProfileDB}")
 
         Log.d(TAG, "Put 이후 DB : ${db.userDao().getUser(myUserIdx)}")
 // go to MyPageFrag!
@@ -827,9 +834,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB}")
         Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
         putSuccess = true
-        val intent = Intent(activity, MyProfileActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+//        val intent = Intent(activity, MyProfileActivity::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//        startActivity(intent)
         Log.d(TAG, "onPutPicEditProfileItemSuccess : 여기는 startActivity 이후 로그")
 
     }

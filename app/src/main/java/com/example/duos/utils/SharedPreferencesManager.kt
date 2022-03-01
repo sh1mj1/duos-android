@@ -82,5 +82,5 @@ fun isFirstRunAfterInstalling(): Boolean = mSharedPreferences.getBoolean("isFirs
 fun saveIsFirstRunAfterInstalling(isFirstRunAfterInstalling: Boolean){
     val editor = mSharedPreferences.edit()
     editor.putBoolean("isFirstRunAfterInstalling", isFirstRunAfterInstalling)
-//    editor.clear().apply()
+    editor.apply()
 }
