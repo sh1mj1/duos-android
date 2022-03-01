@@ -8,8 +8,6 @@ import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.MyPageInfo
 import com.example.duos.data.local.UserDatabase
@@ -29,7 +27,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     val TAG: String = "MyPageService"
 
-    val myUserIdx = getUserIdx()!!  // sharedPreference 에 있는 내 userIdx
+    val myUserIdx = getUserIdx()  // sharedPreference 에 있는 내 userIdx
 
     override fun initAfterBinding() {
 
@@ -40,7 +38,6 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
         // 클릭리스너
         initClickListener()
-
     }
 
     // 클릭리스너
@@ -111,7 +108,6 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     }
 
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
-        //Toast.makeText(context, "$TAG , onGetMyPageItemSuccess", Toast.LENGTH_LONG).show()
 
         Log.d(TAG, "onGetMyPageItemSuccess")
         val phoneNumberView = toMyPagePhoneNumber(myPageInfo.phoneNumber)

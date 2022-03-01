@@ -820,11 +820,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
 //        DB에 사진 Uri 업데이트 -> RESULT 값으로 uri 값 요청하기
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        var myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
         Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀌기 전 ${myProfileDB}")
-        db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
-        val myProfileDB2 = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB2}")
+        db.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
+        myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB}")
         Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
         putSuccess = true
         val intent = Intent(activity, MyProfileActivity::class.java)
