@@ -105,7 +105,6 @@
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center_horizontal|bottom"
             android:letterSpacing="0.04"
-            android:lineSpacingExtra="0sp"
             android:textColor="@color/primary"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/my_place_iv"

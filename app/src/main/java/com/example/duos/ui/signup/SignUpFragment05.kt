@@ -303,7 +303,8 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                     profileBitmap = bitmap!!
                     viewModel.profileImg.value = profileBitmap
                     binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
-                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
+//                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
+                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
                 }
             }
 
@@ -316,10 +317,13 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                             // 안드로이드 10버전 이상
                             val source =
                                 ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            var bitmap = ImageDecoder.decodeBitmap(source)
+                            bitmap = resizeBitmap(1024, bitmap)
                             profileBitmap = bitmap
                             viewModel.profileImg.value = profileBitmap
                             binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
+                            binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
+
                         } else {
                             val cursor =
                                 requireActivity().contentResolver.query(uri, null, null, null, null)
@@ -334,6 +338,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                                 profileBitmap = bitmap
                                 viewModel.profileImg.value = profileBitmap
                                 binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
+                                binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
                             }
                         }
                     }
@@ -347,7 +352,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         // 이미지 비율 계산
         val ratio = targetWidth.toDouble() / source.width.toDouble()
         // 보정될 세로 길이 구하기
-        var targetHeight = (source.height * ratio).toInt()
+        val targetHeight = (source.height * ratio).toInt()
         // 크기를 조정한 bitmap 객체를 생성
         val result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false)
         return result

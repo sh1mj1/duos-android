@@ -32,13 +32,9 @@ import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import kotlin.coroutines.coroutineContext
 import okhttp3.ResponseBody
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 object NetworkModule {
-
-
 
     fun getRetrofit(): Retrofit {
         val client: OkHttpClient = OkHttpClient.Builder()
@@ -55,6 +51,7 @@ object NetworkModule {
                     LocalDateTime.parse(json.asString, DateTimeFormatter.ISO_DATE_TIME)
                 }).create()
 
+
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL) // 기본 URL 세팅
             .client(client) //Logger 세팅
@@ -65,12 +62,6 @@ object NetworkModule {
     }
 }
 
-//internal class internal class AuthInterceptorPutPic : Interceptor{
-//    override fun intercept(chain: Interceptor.Chain): Response {
-//        TODO("Not yet implemented")
-//    }
-//
-//}
 
 internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
 
@@ -89,25 +80,9 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
         val rawJson = response.body?.string() ?: "{}"
         val type = object : TypeToken<ResponseWrapper<*>>() {}.type
         val gson = Gson()
-
-//        val res = gson.fromJson<ResponseWrapper<*>>(rawJson, type)
-        val res = try{
-            val r = gson.fromJson<ResponseWrapper<*>>(rawJson, type) ?:throw JsonSyntaxException("Parse Fail")
-
-            if(!r.isSuccess){
-                ResponseWrapper<Any>(false, -999, "Server Logic Fail : ${r.message}", null)
-            }else{
-                r
-            }
-        }catch (e : JsonSyntaxException){
-            ResponseWrapper<Any>(false, -999, "json parsing fail : $e", null)
-        }catch(t : Throwable){
-            ResponseWrapper<Any>(false, -999, "unknown error : $t", null)
-        }
-        
+        val res = gson.fromJson<ResponseWrapper<*>>(rawJson, type)
         val responseJson = gson.toJson(res)
-        Log.d("resp", "responseJson : ${responseJson}")
-        
+
         if (res.code != null) {
             when (res.code) {
                 2007 -> {
@@ -164,4 +139,3 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
         viewModel.jwtRefreshSuccess.value = boolean
     }
 }
-

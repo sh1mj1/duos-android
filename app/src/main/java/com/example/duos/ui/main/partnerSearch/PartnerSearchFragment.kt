@@ -183,7 +183,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         }
 
         Log.d("유저idx", userIdx.toString())
-
         recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
 
         // 로그인할 때 저장해둔 userIdx를 불러와서, userIdx로 user의 닉네임과 프로필이미지를 룸디비에서 찾아 load시키도록
@@ -247,9 +246,11 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             Log.d("chatDB에 저장된 chatRoomList", "없음")
         }
         saveIsFirstRunAfterInstalling(false)
+        Log.d("유저idx2 Success", getUserIdx()!!.toString() )
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
         saveIsFirstRunAfterInstalling(true) //채팅방리스트를 룸디비에 정상적으로 저장 못했으니 다음 실행때 다시 저장하도록
+        Log.d("유저idx3 Failure", getUserIdx()!!.toString() )
     }
 }
