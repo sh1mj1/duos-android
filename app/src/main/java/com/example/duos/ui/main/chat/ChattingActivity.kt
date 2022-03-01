@@ -567,6 +567,12 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 chattingMessagesRVAdapter.getItem(i)?.let { chatDB.chatMessageItemDao().insert(it) }
             }
         }
+
+        val messageList = chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx)
+        if(messageList.isNullOrEmpty()){
+            val chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+            chatDB.chatRoomDao().delete(chatRoom)
+        }
     }
 
     override fun onAppointmentExistSuccess(isExisted : Boolean, appointmentIdx : Int) {

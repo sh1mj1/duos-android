@@ -96,6 +96,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         // 룸디비에 변경된/추가된 채팅방 저장
         var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
         var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+        var chatListDeleted = chatListStored.filterNot { it in chatListGotten } // 룸DB에 저장되어있는 채팅방 목록 중 서버에서 불러온 채팅방 목록에 속하지 않은 채팅방들의 리스트(회원탈퇴로 삭제된 채팅방)
 
         if(!chatListUpdated.isEmpty()){
             Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
@@ -113,6 +114,18 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }else{
             Log.d("업데이트된 채팅방 확인", "없음")
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }
+
+        if(!chatListDeleted.isEmpty()){
+            Log.d("삭제된 채팅방 확인", chatListDeleted.toString())
+
+            for (i: Int in 0..chatListDeleted.size-1){    // 룸DB에 아직 삭제처리되지 않은 채팅방을 모두 룸DB에서 삭제
+                chatDB.chatRoomDao().delete(chatListDeleted[i])
+            }
+            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("삭제된 채팅방 확인", "없음")
             Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }
     }
