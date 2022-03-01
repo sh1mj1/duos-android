@@ -475,16 +475,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
 
         binding.activatingApplyBtn.setOnClickListener {
-            // NonPic
             val phoneNumber = myProfileDB.phoneNumber.toString()
             val nickname = binding.nicknameEt.text.toString()    ////
             val birth = myProfileDB.birth.toString()
             val gender = myProfileDB.gender!!.toInt()
             val locationIdx = viewModel.editProfileLocation.value!!.toInt()     ////
             val experienceIdx = viewModel.editProfileExperience.value!!.toInt()     ////
-//            val profileImg = viewModel.editProfileImg.value
             val introduction = binding.contentIntroductionEt.text.toString()            ////
-            // Pic
             val bitmapRequestBody = profileBitmap?.let { BitmapRequestBody(it) }
             val bitmapMultipartBody: MultipartBody.Part? =
                 if (bitmapRequestBody == null) null
@@ -492,39 +489,31 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
             // 프로필 이미지만 변경됨
             if (viewModel.setEditProfileImgUrl.value == true && viewModel.setEditProfileNonPic.value == false) {
+                Log.d(TAG, "프로필 이미지만 변경됨")
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
-                Log.d(TAG, "putSuccess : ${putSuccess}")
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
             }
             //프로필 이미지 변경 X 나머지 변경됨.
             else if (viewModel.setEditProfileImgUrl.value == false && viewModel.setEditProfileNonPic.value == true) {
+                Log.d(TAG, "프로필 이미지 변경X , 나머지 변경됨 ")
                 EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
                     locationIdx, experienceIdx, introduction, myUserIdx)
-                Log.d(TAG, "putSuccess : ${putSuccess}")
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             } else {  // 프로필 이미지 변경되고 나머지도 변경됨
-                EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
+                Log.d(TAG, "프로필 이미지 변경, 나머지도 변경됨 ")
                 EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
                     locationIdx, experienceIdx, introduction, myUserIdx)
-                Log.d(TAG, "putSuccess : ${putSuccess}")
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
+                EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
             }
             Log.d(
                 TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
                         " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
             )
-//            if (putSuccess) {
-//                Log.d(TAG, "putSuccess : ${putSuccess}")
-//                val intent = Intent(activity, MyProfileActivity::class.java)
-//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                startActivity(intent)
-//            }
+//            Log.d(TAG, "putSuccess : ${putSuccess}")
+//            val intent = Intent(activity, MyProfileActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//            startActivity(intent)
         }
 
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
@@ -699,7 +688,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     ) {
         Log.d(TAG, "onPutEditProfileItemSuccess")
         // DB 업데이트
-        val db = UserDatabase.getInstance(requireContext().applicationContext)
+        val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
 
         user = User(
@@ -827,16 +816,15 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
 //        DB에 사진 Uri 업데이트 -> RESULT 값으로 uri 값 요청하기
         val db = UserDatabase.getInstance(requireContext())
-        var myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀌기 전 ${myProfileDB}")
-        db.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
-        myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
+        val myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
         Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB}")
         Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
         putSuccess = true
-//        val intent = Intent(activity, MyProfileActivity::class.java)
-//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//        startActivity(intent)
+        Log.d(TAG, "putSuccess : ${putSuccess}")
+        val intent = Intent(activity, MyProfileActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
         Log.d(TAG, "onPutPicEditProfileItemSuccess : 여기는 startActivity 이후 로그")
 
     }
