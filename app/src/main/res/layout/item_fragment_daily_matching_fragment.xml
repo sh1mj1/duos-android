@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/rectangler_dropshadow_png_later"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/rounded_rectangle"
+        android:backgroundTint="@color/primary"
+        android:gravity="center"
+        android:includeFontPadding="true"
+        android:paddingHorizontal="10dp"
+        android:text="@string/daily_matching_date_today"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_state_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/rounded_rectangle"
+        android:backgroundTint="@color/inch_worm"
+        android:gravity="center"
+        android:includeFontPadding="true"
+        android:paddingHorizontal="10dp"
+        android:text="@string/daily_matching_state_ongoing"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_date_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_date_tv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/applesdgothicneoregular"
+        android:text="테니스장에서 가볍게 단식 하실 분 찾아요!"
+        android:textColor="@color/nero"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/daily_matching_post_preview_date_tv"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_post_preview_date_tv" />
+
+    <ImageView
+        android:id="@+id/daily_matching_post_preview_location_icon_iv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_post_preview_title_tv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_location_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
+        android:layout_marginStart="1dp"
+        android:src="@drawable/ic_location"
+        android:text="목동 테니스장"
+        android:textColor="@color/nero"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_location_icon_iv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+    <ImageView
+        android:id="@+id/daily_matching_post_preview_calendar_icon_iv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="11dp"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_location_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_calendar_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
+        android:layout_marginStart="3dp"
+        android:src="@drawable/ic_location"
+        android:text="2/28(월)"
+        android:textColor="@color/nero"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_calendar_icon_iv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+
+    <ImageView
+        android:id="@+id/daily_matching_post_preview_time_icon_iv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="11dp"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_calendar_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
+        android:layout_marginStart="3dp"
+        android:src="@drawable/ic_location"
+        android:text="16:00~18:00"
+        android:textColor="@color/nero"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_time_icon_iv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+    <View
+        android:id="@+id/daily_matching_post_preview_underline_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/friend_list_dialog_line"
+        android:backgroundTint="@color/gallery"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_post_preview_location_icon_iv" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/daily_matching_post_preview_profile_cardview_cv"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        app:cardCornerRadius="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_post_preview_underline_view">
+
+        <ImageView
+            android:id="@+id/daily_matching_post_preview_profile_image_iv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chat_profile_img_1" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_nickname_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:gravity="center"
+        android:text="Roger"
+        android:textColor="@color/nero"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
+
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_age_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="20대"
+        android:textColor="@color/grey"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_nickname_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
+
+    <View
+        android:id="@+id/daily_matching_post_preview_heightline_view"
+        android:layout_width="0.8dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/friend_list_dialog_line"
+        android:backgroundTint="@color/gallery"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_age_tv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_age_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_age_tv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_gender_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:gravity="center"
+        android:text="남"
+        android:textColor="@color/grey"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_heightline_view"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_see_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="@color/dark_gray_A"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_comment_image_iv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
+
+    <ImageView
+        android:id="@+id/daily_matching_post_preview_see_image_iv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="3dp"
+        android:src="@drawable/ic_eye_line"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_see_count_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:tint="@color/grey" />
+
+    <TextView
+        android:id="@+id/daily_matching_post_preview_comment_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="9"
+        android:textColor="@color/dark_gray_A"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintEnd_toEndOf="@id/daily_matching_post_preview_underline_view"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
+
+    <ImageView
+        android:id="@+id/daily_matching_post_preview_comment_image_iv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="3dp"
+        android:src="@drawable/ic_comment"
+        app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_comment_count_tv"
+        app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv"
+        app:tint="@color/grey"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

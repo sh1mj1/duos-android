@@ -385,4 +385,22 @@
     <string name="text_nickname_blank">___________________</string>
 
 
+    <!-- 데일리 매칭 -->
+    <string name="daily_matching_tv">데일리 매칭</string>
+    <string name="daily_matching_tab_01">전체</string>
+    <string name="daily_matching_tab_02">인기글</string>
+    <string name="daily_matching_tab_03">마감임박</string>
+    <string name="daily_matching_date_today">오늘</string>
+    <string name="daily_matching_date_tomorrow">내일</string>
+    <string name="daily_matching_date_day_after_tomorrow">모레</string>
+    <string name="daily_matching_state_ongoing">모집 중</string>
+    <string name="daily_matching_state_complete">모집 완료</string>
+    <string name="daily_matching_write">글쓰기</string>
+    <string name="daily_matching_write_title">제목</string>
+    <string name="daily_matching_write_location">장소</string>
+    <string name="daily_matching_write_time">시간</string>
+    <string name="daily_matching_write_content">내용</string>
+    <string name="daily_matching_write_complete">완료</string>
+
+
 </resources>

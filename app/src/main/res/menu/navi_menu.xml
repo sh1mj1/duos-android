@@ -5,6 +5,11 @@
         android:title="@string/menu_partner"
         android:icon="@drawable/navi_partner_selector" />
     <item
+        android:id="@+id/menu_dailyMatchingFragment"
+        android:enabled="true"
+        android:icon="@drawable/navi_daily_matching_selector"
+        android:title="데일리매칭"/>
+    <item
         android:id="@+id/menu_friendFragment"
         android:enabled="true"
         android:title="@string/menu_friend"

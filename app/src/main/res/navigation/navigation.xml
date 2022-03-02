@@ -11,6 +11,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/menu_dailyMatchingFragment"
+        android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingFragment"
+        android:label="dailyMatchingFragment">
+    </fragment>
+
+    <fragment
         android:id="@+id/menu_friendFragment"
         android:name="com.example.duos.ui.main.friendList.FriendListFragment"
         android:label="friendFragment">
@@ -27,4 +33,6 @@
         android:name="com.example.duos.ui.main.mypage.MypageFragment"
         android:label="mypageFragment">
     </fragment>
+
+
 </navigation>
