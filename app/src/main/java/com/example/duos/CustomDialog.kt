@@ -14,9 +14,9 @@ class CustomDialog(context: Context) : Dialog(context) {
     var leftButtonMsg: String? = null
     var rightButtonMsg: String? = null
 
-    var messageBackGround: Int = R.drawable.ic_rectangler_introduction_on
-    var leftBtnBackGround: Int = R.drawable.ic_rectangler_introduction_on
-    var rightBtnBackGround: Int = R.drawable.ic_rectangler_introduction_on
+    var messageBackGround: Int = R.drawable.ic_rectangle_introduction_on
+    var leftBtnBackGround: Int = R.drawable.ic_rectangle_introduction_on
+    var rightBtnBackGround: Int = R.drawable.ic_rectangle_introduction_on
 
     var leftButtonCallback: CustomDialogCallback? = null
     var rightButtonCallback: CustomDialogCallback? = null
@@ -66,21 +66,21 @@ class CustomDialog(context: Context) : Dialog(context) {
     class Builder(val context: Context) {
         private var dialog = CustomDialog(context)
 
-        fun setCommentMessage(message: String, background: Int = R.drawable.ic_rectangler_introduction_on): Builder {
+        fun setCommentMessage(message: String, background: Int = R.drawable.ic_rectangle_introduction_on): Builder {
             dialog.messageTextView = message
             dialog.messageBackGround = background
             return this
         }
 
         fun setRightButton(
-            msg: String, callback: CustomDialogCallback, background: Int = R.drawable.ic_rectangler_introduction_on): Builder {
+            msg: String, callback: CustomDialogCallback, background: Int = R.drawable.ic_rectangle_introduction_on): Builder {
             dialog.rightButtonMsg = msg
             dialog.rightBtnBackGround = background
             dialog.rightButtonCallback = callback
             return this
         }
 
-        fun setLeftButton(msg: String, callback: CustomDialogCallback, background: Int = R.drawable.ic_rectangler_introduction_on): Builder {
+        fun setLeftButton(msg: String, callback: CustomDialogCallback, background: Int = R.drawable.ic_rectangle_introduction_on): Builder {
             dialog.leftButtonMsg = msg
             dialog.leftBtnBackGround = background
             dialog.leftButtonCallback = callback

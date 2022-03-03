@@ -115,7 +115,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
         chattingRV.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
-        (layoutManager as LinearLayoutManager).setStackFromEnd(true)    //
+        (layoutManager as LinearLayoutManager).setStackFromEnd(true)
         chattingRV.setLayoutManager(layoutManager)
         chattingRV.setItemAnimator(DefaultItemAnimator())
         chattingMessagesRVAdapter = ChattingMessagesRVAdapter(chatRoomIdx)
@@ -573,7 +573,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 val dateItem = ChatMessageItem("date", getFormattedDate(sentAt.toString()), "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+sentAt)
                 messageItems.add(dateItem)
             }
-            Log.d("for문 "+i, messageItems.toString())
+            Log.d("for문 "+ i, messageItems.toString())
         }
 
         messageItems.add(convertMessageListDataToChatMessageItem(messageList[listSize - 1]))
@@ -603,7 +603,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             chattingMessagesRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(messageItems)
-
             }
         }
 

@@ -6,15 +6,15 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    android:background="@drawable/rectangler_dropshadow_png_later"
+    android:background="@drawable/rectangle_dropshadow_png_later"
     android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/daily_matching_post_preview_date_tv"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_rectangle"
         android:backgroundTint="@color/primary"
         android:gravity="center"
@@ -23,6 +23,7 @@
         android:text="@string/daily_matching_date_today"
         android:textColor="@color/white"
         android:textSize="12sp"
+        android:textFontWeight="600"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,6 +40,7 @@
         android:text="@string/daily_matching_state_ongoing"
         android:textColor="@color/white"
         android:textSize="12sp"
+        android:textFontWeight="600"
         app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_date_tv"
         app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_date_tv" />
 
@@ -58,7 +60,7 @@
         android:id="@+id/daily_matching_post_preview_location_icon_iv"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_location"
         app:layout_constraintStart_toStartOf="parent"
@@ -212,7 +214,7 @@
         android:textColor="@color/dark_gray_A"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
-        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_comment_image_iv"
+        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_chat_image_iv"
         app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
 
     <ImageView
@@ -227,25 +229,26 @@
         app:tint="@color/grey" />
 
     <TextView
-        android:id="@+id/daily_matching_post_preview_comment_count_tv"
+        android:id="@+id/daily_matching_post_preview_chat_count_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="9"
         android:textColor="@color/dark_gray_A"
         android:textSize="11sp"
+        android:layout_marginEnd="9dp"
         app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
         app:layout_constraintEnd_toEndOf="@id/daily_matching_post_preview_underline_view"
         app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv" />
 
     <ImageView
-        android:id="@+id/daily_matching_post_preview_comment_image_iv"
+        android:id="@+id/daily_matching_post_preview_chat_image_iv"
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginEnd="3dp"
         android:src="@drawable/ic_comment"
         app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_profile_cardview_cv"
-        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_comment_count_tv"
+        app:layout_constraintEnd_toStartOf="@id/daily_matching_post_preview_chat_count_tv"
         app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_profile_cardview_cv"
         app:tint="@color/grey"/>
 

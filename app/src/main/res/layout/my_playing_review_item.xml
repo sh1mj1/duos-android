@@ -5,7 +5,7 @@
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/rectangler_dropshadow_png_later"
+    android:background="@drawable/rectangle_dropshadow_png_later"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout

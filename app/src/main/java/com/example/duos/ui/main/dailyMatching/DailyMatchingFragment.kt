@@ -19,6 +19,8 @@ class DailyMatchingFragment :
         val dailyMatchingViewpagerAdapter = DailyMatchingViewpagerAdapter(this)
         binding.dailyMatchingContentViewpagerVp.adapter = dailyMatchingViewpagerAdapter
 
+        binding.dailyMatchingContentViewpagerVp.offscreenPageLimit = 3
+
         val child = binding.dailyMatchingContentViewpagerVp.getChildAt(0)
         (child as RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 

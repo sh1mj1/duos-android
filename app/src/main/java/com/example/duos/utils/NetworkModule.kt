@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import kotlin.coroutines.coroutineContext
 import okhttp3.ResponseBody
+import java.util.*
 
 
 object NetworkModule {
@@ -45,6 +46,7 @@ object NetworkModule {
             .build()
 
         val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
             .registerTypeAdapter(
                 LocalDateTime::class.java,
                 JsonDeserializer { json, _, _ ->
