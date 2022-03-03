@@ -117,8 +117,8 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
         isNextPageAvailable = hasNextPage
     }
 
-    override fun onItemClicked(dailyMatching: DailyMatching) {
-        Log.d("idx", dailyMatching.boardIdx.toString())
+    override fun onItemClicked(boardIdx: Int) {
+        Log.d("idx",boardIdx.toString())
     }
 
 }

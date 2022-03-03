@@ -121,8 +121,8 @@ class ImminentAllDailyMatchingFragment : BaseFragment<FragmentImminentDailyMatch
         isNextPageAvailable = hasNextPage
     }
 
-    override fun onItemClicked(dailyMatching: DailyMatching) {
-        Log.d("idx", dailyMatching.boardIdx.toString())
+    override fun onItemClicked(boardIdx: Int) {
+        Log.d("idx",boardIdx.toString())
     }
 
 }

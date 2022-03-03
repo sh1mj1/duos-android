@@ -39,7 +39,7 @@ class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
 
 
     interface OnItemClickListener{
-        fun onItemClicked(dailyMatching: DailyMatching)
+        fun onItemClicked(boardIdx : Int)
     }
 
 
@@ -261,7 +261,7 @@ class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
             userAge.text = (item.userAge - item.userAge % 10).toString() + "대"
 
             itemView.setOnClickListener {
-                clickListener.onItemClicked(item)
+                clickListener.onItemClicked(item.boardIdx)
             }
         }
     }
