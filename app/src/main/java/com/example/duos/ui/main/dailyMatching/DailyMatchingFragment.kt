@@ -1,5 +1,6 @@
 package com.example.duos.ui.main.dailyMatching
 
+import android.content.Intent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
@@ -9,6 +10,7 @@ import com.example.duos.ui.main.friendList.FriendListViewpagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 
 
 class DailyMatchingFragment :
@@ -34,5 +36,10 @@ class DailyMatchingFragment :
                 getString(R.string.daily_matching_tab_03)
             )[position]
         }.attach()
+
+        binding.dailyMatchingGotoWriteFrameLayoutFl.setOnClickListener {
+            val intent = Intent(activity, DailyMatchingWrite::class.java)
+            startActivity(intent)
+        }
     }
 }
