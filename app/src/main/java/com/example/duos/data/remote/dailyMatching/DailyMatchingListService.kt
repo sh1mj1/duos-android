@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-object DailyMatchingService {
+object DailyMatchingListService {
     val retrofit = NetworkModule.getRetrofit()
     fun getAllDailyMatching(
         allDailyMatchingView: AllDailyMatchingView,
@@ -94,7 +94,7 @@ object DailyMatchingService {
         dailyMatchingListRequesetBody: DailyMatchingListRequesetBody
     ) {
         val imminentDailyMatchingListService =
-            DailyMatchingService.retrofit.create(DailyMatchingRetrofitInterface::class.java)
+            DailyMatchingListService.retrofit.create(DailyMatchingRetrofitInterface::class.java)
 
         imminentDailyMatchingListService.getImminentDailyMatchingList(dailyMatchingListRequesetBody)
             .enqueue(object :

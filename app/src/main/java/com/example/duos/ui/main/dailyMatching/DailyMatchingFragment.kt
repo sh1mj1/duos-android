@@ -41,5 +41,6 @@ class DailyMatchingFragment :
             val intent = Intent(activity, DailyMatchingWrite::class.java)
             startActivity(intent)
         }
+
     }
 }

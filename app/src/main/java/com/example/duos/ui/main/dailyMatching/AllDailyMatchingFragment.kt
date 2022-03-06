@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.data.entities.dailyMatching.DailyMatching
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListRequesetBody
 import com.example.duos.data.remote.dailyMatching.AllDailyMatchingListResult
-import com.example.duos.data.remote.dailyMatching.DailyMatchingService
+import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
 import com.example.duos.databinding.FragmentAllDailyMatchingFragmentBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
@@ -75,14 +75,14 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
 
     private fun loadDailyMatchingList(){
         val dailyMatchingRequestBody = DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
-        DailyMatchingService.getAllDailyMatching(this, dailyMatchingRequestBody)
+        DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
     }
 
     private fun loadMoreDailyMatchingList(){
         dailyMatchingRVAdapter.setLoadingView(true)
         val dailyMatchingRequestBody = DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         Handler(Looper.getMainLooper()).postDelayed({
-            DailyMatchingService.getAllDailyMatching(this, dailyMatchingRequestBody)
+            DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
         }, 1000)
     }
 
