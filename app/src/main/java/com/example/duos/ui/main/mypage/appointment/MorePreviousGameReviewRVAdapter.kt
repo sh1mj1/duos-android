@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
-import com.example.duos.utils.GlideApp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -52,7 +52,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(morePreviousGame: AppointmentResDto) {
             binding.previousGamePlayerNicknameTv.text = morePreviousGame.nickname
-            GlideApp.with(binding.previousGamePlayerIv.context)
+            Glide.with(binding.previousGamePlayerIv.context)
                 .load(morePreviousGame.profilePhotoUrl)
                 .into(binding.previousGamePlayerIv)
             binding.previousGamePlayTimeTv.text = morePreviousGame.appointmentTime

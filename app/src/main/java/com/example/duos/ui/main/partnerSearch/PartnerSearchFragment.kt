@@ -45,7 +45,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //    }
 
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
-         // 서울시 마포구로 필터링됐을 떄를 가정
+        // 서울시 마포구로 필터링됐을 떄를 가정
         //        recommendedPartnerDatas.apply {
 //            // FLO clone coding 211110자 커밋 참고했음
 //            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
@@ -101,8 +101,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        //Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
-        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
     }
 
     override fun onStart() {
@@ -118,12 +117,10 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             // 룸디비에 저장되어있던 파트너 추천 목록 데이터를 가져옴
             recommendedPartnerDatas.clear()
             var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
-            Log.d("파트너 추천 목록 확인확인", storedRecommendedPartnerList.toString())
             recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
             binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
             Log.d("필터를 한번이라도 적용한 적 있음", "ㅎ")
-            Log.d("파트너 추천 목록 확인확인", recommendedPartnerDatas.toString())
 
         }else{  // 필터를 한 번도 적용한 적이 없는 사용자일때
             //날짜 확인
@@ -172,16 +169,6 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             Log.d("isFirstRunAfterInstalling - 룸디비 확인", chatDB.chatRoomDao().getChatRoomList().toString())
         }
 
-        binding.partnerSearchScrollViewSv.run {
-            header = binding.partnerSearchFixScrollLayoutCl
-            stickListener = { _ ->
-                Log.d("LOGGER_TAG", "stickListener")
-            }
-            freeListener = { _ ->
-                Log.d("LOGGER_TAG", "freeListener")
-            }
-        }
-
         Log.d("유저idx", userIdx.toString())
         recommendedPartnerDatabase = RecommendedPartnerDatabase.getInstance(requireContext())!!
 
@@ -202,6 +189,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 //        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
 //            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 //        binding.partnerSearchUserIdTv.text = "tennis1010"
+
+
 
 
 

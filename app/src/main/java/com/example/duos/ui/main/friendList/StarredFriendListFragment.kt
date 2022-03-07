@@ -41,7 +41,6 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
         binding.starredFriendListRecyclerviewRc.itemAnimator = null
         binding.starredFriendListRecyclerviewRc.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.starredFriendListRecyclerviewRc.adapter = StarredFriendListRVAdapter(ArrayList<StarredFriend>())
-        Log.d("initafterbinding","hi")
 
     }
 

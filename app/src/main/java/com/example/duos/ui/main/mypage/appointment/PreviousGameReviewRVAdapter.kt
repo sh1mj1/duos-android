@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
-import com.example.duos.utils.GlideApp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit

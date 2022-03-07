@@ -164,6 +164,16 @@
             <!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
         </provider>
 
+        <!-- 데일리 매칭 -->
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingWrite"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingDetail"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
 
         <service
             android:name=".FirebaseMessagingServiceUtil"

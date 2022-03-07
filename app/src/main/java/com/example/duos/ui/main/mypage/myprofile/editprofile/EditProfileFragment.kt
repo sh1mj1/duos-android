@@ -609,6 +609,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
 
             multiplePermissionsCode2 -> {
+                Log.d("ㅎㅇ2",resultCode.toString())
                 if (resultCode == Activity.RESULT_OK) {
                     // 선택한 이미지의 경로 데이터를 관리하는 Uri 객체를 추출
                     val uri = data?.data

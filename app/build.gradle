@@ -130,4 +130,7 @@ dependencies {
     implementation "androidx.core:core-ktx:1.2.4"
 
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.github.smhdk:km-recyclerview-sticky-header:1.0.0'
+
+    implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 }

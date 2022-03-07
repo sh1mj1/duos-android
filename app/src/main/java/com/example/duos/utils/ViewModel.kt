@@ -85,6 +85,24 @@ class ViewModel : ViewModel() {
     // jwt 재발급
     var jwtRefreshSuccess :  MutableLiveData<Boolean> = MutableLiveData(false)
 
+    // 데일리 매칭
+    var dailyMatchingTitle = MutableLiveData<String?>()
+    var dailyMatchingPlace = MutableLiveData<String?>()
+    var dailyMatchingContent = MutableLiveData<String?>()
+    var dailyMatchingDate : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingTime : MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var dailyMatchingImg01 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg02 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg03 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg01Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImg02Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImg03Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImgCount = MutableLiveData<Int?>()
+
+    init {
+        dailyMatchingImgCount.value = 0
+    }
 
     companion object {
         private var instance: com.example.duos.utils.ViewModel? = null

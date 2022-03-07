@@ -345,9 +345,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
             if (!type.isNullOrEmpty()) {
                 // 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 누르면 onMessageReceived를 거치지 않고 onNewIntent가 호출되고 senderId가 null으로 와서
-                    // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
-                    // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
-               Log.d("채팅화면일때", "3")
+                // .toString()을 통해 ""이 되어버리는 듯.. 그래서 senderId != null했을 때 true가 되어버림.. 그래서 isNullOrBlank()로 해서 false가 되도록 수정
+                // 즉 채팅화면을 마지막으로 백그라운드로 전환했을 때 푸시알림을 눌러도 addChatItem이 되지 않도록 함함
+                Log.d("채팅화면일때", "3")
                 //Log.d("발신자 아이디", senderId)
                 if(chatRoomIdxOfReceivcedMessage.equals(chatRoomIdx)){
                     Log.d("ChattingActivivty 생명주기", "onNewIntent - 채팅화면이며, 받은 메세지가 현재 보고있는 채팅방일 때")
@@ -427,8 +427,8 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
 
                     if(!isChatRoomIdxOfReceivcedMessageExist){
                         // 재설치 후 채팅방 목록을 봤는지와는 상관없이 아래 경우에 다 작동해야 정상.. 테스트 필요
-                            // 사용자 A와의 채팅화면에 있는데 채팅을 한 번도 주고받은 적이 없는 사용자 B에게 채팅메세지가 와서 푸시알림을 눌렀을 때
-                            // 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
+                        // 사용자 A와의 채팅화면에 있는데 채팅을 한 번도 주고받은 적이 없는 사용자 B에게 채팅메세지가 와서 푸시알림을 눌렀을 때
+                        // 룸디비에 chatRoom 데이터가 없기때문에 여기서 넣어줌
                         if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
                             ChatListService.chatList(this, getUserIdx()!!)
                         }
@@ -598,9 +598,9 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         binding.chattingMakePlanBtn.background = getDrawable(R.drawable.unchecked_check_box)
         binding.chattingMakePlanBtn.setTextColor(
             ContextCompat.getColor(
-            applicationContext,
-            R.color.dark_gray_B4
-        ))
+                applicationContext,
+                R.color.dark_gray_B4
+            ))
         binding.chattingMakePlanBtn.setText(getString(R.string.chatting_show_plan))
     }
 
@@ -696,20 +696,20 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         chattingRV.addOnScrollListener(object: RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                    if(hasNextPage()){
-                        val lastVisibleItem = (layoutManager as LinearLayoutManager)
-                            .findLastCompletelyVisibleItemPosition()
+                if(hasNextPage()){
+                    val lastVisibleItem = (layoutManager as LinearLayoutManager)
+                        .findLastCompletelyVisibleItemPosition()
 
-                        //Log.d("initScrollListener - lastVisibleItem", (lastVisibleItem).toString())
-                        if (dy < 0 && lastVisibleItem == chattingMessagesRVAdapter.itemCount - 1 && isNextPageAvailable) {
-                            loadMoreMessages()
-                            setHasNextPage(false)
-                        }
+                    //Log.d("initScrollListener - lastVisibleItem", (lastVisibleItem).toString())
+                    if (dy < 0 && lastVisibleItem == chattingMessagesRVAdapter.itemCount - 1 && isNextPageAvailable) {
+                        loadMoreMessages()
+                        setHasNextPage(false)
+                    }
 //                        if ((layoutManager as LinearLayoutManager).itemCount <= lastVisibleItem + n) {
 //                            loadMoreMessages()
 //                            setHasNextPage(false)
 //                        }
-                    }
+                }
             }
         })
     }

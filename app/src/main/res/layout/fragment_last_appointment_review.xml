@@ -82,7 +82,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="90dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_rectangler_introduction_on"
+            android:src="@drawable/ic_rectangle_introduction_on"
             app:layout_constraintTop_toBottomOf="@+id/review_rating_rb"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
