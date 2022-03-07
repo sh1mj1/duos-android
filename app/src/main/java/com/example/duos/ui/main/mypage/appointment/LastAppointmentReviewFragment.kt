@@ -39,17 +39,13 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
     lateinit var mContext: LastAppointmentActivity
     private var gson: Gson = Gson()
 
-    //    val postReqData = Array<ReviewsReqDto>()
-    val responseReviewData = ArrayList<PostReviewResDto>()
-
-//    var partnerUserIdx: Int = 0            // Appointment Frag 에서 나와 약속을 가진 partner의 Idx
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is LastAppointmentActivity) {
             mContext = context
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
@@ -57,33 +53,31 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initAfterBinding() {
-        Log.d(TAG, "Start_AppointmentReviewFragment")
-//        partnerUserIdx = requireArguments().getInt("partnerUserIdx")  /* From MyProfile OR PlayerProfile? thisIdx*/
         (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setImageResource(R.drawable.ic_btn_close_iv    )
-        /* 해당 화면에 회원 프로필 사진, 회원 nickname, binding 하기 */
-        val profileData =
-            arguments?.getString("profile")   /* From player's userIdx From AppointFrag */
+
+        val profileData = arguments?.getString("profile")
         val profile = gson.fromJson(profileData, AppointmentResDto::class.java)
-        // 이전 AppointmentFragment 에서 넘어온 프로필 이미지 회원 nickname binding
+
+        // 상단 회원 프로필 설정
         setInitProfile(profile)
 
-        /* Rating과 EditText에 입력되는 내용을 입력이 되면 작성 완료를 할 수 있도록 만들기 */
+        // Rating 과 EditText 에 입력되는 내용을 입력이 되면 작성 완료 활성화
         val editText = binding.contentReviewEt
         initEditText(editText)
 
+        // Frag BackStack 유무
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
         (context as LastAppointmentActivity).findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
             if (fragmentTransaction.backStackEntryCount >= 1) {   /* 백 스택 있으면 pop */
                 fragmentTransaction.popBackStack()
-            } else {  /* 없으면 finish() */
+            } else {
                 requireActivity().finish()
             }
         }
 
-        /* Rating과 EditText 에 입력되는 내용이 ReviewReqDto 에 들어가도록 만들기 */
+        // 작성 완료 클릭 리스너
         binding.activatingCompleteBtn.setOnClickListener {
-
-            val writerIdx = getUserIdx()!!
+            val writerIdx = getUserIdx()
             val revieweeIdx = profile.userIdx!!.toInt()
             val rating = binding.reviewRatingRb.rating
             val reviewContent = binding.contentReviewEt.text.toString()
@@ -91,7 +85,6 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
             val appointmentIdx = profile.appointmentIdx!!
 
             ReviewService.postReview(this, writerIdx, revieweeIdx, rating, reviewContent, createdAt, appointmentIdx, writerIdx)
-
         }
 
         // 상단 뒤로 가기 버튼 클릭
@@ -104,51 +97,51 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
     override fun onPostReviewSuccess(reviewResponse: ReviewResponse) {
         Log.d(TAG, "onPostReviewSuccess")
-
         (context as LastAppointmentActivity).supportFragmentManager.beginTransaction()
             .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment())
             .commitAllowingStateLoss()
-        Toast.makeText(context, "리뷰 작성 완료", Toast.LENGTH_LONG).show()
-        // 리뷰 작성했음을 Bundle로 넘겨줘야 하는가...?
-
+        showToast("리뷰 작성 완료")
     }
 
     override fun onPostReviewFailure(code: Int, message: String) {
-        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요")
     }
 
     private fun initEditText(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
-
             @SuppressLint("SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
-                    if (s.toString().length > 0 && s.toString().length < 300) { /* EditText 에 글이 1 ~ 400 자면 파란 작성완료 버튼*/
-                        binding.activatingCompleteBtn.isEnabled = true
-                        binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_done_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-                        binding.countTextLengthTv.text = ""
-                        binding.contentReviewEt.setTextColor(ContextCompat.getColor(mContext, R.color.black))
-                    } else if (s.toString().length >= 300) {    /* EditText 에 글이 400 자보다 길면 */
+                    when {
+                        s.toString().length in 1..300 -> {
+                            // EditText 에 글이 1 ~ 299 자면 파란 작성완료 버튼
+                            binding.activatingCompleteBtn.isEnabled = true
+                            binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_done_rectangular)
+                            binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
+                            binding.countTextLengthTv.text = ""
+                            binding.contentReviewEt.setTextColor(ContextCompat.getColor(mContext, R.color.black))
+                        }
+                        s.toString().length >= 301 -> {
+                            // EditText 에 글이 400 자보다 길면
+                            binding.activatingCompleteBtn.isEnabled = false
+                            binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
+                            binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
+                            binding.countTextLengthTv.text = "리뷰는 최대 300자까지 입력 가능합니다."
+                            showToast("리뷰는 최대 300자까지 입력 가능합니다.")
 
-                        binding.activatingCompleteBtn.isEnabled = false
-                        binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
-                        binding.countTextLengthTv.text = "리뷰는 최대 300자까지 입력 가능합니다."
-                        Toast.makeText(context, "리뷰는 최대 300자까지 입력 가능합니다.", Toast.LENGTH_LONG)
-                            .show()
+                        }
+                        else -> {
+                            // EditText 에 글이 없으면 회색 작성완료 버튼
+                            binding.activatingCompleteBtn.isEnabled = false
+                            binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
+                            binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
+                            binding.countTextLengthTv.text = "내용을 입력해주세요."
 
-                    } else { /* EditText 에 글이 없으면 회색 작성완료 버튼*/
-                        binding.activatingCompleteBtn.isEnabled = false
-                        binding.activatingCompleteBtn.setBackgroundResource(R.drawable.next_btn_inactivitate_rectangular)
-                        binding.activatingCompleteBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
-                        binding.countTextLengthTv.text = "내용을 입력해주세요."
-
+                        }
                     }
                 }
             }
@@ -157,6 +150,7 @@ class LastAppointmentReviewFragment : BaseFragment<FragmentLastAppointmentReview
 
     }
 
+    // 상단 회원 프로필 설정
     private fun setInitProfile(profile: AppointmentResDto) {
         Glide.with(binding.imgWriteReviewPlayerIv.context)
             .load(profile.profilePhotoUrl)

@@ -11,9 +11,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -56,8 +53,6 @@ import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
 import okhttp3.RequestBody
 import okio.BufferedSink
-import retrofit2.http.Multipart
-import java.net.URI
 import java.util.regex.Pattern
 
 class EditProfileFragment : Fragment(), EditProfileListView,
@@ -69,7 +64,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     lateinit var viewModel: ViewModel
     var savedState: Bundle? = null
-    val myUserIdx = getUserIdx()!!
+    private val myUserIdx = getUserIdx()
     var locationText: TextView? = null
     var checkStore: Boolean = false
     var inputIntroduction: String = ""
@@ -79,11 +74,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     lateinit var user: User
     var putSuccess: Boolean = false
 
-    // 카메라 접근 권한
-    var contentUri: Uri? = null
-
-    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
-    val CAMERA_PERMISSION_REQUEST = 100
+    private val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+    private val CAMERA_PERMISSION_REQUEST = 100
 
     // 멀티퍼미션 갤러리(앨범)
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -91,7 +83,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_MEDIA_LOCATION
     )
-    val multiplePermissionsCode2 = 300
+    private val multiplePermissionsCode2 = 300
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -104,7 +96,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.d(TAG, " onCreateView")
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
@@ -118,21 +110,17 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Log.d(TAG, "onViewCreated")
         onApplyDisable()    // 적용하기 비활
         EditProfileGetService.getEditProfile(this, myUserIdx)   // API 로 내 데이터 불러오기
-
+        // 내 프로필 데이터 불러오기 (Room)
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onViewCreated 에서 UserDB ${myProfileDB}")
+        val myProfileDB = db!!.userDao().getUser(myUserIdx)
         originExperience = myProfileDB.experience
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         binding.viewmodel = viewModel
 
         if (savedInstanceState != null && savedState == null) {
-            Log.d(TAG, "savedInstanceState != null && savedState == null")
             savedState = savedInstanceState.getBundle("savedState")
-            Log.d(TAG, " savedState : ${savedState}")
         }
         if (savedInstanceState != null) {
-            Log.d(TAG, "savedInstanceState != null")
             //  저장
             checkStore = true
             binding.btnCheckDuplicationTv.isEnabled = false
@@ -153,24 +141,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             viewModel.setEditProfileIsDuplicated.value = false
             viewModel.isChangedNickname.value = false
             viewModel.setEditProfileNonPic.value = false
-            Log.d(
-                TAG,
-                "saveInstanceState == null Or savedState != null : viewModel.editProfileNickname : ${viewModel.editProfileNickname.value}"
-            )
+
         }
         savedState = null
 
-
-        Log.d(TAG, " onViewCreated 초기 savedOInstance 조건문 탈출 후 myProfileDB $myProfileDB")
-        Log.d(
-            TAG,
-            "setEditProfileNickname : ${viewModel.setEditProfileNickName.value}  " +
-                    "setEditProfileLocation : ${viewModel.setEditProfileLocation.value}" +
-                    "setEditProfileIntroduction : ${viewModel.setEditProfileIntroduction.value} " +
-                    "setEditProfileExperience : ${viewModel.setEditProfileExperience.value} " +
-                    "setEditProfileIsDuplicated : ${viewModel.setEditProfileIsDuplicated.value}  " +
-                    "editProfileNickname : ${viewModel.editProfileNickname.value} "
-        )
 
         // 소개글 전체 삭제 클릭 리스너
         binding.btnClearIntroductionTv.setOnClickListener {
@@ -178,11 +152,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         }
 
         // 사진 관련
-        val file_path = requireActivity().getExternalFilesDir(null).toString()
         binding.myProfileImgIv.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(activity)
             dialogBuilder.setTitle(R.string.upload_pic_dialog_title)
-                .setItems(R.array.upload_pic_dialog_title, DialogInterface.OnClickListener { dialog, which ->
+                .setItems(R.array.upload_pic_dialog_title, DialogInterface.OnClickListener { _, which ->
                     when (which) {
                         // 카메라 0 썸네일로
                         0 -> {
@@ -190,32 +163,20 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                                 requireContext(),
                                 CAMERA_PERMISSION[0]
                             )
-                            Log.d("Signup_Image_Upload_Dialog", "checkSelfPermission$which")
 
                             when (permissionResult0) {
                                 PackageManager.PERMISSION_GRANTED -> {
-                                    Log.d(
-                                        "Signup_Image_Upload_Dialog",
-                                        "PERMISSION_GRANTED$which"
-                                    )
-                                    // 카메라 권한이 이미 허용된 상태일 때 바로 카메라 액티비티 호출
+                                    // 카메라 권한이 이미 허용됨 -> 카메라 액티비티 호출
                                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                                     startActivityForResult(intent, CAMERA_PERMISSION_REQUEST)
                                 }
                                 PackageManager.PERMISSION_DENIED -> {
-                                    Log.d(
-                                        "Signup_Image_Upload_Dialog",
-                                        "PERMISSION_DENIED$which"
-                                    )
-                                    // 카메라 권한이 허용된 상태가 아닐 때
-                                    // ActivityCompat.requestPermissions(requireActivity(), CAMERA_PERMISSION, CAMERA_PERMISSION_REQUEST)
-                                    // Fragment에서 onRequestPermissionsResult 호출하려면 requestPermissions만 쓰기
+                                    // 카메라 권한이 허용된 상태가 아님
                                     requestPermissions(
                                         CAMERA_PERMISSION,
                                         CAMERA_PERMISSION_REQUEST
                                     )
                                     // 이 떄 onRequestPermissionsResult 메소드 호출
-
                                 }
                             }
 
@@ -223,7 +184,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
                         // 내 앨범에서 선택
                         1 -> {
-                            Log.d("Signup_Image_Upload_Dialog", "파일 접근 $which")
                             val rejectedPermissionList = ArrayList<String>()
                             // 필요한 퍼미션들이 현재 권한을 받았는지 체크
                             for (permission in permission_list) {
@@ -232,18 +192,18 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                                         permission
                                     ) != PackageManager.PERMISSION_GRANTED
                                 ) {
-                                    //만약 권한이 없다면 rejectedPermissionList에 추가
+                                    //만약 권한이 없다면 없는 권한을 rejectedPermissionList 에 추가
                                     rejectedPermissionList.add(permission)
                                 }
                             }
-                            if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
+                            // 거절된 퍼미션 있다면?
+                            if (rejectedPermissionList.isNotEmpty()) {
                                 val array = arrayOfNulls<String>(rejectedPermissionList.size)
                                 requestPermissions(
                                     rejectedPermissionList.toArray(array),
                                     multiplePermissionsCode2
                                 )
                             } else {
-
                                 // 앨범에서 사진을 선택할 수 있도록 Intent
                                 val albumIntent = Intent(
                                     Intent.ACTION_PICK,
@@ -251,8 +211,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                                 )
                                 // 실행할 액티비티의 타입 설정(이미지를 선택할 수 있는 것)
                                 albumIntent.type = "image/*"
-                                // 선택할 파일의 타입 지정
-                                val mimeType = arrayOf("image/*")
+                                val mimeType = arrayOf("image/*")   // 선택할 파일의 타입 지정
                                 albumIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeType)
                                 startActivityForResult(albumIntent, multiplePermissionsCode2)
                             }
@@ -264,11 +223,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         }
 
         // 닉네임 관련
-        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+        viewModel.editProfileNickname.observe(viewLifecycleOwner) {
             val pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"
             if (!checkStore) {  /* 변경할 수 있는 닉네임인가? */
                 if (it!!.isNotEmpty()) {
-                    Log.d(TAG, "닉네임이 공백이 아님")
                     binding.nicknameEtField.isEndIconVisible = true
                     if (!Pattern.matches(pattern, it.toString()) or (it.length < 2)) {  /* 안되도록 */
                         binding.nickNameErrorTv.visibility = View.VISIBLE
@@ -276,32 +234,40 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                         binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_nickname_unable)
                         binding.btnCheckDuplicationTv.isEnabled = false
                         binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
-                        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
+                        binding.btnCheckDuplicationTv.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.dark_gray_A
+                            )
+                        )
                     } else {            /* 되도록 */
                         binding.nickNameErrorTv.visibility = View.INVISIBLE
                         binding.nicknameCheckIconIv.visibility = View.VISIBLE
                         binding.nicknameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)
                         binding.btnCheckDuplicationTv.isEnabled = true
                         binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_done_rectangular)
-                        binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.primary))
+                        binding.btnCheckDuplicationTv.setTextColor(
+                            ContextCompat.getColor(
+                                mContext,
+                                R.color.primary
+                            )
+                        )
                     }
                 }
             }
             checkStore = false
-        })
+        }
 
         val nicknameEt = binding.nicknameEt
-        nicknameEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
-                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
-                } else {
-                    binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
-                    binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
-                }
+        nicknameEt.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
+                binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
+            } else {
+                binding.guideNicknameTv.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
+                binding.nicknameEt.setTextColor(ContextCompat.getColor(mContext, R.color.grey))
             }
-        })
+        }
 
         nicknameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -323,14 +289,16 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
         })
 
-        binding.btnCheckDuplicationTv.setOnClickListener {  /* 중복 확인 */
+        // 중복 확인 클릭 리스너
+        binding.btnCheckDuplicationTv.setOnClickListener {
             DuplicateNicknameService.getDuplicateNickname(this, myUserIdx, binding.nicknameEt.text.toString())
         }
 
         locationText = binding.locationInfoTv
 
         // 지역 설정 관련
-        binding.locationInfoTv.setOnClickListener { /* 다이얼로그 띄우기 */
+            // 다이얼로그 띄우기
+        binding.locationInfoTv.setOnClickListener {
             val dialog = LocationDialogFragment()
             activity?.supportFragmentManager?.let { fragmentManager ->
                 dialog.show(
@@ -338,24 +306,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 )
             }
         }
-
+            // 다이얼로그의 값 observe 해서 위젯에 값 띄우기
         viewModel.editProfileLocationDialogShowing.observe(viewLifecycleOwner,
-            Observer {   /* 다이얼로그의 값 observe 해서 값 띄우기*/
+            Observer {
                 if (it) {
                     binding.locationInfoTv.text =
                         viewModel.editProfileLocationCateName.value + " " + viewModel.editProfileLocationName.value
-                    Log.d(
-                        TAG, "${viewModel.editProfileLocationCateName.value} " +
-                                "${viewModel.editProfileLocationName.value}"
-                    )
-
-                    if (viewModel.editProfileLocation.value != myProfileDB.location) {
-                        viewModel.setEditProfileLocation.value = true
-                        Log.d(TAG, "viewModel.setEditProfileLocation.value : ${viewModel.setEditProfileLocation.value}")
-                    } else {
-                        viewModel.setEditProfileLocation.value = false
-                        Log.d(TAG, "viewModel.setEditProfileLocation.value : ${viewModel.setEditProfileLocation.value}")
-                    }
+                    viewModel.setEditProfileLocation.value = viewModel.editProfileLocation.value != myProfileDB.location
                 }
             })
 
@@ -378,18 +335,17 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             btn.tag = i.toString()
         }
 
-
-        /* TODO 적용하기를 누를 수 있는 조건이 있을 때 적용하기 버튼 활성화 */
-
-        binding.contentIntroductionEt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        // 소개글 관련
+            // 소개 focus
+        binding.contentIntroductionEt.onFocusChangeListener =
+            View.OnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     binding.guideIntroductionTv.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
                     binding.contentIntroductionEt.setTextColor(ContextCompat.getColor(mContext, R.color.nero))
                     binding.dimensionIntroductionIv.setImageDrawable(
                         ContextCompat.getDrawable(
                             mContext,
-                            R.drawable.ic_rectangler_introduction_on
+                            R.drawable.ic_rectangle_introduction_on
                         )
                     )
                 } else {
@@ -398,13 +354,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     binding.dimensionIntroductionIv.setImageDrawable(
                         ContextCompat.getDrawable(
                             mContext,
-                            R.drawable.ic_rectangler_introduction_off
+                            R.drawable.ic_rectangle_introduction_off
                         )
                     )
                 }
             }
-        })
 
+            // 소개글 길이에 따라 활성화 비활성화
         val introductionEt = binding.contentIntroductionEt
         introductionEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -418,60 +374,64 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 if (s.toString() == myProfileDB.introduce) {
                     viewModel.setEditProfileIntroduction.value = false
                 } else {
-                    if (s.toString().length > 0 && s.toString().length < 300) { /* EditText 에 글이 1 ~ 300 자면 파란 작성완료 버튼*/
-                        viewModel.setEditProfileIntroduction.value = true
-                    } else if (s.toString().length >= 300) {    /* EditText 에 글이 400 자보다 길면 */
-                        viewModel.setEditProfileIntroduction.value = false
-                        Toast.makeText(context, "자기소개는 최대 300자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
-                    } else if (s.toString().length == 0) { /* EditText 에 글이 없으면 회색 작성완료 버튼*/
-                        viewModel.setEditProfileIntroduction.value = false
+                    when {
+                        s.toString().length in 1..300 -> { /* EditText 에 글이 1 ~ 300 자면 파란 작성완료 버튼*/
+                            viewModel.setEditProfileIntroduction.value = true
+                        }
+                        s.toString().length >= 301 -> {    /* EditText 에 글이 400 자보다 길면 */
+                            viewModel.setEditProfileIntroduction.value = false
+                            Toast.makeText(context, "자기소개는 최대 300자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
+                        }
+                        s.toString().isEmpty() -> { /* EditText 에 글이 없으면 회색 작성완료 버튼*/
+                            viewModel.setEditProfileIntroduction.value = false
+                        }
                     }
                 }
             }
 
         })
 
-        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+        viewModel.editProfileNickname.observe(viewLifecycleOwner) {
             if (it != myProfileDB.nickName) {
-                viewModel.setEditProfileIsDuplicated.observe(viewLifecycleOwner, { it2 ->
+                viewModel.setEditProfileIsDuplicated.observe(viewLifecycleOwner) { it2 ->
                     if (it2) {
                         onApplyEnable()
                         viewModel.setEditProfileNonPic.value = true
                     } else {
                         onApplyDisable()
                     }
-                })
+                }
             }
-        })
-        viewModel.editProfileNickname.observe(viewLifecycleOwner, {
+        }
+        viewModel.editProfileNickname.observe(viewLifecycleOwner) {
             if (it == myProfileDB.nickName) {
-                viewModel.setEditProfileLocation.observe(viewLifecycleOwner, { it3 ->
+                viewModel.setEditProfileLocation.observe(viewLifecycleOwner) { it3 ->
                     if (it3 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileIsDuplicated.value == true)) {    /* 지역 변경 */
                         onApplyEnable()
                         viewModel.setEditProfileNonPic.value = true
                     }
-                })
-                viewModel.setEditProfileExperience.observe(viewLifecycleOwner, { it4 ->
+                }
+                viewModel.setEditProfileExperience.observe(viewLifecycleOwner) { it4 ->
                     if (it4 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileIsDuplicated.value == true)) {
                         onApplyEnable()
                         viewModel.setEditProfileNonPic.value = true
                     }
-                })
-                viewModel.setEditProfileIntroduction.observe(viewLifecycleOwner, { it5 ->
+                }
+                viewModel.setEditProfileIntroduction.observe(viewLifecycleOwner) { it5 ->
                     if (it5 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileIsDuplicated.value == true)) {
                         onApplyEnable()
                         viewModel.setEditProfileNonPic.value = true
                     }
-                })
-                viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner, { it6 ->
+                }
+                viewModel.setEditProfileImgUrl.observe(viewLifecycleOwner) { it6 ->
                     if (it6 && (viewModel.editProfileNickname.value == myProfileDB.nickName || viewModel.setEditProfileIsDuplicated.value == true)) {
                         onApplyEnable()
                     }
-                })
+                }
             } else {
                 onApplyDisable()
             }
-        })
+        }
 
 
         binding.activatingApplyBtn.setOnClickListener {
@@ -489,31 +449,22 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
             // 프로필 이미지만 변경됨
             if (viewModel.setEditProfileImgUrl.value == true && viewModel.setEditProfileNonPic.value == false) {
-                Log.d(TAG, "프로필 이미지만 변경됨")
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
             }
             //프로필 이미지 변경 X 나머지 변경됨.
             else if (viewModel.setEditProfileImgUrl.value == false && viewModel.setEditProfileNonPic.value == true) {
-                Log.d(TAG, "프로필 이미지 변경X , 나머지 변경됨 ")
                 EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
                     locationIdx, experienceIdx, introduction, myUserIdx)
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
-            } else {  // 프로필 이미지 변경되고 나머지도 변경됨
-                Log.d(TAG, "프로필 이미지 변경, 나머지도 변경됨 ")
+            }
+            // 프로필 이미지 변경되고 나머지도 변경됨
+            else {
                 EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
                     locationIdx, experienceIdx, introduction, myUserIdx)
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
             }
-            Log.d(
-                TAG, " phoneNumber : $phoneNumber , nickname : $nickname , birth : $birth , gender : $gender ," +
-                        " locationIdx : $locationIdx , experienceIdx : $experienceIdx , introduction : $introduction  "
-            )
-//            Log.d(TAG, "putSuccess : ${putSuccess}")
-//            val intent = Intent(activity, MyProfileActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            startActivity(intent)
         }
 
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
@@ -535,8 +486,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        Log.d("Signup_Image_Upload_Dialog", "OnRequestPermissionsResult 호출댐.")
-        val file_path = requireActivity().getExternalFilesDir(null).toString()
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
@@ -548,10 +497,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
                 } else {
                     // 권한 거부 시 로그 띄우기
-                    Log.d("Signup_Image_Upload_Dialog", "OnRequestPermissionsResult에서 카메라0 권한 거부.")
-                    Toast.makeText(
-                        requireContext(),
-                        "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
+                    Toast.makeText(requireContext(), "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -561,11 +507,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 var startAlb = true
                 if (grantResults.isNotEmpty()) {
                     for ((i, permission) in permissions.withIndex()) {
-                        // 권한이 없는 permission이 있다면
+                        // 권한이 없는 permission 이 있다면
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            Log.d("Signup", "사용하려면 권한 체크 해야되")
-                            Toast.makeText(
-                                requireContext(),
+                            Toast.makeText(requireContext(),
                                 "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
                                 Toast.LENGTH_LONG
                             ).show()
@@ -603,13 +547,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     viewModel.setEditProfileImgUrl.value = true
                     binding.myProfileImgIv.setImageBitmap(bitmap)
                     binding.myProfileImgIv.scaleType = ImageView.ScaleType.FIT_XY
-
-
                 }
             }
 
             multiplePermissionsCode2 -> {
-                Log.d("ㅎㅇ2",resultCode.toString())
                 if (resultCode == Activity.RESULT_OK) {
                     // 선택한 이미지의 경로 데이터를 관리하는 Uri 객체를 추출
                     val uri = data?.data
@@ -651,11 +592,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     override fun onGetEditProfileItemSuccess(getEditProfileResDto: GetEditProfileResDto) {
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onGetEditProfileItemSuccess 처음 내 데이터 가져왔을 때 내 UserDB : ${myProfileDB}")
         // 닉네임, 지역, 소개, 프로필 이미지, 구력
         binding.nicknameEt.hint = getEditProfileResDto.existingProfileInfo.nickname
         viewModel.editProfileNickname.value = getEditProfileResDto.existingProfileInfo.nickname
-        Log.d(TAG, "처음 API로 내 프로필 데이터 가져왔을 때 editProfileNickname : ${viewModel.editProfileNickname.value}")
         binding.locationInfoTv.text = toLocationStr(myProfileDB.location!!)
         // 소개글 API 로 값 가져오기, Editable 형태로 넣기
         inputIntroduction = getEditProfileResDto.existingProfileInfo.introduction
@@ -669,7 +608,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     override fun onGetEditItemFailure(code: Int, message: String) {
-        Log.d(TAG, "code: $code , message : $message ")
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
 
@@ -687,10 +625,9 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         editPutProfileResponse: EditProfilePutResponse,
         message: String
     ) {
-        Log.d(TAG, "onPutEditProfileItemSuccess")
         // DB 업데이트
         val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        val myProfileDB = db!!.userDao().getUser(myUserIdx)
 
         user = User(
             phoneNumber = myProfileDB.phoneNumber,
@@ -704,26 +641,18 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             fcmToken = myProfileDB.fcmToken,
             myUserIdx
         )
-        Log.d(TAG, "DB 업데이트 할 인수 ${user}")
         db.userDao().update(user)
-        Log.d(
-            TAG, "현재 뷰모델의 editProfileIntroduce는 ? ${viewModel.editProfileIntroduce.value} " +
-                    ",현재 뷰모델의 editProfileNickname ? ${viewModel.editProfileNickname.value}"
-        )
-
-        Log.d(TAG, "Put 이후 DB : ${db.userDao().getUser(myUserIdx)}")
-// go to MyPageFrag!
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         putSuccess = true
     }
 
     override fun onPutEditNonPicProfileItemFailure(code: Int, message: String) {
-        Log.d(TAG, "onPutEditProfileItemFailure")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "네트워크 연결을 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG)
     }
 
     // 사진의 사이즈를 조정하는 메서드
-    fun resizeBitmap(targetWidth: Int, source: Bitmap): Bitmap {
+    private fun resizeBitmap(targetWidth: Int, source: Bitmap): Bitmap {
         // 이미지 비율 계산
         val ratio = targetWidth.toDouble() / source.width.toDouble()
         // 보정될 세로 길이 구하기
@@ -735,7 +664,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("onsave", "ㅎㅇ")
         super.onSaveInstanceState(outState)
         outState.putBundle(
             "savedState",
@@ -750,7 +678,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         return state
     }
 
-    fun toLocationStr(index: Int): String? {
+    private fun toLocationStr(index: Int): String? {
         val array = resources.getStringArray(R.array.location_full_name)
         return array[index]
 
@@ -758,21 +686,23 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyEnable() {
-        binding.activatingApplyBtn.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-        binding.activatingApplyBtn.background =
-            requireActivity().getDrawable(R.drawable.signup_next_btn_done_rectangular)
-        binding.activatingApplyBtn.isEnabled = true
-
+        binding.activatingApplyBtn.apply {
+            setTextColor(ContextCompat.getColor(mContext, R.color.white))
+            background =
+                requireActivity().getDrawable(R.drawable.signup_next_btn_done_rectangular)
+            isEnabled = true
+        }
 
     }
 
     @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
     private fun onApplyDisable() {
-        binding.activatingApplyBtn.background =
-            requireActivity().getDrawable(R.drawable.signup_next_btn_rectangular)
-        binding.activatingApplyBtn.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
-        binding.activatingApplyBtn.isEnabled = false
-
+        binding.activatingApplyBtn.apply {
+            setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_B0))
+            isEnabled = false
+            background =
+                requireActivity().getDrawable(R.drawable.signup_next_btn_rectangular)
+        }
     }
 
 
@@ -781,7 +711,6 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         viewModel.setEditProfileNickName.value = true
         viewModel.isValidNicknameEditCondition.value = true
         viewModel.setEditProfileIsDuplicated.value = true
-        Log.d(TAG, "viewModel.setEditProfileNickName.value : ${viewModel.setEditProfileNickName.value}")
         binding.btnCheckDuplicationTv.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
         binding.btnCheckDuplicationTv.setTextColor(ContextCompat.getColor(mContext, R.color.dark_gray_A))
         binding.btnCheckDuplicationTv.isEnabled = false
@@ -804,14 +733,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
     fun setRadioButton(tag: Int) {
         viewModel.editProfileExperience.value = tag
-        Log.d(TAG, "setRadioButton() ${viewModel.editProfileExperience.value}")
-        if (viewModel.editProfileExperience.value != originExperience) {
-            viewModel.setEditProfileExperience.value = true
-            Log.d(TAG, " viewModel.setEditProfileExperience.value ${viewModel.setEditProfileExperience.value}")
-        } else {
-            viewModel.setEditProfileExperience.value = false
-            Log.d(TAG, " viewModel.setEditProfileExperience.value ${viewModel.setEditProfileExperience.value}")
-        }
+        viewModel.setEditProfileExperience.value = viewModel.editProfileExperience.value != originExperience
     }
 
     override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
@@ -819,14 +741,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         val db = UserDatabase.getInstance(requireContext())
         db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
         val myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Log.d(TAG, "onPutPicEditProfileItemSuccess URI 바뀐 후 ${myProfileDB}")
         Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
         putSuccess = true
-        Log.d(TAG, "putSuccess : ${putSuccess}")
         val intent = Intent(activity, MyProfileActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
-        Log.d(TAG, "onPutPicEditProfileItemSuccess : 여기는 startActivity 이후 로그")
 
     }
 

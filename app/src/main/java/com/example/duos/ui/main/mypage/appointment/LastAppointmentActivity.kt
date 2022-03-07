@@ -13,8 +13,6 @@ class LastAppointmentActivity :
             .replace(R.id.previous_game_into_fragment_container_fc, LastAppointmentFragment())
             .commitAllowingStateLoss()
 
-//        binding.signupNextBtn.visibility = View.GONE
-
     }
 
 

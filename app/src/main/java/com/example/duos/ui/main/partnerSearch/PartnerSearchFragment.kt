@@ -2,6 +2,7 @@ package com.example.duos.ui.main.partnerSearch
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

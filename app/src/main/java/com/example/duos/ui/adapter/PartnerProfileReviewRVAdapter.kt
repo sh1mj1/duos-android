@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile
+package com.example.duos.ui.adapter
 
 import android.os.Build
 import android.util.Log
@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.ReviewResDto
 import com.example.duos.databinding.MyPlayingReviewItemBinding
-import com.example.duos.ui.main.mypage.myprofile.PartnerProfileReviewRVAdapter.ViewHolder
-import com.example.duos.utils.DataToViewFormat
+import com.example.duos.ui.adapter.PartnerProfileReviewRVAdapter.ViewHolder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
