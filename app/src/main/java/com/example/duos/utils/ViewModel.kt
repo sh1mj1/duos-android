@@ -90,8 +90,9 @@ class ViewModel : ViewModel() {
     var dailyMatchingTitle = MutableLiveData<String?>()
     var dailyMatchingPlace = MutableLiveData<String?>()
     var dailyMatchingContent = MutableLiveData<String?>()
-    var dailyMatchingDate : MutableLiveData<Boolean> = MutableLiveData(false)
-    var dailyMatchingTime : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingDateCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingTimeCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingDate = MutableLiveData<String?>()
 
     var dailyMatchingImg01 : MutableLiveData<Boolean> = MutableLiveData(false)
     var dailyMatchingImg02 : MutableLiveData<Boolean> = MutableLiveData(false)

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/daily_matching_option_edit_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/daily_matching_option_edit"
+        android:textColor="@color/grey"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
+
+    <View
+        android:id="@+id/daily_matching_option_line_view_01"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@drawable/friend_list_dialog_line"
+        android:backgroundTint="@color/grainsboro_D"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_write_back_arrow_iv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/daily_matching_option_delete_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/daily_matching_option_delete"
+        android:textColor="@color/grey"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
+
+    <View
+        android:id="@+id/daily_matching_option_line_view_02"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@drawable/friend_list_dialog_line"
+        android:backgroundTint="@color/grainsboro_D"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_write_back_arrow_iv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/daily_matching_option_end_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/daily_matching_option_deadline"
+        android:textColor="@color/grey"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/daily_matching_detail_chatting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/unselected_btn"
+        android:backgroundTint="@color/white_smoke_E"
+        android:text="@string/daily_matching_option_cancel"
+        android:textColor="@color/dark_gray_B0"
+        android:textFontWeight="700"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

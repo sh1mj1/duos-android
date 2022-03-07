@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.dailyMatching
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -121,8 +122,13 @@ class ImminentAllDailyMatchingFragment : BaseFragment<FragmentImminentDailyMatch
         isNextPageAvailable = hasNextPage
     }
 
-    override fun onItemClicked(boardIdx: Int) {
-        Log.d("idx",boardIdx.toString())
+    override fun onItemClicked(boardIdx: Int, recruitmentStatus : String) {
+        Log.d("상태", "$boardIdx $recruitmentStatus")
+        if (recruitmentStatus.equals("recruiting")) {
+            val intent = Intent(activity, DailyMatchingDetail::class.java)
+            intent.putExtra("boardIdx", boardIdx)
+            startActivity(intent)
+        }
     }
 
 }

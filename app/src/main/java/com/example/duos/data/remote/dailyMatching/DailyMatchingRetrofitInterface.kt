@@ -34,6 +34,24 @@ interface DailyMatchingRetrofitInterface {
     fun dailyMatchingShowDetail(
         @Path("boardIdx") boardIdx : Int,
         @Query("userIdx") userIdx : Int
-    ): Call<ShowAppointmentResponse>
+    ): Call<DailyMatchingDetailResponse>
+
+    @GET("/api/board/{boardIdx}/option")
+    fun dailyMatchingOption(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingOptionResponse>
+
+    @POST("/api/board/{boardIdx}/finish")
+    fun dailyMatchingEnd(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingEndResponse>
+
+    @DELETE("/api/board/{boardIdx}/delete")
+    fun dailyMatchingDelete(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingDeleteResponse>
 
 }

@@ -3,6 +3,7 @@ package com.example.duos.data.remote.dailyMatching
 import android.util.Log
 import com.example.duos.ApplicationClass
 import com.example.duos.ui.main.dailyMatching.AllDailyMatchingView
+import com.example.duos.ui.main.dailyMatching.GetDailyMatchingDetailView
 import com.example.duos.ui.main.dailyMatching.ImminentDailyMatchingView
 import com.example.duos.ui.main.dailyMatching.PopularDailyMatchingView
 import com.example.duos.utils.NetworkModule
@@ -122,6 +123,44 @@ object DailyMatchingListService {
                 override fun onFailure(call: Call<ImminentDailyMatchingListResponse>, t: Throwable) {
                     Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
                     imminentDailyMatchingView.onGetImminentDailyMatchingViewFailure(
+                        400,
+                        "네트워크 오류가 발생했습니다."
+                    )
+                }
+            })
+    }
+
+    fun getDailyMatchingDetail(
+        getDailyMatchingDetailView: GetDailyMatchingDetailView,
+        boardIdx : Int, usrIdx : Int
+    ) {
+        val getDailyMatchingDetailService = retrofit.create(DailyMatchingRetrofitInterface::class.java)
+
+        getDailyMatchingDetailService.dailyMatchingShowDetail(boardIdx, usrIdx).enqueue(object :
+            Callback<DailyMatchingDetailResponse> {
+                override fun onResponse(
+                    call: Call<DailyMatchingDetailResponse>,
+                    response: Response<DailyMatchingDetailResponse>
+                ) {
+                    val resp = response.body()!!
+                    Log.d("resp", resp.toString())
+                    when (resp.code) {
+                        1000 ->
+                            resp.result?.let {
+                                getDailyMatchingDetailView.onGetDailyMatchingDetailSuccess(
+                                    resp.result
+                                )
+                            }
+                        else -> getDailyMatchingDetailView.onGetDailyMatchingDetailFailure(
+                            resp.code,
+                            resp.message
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<DailyMatchingDetailResponse>, t: Throwable) {
+                    Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+                    getDailyMatchingDetailView.onGetDailyMatchingDetailFailure(
                         400,
                         "네트워크 오류가 발생했습니다."
                     )

@@ -30,7 +30,6 @@ import com.example.duos.data.remote.dailyMatching.DailyMatchingWriteService
 import com.example.duos.data.remote.dailyMatching.DailyWriteResult
 import com.example.duos.databinding.ActivityDailyMatchingWriteBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.signup.SignUpFragment05
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import okhttp3.MediaType
@@ -89,12 +88,14 @@ class DailyMatchingWrite :
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(ViewModel::class.java)
-        viewModel.dailyMatchingDate.value = false
-        viewModel.dailyMatchingTime.value = false
+        viewModel.dailyMatchingDateCheck.value = false
+        viewModel.dailyMatchingTimeCheck.value = false
         binding.viewmodel = viewModel
 
-        val dailyMatchingWritetRVAdapter = DailyMatchingTimeSelectRVAdapter(setTime)
-        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.setHasFixedSize(true)
+        val currentTime = LocalDateTime.now()
+
+        var dailyMatchingWritetRVAdapter = DailyMatchingTimeSelectRVAdapter(setTime)
+        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.setHasFixedSize(false)
         binding.dailyMatchingWriteSelectTimeRecyclerviewRv.itemAnimator = null
         binding.dailyMatchingWriteSelectTimeRecyclerviewRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -131,8 +132,8 @@ class DailyMatchingWrite :
             }
 
             override fun onResetItem(startPosition: Int) {
-                if (viewModel.dailyMatchingTime.value == false)
-                    viewModel.dailyMatchingTime.value = true
+                if (viewModel.dailyMatchingTimeCheck.value == false)
+                    viewModel.dailyMatchingTimeCheck.value = true
                 binding.dailyMatchingWriteSelectTimeTv.text =
                     ((setTime + startPosition).toString() + ":00 - " +
                             (setTime + startPosition + 1).toString() + ":00" + "(" + "1시간)")
@@ -159,10 +160,10 @@ class DailyMatchingWrite :
                         this.viewModel.dailyMatchingContent.observe(this, { it3 ->
                             if (it3!!.isNotEmpty()) {
                                 Log.d("3", "")
-                                this.viewModel.dailyMatchingDate.observe(this, { it4 ->
+                                this.viewModel.dailyMatchingDateCheck.observe(this, { it4 ->
                                     if (it4 == true) {
                                         Log.d("4", "")
-                                        this.viewModel.dailyMatchingTime.observe(this, { it5 ->
+                                        this.viewModel.dailyMatchingTimeCheck.observe(this, { it5 ->
                                             if (it5 == true) {
                                                 Log.d("5", "")
                                                 setWriteBtnEnable()
@@ -179,10 +180,20 @@ class DailyMatchingWrite :
 
         binding.dailyMatchingWriteRadioGroupRg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = findViewById(checkedId)
-            if (viewModel.dailyMatchingDate.value == false)
-                viewModel.dailyMatchingDate.value = true
+            if (viewModel.dailyMatchingDateCheck.value == false)
+                viewModel.dailyMatchingDateCheck.value = true
             when (radio.tag) {
                 "today" -> {
+                    setTime = currentTime.hour + 1
+//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
+//                        val view =
+//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
+//                                i
+//                            )?.itemView
+//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
+//                        btn?.isSelected = false
+//                    }
+                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
                     binding.dailyMatchingTodayTv.setTextColor(
                         ContextCompat.getColor(
                             this,
@@ -202,8 +213,19 @@ class DailyMatchingWrite :
                         )
                     )
                     matchDate = now
+                    viewModel.dailyMatchingDate.value = "오늘"
                 }
                 "tomorrow" -> {
+//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
+//                        val view =
+//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
+//                                i
+//                            )?.itemView
+//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
+//                        btn?.isSelected = false
+//                    }
+                    setTime = 0
+                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
                     binding.dailyMatchingTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
@@ -223,8 +245,20 @@ class DailyMatchingWrite :
                         )
                     )
                     matchDate = tomorrow
+                    viewModel.dailyMatchingDate.value = "내일"
                 }
                 "dayaftertomorrow" -> {
+//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
+//                        val view =
+//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
+//                                i
+//                            )?.itemView
+//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
+//                        btn?.isSelected = false
+//                    }
+                    setTime = 0
+                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
+
                     binding.dailyMatchingDayAfterTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
@@ -244,6 +278,8 @@ class DailyMatchingWrite :
                         )
                     )
                     matchDate = dayAfterTomorrow
+                    viewModel.dailyMatchingDate.value = "모레"
+
                 }
             }
         })

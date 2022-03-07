@@ -408,6 +408,11 @@
     <string name="daily_matching_write_cancel">작성중인 글을 삭제하시겠습니까?</string>
     <string name="daily_matching_write_continue">계속 작성하기</string>
     <string name="daily_matching_write_delete">삭제</string>
+    <string name="daily_matching_option_deadline">모집마감</string>
+    <string name="daily_matching_option_delete">삭제하기</string>
+    <string name="daily_matching_option_edit">수정하기</string>
+    <string name="daily_matching_option_message">메시지 보내기</string>
+    <string name="daily_matching_option_cancel">취소</string>
 
 
 </resources>
