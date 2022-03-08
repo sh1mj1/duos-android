@@ -2,10 +2,7 @@ package com.example.duos.data.remote.dailyMatching
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.ui.main.dailyMatching.AllDailyMatchingView
-import com.example.duos.ui.main.dailyMatching.GetDailyMatchingDetailView
-import com.example.duos.ui.main.dailyMatching.ImminentDailyMatchingView
-import com.example.duos.ui.main.dailyMatching.PopularDailyMatchingView
+import com.example.duos.ui.main.dailyMatching.*
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -164,6 +161,43 @@ object DailyMatchingListService {
                         400,
                         "네트워크 오류가 발생했습니다."
                     )
+                }
+            })
+    }
+
+    fun getMyDailyMatching(
+        myDailyMatchingView: MyDailyMatchingView,
+        userIdx : Int
+    ) {
+        val myDailyMatchingListService =
+            retrofit.create(DailyMatchingRetrofitInterface::class.java)
+
+        myDailyMatchingListService.getMyDailyMatchingList(userIdx)
+            .enqueue(object :
+                Callback<MyDailyMatchingListResponse> {
+                override fun onResponse(
+                    call: Call<MyDailyMatchingListResponse>,
+                    response: Response<MyDailyMatchingListResponse>
+                ) {
+                    val resp = response.body()!!
+                    Log.d("resp", resp.toString())
+                    when (resp.code) {
+                        1000 ->
+                            resp.result?.let {
+                                myDailyMatchingView.onMyDailyMatchingViewSuccess(
+                                    resp.result
+                                )
+                            }
+                        else -> myDailyMatchingView.onMyDailyMatchingViewFailure(
+                            resp.code,
+                            resp.message
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<MyDailyMatchingListResponse>, t: Throwable) {
+                    Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+                    myDailyMatchingView.onMyDailyMatchingViewFailure(400, "네트워크 오류가 발생했습니다.")
                 }
             })
     }

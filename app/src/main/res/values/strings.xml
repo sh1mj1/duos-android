@@ -305,6 +305,10 @@
 
     <!--    여기까지 마이 프로필 수정하기-->
 
+    <!-- 내가 작성한 글 -->
+    <string name="myboard">내가 작성한 글</string>
+    <string name="myboard_previous">이전 글 보기</string>
+
     <!--    고객센터-->
     <string name="customer_service_customer_service">고객센터</string>
     <string name="customer_service_send_email">고객센터로 이메일 보내기</string>
@@ -371,6 +375,7 @@
     <!-- 마이 페이지 홈 -->
     <string name="my_page_text">마이 페이지</string>
     <string name="my_page_last_appointment">지난 약속</string>
+    <string name="my_page_my_board">내가 작성한 글</string>
     <string name="my_page_notice">공지사항</string>
     <string name="my_page_customer_service_center">고객센터</string>
     <string name="my_page_set">설정</string>

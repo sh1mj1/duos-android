@@ -59,3 +59,8 @@ data class DailyMatchingMessageResult(
     @SerializedName("targetChatRoomIdx") val targetChatRoomIdx : String,
     @SerializedName("participantList") val participantList : List<Int>
 )
+
+data class MyDailyMatchingListResult(
+    @SerializedName("activePostList") val activePostList : List<DailyMatching>,
+    @SerializedName("oldPostList") val oldPostList : List<DailyMatching>
+)

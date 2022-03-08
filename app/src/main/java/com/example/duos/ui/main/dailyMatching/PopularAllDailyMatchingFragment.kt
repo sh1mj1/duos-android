@@ -19,14 +19,14 @@ import com.example.duos.utils.getUserIdx
 
 class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchingBinding>
     (FragmentPopularDailyMatchingBinding::inflate), PopularDailyMatchingView,
-    DailyMatchingRVAdapter.OnItemClickListener {
+    DailyMatchingListRVAdapter.OnItemClickListener {
 
     var pageNum: Int = 0
     val listNum: Int = 30
     private var layoutManager: RecyclerView.LayoutManager? = null
     lateinit var mContext: MainActivity
     private var isNextPageAvailable = false // 다음 페이지 유무
-    lateinit var dailyMatchingRVAdapter: DailyMatchingRVAdapter
+    lateinit var dailyMatchingListRVAdapter: DailyMatchingListRVAdapter
 
 
     override fun onAttach(context: Context) {
@@ -41,8 +41,8 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
         binding.popularDailyMatchingRecyclerviewRc.itemAnimator = DefaultItemAnimator()
         layoutManager = LinearLayoutManager(requireContext())
         binding.popularDailyMatchingRecyclerviewRc.layoutManager = layoutManager
-        dailyMatchingRVAdapter = DailyMatchingRVAdapter(this)
-        binding.popularDailyMatchingRecyclerviewRc.adapter = dailyMatchingRVAdapter
+        dailyMatchingListRVAdapter = DailyMatchingListRVAdapter(this)
+        binding.popularDailyMatchingRecyclerviewRc.adapter = dailyMatchingListRVAdapter
     }
 
     override fun onResume() {
@@ -81,9 +81,9 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
         isNextPageAvailable = popularDailyMatchingListResult.isNextPageExists
 
         if (pageNum == 0) {
-            dailyMatchingRVAdapter.setPagingMessages(allDailyMatchingListDatas)
+            dailyMatchingListRVAdapter.setPagingMessages(allDailyMatchingListDatas)
         } else {
-            dailyMatchingRVAdapter.run {
+            dailyMatchingListRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(allDailyMatchingListDatas)
             }
@@ -102,7 +102,7 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
     }
 
     private fun loadMoreDailyMatchingList() {
-        dailyMatchingRVAdapter.setLoadingView(true)
+        dailyMatchingListRVAdapter.setLoadingView(true)
         val dailyMatchingRequestBody =
             DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         Handler(Looper.getMainLooper()).postDelayed({

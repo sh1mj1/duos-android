@@ -72,4 +72,9 @@ interface DailyMatchingRetrofitInterface {
         @Body participantIdx : DailyMatchingMessageParticipantIdx
     ) : Call<DailyMatchingMessageResponse>
 
+    @POST("/api/board/list/user")
+    fun getMyDailyMatchingList(
+        @Query("userIdx") userIdx : Int
+    ): Call<MyDailyMatchingListResponse>
+
 }
