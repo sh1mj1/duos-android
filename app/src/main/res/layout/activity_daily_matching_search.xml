@@ -26,13 +26,56 @@
                 android:layout_weight="5"
                 android:src="@drawable/back_arrow" />
 
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/signup_01_phone_number_layout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="18dp"-->
+<!--                android:animateLayoutChanges="false"-->
+<!--                android:paddingTop="10dp"-->
+<!--                app:boxBackgroundMode="none"-->
+<!--                app:endIconCheckable="true"-->
+<!--                app:endIconMode="clear_text"-->
+<!--                app:errorEnabled="false"-->
+<!--                app:hintEnabled="false"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/signup_01_phone_number_et"-->
+<!--                    style="@style/styleTextInputEditText"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:background="@null"-->
+<!--                    android:hint="@string/signup_phone_number_hint"-->
+<!--                    android:inputType="phone"-->
+<!--                    android:maxLength="13"-->
+<!--                    android:paddingStart="2dp"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:text="@={viewmodel.phoneNumber}"-->
+<!--                    android:textColor="@color/nero"-->
+<!--                    android:textColorHint="@color/dim_gray"-->
+<!--                    android:textSize="16sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
             <EditText
                 android:id="@+id/daily_matching_search_et"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="80"
-                android:background="@color/color_style_font3"
+                android:background="@color/white_smoke_F"
+                android:backgroundTint="@color/white_smoke_F"
                 android:hint="검색어를 입력하세요" />
+
+
 
         </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.duos.ui.adapter
 
 import android.annotation.SuppressLint
+import android.app.appsearch.SearchResult
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -17,29 +18,53 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.remote.dailyMatching.SearchResultItem
+import com.example.duos.databinding.ItemFragmentDailyMatchingFragmentBinding
 import com.example.duos.ui.main.dailyMatching.DailyMatchingRVAdapter
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
-class DailyMatchingSearchRVAdapter(val itemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DailyMatchingSearchRVAdapter(private val searchResultItem: ArrayList<SearchResultItem>) :
+    RecyclerView.Adapter<DailyMatchingSearchRVAdapter.ItemViewHolder>() {
 
-    private var dailyMatchingItem: java.util.ArrayList<SearchResultItem> =
-        java.util.ArrayList<SearchResultItem>()
     lateinit var context: Context
 
-    companion object {
-        private const val TYPE_ITEM = 0
-        private const val TYPE_LOADING = 1
+    interface SearchResultItemClickListener{
+        fun onItemClick(searchResultItem : SearchResultItem)
     }
 
-    interface OnItemClickListener {
-        fun onItemClicked(boardIdx: Int)
+    private lateinit var mItemClickListener : SearchResultItemClickListener
+
+    fun clickSearchResultListener(itemClickListener : SearchResultItemClickListener){
+        mItemClickListener = itemClickListener
     }
 
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val view: View
+        context = parent.context
+        Log.d("DailyMatchingSearch", "onCreateViewHolder")
+
+        val binding: ItemFragmentDailyMatchingFragmentBinding =
+            ItemFragmentDailyMatchingFragmentBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        return ItemViewHolder(binding)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.setItem(searchResultItem[position])
+        holder.itemView.setOnClickListener { mItemClickListener.onItemClick(searchResultItem[position]) }
+    }
+
+    override fun getItemCount(): Int = searchResultItem.size
+
+
+    inner class ItemViewHolder(val binding: ItemFragmentDailyMatchingFragmentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         var title: TextView
         var matchPlace: TextView
         var matchDate: TextView
@@ -54,24 +79,23 @@ class DailyMatchingSearchRVAdapter(val itemClickListener: OnItemClickListener) :
         var matchTime: TextView
 
         init {
-            title = itemView.findViewById(R.id.daily_matching_post_preview_title_tv)
-            matchPlace = itemView.findViewById(R.id.daily_matching_post_preview_location_tv)
-            matchDate = itemView.findViewById(R.id.daily_matching_post_preview_date_tv)
-            startTime = itemView.findViewById(R.id.daily_matching_post_preview_calendar_tv)
-            recruitmentStatus = itemView.findViewById(R.id.daily_matching_post_preview_state_tv)
-            userProfileImage =
-                itemView.findViewById(R.id.daily_matching_post_preview_profile_image_iv)
-            userNickname = itemView.findViewById(R.id.daily_matching_post_preview_nickname_tv)
-            userAge = itemView.findViewById(R.id.daily_matching_post_preview_age_tv)
-            userGender = itemView.findViewById(R.id.daily_matching_post_preview_gender_tv)
-            viewCount = itemView.findViewById(R.id.daily_matching_post_preview_see_count_tv)
-            matchTime = itemView.findViewById(R.id.daily_matching_post_preview_time_tv)
-            messageCount = itemView.findViewById(R.id.daily_matching_post_preview_chat_count_tv)
+            title = binding.dailyMatchingPostPreviewTitleTv
+            matchPlace = binding.dailyMatchingPostPreviewLocationTv
+            matchDate = binding.dailyMatchingPostPreviewDateTv
+            startTime = binding.dailyMatchingPostPreviewCalendarTv
+            recruitmentStatus = binding.dailyMatchingPostPreviewStateTv
+            userProfileImage = binding.dailyMatchingPostPreviewProfileImageIv
+            userNickname = binding.dailyMatchingPostPreviewNicknameTv
+            userAge = binding.dailyMatchingPostPreviewAgeTv
+            userGender = binding.dailyMatchingPostPreviewGenderTv
+            viewCount = binding.dailyMatchingPostPreviewSeeCountTv
+            matchTime = binding.dailyMatchingPostPreviewTimeTv
+            messageCount = binding.dailyMatchingPostPreviewChatCountTv
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SimpleDateFormat", "SetTextI18n")
-        fun setItem(item: SearchResultItem, clickListener: OnItemClickListener) {
+        fun setItem(item: SearchResultItem) {
             if (item.recruitmentStatus == "recruiting") {
                 DrawableCompat.setTint(
                     matchDate.background, ContextCompat.getColor(title.context, R.color.primary)
@@ -147,54 +171,7 @@ class DailyMatchingSearchRVAdapter(val itemClickListener: OnItemClickListener) :
             }
             userAge.text = (item.userAge - item.userAge % 10).toString() + "대"
 
-            itemView.setOnClickListener {
-                clickListener.onItemClicked(item.boardIdx)
-            }
-        }
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view: View
-        context = parent.context
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Log.d("DailyMatchingSearch", "onCreateViewHolder")
-        when (viewType) {
-            TYPE_ITEM -> {
-                view =
-                    inflater.inflate(R.layout.item_fragment_daily_matching_fragment, parent, false)
-                Log.d("DailyMatchingSearch", " onCreateViewHolder : viewType : TYPE_ITEM $viewType")
-                return ItemViewHolder(view)
-            }
-            else -> {
-                view = inflater.inflate(R.layout.message_loading, parent, false)
-                Log.d("DailyMatchingSearch", " onCreateViewHolder : viewType : TYPE_LOADING $viewType")
-                return LoadingViewHolder(view)
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ItemViewHolder) {
-            val item: SearchResultItem? = dailyMatchingItem[position]
-            if (item != null) {
-                (holder as ItemViewHolder).setItem(
-                    item,
-                    itemClickListener
-                )
-                Log.d("DailyMatchingSearch", " onBindViewHolder item : $item")
-            }
-
-        }
-    }
-
-    override fun getItemCount(): Int = dailyMatchingItem.size
-
-    inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var progressBar: ProgressBar
-
-        init {
-            progressBar = itemView.findViewById(R.id.chatting_loading_pb)
         }
     }
 }

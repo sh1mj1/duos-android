@@ -23,9 +23,8 @@ import com.example.duos.utils.getUserIdx
 
 class DailyMatchingSearchActivity :
     BaseActivity<ActivityDailyMatchingSearchBinding>(ActivityDailyMatchingSearchBinding::inflate),
-    DailyMatchingSearchView, DailyMatchingSearchRVAdapter.OnItemClickListener {
+    DailyMatchingSearchView {
     val userIdx = getUserIdx()
-    private var haveSearched = false
     val TAG = "DailyMatchingSearchActivity"
     private lateinit var searchHistoryAdapter: DailyMatchingSearchHistoryRVAdapter
     private var layoutManager: RecyclerView.LayoutManager? = null
@@ -43,12 +42,9 @@ class DailyMatchingSearchActivity :
         binding.allDailyMatchingRecyclerviewRc.itemAnimator = DefaultItemAnimator()
         layoutManager = LinearLayoutManager(this)
         binding.allDailyMatchingRecyclerviewRc.layoutManager = layoutManager
-        dailyMatchingSearchSearchRVAdapter = DailyMatchingSearchRVAdapter(this)
+        dailyMatchingSearchSearchRVAdapter =
+            DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
         binding.allDailyMatchingRecyclerviewRc.adapter = dailyMatchingSearchSearchRVAdapter
-
-
-
-
 
         binding.dailyMatchingSearchEt.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
@@ -146,23 +142,27 @@ class DailyMatchingSearchActivity :
             "검색결과 (${dailyMatchingSearchResultData.resultSize})"
         binding.dailyMatchingSearchRecentCl.visibility = View.GONE // 최근 검색어, 전체삭제
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
-        // TODO : 하단에 해당 뷰를연동 시키면 될텐데
         dailyMatchingSearchListDatas.clear()
         dailyMatchingSearchListDatas.addAll(dailyMatchingSearchResultData.searchResult)
         Log.d(TAG, "하단 결과 뷰 addAll 결과 $dailyMatchingSearchListDatas")
 
+        dailyMatchingSearchSearchRVAdapter.clickSearchResultListener(object :
+            DailyMatchingSearchRVAdapter.SearchResultItemClickListener {
+            override fun onItemClick(searchResultItem: SearchResultItem) {
+                // TODO : 해당 게시글로 이동
+                Log.d(TAG, "아이템 클릭 : boardIdx : ${searchResultItem.boardIdx}")
+            }
 
+        })
 
+    }
 
+    override fun onGetSearchViewLoading() {
+        Log.d(TAG, "로딩 중 ")
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
         showToast("네트워크 연결 확인 후 다시 시도해주세요.")
-    }
-
-    override fun onItemClicked(boardIdx: Int) {
-        Log.d("idx",boardIdx.toString())
-        // TODO : 액티비티 이동
     }
 
 
