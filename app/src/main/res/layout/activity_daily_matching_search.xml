@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,7 +14,7 @@
             android:id="@+id/daily_matching_search_top_ll"
             android:layout_width="match_parent"
             android:layout_height="37dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:weightSum="100"
             app:layout_constraintStart_toStartOf="parent"
@@ -21,60 +22,49 @@
 
             <ImageView
                 android:id="@+id/daily_matching_search_back_iv"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
                 android:layout_weight="5"
-                android:src="@drawable/back_arrow" />
+                android:src="@drawable/ic_back_30" />
 
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                android:id="@+id/signup_01_phone_number_layout"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="18dp"-->
-<!--                android:animateLayoutChanges="false"-->
-<!--                android:paddingTop="10dp"-->
-<!--                app:boxBackgroundMode="none"-->
-<!--                app:endIconCheckable="true"-->
-<!--                app:endIconMode="clear_text"-->
-<!--                app:errorEnabled="false"-->
-<!--                app:hintEnabled="false"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                <com.google.android.material.textfield.TextInputEditText-->
-<!--                    android:id="@+id/signup_01_phone_number_et"-->
-<!--                    style="@style/styleTextInputEditText"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:background="@null"-->
-<!--                    android:hint="@string/signup_phone_number_hint"-->
-<!--                    android:inputType="phone"-->
-<!--                    android:maxLength="13"-->
-<!--                    android:paddingStart="2dp"-->
-<!--                    android:singleLine="true"-->
-<!--                    android:text="@={viewmodel.phoneNumber}"-->
-<!--                    android:textColor="@color/nero"-->
-<!--                    android:textColorHint="@color/dim_gray"-->
-<!--                    android:textSize="16sp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-            <EditText
-                android:id="@+id/daily_matching_search_et"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/daily_matching_search_et_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="18dp"
                 android:layout_weight="80"
-                android:background="@color/white_smoke_F"
-                android:backgroundTint="@color/white_smoke_F"
-                android:hint="검색어를 입력하세요" />
+                android:animateLayoutChanges="false"
+                app:boxBackgroundMode="none"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:errorEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/daily_matching_search_et"
+                    style="@style/styleTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/white_smoke_F"
+                    android:backgroundTint="@color/white_smoke_F"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:hint="검색어를 입력해주세요"
+                    android:inputType="text"
+                    android:paddingStart="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dim_gray"
+                    android:textSize="15sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
@@ -94,7 +84,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/applesdgothicneoregular"
-                android:text="최근 검색어"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,12 +121,12 @@
 
             />
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/daily_matching_search_record_rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +142,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/applesdgothicneoregular"
-            android:text="검색 결과 (20)"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -166,16 +154,11 @@
             android:id="@+id/daily_matching_result_of_search_fl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_result_count_tv"
+            app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_result_count_tv">
 
-            >
             <androidx.appcompat.widget.LinearLayoutCompat
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

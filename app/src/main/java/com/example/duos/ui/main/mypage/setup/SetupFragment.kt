@@ -18,12 +18,13 @@ import com.example.duos.ui.splash.SplashActivity
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.deleteSharedPreferenceData
 import android.widget.ImageView
+import com.example.duos.data.entities.dailyMatching.SearchHistoryDatabase
 import com.example.duos.data.local.ChatDatabase
 
 
 class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::inflate), WithdrawalListView, LogoutListView {
     val TAG = "SetupFragment"
-    val myUserIdx = getUserIdx()!!
+    val myUserIdx = getUserIdx()
 
 
     override fun initAfterBinding() {
@@ -129,6 +130,10 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
         chatDB.chatRoomDao().clearAll()
         chatDB.chatMessageItemDao().clearAll()
 
+        val searchDB = SearchHistoryDatabase.getInstance(requireContext().applicationContext)
+        searchDB?.searchHistoryRoomDao()?.clearAll()
+
+
         // sharedPreference의 데이터 삭제
         deleteSharedPreferenceData()
         var testWithdrawal = ""
@@ -155,6 +160,9 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
         val userDB = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
         userDB!!.userDao().clearAll()
 
+        val searchDB = SearchHistoryDatabase.getInstance(requireContext().applicationContext)
+        searchDB?.searchHistoryRoomDao()?.clearAll()
+
         Log.d(TAG, "UserDB : ${userDB.userDao().getUser(myUserIdx)}")
         // sharedPreference의 데이터 삭제
         deleteSharedPreferenceData()
@@ -175,7 +183,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
 
     override fun onLogOutFailure(code: Int, message: String) {
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
-        Log.d(TAG, "${code}  ${message}")
+        Log.d(TAG, "$code  $message")
         //showToast("code : $code, message : $message")
     }
 

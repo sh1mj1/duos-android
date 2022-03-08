@@ -2,6 +2,7 @@ package com.example.duos.ui.main.dailyMatching.dailyMatchingSearch
 
 import DailyMatchingSearchHistoryRVAdapter
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -17,7 +18,7 @@ import com.example.duos.data.remote.dailyMatching.SearchResultItem
 import com.example.duos.databinding.ActivityDailyMatchingSearchBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.adapter.DailyMatchingSearchRVAdapter
-import com.example.duos.ui.main.dailyMatching.DailyMatchingRVAdapter
+import com.example.duos.ui.main.dailyMatching.DailyMatchingDetail
 import com.example.duos.ui.main.dailyMatching.DailyMatchingSearchView
 import com.example.duos.utils.getUserIdx
 
@@ -49,7 +50,6 @@ class DailyMatchingSearchActivity :
         binding.dailyMatchingSearchEt.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
                 search(binding.dailyMatchingSearchEt.text.toString())
-                // TODO 리사이클러뷰의 스크롤을 제일 처음으로 이동시키기
                 return@setOnKeyListener true
             } else {
                 return@setOnKeyListener false
@@ -63,9 +63,13 @@ class DailyMatchingSearchActivity :
             searchHistoryAdapter.notifyDataSetChanged()
             binding.dailyMatchingSearchRecordRv.visibility = View.GONE
             binding.dailyMatchingSearchRecordNullTv.visibility = View.VISIBLE
+            binding.dailyMatchingSearchResultCountTv.visibility = View.GONE
 
         }
 
+        binding.dailyMatchingSearchBackIv.setOnClickListener {
+            finish()
+        }
     }
 
 
@@ -137,9 +141,8 @@ class DailyMatchingSearchActivity :
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onGetSearchViewSuccess(dailyMatchingSearchResultData: DailyMatchingSearchResultData) {
         Log.d(TAG, "API 호출 성공")
-
         binding.dailyMatchingSearchResultCountTv.text =
-            "검색결과 (${dailyMatchingSearchResultData.resultSize})"
+            "검색 결과 (${dailyMatchingSearchResultData.resultSize})"
         binding.dailyMatchingSearchRecentCl.visibility = View.GONE // 최근 검색어, 전체삭제
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
         dailyMatchingSearchListDatas.clear()
@@ -149,21 +152,23 @@ class DailyMatchingSearchActivity :
         dailyMatchingSearchSearchRVAdapter.clickSearchResultListener(object :
             DailyMatchingSearchRVAdapter.SearchResultItemClickListener {
             override fun onItemClick(searchResultItem: SearchResultItem) {
-                // TODO : 해당 게시글로 이동
+                //  해당 게시글로 이동  // 게시글Idx 넘겨주기
                 Log.d(TAG, "아이템 클릭 : boardIdx : ${searchResultItem.boardIdx}")
+                val intent =
+                    Intent(this@DailyMatchingSearchActivity, DailyMatchingDetail::class.java)
+                intent.apply { putExtra("boardIdx", searchResultItem.boardIdx) }
+                startActivity(intent)
             }
-
         })
 
     }
 
     override fun onGetSearchViewLoading() {
         Log.d(TAG, "로딩 중 ")
+        // TODO 로딩을 어떻게 처리해야 하지
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
         showToast("네트워크 연결 확인 후 다시 시도해주세요.")
     }
-
-
 }
