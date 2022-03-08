@@ -1,7 +1,7 @@
 package com.example.duos.data.entities.dailyMatching
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
+import java.io.Serializable
 import java.util.*
 
 
@@ -23,7 +23,7 @@ data class DailyMatching(
 )
 
 
-data class DailyMatchingDetail(
+data class DailyMatchingDetail (
     @SerializedName("title") val title : String,
     @SerializedName("userIdx") val userIdx : Int,
     @SerializedName("profileUrl") val profileUrl : String,
@@ -42,8 +42,20 @@ data class DailyMatchingDetail(
     @SerializedName("urls") val urls : List<String>,
     @SerializedName("regBefore") val regBefore : String,
     @SerializedName("stringForMatchDateGap") val stringForMatchDateGap : String
-)
+) : Serializable
 
 data class DailyMatchingOption(
     @SerializedName("options") val options : List<String>
+)
+
+data class DailyMatchingMessageParticipantIdx(
+    @SerializedName("thisUserIdx") val thisUserIdx : Int,
+    @SerializedName("targetUserIdx") val targetUserIdx : Int
+)
+
+data class DailyMatchingMessageResult(
+    @SerializedName("remains") val remains : Int,
+    @SerializedName("createdNewChatRoom") val createdNewChatRoom : Boolean,
+    @SerializedName("targetChatRoomIdx") val targetChatRoomIdx : String,
+    @SerializedName("participantList") val participantList : List<Int>
 )

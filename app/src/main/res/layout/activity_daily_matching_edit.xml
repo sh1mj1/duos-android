@@ -14,14 +14,14 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/daily_matching_write_top_layout_cl"
+            android:id="@+id/daily_matching_edit_top_layout_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/daily_matching_write_back_arrow_iv"
+                android:id="@+id/daily_matching_edit_back_arrow_iv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
@@ -31,26 +31,26 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/daily_matching_write_tv"
+                android:id="@+id/daily_matching_edit_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/daily_matching_write"
+                android:text="@string/daily_matching_edit_tv"
                 android:textColor="@color/nero"
                 android:textFontWeight="700"
                 android:textSize="19sp"
-                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_back_arrow_iv"
-                app:layout_constraintStart_toEndOf="@id/daily_matching_write_back_arrow_iv"
-                app:layout_constraintTop_toTopOf="@id/daily_matching_write_back_arrow_iv" />
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_edit_back_arrow_iv"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_edit_back_arrow_iv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_edit_back_arrow_iv" />
 
             <View
-                android:id="@+id/daily_matching_write_line_01_view"
+                android:id="@+id/daily_matching_edit_line_01_view"
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
                 android:layout_marginTop="19dp"
                 android:background="@drawable/friend_list_dialog_line"
                 android:backgroundTint="@color/alto"
-                app:layout_constraintTop_toBottomOf="@id/daily_matching_write_back_arrow_iv" />
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_back_arrow_iv" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -59,10 +59,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/daily_matching_write_btn"
+            app:layout_constraintBottom_toTopOf="@id/daily_matching_edit_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/daily_matching_write_top_layout_cl">
+            app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_top_layout_cl">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,8 +71,8 @@
                 android:paddingBottom="20dp">
 
 
-                <EditText
-                    android:id="@+id/daily_matching_write_title_et"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/daily_matching_edit_title_et"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
@@ -80,7 +80,7 @@
                     android:background="@null"
                     android:hint="@string/daily_matching_write_title"
                     android:inputType="text"
-                    android:text="@={viewmodel.dailyMatchingTitle}"
+                    android:text="@={viewmodel.dailyMatchingEditTitle}"
                     android:textColor="@color/nero"
                     android:textColorHint="@color/dark_gray_A"
                     android:textFontWeight="600"
@@ -90,7 +90,7 @@
 
 
                 <View
-                    android:id="@+id/daily_matching_write_line_02_view"
+                    android:id="@+id/daily_matching_edit_line_02_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="17dp"
@@ -98,10 +98,10 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/friend_list_dialog_line"
                     android:backgroundTint="@color/alto"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_title_et" />
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_title_et" />
 
-                <EditText
-                    android:id="@+id/daily_matching_write_location_et"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/daily_matching_edit_location_et"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
@@ -109,17 +109,17 @@
                     android:background="@null"
                     android:hint="@string/daily_matching_write_location"
                     android:inputType="text"
-                    android:text="@={viewmodel.dailyMatchingPlace}"
+                    android:text="@={viewmodel.dailyMatchingEditPlace}"
                     android:textColor="@color/nero"
                     android:textColorHint="@color/dark_gray_A"
                     android:textFontWeight="600"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_line_02_view" />
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_line_02_view" />
 
 
                 <View
-                    android:id="@+id/daily_matching_write_line_03_view"
+                    android:id="@+id/daily_matching_edit_line_03_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="17dp"
@@ -127,22 +127,22 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/friend_list_dialog_line"
                     android:backgroundTint="@color/alto"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_location_et" />
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_location_et" />
 
 
                 <RadioGroup
-                    android:id="@+id/daily_matching_write_radio_group_rg"
+                    android:id="@+id/daily_matching_edit_radio_group_rg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="30dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_line_03_view">
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_line_03_view">
 
 
                     <RadioButton
-                        android:id="@+id/daily_matching_write_today_radio_btn"
+                        android:id="@+id/daily_matching_edit_today_radio_btn"
                         android:layout_width="83dp"
                         android:layout_height="51dp"
                         android:layout_marginEnd="10dp"
@@ -152,7 +152,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/daily_matching_write_tomorrow_radio_btn"
+                        android:id="@+id/daily_matching_edit_tomorrow_radio_btn"
                         android:layout_width="83dp"
                         android:layout_height="51dp"
                         android:layout_marginEnd="10dp"
@@ -161,7 +161,7 @@
                         android:tag="tomorrow" />
 
                     <RadioButton
-                        android:id="@+id/daily_matching_write_day_after_tomorrow_radio_btn"
+                        android:id="@+id/daily_matching_edit_day_after_tomorrow_radio_btn"
                         android:layout_width="83dp"
                         android:layout_height="51dp"
                         android:layout_marginEnd="10dp"
@@ -172,7 +172,7 @@
                 </RadioGroup>
 
                 <TextView
-                    android:id="@+id/daily_matching_today_tv"
+                    android:id="@+id/daily_matching_edit_today_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="29dp"
@@ -182,11 +182,11 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="600"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
-                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_edit_radio_group_rg" />
 
                 <TextView
-                    android:id="@+id/daily_matching_today_date_tv"
+                    android:id="@+id/daily_matching_edit_today_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -195,12 +195,12 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="500"
                     android:textSize="11sp"
-                    app:layout_constraintEnd_toEndOf="@id/daily_matching_today_tv"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_today_tv"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_today_tv" />
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_today_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_today_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_today_tv" />
 
                 <TextView
-                    android:id="@+id/daily_matching_tomorrow_tv"
+                    android:id="@+id/daily_matching_edit_tomorrow_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="123dp"
@@ -210,11 +210,11 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="600"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
-                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_edit_radio_group_rg" />
 
                 <TextView
-                    android:id="@+id/daily_matching_tomorrow_date_tv"
+                    android:id="@+id/daily_matching_edit_tomorrow_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -223,12 +223,12 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="500"
                     android:textSize="11sp"
-                    app:layout_constraintEnd_toEndOf="@id/daily_matching_tomorrow_tv"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_tomorrow_tv"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_tomorrow_tv" />
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_tomorrow_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_tomorrow_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_tomorrow_tv" />
 
                 <TextView
-                    android:id="@+id/daily_matching_day_after_tomorrow_tv"
+                    android:id="@+id/daily_matching_edit_day_after_tomorrow_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="215dp"
@@ -238,11 +238,11 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="600"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
-                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_edit_radio_group_rg" />
 
                 <TextView
-                    android:id="@+id/daily_matching_day_after_tomorrow_date_tv"
+                    android:id="@+id/daily_matching_edit_day_after_tomorrow_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -251,12 +251,12 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="500"
                     android:textSize="11sp"
-                    app:layout_constraintEnd_toEndOf="@id/daily_matching_day_after_tomorrow_tv"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_day_after_tomorrow_tv"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_day_after_tomorrow_tv" />
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_day_after_tomorrow_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_day_after_tomorrow_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_day_after_tomorrow_tv" />
 
                 <TextView
-                    android:id="@+id/daily_matching_write_time_tv"
+                    android:id="@+id/daily_matching_edit_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -265,11 +265,11 @@
                     android:textColor="@color/dark_gray_A"
                     android:textFontWeight="600"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_radio_group_rg" />
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_radio_group_rg"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_radio_group_rg" />
 
                 <TextView
-                    android:id="@+id/daily_matching_write_select_time_tv"
+                    android:id="@+id/daily_matching_edit_select_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
@@ -279,18 +279,18 @@
                     android:textColor="@color/primary"
                     android:textFontWeight="600"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/daily_matching_write_time_tv"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_radio_group_rg" />
+                    app:layout_constraintStart_toEndOf="@id/daily_matching_edit_time_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_radio_group_rg" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/daily_matching_write_select_time_layout_ll"
+                    android:id="@+id/daily_matching_edit_select_time_layout_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_time_tv">
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_time_tv">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/daily_matching_write_select_time_recyclerview_rv"
+                        android:id="@+id/daily_matching_edit_select_time_recyclerview_rv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -308,7 +308,7 @@
 
 
                 <ImageView
-                    android:id="@+id/daily_matching_write_content_iv"
+                    android:id="@+id/daily_matching_edit_content_iv"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginStart="16dp"
@@ -318,11 +318,11 @@
                     android:src="@drawable/daily_matching_content_rectangle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_select_time_layout_ll" />
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_select_time_layout_ll" />
 
 
-                <EditText
-                    android:id="@+id/daily_matching_write_content_et"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/daily_matching_edit_content_et"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginStart="16dp"
@@ -334,19 +334,19 @@
                     android:fontFamily="@font/applesdgothicneoregular"
                     android:gravity="top"
                     android:hint="@string/daily_matching_write_content"
-                    android:textFontWeight="600"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:letterSpacing="0.05"
                     android:paddingStart="9dp"
                     android:paddingTop="9dp"
-                    android:text="@={viewmodel.dailyMatchingContent}"
+                    android:text="@={viewmodel.dailyMatchingEditContent}"
                     android:textColor="@color/nero"
                     android:textColorHint="@color/dark_gray_A"
+                    android:textFontWeight="600"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_content_iv"
-                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_content_iv" />
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_edit_content_iv"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_edit_content_iv" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -356,7 +356,7 @@
                     android:clipToPadding="false"
                     android:paddingBottom="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_content_iv">
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_content_iv">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -364,12 +364,12 @@
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/daily_matching_write_select_image_layout_cl"
+                            android:id="@+id/daily_matching_edit_select_image_layout_cl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_image_iv"
+                                android:id="@+id/daily_matching_edit_select_image_iv"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:background="@drawable/daily_matching_content_rectangle"
@@ -379,26 +379,26 @@
                                 app:tint="@color/white_smoke_E" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_camera_icon_iv"
+                                android:id="@+id/daily_matching_edit_camera_icon_iv"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_marginTop="14dp"
                                 android:scaleType="centerInside"
                                 android:src="@drawable/ic_camera_edit"
-                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_image_iv"
-                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_image_iv"
-                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_image_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_select_image_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_edit_select_image_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_edit_select_image_iv"
                                 app:tint="@color/dark_gray_B0" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_image_iv"
-                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_image_iv"
-                                app:layout_constraintTop_toBottomOf="@id/daily_matching_write_camera_icon_iv">
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_select_image_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_edit_select_image_iv"
+                                app:layout_constraintTop_toBottomOf="@id/daily_matching_edit_camera_icon_iv">
 
                                 <TextView
-                                    android:id="@+id/daily_matching_write_image_count_tv"
+                                    android:id="@+id/daily_matching_edit_image_count_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
@@ -406,7 +406,7 @@
                                     android:textSize="13sp" />
 
                                 <TextView
-                                    android:id="@+id/daily_matching_write_image_all_count_tv"
+                                    android:id="@+id/daily_matching_edit_image_all_count_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/daily_matching_write_image_count"
@@ -420,7 +420,7 @@
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/daily_matching_write_select_image_layout_01_iv"
+                            android:id="@+id/daily_matching_edit_select_image_layout_01_iv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
@@ -430,15 +430,14 @@
                             android:visibility="invisible" >
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_image_01_iv"
+                                android:id="@+id/daily_matching_edit_select_image_01_iv"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
-                                android:background="@drawable/partner_profile_img_1"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_01_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_01_iv"
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_marginTop="3dp"
@@ -449,20 +448,20 @@
                                 app:tint="@color/white" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_icon_01_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_icon_01_iv"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:src="@drawable/ic_erase"
-                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_01_iv"
-                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_01_iv"
-                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_01_iv"
-                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_01_iv" />
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_edit_select_erase_01_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_select_erase_01_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_edit_select_erase_01_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_edit_select_erase_01_iv" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/daily_matching_write_select_image_layout_02_iv"
+                            android:id="@+id/daily_matching_edit_select_image_layout_02_iv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
@@ -472,15 +471,14 @@
                             android:visibility="invisible" >
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_image_02_iv"
+                                android:id="@+id/daily_matching_edit_select_image_02_iv"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
-                                android:background="@drawable/partner_profile_img_2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_02_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_02_iv"
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_marginTop="3dp"
@@ -491,21 +489,21 @@
                                 app:tint="@color/white" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_icon_02_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_icon_02_iv"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:src="@drawable/ic_erase"
-                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_02_iv"
-                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_02_iv"
-                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_02_iv"
-                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_02_iv" />
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_edit_select_erase_02_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_select_erase_02_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_edit_select_erase_02_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_edit_select_erase_02_iv" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/daily_matching_write_select_image_layout_03_iv"
+                            android:id="@+id/daily_matching_edit_select_image_layout_03_iv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
@@ -515,15 +513,14 @@
                             android:visibility="invisible" >
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_image_03_iv"
+                                android:id="@+id/daily_matching_edit_select_image_03_iv"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
-                                android:background="@drawable/partner_profile_img_3"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_03_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_03_iv"
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_marginTop="3dp"
@@ -534,14 +531,14 @@
                                 app:tint="@color/white" />
 
                             <ImageView
-                                android:id="@+id/daily_matching_write_select_erase_icon_03_iv"
+                                android:id="@+id/daily_matching_edit_select_erase_icon_03_iv"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
                                 android:src="@drawable/ic_erase"
-                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_03_iv"
-                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_03_iv"
-                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_03_iv"
-                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_03_iv" />
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_edit_select_erase_03_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_edit_select_erase_03_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_edit_select_erase_03_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_edit_select_erase_03_iv" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -558,7 +555,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/daily_matching_write_btn"
+            android:id="@+id/daily_matching_edit_btn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/signup_next_btn_rectangular"

@@ -31,16 +31,25 @@ class BottomSheetDialog01(val boardIdx : Int) : BottomSheetDialogFragment() {
 
         view?.findViewById<TextView>(R.id.daily_matching_option_edit_tv)?.setOnClickListener {
             // 수정하기
+            mListener.onClickEdit()
+            this.dismiss()
         }
 
         view?.findViewById<TextView>(R.id.daily_matching_option_delete_tv)?.setOnClickListener {
             // 삭제하기
             mListener.onClickDelete()
+            this.dismiss()
         }
 
         view?.findViewById<TextView>(R.id.daily_matching_option_end_tv)?.setOnClickListener {
             // 모집마감
             mListener.onClickEnd()
+            this.dismiss()
 
-        }}
+        }
+
+        view?.findViewById<TextView>(R.id.daily_matching_option_01_bottom_btn)?.setOnClickListener {
+            this.dismiss()
+        }
+    }
 }

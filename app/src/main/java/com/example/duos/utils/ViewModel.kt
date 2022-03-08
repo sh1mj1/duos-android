@@ -102,6 +102,11 @@ class ViewModel : ViewModel() {
     var dailyMatchingImg03Bitmap = MutableLiveData<Bitmap?>()
     var dailyMatchingImgCount = MutableLiveData<Int?>()
 
+    var dailyMatchingEditTitle = MutableLiveData<String?>()
+    var dailyMatchingEditPlace = MutableLiveData<String?>()
+    var dailyMatchingEditContent = MutableLiveData<String?>()
+
+
     init {
         dailyMatchingImgCount.value = 0
     }

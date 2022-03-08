@@ -1,7 +1,6 @@
 package com.example.duos.ui.main.dailyMatching
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -23,16 +22,27 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.duos.ApplicationClass.Companion.TAG
+import com.android.volley.toolbox.ImageLoader
+import com.bumptech.glide.Glide
+import com.example.duos.ApplicationClass
 import com.example.duos.CustomDialog
 import com.example.duos.R
+import com.example.duos.data.entities.dailyMatching.DailyMatchingDetail
 import com.example.duos.data.remote.dailyMatching.DailyMatchingWriteService
 import com.example.duos.data.remote.dailyMatching.DailyWriteResult
-import com.example.duos.databinding.ActivityDailyMatchingWriteBinding
+
+import com.example.duos.databinding.ActivityDailyMatchingEditBinding
 import com.example.duos.ui.BaseActivity
+import com.example.duos.utils.GlideApp.with
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -46,22 +56,40 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
 import java.io.File
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toBitmap
+import java.lang.Exception
 
-class DailyMatchingWrite :
-    BaseActivity<ActivityDailyMatchingWriteBinding>(ActivityDailyMatchingWriteBinding::inflate),
-    DailyMatchingWriteView {
+
+class DailyMatchingEdit :
+    BaseActivity<ActivityDailyMatchingEditBinding>(ActivityDailyMatchingEditBinding::inflate),
+    DailyMatchingEditView {
 
     var setTime: Int = 0
     var start: Int = 0
     var end: Int = 0
+    var boardIdx: Int = -1
     lateinit var matchDate: LocalDate
     lateinit var startTime: LocalDateTime
     lateinit var endTime: LocalDateTime
     lateinit var viewModel: ViewModel
     var contentBitmap: Bitmap? = null
-    var isSelectedImg : Boolean = false
+    var isSelectedImg: Boolean = false
+    lateinit var dailyMatchingInfo: DailyMatchingDetail
+    lateinit var currentTime: LocalDateTime
+    lateinit var dailyMatchingEditRVAdapter: DailyMatchingTimeSelectRVAdapter
 
+    lateinit var now : LocalDate
+    lateinit var tomorrow : LocalDate
+    lateinit var dayAfterTomorrow : LocalDate
+    lateinit var strNow : String
+    lateinit var strTomorrow : String
+    lateinit var strDayAfterTomorrow: String
 
     val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val CAMERA_PERMISSION_REQUEST = 100
@@ -82,52 +110,202 @@ class DailyMatchingWrite :
         Manifest.permission.ACCESS_MEDIA_LOCATION
     )
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.dailyMatchingDateCheck.value = true
+        viewModel.dailyMatchingTimeCheck.value = true
+        viewModel.dailyMatchingImgCount.value = 0
+
+        viewModel.dailyMatchingEditTitle.value = dailyMatchingInfo.title
+        viewModel.dailyMatchingEditPlace.value = dailyMatchingInfo.matchPlace
+        viewModel.dailyMatchingEditContent.value = dailyMatchingInfo.content
+
+
+        currentTime = LocalDateTime.now()
+
+        binding.dailyMatchingEditTodayDateTv.text = strNow
+        binding.dailyMatchingEditTomorrowDateTv.text = strTomorrow
+        binding.dailyMatchingEditDayAfterTomorrowDateTv.text = strDayAfterTomorrow
+
+        Log.d("dailyMatchinginfo",dailyMatchingInfo.toString())
+
+        when (dailyMatchingInfo.urls.size) {
+            1 -> {
+                Log.d("ㅎㅇ", "1")
+                setImage01()
+            }
+            2 -> {
+                Log.d("ㅎㅇ", "2")
+                setImage01()
+                setImage02()
+            }
+            3 -> {
+                Log.d("ㅎㅇ", "3")
+                setImage01()
+                setImage02()
+                setImage03()
+            }
+        }
+        when (dailyMatchingInfo.stringForMatchDateGap) {
+            "오늘" -> {
+                binding.dailyMatchingEditTodayTv.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.primary
+                    )
+                )
+                binding.dailyMatchingEditTodayRadioBtn.isChecked = true
+                setTime = currentTime.hour + 1
+                dailyMatchingEditRVAdapter.updateStartTime(setTime)
+                dailyMatchingEditRVAdapter.setTime(
+                    dailyMatchingInfo.startTime.substring(0 until 2).toInt(),
+                    dailyMatchingInfo.duration
+                )
+                matchDate = now
+                start = dailyMatchingInfo.startTime.substring(0 until 2).toInt()
+                end = dailyMatchingInfo.startTime.substring(0 until 2)
+                    .toInt() + dailyMatchingInfo.duration
+
+            }
+            "내일" -> {
+                binding.dailyMatchingEditTomorrowTv.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.primary
+                    )
+                )
+                binding.dailyMatchingEditTomorrowRadioBtn.isChecked = true
+                setTime = 0
+                dailyMatchingEditRVAdapter.updateStartTime(setTime)
+                dailyMatchingEditRVAdapter.setTime(
+                    dailyMatchingInfo.startTime.substring(0 until 2).toInt(),
+                    dailyMatchingInfo.duration
+                )
+                matchDate = tomorrow
+                start = dailyMatchingInfo.startTime.substring(0 until 2).toInt()
+                end = dailyMatchingInfo.startTime.substring(0 until 2)
+                    .toInt() + dailyMatchingInfo.duration
+            }
+            "모레" -> {
+                binding.dailyMatchingEditDayAfterTomorrowTv.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.primary
+                    )
+                )
+                binding.dailyMatchingEditDayAfterTomorrowRadioBtn.isChecked = true
+                setTime = 0
+                dailyMatchingEditRVAdapter.updateStartTime(setTime)
+                dailyMatchingEditRVAdapter.setTime(
+                    dailyMatchingInfo.startTime.substring(0 until 2).toInt(),
+                    dailyMatchingInfo.duration
+                )
+                matchDate = dayAfterTomorrow
+                start = dailyMatchingInfo.startTime.substring(0 until 2).toInt()
+                end = dailyMatchingInfo.startTime.substring(0 until 2)
+                    .toInt() + dailyMatchingInfo.duration
+            }
+            else -> {}
+        }
+
+    }
 
     override fun initAfterBinding() {
+
+        // 데이터 받아오기 & 초기화하기
+
+        boardIdx = intent.getIntExtra("boardIdx", -1)
+        dailyMatchingInfo = intent.getSerializableExtra("dailyMatchingInfo") as DailyMatchingDetail
 
         viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(ViewModel::class.java)
-        viewModel.dailyMatchingDateCheck.value = false
-        viewModel.dailyMatchingTimeCheck.value = false
-        viewModel.dailyMatchingImgCount.value = 0
+
         binding.viewmodel = viewModel
 
-        val currentTime = LocalDateTime.now()
-
-        var dailyMatchingWritetRVAdapter = DailyMatchingTimeSelectRVAdapter(setTime)
-        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.setHasFixedSize(false)
-        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.itemAnimator = null
-        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.layoutManager =
+        dailyMatchingEditRVAdapter = DailyMatchingTimeSelectRVAdapter(setTime)
+        binding.dailyMatchingEditSelectTimeRecyclerviewRv.setHasFixedSize(false)
+        binding.dailyMatchingEditSelectTimeRecyclerviewRv.itemAnimator = null
+        binding.dailyMatchingEditSelectTimeRecyclerviewRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.dailyMatchingEditSelectTimeRecyclerviewRv.adapter = dailyMatchingEditRVAdapter
 
-        var now = LocalDate.now()
-        val tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS)
-        val dayAfterTomorrow = LocalDate.now().plus(2, ChronoUnit.DAYS)
-        var strNow = now.format(DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREAN))
-        var strTomorrow = tomorrow.format(DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREAN))
-        var strDayAfterTomorrow =
+        now = LocalDate.now()
+        tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS)
+        dayAfterTomorrow = LocalDate.now().plus(2, ChronoUnit.DAYS)
+        strNow = now.format(DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREAN))
+        strTomorrow = tomorrow.format(DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREAN))
+        strDayAfterTomorrow =
             dayAfterTomorrow.format(DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREAN))
-        binding.dailyMatchingTodayDateTv.text = strNow
-        binding.dailyMatchingTomorrowDateTv.text = strTomorrow
-        binding.dailyMatchingDayAfterTomorrowDateTv.text = strDayAfterTomorrow
 
-        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.adapter = dailyMatchingWritetRVAdapter
+        this.viewModel.dailyMatchingEditTitle.observe(this, {
+            Log.d("1", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingEditPlace.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingEditContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setEditBtnEnable()
+            } else setEditBtnUnable()
+        })
+        this.viewModel.dailyMatchingEditPlace.observe(this, {
+            Log.d("2", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingEditTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingEditContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setEditBtnEnable()
+            } else setEditBtnUnable()
+        })
+        this.viewModel.dailyMatchingEditContent.observe(this, {
+            Log.d("3", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingEditTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingEditPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setEditBtnEnable()
+            } else setEditBtnUnable()
+        })
+        this.viewModel.dailyMatchingDateCheck.observe(this, {
+            Log.d("4", "ㅎㅇ")
+            if (it!! && this.viewModel.dailyMatchingEditTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingEditPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingEditContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setEditBtnEnable()
+            } else setEditBtnUnable()
+        })
+        this.viewModel.dailyMatchingTimeCheck.observe(this, {
+            Log.d("5", "ㅎㅇ")
+            if (it!! && this.viewModel.dailyMatchingEditTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingEditPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingEditContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true
+            ) {
+                setEditBtnEnable()
+            } else setEditBtnUnable()
+        })
 
-        dailyMatchingWritetRVAdapter.setMyItemClickListener(object :
+
+
+
+        dailyMatchingEditRVAdapter.setMyItemClickListener(object :
             DailyMatchingTimeSelectRVAdapter.MyItemClickListener {
             override fun onClickItem(startPosition: Int, endPosition: Int) {
                 for (i in startPosition until endPosition + 1) {
                     val view =
-                        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
+                        binding.dailyMatchingEditSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
                             i
                         )?.itemView
                     val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
                     btn?.isSelected = true
                     start = setTime + startPosition
                     end = setTime + endPosition + 1
-                    binding.dailyMatchingWriteSelectTimeTv.text =
+                    binding.dailyMatchingEditSelectTimeTv.text =
                         ((setTime + startPosition).toString() + ":00 - " +
                                 (setTime + endPosition + 1).toString() + ":00" + "(" + (endPosition - startPosition + 1).toString() + "시간)")
                     if (viewModel.dailyMatchingTimeCheck.value == false)
@@ -138,12 +316,12 @@ class DailyMatchingWrite :
             override fun onResetItem(startPosition: Int) {
                 if (viewModel.dailyMatchingTimeCheck.value == false)
                     viewModel.dailyMatchingTimeCheck.value = true
-                binding.dailyMatchingWriteSelectTimeTv.text =
+                binding.dailyMatchingEditSelectTimeTv.text =
                     ((setTime + startPosition).toString() + ":00 - " +
                             (setTime + startPosition + 1).toString() + ":00" + "(" + "1시간)")
-                for (i in 0 until dailyMatchingWritetRVAdapter.itemCount) {
+                for (i in 0 until dailyMatchingEditRVAdapter.itemCount) {
                     val view =
-                        binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
+                        binding.dailyMatchingEditSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
                             i
                         )?.itemView
                     val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
@@ -154,35 +332,7 @@ class DailyMatchingWrite :
             }
         })
 
-        this.viewModel.dailyMatchingTitle.observe(this, {
-            Log.d("1", "")
-            if (it!!.isNotEmpty()) {
-
-                this.viewModel.dailyMatchingPlace.observe(this, { it2 ->
-                    if (it2!!.isNotEmpty()) {
-                        Log.d("2", "")
-                        this.viewModel.dailyMatchingContent.observe(this, { it3 ->
-                            if (it3!!.isNotEmpty()) {
-                                Log.d("3", "")
-                                this.viewModel.dailyMatchingDateCheck.observe(this, { it4 ->
-                                    if (it4 == true) {
-                                        Log.d("4", "")
-                                        this.viewModel.dailyMatchingTimeCheck.observe(this, { it5 ->
-                                            if (it5 == true) {
-                                                Log.d("5", "")
-                                                setWriteBtnEnable()
-                                            } else setWriteBtnUnable()
-                                        })
-                                    } else setWriteBtnUnable()
-                                })
-                            } else setWriteBtnUnable()
-                        })
-                    } else setWriteBtnUnable()
-                })
-            } else setWriteBtnUnable()
-        })
-
-        binding.dailyMatchingWriteRadioGroupRg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        binding.dailyMatchingEditRadioGroupRg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = findViewById(checkedId)
             if (viewModel.dailyMatchingDateCheck.value == false)
                 viewModel.dailyMatchingDateCheck.value = true
@@ -191,28 +341,20 @@ class DailyMatchingWrite :
             when (radio.tag) {
                 "today" -> {
                     setTime = currentTime.hour + 1
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
-                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
-                    binding.dailyMatchingTodayTv.setTextColor(
+                    dailyMatchingEditRVAdapter.updateStartTime(setTime)
+                    binding.dailyMatchingEditTodayTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.primary
                         )
                     )
-                    binding.dailyMatchingTomorrowTv.setTextColor(
+                    binding.dailyMatchingEditTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
                         )
                     )
-                    binding.dailyMatchingDayAfterTomorrowTv.setTextColor(
+                    binding.dailyMatchingEditDayAfterTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
@@ -222,29 +364,22 @@ class DailyMatchingWrite :
                     viewModel.dailyMatchingDate.value = "오늘"
                 }
                 "tomorrow" -> {
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
                     setTime = 0
-                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
-                    binding.dailyMatchingTomorrowTv.setTextColor(
+                    dailyMatchingEditRVAdapter.updateStartTime(setTime)
+
+                    binding.dailyMatchingEditTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.primary
                         )
                     )
-                    binding.dailyMatchingDayAfterTomorrowTv.setTextColor(
+                    binding.dailyMatchingEditDayAfterTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
                         )
                     )
-                    binding.dailyMatchingTodayTv.setTextColor(
+                    binding.dailyMatchingEditTodayTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
@@ -254,30 +389,22 @@ class DailyMatchingWrite :
                     viewModel.dailyMatchingDate.value = "내일"
                 }
                 "dayaftertomorrow" -> {
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
                     setTime = 0
-                    dailyMatchingWritetRVAdapter.updateStartTime(setTime)
+                    dailyMatchingEditRVAdapter.updateStartTime(setTime)
 
-                    binding.dailyMatchingDayAfterTomorrowTv.setTextColor(
+                    binding.dailyMatchingEditDayAfterTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.primary
                         )
                     )
-                    binding.dailyMatchingTomorrowTv.setTextColor(
+                    binding.dailyMatchingEditTomorrowTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
                         )
                     )
-                    binding.dailyMatchingTodayTv.setTextColor(
+                    binding.dailyMatchingEditTodayTv.setTextColor(
                         ContextCompat.getColor(
                             this,
                             R.color.dark_gray_A
@@ -291,99 +418,163 @@ class DailyMatchingWrite :
         })
 
         viewModel.dailyMatchingImgCount.observe(this, {
-            binding.dailyMatchingWriteImageCountTv.text = it.toString()
+            binding.dailyMatchingEditImageCountTv.text = it.toString()
         })
 
-        binding.dailyMatchingWriteBackArrowIv.setOnClickListener {
+        binding.dailyMatchingEditBackArrowIv.setOnClickListener {
             showDialog(this)
         }
 
-        binding.dailyMatchingWriteBtn.setOnClickListener {
+        binding.dailyMatchingEditBtn.setOnClickListener {
+            Log.d("완료", "클릭")
             startTime =
                 LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, start, 0, 0)
-            endTime =
-                LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, end, 0, 0)
+            if (end == 24) {
+                endTime =
+                    LocalDateTime.of(
+                        matchDate.plus(1, ChronoUnit.DAYS).year,
+                        matchDate.plus(1, ChronoUnit.DAYS).month,
+                        matchDate.plus(1, ChronoUnit.DAYS).dayOfMonth,
+                        0,
+                        0,
+                        0
+                    )
+            } else {
+                endTime =
+                    LocalDateTime.of(
+                        matchDate.year,
+                        matchDate.month,
+                        matchDate.dayOfMonth,
+                        end,
+                        0,
+                        0
+                    )
+            }
 
 
             val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
             val json = JSONObject()
 
+
+            json.put("boardIdx", boardIdx)
             json.put("writerIdx", getUserIdx()!!)
-            json.put("title", viewModel.dailyMatchingTitle.value.toString())
-            json.put("content", viewModel.dailyMatchingContent.value.toString())
+            json.put("title", viewModel.dailyMatchingEditTitle.value.toString())
+            json.put("content", viewModel.dailyMatchingEditContent.value.toString())
             json.put("matchDate", matchDate)
-            json.put("matchPlace", viewModel.dailyMatchingPlace.value.toString())
+            json.put("matchPlace", viewModel.dailyMatchingEditPlace.value.toString())
             json.put("startTime", startTime)
             json.put("endTime", endTime)
 
-            val writeInfo = json.toString().toRequestBody(JSON)
+            Log.d("boardIdx", boardIdx.toString())
+            Log.d("writerIdx", getUserIdx()!!.toString())
+            Log.d("title", viewModel.dailyMatchingEditTitle.value.toString())
+            Log.d("content", viewModel.dailyMatchingEditContent.value.toString())
+            Log.d("matchDate", matchDate.toString())
+            Log.d("matchPlace", viewModel.dailyMatchingEditPlace.value.toString())
+            Log.d("startTime", startTime.toString())
+            Log.d("endTime", endTime.toString())
 
-            val bitmapMultipartBody : MutableList<MultipartBody.Part> = mutableListOf()
-            if (viewModel.dailyMatchingImg01Bitmap.value != null){
-                val bitmapRequestBody = viewModel.dailyMatchingImg01Bitmap.value.let { BitmapRequestBody(it!!) }
-                bitmapMultipartBody.add(MultipartBody.Part.createFormData("mFiles", "img01", bitmapRequestBody))
+            val editInfo = json.toString().toRequestBody(JSON)
+
+            Log.d("json", editInfo.toString())
+
+            val bitmapMultipartBody: MutableList<MultipartBody.Part> = mutableListOf()
+            if (viewModel.dailyMatchingImg01Bitmap.value != null) {
+                Log.d("사진1", viewModel.dailyMatchingImg01Bitmap.value.toString())
+                val bitmapRequestBody =
+                    viewModel.dailyMatchingImg01Bitmap.value.let { BitmapRequestBody(it!!) }
+                bitmapMultipartBody.add(
+                    MultipartBody.Part.createFormData(
+                        "mFiles",
+                        "img01",
+                        bitmapRequestBody
+                    )
+                )
                 isSelectedImg = true
             }
-            if (viewModel.dailyMatchingImg02Bitmap.value != null){
-                val bitmapRequestBody = viewModel.dailyMatchingImg02Bitmap.value.let { BitmapRequestBody(it!!) }
-                bitmapMultipartBody.add(MultipartBody.Part.createFormData("mFiles", "img02", bitmapRequestBody))
+            if (viewModel.dailyMatchingImg02Bitmap.value != null) {
+                Log.d("ㅎㅇ", "사진2")
+                val bitmapRequestBody =
+                    viewModel.dailyMatchingImg02Bitmap.value.let { BitmapRequestBody(it!!) }
+                bitmapMultipartBody.add(
+                    MultipartBody.Part.createFormData(
+                        "mFiles",
+                        "img02",
+                        bitmapRequestBody
+                    )
+                )
                 isSelectedImg = true
             }
-            if (viewModel.dailyMatchingImg03Bitmap.value != null){
-                val bitmapRequestBody = viewModel.dailyMatchingImg03Bitmap.value.let { BitmapRequestBody(it!!) }
-                bitmapMultipartBody.add(MultipartBody.Part.createFormData("mFiles", "img03", bitmapRequestBody))
+            if (viewModel.dailyMatchingImg03Bitmap.value != null) {
+                Log.d("ㅎㅇ", "사진3")
+                val bitmapRequestBody =
+                    viewModel.dailyMatchingImg03Bitmap.value.let { BitmapRequestBody(it!!) }
+                bitmapMultipartBody.add(
+                    MultipartBody.Part.createFormData(
+                        "mFiles",
+                        "img03",
+                        bitmapRequestBody
+                    )
+                )
                 isSelectedImg = true
             }
 
             // 이미지를 선택했다면
-            if (isSelectedImg){
-                Log.d("사진",bitmapMultipartBody.toString())
-                DailyMatchingWriteService.dailyMatchingWriteWithImg(this, bitmapMultipartBody, writeInfo)
+            if (isSelectedImg) {
+                Log.d("사진", bitmapMultipartBody.toString())
+                DailyMatchingWriteService.dailyMatchingEditWithImg(
+                    this,
+                    bitmapMultipartBody,
+                    editInfo
+                )
             }
             // 만약 이미지 사진을 선택안했다면
-            else{
-                DailyMatchingWriteService.dailyMatchingWriteWithoutImg(this, writeInfo)
+            else {
+                DailyMatchingWriteService.dailyMatchingEditWithoutImg(this, editInfo)
             }
         }
 
 
-        binding.dailyMatchingWriteSelectImageLayoutCl.setOnClickListener {
+        binding.dailyMatchingEditSelectImageLayoutCl.setOnClickListener {
             requestImg()
         }
 
-        binding.dailyMatchingWriteSelectErase01Iv.setOnClickListener {
+        binding.dailyMatchingEditSelectErase01Iv.setOnClickListener {
             viewModel.dailyMatchingImg01.value = false
             viewModel.dailyMatchingImg01Bitmap.value = null
             viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.minus(1)
-            binding.dailyMatchingWriteSelectImageLayout01Iv.visibility = View.GONE
+            binding.dailyMatchingEditSelectImageLayout01Iv.visibility = View.GONE
+            isSelectedImg = false
         }
 
-        binding.dailyMatchingWriteSelectErase02Iv.setOnClickListener {
+        binding.dailyMatchingEditSelectErase02Iv.setOnClickListener {
             viewModel.dailyMatchingImg02.value = false
             viewModel.dailyMatchingImg02Bitmap.value = null
             viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.minus(1)
-            binding.dailyMatchingWriteSelectImageLayout02Iv.visibility = View.GONE
+            binding.dailyMatchingEditSelectImageLayout02Iv.visibility = View.GONE
         }
 
-        binding.dailyMatchingWriteSelectErase03Iv.setOnClickListener {
+        binding.dailyMatchingEditSelectErase03Iv.setOnClickListener {
             viewModel.dailyMatchingImg03.value = false
             viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.minus(1)
             viewModel.dailyMatchingImg03Bitmap.value = null
-            binding.dailyMatchingWriteSelectImageLayout03Iv.visibility = View.GONE
+            binding.dailyMatchingEditSelectImageLayout03Iv.visibility = View.GONE
         }
     }
 
 
-    fun setWriteBtnEnable() {
-        binding.dailyMatchingWriteBtn.isEnabled = true
-        binding.dailyMatchingWriteBtn.background = getDrawable(R.drawable.signup_next_btn_done_rectangular)
-        binding.dailyMatchingWriteBtn.setTextColor(getColor(R.color.white))
+    fun setEditBtnEnable() {
+        binding.dailyMatchingEditBtn.isEnabled = true
+        binding.dailyMatchingEditBtn.background =
+            getDrawable(R.drawable.signup_next_btn_done_rectangular)
+        binding.dailyMatchingEditBtn.setTextColor(getColor(R.color.white))
     }
 
-    fun setWriteBtnUnable() {
-        binding.dailyMatchingWriteBtn.isEnabled = false
-        binding.dailyMatchingWriteBtn.background = getDrawable(R.drawable.signup_next_btn_rectangular)
-        binding.dailyMatchingWriteBtn.setTextColor(getColor(R.color.dark_gray_B0))
+    fun setEditBtnUnable() {
+        binding.dailyMatchingEditBtn.isEnabled = false
+        binding.dailyMatchingEditBtn.background =
+            getDrawable(R.drawable.signup_next_btn_rectangular)
+        binding.dailyMatchingEditBtn.setTextColor(getColor(R.color.dark_gray_B0))
     }
 
     fun showDialog(context: Context) {
@@ -420,14 +611,6 @@ class DailyMatchingWrite :
         showDialog(this)
     }
 
-    override fun onDailyMatchingWriteSuccess(dailyWriteResult: DailyWriteResult) {
-        Log.d(TAG, dailyWriteResult.boradIdx.toString())
-        finish()
-    }
-
-    override fun onDailyMatchingWriteFailure(code: Int, message: String) {
-        Log.d(TAG, code.toString() + " : " + message)
-    }
 
     fun requestImg() {
         val dialogBuilder = AlertDialog.Builder(this)
@@ -626,33 +809,36 @@ class DailyMatchingWrite :
                     contentBitmap = bitmap!!
                     if (viewModel.dailyMatchingImg01.value == false) {
                         Log.d("사진1번", "false")
-                        viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                        viewModel.dailyMatchingImgCount.value =
+                            viewModel.dailyMatchingImgCount.value?.plus(1)
                         viewModel.dailyMatchingImg01Bitmap.value = contentBitmap
                         viewModel.dailyMatchingImg01.value = true
-                        binding.dailyMatchingWriteSelectImageLayout01Iv.visibility = View.VISIBLE
-                        binding.dailyMatchingWriteSelectImage01Iv.scaleType =
+                        binding.dailyMatchingEditSelectImageLayout01Iv.visibility = View.VISIBLE
+                        binding.dailyMatchingEditSelectImage01Iv.scaleType =
                             ImageView.ScaleType.FIT_XY
-                        binding.dailyMatchingWriteSelectImage01Iv.setImageBitmap(bitmap)
+                        binding.dailyMatchingEditSelectImage01Iv.setImageBitmap(bitmap)
 
                     } else if (viewModel.dailyMatchingImg02.value == false) {
                         Log.d("사진2번", "false")
-                        viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                        viewModel.dailyMatchingImgCount.value =
+                            viewModel.dailyMatchingImgCount.value?.plus(1)
                         viewModel.dailyMatchingImg02Bitmap.value = contentBitmap
                         viewModel.dailyMatchingImg02.value = true
-                        binding.dailyMatchingWriteSelectImageLayout02Iv.visibility = View.VISIBLE
-                        binding.dailyMatchingWriteSelectImage02Iv.scaleType =
+                        binding.dailyMatchingEditSelectImageLayout02Iv.visibility = View.VISIBLE
+                        binding.dailyMatchingEditSelectImage02Iv.scaleType =
                             ImageView.ScaleType.FIT_XY
-                        binding.dailyMatchingWriteSelectImage02Iv.setImageBitmap(bitmap)
+                        binding.dailyMatchingEditSelectImage02Iv.setImageBitmap(bitmap)
 
                     } else if (viewModel.dailyMatchingImg03.value == false) {
                         Log.d("사진3번", "false")
-                        viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                        viewModel.dailyMatchingImgCount.value =
+                            viewModel.dailyMatchingImgCount.value?.plus(1)
                         viewModel.dailyMatchingImg03Bitmap.value = contentBitmap
                         viewModel.dailyMatchingImg03.value = true
-                        binding.dailyMatchingWriteSelectImageLayout03Iv.visibility = View.VISIBLE
-                        binding.dailyMatchingWriteSelectImage03Iv.scaleType =
+                        binding.dailyMatchingEditSelectImageLayout03Iv.visibility = View.VISIBLE
+                        binding.dailyMatchingEditSelectImage03Iv.scaleType =
                             ImageView.ScaleType.FIT_XY
-                        binding.dailyMatchingWriteSelectImage03Iv.setImageBitmap(bitmap)
+                        binding.dailyMatchingEditSelectImage03Iv.setImageBitmap(bitmap)
 
                     } else {
                         showToast("사진은 3장까지 선택 가능합니다.")
@@ -660,44 +846,6 @@ class DailyMatchingWrite :
                 }
             }
 
-//            multiplePermissionsCode1 -> {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    val bitmap = BitmapFactory.decodeFile(contentUri.path)
-//                    // 사진 조정 된것
-//                    val degree = getDegree(
-//                        contentUri,
-//                        contentUri.path!!
-//                    )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
-//                    val bitmap2 = resizeBitmap(1024, bitmap)
-//                    val bitmap3 = rotateBitmap(bitmap2, degree)
-//                    contentBitmap = bitmap3
-//                    contentBitmap = bitmap!!
-//                    if (viewModel.dailyMatchingImg01.value == false) {
-//                        viewModel.dailyMatchingImg01Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg01.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout01Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage01Iv.setImageBitmap(bitmap)
-//                        binding.dailyMatchingWriteSelectImage01Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                    } else if (viewModel.dailyMatchingImg02.value == false) {
-//                        viewModel.dailyMatchingImg02Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg02.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout02Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage03Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                        binding.dailyMatchingWriteSelectImage02Iv.setImageBitmap(bitmap)
-//                    } else if (viewModel.dailyMatchingImg03.value == false) {
-//                        viewModel.dailyMatchingImg03Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg03.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout03Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage03Iv.setImageBitmap(bitmap)
-//                        binding.dailyMatchingWriteSelectImage03Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                    } else {
-//                        showToast("사진은 3장까지 선택 가능합니다.")
-//                    }
-//                }
-//            }
             multiplePermissionsCode2 -> {
                 if (resultCode == Activity.RESULT_OK) {
                     Log.d("ㅎㅇ2", resultCode.toString())
@@ -736,36 +884,39 @@ class DailyMatchingWrite :
                                 }
                             }
                             if (viewModel.dailyMatchingImg01.value == false) {
-                                viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                viewModel.dailyMatchingImgCount.value =
+                                    viewModel.dailyMatchingImgCount.value?.plus(1)
                                 viewModel.dailyMatchingImg01Bitmap.value = contentBitmap
                                 viewModel.dailyMatchingImg01.value = true
-                                binding.dailyMatchingWriteSelectImageLayout01Iv.visibility =
+                                binding.dailyMatchingEditSelectImageLayout01Iv.visibility =
                                     View.VISIBLE
-                                binding.dailyMatchingWriteSelectImage01Iv.scaleType =
+                                binding.dailyMatchingEditSelectImage01Iv.scaleType =
                                     ImageView.ScaleType.FIT_XY
-                                binding.dailyMatchingWriteSelectImage01Iv.setImageBitmap(
+                                binding.dailyMatchingEditSelectImage01Iv.setImageBitmap(
                                     contentBitmap
                                 )
                             } else if (viewModel.dailyMatchingImg02.value == false) {
-                                viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                viewModel.dailyMatchingImgCount.value =
+                                    viewModel.dailyMatchingImgCount.value?.plus(1)
                                 viewModel.dailyMatchingImg02Bitmap.value = contentBitmap
                                 viewModel.dailyMatchingImg02.value = true
-                                binding.dailyMatchingWriteSelectImageLayout02Iv.visibility =
+                                binding.dailyMatchingEditSelectImageLayout02Iv.visibility =
                                     View.VISIBLE
-                                binding.dailyMatchingWriteSelectImage02Iv.scaleType =
+                                binding.dailyMatchingEditSelectImage02Iv.scaleType =
                                     ImageView.ScaleType.FIT_XY
-                                binding.dailyMatchingWriteSelectImage02Iv.setImageBitmap(
+                                binding.dailyMatchingEditSelectImage02Iv.setImageBitmap(
                                     contentBitmap
                                 )
                             } else if (viewModel.dailyMatchingImg03.value == false) {
-                                viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                viewModel.dailyMatchingImgCount.value =
+                                    viewModel.dailyMatchingImgCount.value?.plus(1)
                                 viewModel.dailyMatchingImg03Bitmap.value = contentBitmap
                                 viewModel.dailyMatchingImg03.value = true
-                                binding.dailyMatchingWriteSelectImageLayout03Iv.visibility =
+                                binding.dailyMatchingEditSelectImageLayout03Iv.visibility =
                                     View.VISIBLE
-                                binding.dailyMatchingWriteSelectImage03Iv.scaleType =
+                                binding.dailyMatchingEditSelectImage03Iv.scaleType =
                                     ImageView.ScaleType.FIT_XY
-                                binding.dailyMatchingWriteSelectImage03Iv.setImageBitmap(
+                                binding.dailyMatchingEditSelectImage03Iv.setImageBitmap(
                                     contentBitmap
                                 )
                             } else {
@@ -780,36 +931,39 @@ class DailyMatchingWrite :
                                 contentBitmap = bitmap
 
                                 if (viewModel.dailyMatchingImg01.value == false) {
-                                    viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                    viewModel.dailyMatchingImgCount.value =
+                                        viewModel.dailyMatchingImgCount.value?.plus(1)
                                     viewModel.dailyMatchingImg01Bitmap.value = contentBitmap
                                     viewModel.dailyMatchingImg01.value = true
-                                    binding.dailyMatchingWriteSelectImageLayout01Iv.visibility =
+                                    binding.dailyMatchingEditSelectImageLayout01Iv.visibility =
                                         View.VISIBLE
-                                    binding.dailyMatchingWriteSelectImage01Iv.scaleType =
+                                    binding.dailyMatchingEditSelectImage01Iv.scaleType =
                                         ImageView.ScaleType.FIT_XY
-                                    binding.dailyMatchingWriteSelectImage01Iv.setImageBitmap(
+                                    binding.dailyMatchingEditSelectImage01Iv.setImageBitmap(
                                         contentBitmap
                                     )
                                 } else if (viewModel.dailyMatchingImg02.value == false) {
-                                    viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                    viewModel.dailyMatchingImgCount.value =
+                                        viewModel.dailyMatchingImgCount.value?.plus(1)
                                     viewModel.dailyMatchingImg02Bitmap.value = contentBitmap
                                     viewModel.dailyMatchingImg02.value = true
-                                    binding.dailyMatchingWriteSelectImageLayout02Iv.visibility =
+                                    binding.dailyMatchingEditSelectImageLayout02Iv.visibility =
                                         View.VISIBLE
-                                    binding.dailyMatchingWriteSelectImage02Iv.scaleType =
+                                    binding.dailyMatchingEditSelectImage02Iv.scaleType =
                                         ImageView.ScaleType.FIT_XY
-                                    binding.dailyMatchingWriteSelectImage02Iv.setImageBitmap(
+                                    binding.dailyMatchingEditSelectImage02Iv.setImageBitmap(
                                         contentBitmap
                                     )
                                 } else if (viewModel.dailyMatchingImg03.value == false) {
-                                    viewModel.dailyMatchingImgCount.value = viewModel.dailyMatchingImgCount.value?.plus(1)
+                                    viewModel.dailyMatchingImgCount.value =
+                                        viewModel.dailyMatchingImgCount.value?.plus(1)
                                     viewModel.dailyMatchingImg03Bitmap.value = contentBitmap
                                     viewModel.dailyMatchingImg03.value = true
-                                    binding.dailyMatchingWriteSelectImageLayout03Iv.visibility =
+                                    binding.dailyMatchingEditSelectImageLayout03Iv.visibility =
                                         View.VISIBLE
-                                    binding.dailyMatchingWriteSelectImage03Iv.scaleType =
+                                    binding.dailyMatchingEditSelectImage03Iv.scaleType =
                                         ImageView.ScaleType.FIT_XY
-                                    binding.dailyMatchingWriteSelectImage03Iv.setImageBitmap(
+                                    binding.dailyMatchingEditSelectImage03Iv.setImageBitmap(
                                         contentBitmap
                                     )
                                 } else {
@@ -875,4 +1029,80 @@ class DailyMatchingWrite :
             bitmap.compress(Bitmap.CompressFormat.PNG, 50, sink.outputStream())
         }
     }
+
+    override fun onDailyMatchingEditSuccess(dailyWriteResult: DailyWriteResult) {
+        Log.d(ApplicationClass.TAG, dailyWriteResult.boradIdx.toString())
+        finish()
+    }
+
+    override fun onDailyMatchingEditFailure(code: Int, message: String) {
+        Log.d(ApplicationClass.TAG, code.toString() + " : " + message)
+    }
+
+    private fun setImage01() {
+
+        Picasso.get().load(dailyMatchingInfo.urls[0]).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                binding.dailyMatchingEditSelectImage01Iv.setImageBitmap(bitmap)
+                viewModel.dailyMatchingImg01Bitmap.value = bitmap
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+
+        })
+
+        viewModel.dailyMatchingImgCount.value =
+            viewModel.dailyMatchingImgCount.value?.plus(1)
+        binding.dailyMatchingEditSelectImageLayout01Iv.visibility = View.VISIBLE
+
+        binding.dailyMatchingEditSelectImage01Iv.scaleType = ImageView.ScaleType.FIT_XY
+        viewModel.dailyMatchingImg01.value = true
+    }
+
+    private fun setImage02() {
+
+        Picasso.get().load(dailyMatchingInfo.urls[1]).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                binding.dailyMatchingEditSelectImage02Iv.setImageBitmap(bitmap)
+                viewModel.dailyMatchingImg02Bitmap.value = bitmap
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+
+        })
+
+        viewModel.dailyMatchingImgCount.value =
+            viewModel.dailyMatchingImgCount.value?.plus(1)
+        binding.dailyMatchingEditSelectImageLayout02Iv.visibility = View.VISIBLE
+        binding.dailyMatchingEditSelectImage02Iv.scaleType = ImageView.ScaleType.FIT_XY
+        viewModel.dailyMatchingImg02.value = true
+    }
+
+
+    private fun setImage03() {
+
+        Picasso.get().load(dailyMatchingInfo.urls[2]).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                binding.dailyMatchingEditSelectImage03Iv.setImageBitmap(bitmap)
+                viewModel.dailyMatchingImg03Bitmap.value = bitmap
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+
+        })
+
+        viewModel.dailyMatchingImgCount.value =
+            viewModel.dailyMatchingImgCount.value?.plus(1)
+
+        binding.dailyMatchingEditSelectImageLayout03Iv.visibility = View.VISIBLE
+        binding.dailyMatchingEditSelectImage03Iv.scaleType = ImageView.ScaleType.FIT_XY
+        viewModel.dailyMatchingImg03.value = true
+    }
+
 }

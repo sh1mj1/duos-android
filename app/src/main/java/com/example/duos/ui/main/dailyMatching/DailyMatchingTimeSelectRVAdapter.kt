@@ -11,6 +11,7 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.util.SparseBooleanArray
 import android.view.View
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,7 +65,14 @@ class DailyMatchingTimeSelectRVAdapter(val time: Int) :
             selectedStatus.put(i, false)
         }
         notifyDataSetChanged()
+    }
 
+    fun setTime(starTime : Int, duration : Int){
+        Log.d("start, duration", "$starTime, $duration")
+        for (i in starTime until starTime+duration){
+            selectedStatus.put(i, true)
+        }
+        notifyDataSetChanged()
     }
 
 
@@ -73,7 +81,6 @@ class DailyMatchingTimeSelectRVAdapter(val time: Int) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int) {
-
             binding.dailyMatchingTimeSelectorTv.text = (startTime + position + 1).toString() + " : 00"
 
             binding.dailyMatchingTimeSelectorBtn.isSelected = selectedStatus[position]

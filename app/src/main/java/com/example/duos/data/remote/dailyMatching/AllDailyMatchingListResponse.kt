@@ -1,6 +1,7 @@
 package com.example.duos.data.remote.dailyMatching
 
 import com.example.duos.data.entities.dailyMatching.DailyMatchingDetail
+import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageResult
 import com.example.duos.data.entities.dailyMatching.DailyMatchingOption
 import com.google.gson.annotations.SerializedName
 
@@ -51,4 +52,11 @@ data class DailyMatchingDeleteResponse(
     @SerializedName("isSuccess") val isSuccess: Boolean,
     @SerializedName("code") val code: Int,
     @SerializedName("message") val message: String
+)
+
+data class DailyMatchingMessageResponse(
+    @SerializedName("isSuccess") val isSuccess: Boolean,
+    @SerializedName("code") val code: Int,
+    @SerializedName("message") val message: String,
+    @SerializedName("result") val result: DailyMatchingMessageResult
 )
