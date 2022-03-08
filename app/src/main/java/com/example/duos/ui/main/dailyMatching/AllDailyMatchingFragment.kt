@@ -1,6 +1,7 @@
 package com.example.duos.ui.main.dailyMatching
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -19,14 +20,14 @@ import com.example.duos.databinding.FragmentAllDailyMatchingFragmentBinding
 
 class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBinding>
 (FragmentAllDailyMatchingFragmentBinding::inflate), AllDailyMatchingView,
-    DailyMatchingRVAdapter.OnItemClickListener {
+    DailyMatchingListRVAdapter.OnItemClickListener {
 
     var pageNum : Int = 0
     val listNum : Int = 30
     private var layoutManager: RecyclerView.LayoutManager? = null
     lateinit var mContext: MainActivity
     private var isNextPageAvailable = false // 다음 페이지 유무
-    lateinit var dailyMatchingRVAdapter : DailyMatchingRVAdapter
+    lateinit var dailyMatchingListRVAdapter : DailyMatchingListRVAdapter
 
 
     override fun onAttach(context: Context) {
@@ -41,8 +42,8 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
         binding.allDailyMatchingRecyclerviewRc.itemAnimator = DefaultItemAnimator()
         layoutManager = LinearLayoutManager(requireContext())
         binding.allDailyMatchingRecyclerviewRc.layoutManager = layoutManager
-        dailyMatchingRVAdapter = DailyMatchingRVAdapter(this)
-        binding.allDailyMatchingRecyclerviewRc.adapter = dailyMatchingRVAdapter
+        dailyMatchingListRVAdapter = DailyMatchingListRVAdapter(this)
+        binding.allDailyMatchingRecyclerviewRc.adapter = dailyMatchingListRVAdapter
     }
 
     override fun onResume() {
@@ -79,7 +80,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     private fun loadMoreDailyMatchingList(){
-        dailyMatchingRVAdapter.setLoadingView(true)
+        dailyMatchingListRVAdapter.setLoadingView(true)
         val dailyMatchingRequestBody = DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         Handler(Looper.getMainLooper()).postDelayed({
             DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
@@ -91,10 +92,10 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
         isNextPageAvailable = allDailyMatchingListResult.isNextPageExists
 
         if (pageNum == 0){
-            dailyMatchingRVAdapter.setPagingMessages(allDailyMatchingListDatas)
+            dailyMatchingListRVAdapter.setPagingMessages(allDailyMatchingListDatas)
         }
         else {
-            dailyMatchingRVAdapter.run {
+            dailyMatchingListRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(allDailyMatchingListDatas)
             }
@@ -114,7 +115,12 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
         isNextPageAvailable = hasNextPage
     }
 
-    override fun onItemClicked(boardIdx: Int) {
-        Log.d("idx",boardIdx.toString())
+    override fun onItemClicked(boardIdx: Int, recruitmentStatus : String) {
+        Log.d("상태", "$boardIdx $recruitmentStatus")
+        if (recruitmentStatus.equals("recruiting")) {
+            val intent = Intent(activity, DailyMatchingDetail::class.java)
+            intent.putExtra("boardIdx", boardIdx)
+            startActivity(intent)
+        }
     }
 }

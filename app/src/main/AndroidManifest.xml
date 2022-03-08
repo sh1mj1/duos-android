@@ -122,6 +122,11 @@
 
         <!--        마이 페이지 B 파트     -->
         <activity
+            android:name=".ui.main.mypage.myboard.MyBoardActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.mypage.notion.NotionActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -173,6 +178,11 @@
         <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingDetail"
             android:exported="true"
             android:screenOrientation="portrait"/>
+
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingEdit"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
 
         <activity android:name="com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity"
             android:exported="true"

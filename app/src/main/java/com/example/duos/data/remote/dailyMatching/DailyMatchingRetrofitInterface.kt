@@ -1,7 +1,6 @@
 package com.example.duos.data.remote.dailyMatching
 
-import com.example.duos.data.remote.appointment.ShowAppointmentResponse
-import com.example.duos.data.remote.signUp.SignUpRequestResponse
+import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageParticipantIdx
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -34,7 +33,49 @@ interface DailyMatchingRetrofitInterface {
     fun dailyMatchingShowDetail(
         @Path("boardIdx") boardIdx : Int,
         @Query("userIdx") userIdx : Int
-    ): Call<ShowAppointmentResponse>
+    ): Call<DailyMatchingDetailResponse>
+
+    @GET("/api/board/{boardIdx}/option")
+    fun dailyMatchingOption(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingOptionResponse>
+
+    @PUT("/api/board/{boardIdx}/finish")
+    fun dailyMatchingEnd(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingEndResponse>
+
+    @DELETE("/api/board/{boardIdx}/delete")
+    fun dailyMatchingDelete(
+        @Path("boardIdx") boardIdx : Int,
+        @Query("userIdx") userIdx : Int
+    ): Call<DailyMatchingDeleteResponse>
+
+    @Multipart
+    @PUT("/api/board")
+    fun dailyMatchingEditWithoutImg(
+        @Part("updateBoardReqDto") editInfo : RequestBody
+    ) : Call<DailyWriteResponse>
+
+    @Multipart
+    @PUT("/api/board")
+    fun dailyMatchingEditWithImg(
+        @Part mFiles : List<MultipartBody.Part>,
+        @Part("updateBoardReqDto") editInfo : RequestBody
+    ) : Call<DailyWriteResponse>
+
+    @POST("/api/board/{boardIdx}/message")
+    fun dailyMatchingMessage(
+        @Path("boardIdx") boardIdx : Int,
+        @Body participantIdx : DailyMatchingMessageParticipantIdx
+    ) : Call<DailyMatchingMessageResponse>
+
+    @POST("/api/board/list/user")
+    fun getMyDailyMatchingList(
+        @Query("userIdx") userIdx : Int
+    ): Call<MyDailyMatchingListResponse>
 
     @GET("/api/board/search")
     fun dailyMatchingSearch(

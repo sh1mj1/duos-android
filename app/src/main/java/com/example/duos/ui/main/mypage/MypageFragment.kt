@@ -17,6 +17,7 @@ import com.example.duos.databinding.FragmentMypageBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.mypage.customerservice.CustomerServiceActivity
 import com.example.duos.ui.main.mypage.appointment.LastAppointmentActivity
+import com.example.duos.ui.main.mypage.myboard.MyBoardActivity
 import com.example.duos.ui.main.mypage.myprofile.MyPageItemView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.ui.main.mypage.notion.NotionActivity
@@ -44,6 +45,11 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val appointmentText = binding.myPageLastAppointmentTextTv
         val appointmentArrow = binding.myPageLastAppointmentArrowIv
         // 공지사항
+
+        val boardIcon = binding.myPageMyBoardIconIv
+        val boardText = binding.myPageMyBoardTextTv
+        val boardArrow = binding.myPageMyBoardArrowIv
+
         val noticeIcon = binding.myPageNoticeIconIv
         val noticeText = binding.myPageNoticeTextTv
         val noticeArrow = binding.myPageNoticeArrowIv
@@ -72,6 +78,19 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         appointmentArrow.setOnClickListener {
             val intent = Intent(activity, LastAppointmentActivity::class.java)
             startActivity(intent) }
+        // 내가 작성한 글
+        boardIcon.setOnClickListener {
+            val intent = Intent(activity, MyBoardActivity::class.java)
+            startActivity(intent)
+        }
+        boardText.setOnClickListener {
+            val intent = Intent(activity, MyBoardActivity::class.java)
+            startActivity(intent)
+        }
+        boardArrow.setOnClickListener {
+            val intent = Intent(activity, MyBoardActivity::class.java)
+            startActivity(intent)
+        }
         // 공지 사항
         noticeIcon.setOnClickListener {
             val intent = Intent(activity, NotionActivity::class.java)

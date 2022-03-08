@@ -2,6 +2,7 @@ package com.example.duos.data.remote.dailyMatching
 
 import android.util.Log
 import com.example.duos.ApplicationClass
+import com.example.duos.ui.main.dailyMatching.DailyMatchingEditView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingWriteView
 import com.example.duos.utils.NetworkModule
 import okhttp3.MultipartBody
@@ -63,6 +64,60 @@ object DailyMatchingWriteService {
                 Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
 
                 dailyMatchingWriteView.onDailyMatchingWriteFailure(400, "네트워크 오류가 발생했습니다.")
+            }
+        })
+    }
+
+    fun dailyMatchingEditWithoutImg(dailyMatchingEditView: DailyMatchingEditView, editInfo: RequestBody) {
+        val dailyEditService =  retrofit.create(DailyMatchingRetrofitInterface::class.java)
+
+        dailyEditService.dailyMatchingEditWithoutImg(editInfo).enqueue(object :
+            Callback<DailyWriteResponse> {
+            override fun onResponse(
+                call: Call<DailyWriteResponse>,
+                response: Response<DailyWriteResponse>
+            ) {
+
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+
+                when (resp.code) {
+                    1000 -> dailyMatchingEditView.onDailyMatchingEditSuccess(resp.result)
+                    else -> dailyMatchingEditView.onDailyMatchingEditFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<DailyWriteResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+
+                dailyMatchingEditView.onDailyMatchingEditFailure(400, "네트워크 오류가 발생했습니다.")
+            }
+        })
+    }
+
+    fun dailyMatchingEditWithImg(dailyMatchingEditView: DailyMatchingEditView, mFiles : List<MultipartBody.Part>, editInfo: RequestBody) {
+        val dailyEditService =  retrofit.create(DailyMatchingRetrofitInterface::class.java)
+
+        dailyEditService.dailyMatchingEditWithImg(mFiles, editInfo).enqueue(object :
+            Callback<DailyWriteResponse> {
+            override fun onResponse(
+                call: Call<DailyWriteResponse>,
+                response: Response<DailyWriteResponse>
+            ) {
+
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+
+                when (resp.code) {
+                    1000 -> dailyMatchingEditView.onDailyMatchingEditSuccess(resp.result)
+                    else -> dailyMatchingEditView.onDailyMatchingEditFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<DailyWriteResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+
+                dailyMatchingEditView.onDailyMatchingEditFailure(400, "네트워크 오류가 발생했습니다.")
             }
         })
     }

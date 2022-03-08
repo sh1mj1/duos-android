@@ -11,17 +11,18 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.util.SparseBooleanArray
 import android.view.View
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DailyMatchingTimeSelectRVAdapter(val startTime: Int) :
+class DailyMatchingTimeSelectRVAdapter(val time: Int) :
     RecyclerView.Adapter<DailyMatchingTimeSelectRVAdapter.ViewHolder>() {
 
     private val selectedStatus = SparseBooleanArray()
+    var startTime : Int = time
     var startPosition: Int = -1
-    var endPosition: Int = -1
 
     // 클릭 인터페이스 정의
     interface MyItemClickListener {
@@ -57,17 +58,29 @@ class DailyMatchingTimeSelectRVAdapter(val startTime: Int) :
     }
 
     override fun getItemCount(): Int = 24 - startTime
-//
-//    override fun getItemViewType(position: Int): Int {
-//        return position
-//    }
+
+    fun updateStartTime(time: Int) {
+        startTime = time
+        for (i in 0 until itemCount){
+            selectedStatus.put(i, false)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun setTime(starTime : Int, duration : Int){
+        Log.d("start, duration", "$starTime, $duration")
+        for (i in starTime until starTime+duration){
+            selectedStatus.put(i, true)
+        }
+        notifyDataSetChanged()
+    }
+
 
     // 뷰홀더
     inner class ViewHolder(val binding: ItemDailyMatchingTimeSelectorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int) {
-
             binding.dailyMatchingTimeSelectorTv.text = (startTime + position + 1).toString() + " : 00"
 
             binding.dailyMatchingTimeSelectorBtn.isSelected = selectedStatus[position]
@@ -77,16 +90,15 @@ class DailyMatchingTimeSelectRVAdapter(val startTime: Int) :
                     for (i in 0 until itemCount){
                         selectedStatus.put(i, false)
                     }
-//                    Log.d("처음선택", "")
+
                     startPosition = position
                     mItemClickListener.onResetItem(startPosition)
-//                    Log.d("position", position.toString())
-//                    Log.d("startPosition", startPosition.toString())
+
                     selectedStatus.put(position, true)
                     binding.dailyMatchingTimeSelectorBtn.isSelected = true
 
                 } else {
-//                    Log.d("끝선택", "")
+
                     if (position >= startPosition) {
                         mItemClickListener.onClickItem(startPosition, position)
                         for (i in startPosition until position + 1) {
@@ -94,7 +106,7 @@ class DailyMatchingTimeSelectRVAdapter(val startTime: Int) :
                         }
                         startPosition = -1
                     } else {
-//                        Log.d("처음선택", "")
+
                         selectedStatus.put(startPosition, false)
                         notifyDataSetChanged()
                         startPosition = position

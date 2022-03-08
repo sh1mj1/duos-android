@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.remote.dailyMatching.SearchResultItem
 import com.example.duos.databinding.ItemFragmentDailyMatchingFragmentBinding
-import com.example.duos.ui.main.dailyMatching.DailyMatchingRVAdapter
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId

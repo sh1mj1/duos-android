@@ -89,8 +89,9 @@ class ViewModel : ViewModel() {
     var dailyMatchingTitle = MutableLiveData<String?>()
     var dailyMatchingPlace = MutableLiveData<String?>()
     var dailyMatchingContent = MutableLiveData<String?>()
-    var dailyMatchingDate : MutableLiveData<Boolean> = MutableLiveData(false)
-    var dailyMatchingTime : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingDateCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingTimeCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingDate = MutableLiveData<String?>()
 
     var dailyMatchingImg01 : MutableLiveData<Boolean> = MutableLiveData(false)
     var dailyMatchingImg02 : MutableLiveData<Boolean> = MutableLiveData(false)
@@ -99,6 +100,11 @@ class ViewModel : ViewModel() {
     var dailyMatchingImg02Bitmap = MutableLiveData<Bitmap?>()
     var dailyMatchingImg03Bitmap = MutableLiveData<Bitmap?>()
     var dailyMatchingImgCount = MutableLiveData<Int?>()
+
+    var dailyMatchingEditTitle = MutableLiveData<String?>()
+    var dailyMatchingEditPlace = MutableLiveData<String?>()
+    var dailyMatchingEditContent = MutableLiveData<String?>()
+
 
     init {
         dailyMatchingImgCount.value = 0

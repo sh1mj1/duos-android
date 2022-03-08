@@ -75,6 +75,8 @@
         android:text="목동 테니스장"
         android:textColor="@color/nero"
         android:textSize="11sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
         app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_location_icon_iv"
         app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />

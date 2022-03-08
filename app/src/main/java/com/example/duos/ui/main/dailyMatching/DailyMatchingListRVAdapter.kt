@@ -26,7 +26,7 @@ import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
 
-class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
+class DailyMatchingListRVAdapter(val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var dailyMatchingItem : java.util.ArrayList<DailyMatching?> =
         java.util.ArrayList<DailyMatching?>()
@@ -39,7 +39,7 @@ class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
 
 
     interface OnItemClickListener{
-        fun onItemClicked(boardIdx : Int)
+        fun onItemClicked(boardIdx : Int, recruitmentStatus : String)
     }
 
 
@@ -227,7 +227,10 @@ class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
 
             title.text = item.title
             userNickname.text = item.userNickname
-            matchPlace.text = item.matchPlace
+            if (item.matchPlace.length > 25){
+                matchPlace.text = item.matchPlace.substring(0,24) + "…"
+            }
+            else matchPlace.text = item.matchPlace
             val format = SimpleDateFormat("M/d(E)", Locale.KOREAN)
             val timeFormat = SimpleDateFormat("HH:mm")
             val startTime1: org.threeten.bp.LocalDateTime = item.startTime
@@ -261,7 +264,7 @@ class DailyMatchingRVAdapter(val itemClickListener: OnItemClickListener) :
             userAge.text = (item.userAge - item.userAge % 10).toString() + "대"
 
             itemView.setOnClickListener {
-                clickListener.onItemClicked(item.boardIdx)
+                clickListener.onItemClicked(item.boardIdx, item.recruitmentStatus)
             }
         }
     }
