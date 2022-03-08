@@ -169,6 +169,6 @@ class DailyMatchingSearchActivity :
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
-        showToast("네트워크 연결 확인 후 다시 시도해주세요.")
+        showToast(message)
     }
 }

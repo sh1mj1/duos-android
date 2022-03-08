@@ -173,6 +173,7 @@
         <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingDetail"
             android:exported="true"
             android:screenOrientation="portrait"/>
+
         <activity android:name="com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
