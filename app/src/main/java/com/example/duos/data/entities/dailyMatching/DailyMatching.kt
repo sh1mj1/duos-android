@@ -41,7 +41,9 @@ data class DailyMatchingDetail (
     @SerializedName("messageCount") val messageCount : Int,
     @SerializedName("urls") val urls : List<String>,
     @SerializedName("regBefore") val regBefore : String,
-    @SerializedName("stringForMatchDateGap") val stringForMatchDateGap : String
+    @SerializedName("stringForMatchDateGap") val stringForMatchDateGap : String,
+    @SerializedName("remains") val remains : Int,
+    @SerializedName("alreadyExist") val alreadyExist : Boolean
 ) : Serializable
 
 data class DailyMatchingOption(

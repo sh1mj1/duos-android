@@ -33,6 +33,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/recommend_friend_list_d_7_text_tv"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
@@ -59,6 +61,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -84,6 +88,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -108,6 +114,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -133,6 +141,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -158,6 +168,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -183,6 +195,8 @@
             android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
             android:visibility="gone"/>
@@ -212,7 +226,7 @@
             android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_fragment_recommend_friend_list"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

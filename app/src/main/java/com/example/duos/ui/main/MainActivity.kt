@@ -1,8 +1,5 @@
 package com.example.duos.ui.main
 
-import android.annotation.SuppressLint
-import android.util.Log
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -10,13 +7,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMainBinding
 import com.example.duos.ui.BaseActivity
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
-
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private lateinit var navHostFragment: NavHostFragment
-
 
     override fun initAfterBinding() {
         overridePendingTransition(R.anim.horizon_enter, R.anim.none)
@@ -28,10 +21,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainBottomNavigation.setupWithNavController(navController)
         binding.mainBottomNavigation.itemIconTintList = null
 
-//        getFCMToken()
-
+        val intent = getIntent()
+        val fromWhere = intent.getStringExtra("FromDailyMatchingDetail")
+        if (fromWhere != null && fromWhere.contentEquals("1")){
+            val navGraph = navController.navInflater.inflate(R.navigation.navigation)
+            navGraph.startDestination = R.id.menu_chatFragment
+            navController.graph = navGraph
+            binding.mainBottomNavigation.setupWithNavController(navController)
+        }
     }
-
 
 //    companion object {
 //
