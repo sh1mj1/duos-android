@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMainBinding
 import com.example.duos.ui.BaseActivity
+import com.example.duos.utils.getUserIdx
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -19,6 +20,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
     override fun initAfterBinding() {
+        Log.d("userIdx", "${getUserIdx()}")
         overridePendingTransition(R.anim.horizon_enter, R.anim.none)
 
         navHostFragment =

@@ -36,4 +36,10 @@ interface DailyMatchingRetrofitInterface {
         @Query("userIdx") userIdx : Int
     ): Call<ShowAppointmentResponse>
 
+    @GET("/api/board/search")
+    fun dailyMatchingSearch(
+        @Query("userIdx") userIdx : Int,
+        @Query("searchParam") searchParam : String
+    ) : Call<DailyMatchingSearchResponse>
+
 }

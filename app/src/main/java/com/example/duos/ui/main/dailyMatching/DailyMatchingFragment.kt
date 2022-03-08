@@ -10,6 +10,7 @@ import com.example.duos.ui.main.friendList.FriendListViewpagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 
 
@@ -41,6 +42,13 @@ class DailyMatchingFragment :
             val intent = Intent(activity, DailyMatchingWrite::class.java)
             startActivity(intent)
         }
+
+        // 검색 중임
+        binding.dailyMatchingSearchImageIv.setOnClickListener {
+            val intent = Intent(activity, DailyMatchingSearchActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }

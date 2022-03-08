@@ -3,6 +3,7 @@ package com.example.duos.data.remote.dailyMatching
 import android.util.Log
 import com.example.duos.ApplicationClass
 import com.example.duos.ui.main.dailyMatching.AllDailyMatchingView
+import com.example.duos.ui.main.dailyMatching.DailyMatchingSearchView
 import com.example.duos.ui.main.dailyMatching.ImminentDailyMatchingView
 import com.example.duos.ui.main.dailyMatching.PopularDailyMatchingView
 import com.example.duos.utils.NetworkModule
@@ -89,6 +90,39 @@ object DailyMatchingListService {
             })
     }
 
+    fun searchDailyMatching(
+        dailyMatchingSearchView: DailyMatchingSearchView,
+        userIdx: Int, searchParam: String
+    ) {
+        val searchDailyMatchingListService =
+            DailyMatchingListService.retrofit.create(DailyMatchingRetrofitInterface::class.java)
+
+        searchDailyMatchingListService.dailyMatchingSearch(userIdx, searchParam).enqueue(object :
+            Callback<DailyMatchingSearchResponse> {
+
+            override fun onResponse(
+                call: Call<DailyMatchingSearchResponse>,
+                response: Response<DailyMatchingSearchResponse>
+            ) {
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+                when(resp.code){
+                    1000 -> resp.result.let{
+                        dailyMatchingSearchView.onGetSearchViewSuccess(it)
+                    }
+                    else -> dailyMatchingSearchView.onGetSearchViewFailure(resp.code, resp.message)
+                }
+            }
+            override fun onFailure(call: Call<DailyMatchingSearchResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+                dailyMatchingSearchView.onGetSearchViewFailure(400, "네트워크 오류 발생")
+
+            }
+
+        })
+    }
+
+
     fun getImminentDailyMatching(
         imminentDailyMatchingView: ImminentDailyMatchingView,
         dailyMatchingListRequesetBody: DailyMatchingListRequesetBody
@@ -119,7 +153,10 @@ object DailyMatchingListService {
                     }
                 }
 
-                override fun onFailure(call: Call<ImminentDailyMatchingListResponse>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<ImminentDailyMatchingListResponse>,
+                    t: Throwable
+                ) {
                     Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
                     imminentDailyMatchingView.onGetImminentDailyMatchingViewFailure(
                         400,
@@ -128,5 +165,7 @@ object DailyMatchingListService {
                 }
             })
     }
+
+
 }
 

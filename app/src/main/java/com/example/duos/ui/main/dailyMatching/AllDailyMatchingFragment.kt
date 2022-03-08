@@ -10,11 +10,11 @@ import com.example.duos.data.entities.dailyMatching.DailyMatching
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListRequesetBody
 import com.example.duos.data.remote.dailyMatching.AllDailyMatchingListResult
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
-import com.example.duos.databinding.FragmentAllDailyMatchingFragmentBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.getUserIdx
 import androidx.recyclerview.widget.RecyclerView
+import com.example.duos.databinding.FragmentAllDailyMatchingFragmentBinding
 
 
 class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBinding>
