@@ -26,7 +26,8 @@
         app:layout_constraintTop_toBottomOf="@id/friend_list_text_tv"
         app:tabTextAppearance="@style/tab_text"
         app:tabTextColor="@color/nero"
-        app:tabIndicatorColor="@color/black"/>
+        app:tabIndicatorColor="@color/black"
+        app:tabRippleColor="@null"/>
 
 
 

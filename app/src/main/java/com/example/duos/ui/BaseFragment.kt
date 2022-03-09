@@ -52,6 +52,10 @@ abstract class BaseFragment<VB : ViewBinding>(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    fun showToastShort(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
     fun progressON() {
         ApplicationClass.getInstance().progressON(activity, null)
     }

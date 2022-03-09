@@ -137,7 +137,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
-        binding.signup05ProfileImageBackgroundIv.setOnClickListener{
+        binding.signup05ProfileImageBackgroundIv.setOnClickListener {
 
             val dialogBuilder = AlertDialog.Builder(activity)
             dialogBuilder.setTitle(R.string.upload_pic_dialog_title)
@@ -304,7 +304,8 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                     viewModel.profileImg.value = profileBitmap
                     binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
 //                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
-                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
+                    binding.signup05ProfileImageBackgroundIv.scaleType =
+                        ImageView.ScaleType.CENTER_CROP
                 }
             }
 
@@ -322,7 +323,8 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                             profileBitmap = bitmap
                             viewModel.profileImg.value = profileBitmap
                             binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
-                            binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.signup05ProfileImageBackgroundIv.scaleType =
+                                ImageView.ScaleType.CENTER_CROP
 
                         } else {
                             val cursor =
@@ -338,7 +340,8 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                                 profileBitmap = bitmap
                                 viewModel.profileImg.value = profileBitmap
                                 binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
-                                binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.CENTER_CROP
+                                binding.signup05ProfileImageBackgroundIv.scaleType =
+                                    ImageView.ScaleType.CENTER_CROP
                             }
                         }
                     }
@@ -479,7 +482,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         }
     }
 
-    fun setUser(result : SignUpRequestResultData) : User {
+    fun setUser(result: SignUpRequestResultData): User {
         var user = User(
             result.phoneNumber,
             result.nickname,
@@ -495,7 +498,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         return user
     }
 
-    override fun onSignUpRequestSuccess(result : SignUpRequestResultData) {
+    override fun onSignUpRequestSuccess(result: SignUpRequestResultData) {
         Log.d("success", "hi")
         //         roomDB 에 회원가입 정보 모두 저장
         // 인증번호 확인 성공!
@@ -505,10 +508,10 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
         val db = UserDatabase.getInstance(requireContext())
         var user = db!!.userDao().getUser(result.userIdx)
-        if (user != null){
+        if (user != null) {
             user = setUser(result)
             db!!.userDao().update(user)
-        } else{
+        } else {
             user = setUser(result)
             db!!.userDao().insert(user)
         }

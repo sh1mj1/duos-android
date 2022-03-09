@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/daily_matching_detail_top_layout_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/daily_matching_detail_back_arrow_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="23dp"
+            android:src="@drawable/back_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/daily_matching_detail_option_icon_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_back_arrow_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/daily_matching_detail_back_arrow_iv" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/daily_matching_detail_bottom_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_top_layout_cl">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="20dp">
+
+            <View
+                android:id="@+id/daily_matching_detail_line_01_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/friend_list_dialog_line"
+                android:backgroundTint="@color/grainsboro_D"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/daily_matching_detail_profile_image_cv"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="36dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_line_01_view">
+
+                <ImageView
+                    android:id="@+id/daily_matching_detail_profile_image_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/daily_matching_detail_nickname_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text=""
+                android:textColor="@color/nero"
+                android:textFontWeight="600"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_profile_image_cv"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_detail_profile_image_cv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_profile_image_cv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_rating_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="16dp"
+                android:text="5.0"
+                android:textColor="@color/nero"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_profile_image_cv" />
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/star_empty_big"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_rating_tv"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_rating_tv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_rating_tv"
+                app:tint="@color/sunglow" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_review_02_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="@string/daily_matching_detail_review_02"
+                android:textColor="@color/silver"
+                android:textFontWeight="500"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_rating_tv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_review_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/silver"
+                android:textFontWeight="500"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_review_02_tv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_rating_tv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_review_01_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/daily_matching_detail_review"
+                android:textColor="@color/silver"
+                android:textFontWeight="500"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_review_count_tv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_rating_tv" />
+
+            <View
+                android:id="@+id/daily_matching_detail_line_02_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/friend_list_dialog_line"
+                android:backgroundTint="@color/grainsboro_D"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_profile_image_cv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_preview_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/primary"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingHorizontal="10dp"
+                android:text="@string/daily_matching_date_today"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/daily_matching_detail_profile_image_cv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_line_02_view" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_preview_state_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/inch_worm"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingHorizontal="10dp"
+                android:text="@string/daily_matching_state_ongoing"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_detail_preview_date_tv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_preview_date_tv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="23dp"
+                android:fontFamily="@font/applesdgothicneoregular"
+                android:text=""
+                android:textColor="@color/nero"
+                android:textFontWeight="600"
+                android:textSize="19sp"
+                app:layout_constraintStart_toStartOf="@id/daily_matching_detail_preview_date_tv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_preview_date_tv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/daily_matching_detail_info_layout_cl"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/alabaster"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_title_tv">
+
+                <ImageView
+                    android:id="@+id/daily_matching_post_preview_location_icon_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="27dp"
+                    android:src="@drawable/ic_location"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/daily_matching_post_preview_location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_location"
+                    android:text=""
+                    android:textColor="@color/primary"
+                    android:textFontWeight="600"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
+                    app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_location_icon_iv"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/daily_matching_detail_height_line_view"
+                    android:layout_width="1dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/friend_list_dialog_line"
+                    android:backgroundTint="@color/gallery"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/daily_matching_detail_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/nero"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/daily_matching_detail_height_line_view"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_detail_height_line_view" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/daily_matching_detail_height_line_view"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_date_tv">
+
+                    <TextView
+                        android:id="@+id/daily_matching_detail_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text=""
+                        android:textColor="@color/primary"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_time_count_tv"
+                        app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_time_count_tv"
+                        app:layout_constraintTop_toTopOf="@id/daily_matching_detail_time_count_tv" />
+
+                    <TextView
+                        android:id="@+id/daily_matching_detail_time_count_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:backgroundTint="@color/mint_tulip"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:text=""
+                        android:textColor="@color/primary"
+                        android:textFontWeight="600"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/daily_matching_detail_line_03_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/friend_list_dialog_line"
+                android:backgroundTint="@color/grainsboro_D"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_info_layout_cl" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:text=""
+                android:textColor="@color/grey"
+                android:textFontWeight="500"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_line_03_view" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_content_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:text=""
+                android:textColor="@color/dark_gray_A"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@id/daily_matching_detail_content_tv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_content_tv" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_see_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="12"
+                android:textColor="@color/dark_gray_A"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_chat_count_tv"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_chat_image_iv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_chat_count_tv" />
+
+            <ImageView
+                android:id="@+id/daily_matching_detail_see_image_iv"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginEnd="3dp"
+                android:src="@drawable/ic_eye_line"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_chat_count_tv"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_see_count_tv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_chat_count_tv"
+                app:tint="@color/grey" />
+
+            <TextView
+                android:id="@+id/daily_matching_detail_chat_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="9"
+                android:textColor="@color/dark_gray_A"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@id/daily_matching_detail_content_tv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_content_time_tv" />
+
+            <ImageView
+                android:id="@+id/daily_matching_detail_chat_image_iv"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="3dp"
+                android:src="@drawable/ic_comment"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_detail_chat_count_tv"
+                app:layout_constraintEnd_toStartOf="@id/daily_matching_detail_chat_count_tv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_detail_chat_count_tv"
+                app:tint="@color/grey" />
+
+            <ImageView
+                android:id="@+id/daily_matching_detail_content_image_01_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="45dp"
+                android:scaleType="fitXY"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/daily_matching_detail_content_time_tv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_content_time_tv" />
+
+
+            <ImageView
+                android:id="@+id/daily_matching_detail_content_image_02_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="7dp"
+                android:scaleType="fitXY"
+                android:visibility="invisible"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_detail_content_image_01_iv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_content_time_tv" />
+
+            <ImageView
+                android:id="@+id/daily_matching_detail_content_image_03_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="45dp"
+                android:scaleType="fitXY"
+                android:visibility="invisible"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_detail_content_image_02_iv"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_detail_content_time_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/daily_matching_detail_bottom_btn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/unselected_btn"
+        android:backgroundTint="@color/white_smoke_E"
+        android:text="@string/daily_matching_detail_chatting"
+        android:textColor="@color/dark_gray_B0"
+        android:textFontWeight="700"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

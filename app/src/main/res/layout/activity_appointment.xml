@@ -62,9 +62,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="10dp"
         app:mcv_tileWidth="57dp"
-        app:mcv_tileHeight="45dp"
         app:mcv_leftArrowMask="@drawable/ic_calendar_top_arrow_left"
-        app:mcv_rightArrowMask="@drawable/ic_calendar_top_arrow_right"/>
+        app:mcv_rightArrowMask="@drawable/ic_calendar_top_arrow_right"
+        app:mcv_tileHeight="45dp"/>
 
     <TextView
         android:id="@+id/make_plan_time"

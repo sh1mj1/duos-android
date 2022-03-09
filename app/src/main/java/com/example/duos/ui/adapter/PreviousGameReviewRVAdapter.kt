@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.appointment
+package com.example.duos.ui.adapter
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
-import com.example.duos.utils.GlideApp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -29,7 +28,7 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<Appoin
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            : PreviousGameReviewRVAdapter.ViewHolder {
+            : ViewHolder {
         val binding: PreviousGamePlayerItemBinding = PreviousGamePlayerItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
@@ -37,7 +36,7 @@ class PreviousGameReviewRVAdapter(private val previousGameList: ArrayList<Appoin
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: PreviousGameReviewRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(previousGameList[position])
 
         holder.binding.previousGamePlayerCv.setOnClickListener {

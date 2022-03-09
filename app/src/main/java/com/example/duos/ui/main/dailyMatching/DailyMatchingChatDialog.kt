@@ -1,5 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile.frag
-
+package com.example.duos.ui.main.dailyMatching
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
@@ -15,14 +14,15 @@ import android.widget.TextView
 import androidx.annotation.Dimension
 import com.example.duos.CustomDialog
 import com.example.duos.R
+import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageResult
 import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.databinding.PartnerFilterCustomDialogBinding
 import com.example.duos.ui.main.partnerSearch.PartnerFilterDialog
 
-class PartnerProfileChatDialog(context: Context) : Dialog(context) {
+class DailyMatchingChatDialog(context: Context) : Dialog(context) {
     var partnerChatCount: Int = 0
-    var leftButtonCallback: PartnerProfileChatDialogCallbackLeft? = null    // 채팅 취소
-    var rightButtonCallback: PartnerProfileChatDialogCallbackRight? = null  // 채팅 ㄱㄱ
+    var leftButtonCallback: DailyMatchingChatDialogCallbackLeft? = null    // 채팅 취소
+    var rightButtonCallback: DailyMatchingChatDialogCallbackRight? = null  // 채팅 ㄱㄱ
 
     var mBinding: PartnerFilterCustomDialogBinding? = null
 
@@ -55,43 +55,43 @@ class PartnerProfileChatDialog(context: Context) : Dialog(context) {
 
 
     class Builder(val context: Context) {
-        private var dialog = PartnerProfileChatDialog(context)
+        private var dialog = DailyMatchingChatDialog(context)
 
         fun setCount(count: Int): Builder {
             dialog.partnerChatCount = count
             return this
         }
 
-        fun setLeftButton(callback: PartnerProfileChatDialogCallbackLeft): Builder {
+        fun setLeftButton(callback: DailyMatchingChatDialogCallbackLeft): Builder {
             dialog.leftButtonCallback = callback
             return this
         }
 
-        fun setRightButton(callback: PartnerProfileChatDialogCallbackRight): Builder {
+        fun setRightButton(callback: DailyMatchingChatDialogCallbackRight): Builder {
 
             dialog.rightButtonCallback = callback
             return this
         }
 
-        fun show(): PartnerProfileChatDialog {
+        fun show(): DailyMatchingChatDialog {
             dialog.show()
             return dialog
         }
     }
-    interface PartnerProfileChatDialogCallbackLeft {
-        fun onClick(dialog: PartnerProfileChatDialog)
+    interface DailyMatchingChatDialogCallbackLeft {
+        fun onClick(dialog: DailyMatchingChatDialog)
 
     }
 
-    interface PartnerProfileChatDialogCallbackRight {
-        fun onClick(dialog: PartnerProfileChatDialog)
-        fun onCreateChatRoomSuccess(createChatRoomResultData: CreateChatRoomResultData)
-        fun onCreateChatRoomFailure(code: Int, message: String)
+    interface DailyMatchingChatDialogCallbackRight {
+        fun onClick(dialog: DailyMatchingChatDialog)
+        fun onDailyMatchingMessageSuccess(dailyMatchingMessageResult : DailyMatchingMessageResult)
+        fun onDailyMatchingMessageFailure(code: Int, message: String)
     }
 }
 
-class PartnerProfileChatUnavailableDialog(context: Context) : Dialog(context) {
-    var leftButtonCallback: PartnerProfileChatDialogCallbackLeft? = null    // 채팅 취소
+class DailyMatchingChatUnavailableDialog(context: Context) : Dialog(context) {
+    var leftButtonCallback: DailyMatchingChatDialogCallbackLeft? = null    // 채팅 취소
     var mBinding: PartnerFilterCustomDialogBinding? = null
 
     @SuppressLint("ResourceAsColor")
@@ -125,21 +125,21 @@ class PartnerProfileChatUnavailableDialog(context: Context) : Dialog(context) {
     }
 
     class Builder(val context: Context) {
-        private var dialog = PartnerProfileChatUnavailableDialog(context)
+        private var dialog = DailyMatchingChatUnavailableDialog(context)
 
-        fun setLeftButton(callback: PartnerProfileChatDialogCallbackLeft): Builder {
+        fun setLeftButton(callback: DailyMatchingChatDialogCallbackLeft): Builder {
             dialog.leftButtonCallback = callback
             return this
         }
 
 
-        fun show(): PartnerProfileChatUnavailableDialog {
+        fun show(): DailyMatchingChatUnavailableDialog {
             dialog.show()
             return dialog
         }
     }
-    interface PartnerProfileChatDialogCallbackLeft {
-        fun onClick(dialog: PartnerProfileChatUnavailableDialog)
+    interface DailyMatchingChatDialogCallbackLeft {
+        fun onClick(dialog: DailyMatchingChatUnavailableDialog)
 
     }
 

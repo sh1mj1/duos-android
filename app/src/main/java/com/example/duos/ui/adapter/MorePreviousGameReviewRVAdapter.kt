@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.appointment
+package com.example.duos.ui.adapter
 
 
 import android.os.Build
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.duos.data.entities.appointment.AppointmentResDto
 import com.example.duos.databinding.PreviousGamePlayerItemBinding
-import com.example.duos.utils.GlideApp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -29,7 +29,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MorePreviousGameReviewRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding: PreviousGamePlayerItemBinding = PreviousGamePlayerItemBinding.inflate(
             LayoutInflater.from(parent.context)
         )
@@ -37,7 +37,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: MorePreviousGameReviewRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(morePreviousPlayerList[position])
         holder.binding.previousGamePlayerIv.setOnClickListener {
             mItemClickListener.onProfileCLick(morePreviousPlayerList[position])
@@ -52,7 +52,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(morePreviousGame: AppointmentResDto) {
             binding.previousGamePlayerNicknameTv.text = morePreviousGame.nickname
-            GlideApp.with(binding.previousGamePlayerIv.context)
+            Glide.with(binding.previousGamePlayerIv.context)
                 .load(morePreviousGame.profilePhotoUrl)
                 .into(binding.previousGamePlayerIv)
             binding.previousGamePlayTimeTv.text = morePreviousGame.appointmentTime

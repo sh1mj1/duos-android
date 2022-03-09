@@ -34,16 +34,6 @@ class FriendListFragment(): BaseFragment<FragmentFriendListBinding>(FragmentFrie
             }.attach()
         })
 
-//        binding.friendListContentTb.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {}
-//
-//        })
     }
 
     companion object {

@@ -6,10 +6,10 @@ import com.example.duos.data.entities.chat.SyncChatMessageRequestBody
 import com.example.duos.data.entities.chat.sendMessageData
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ChatRetrofitInterface {
+
     @POST("api/chat/user")
     fun createChatRoom(@Body createChatRoomData: CreateChatRoomData): Call<CreateChatRoomResponse>
 
@@ -18,4 +18,6 @@ interface ChatRetrofitInterface {
 
     @POST("api/chat/history")
     fun pagingChatMessage(@Body pagingChatMessageRequestBody: PagingChatMessageRequestBody): Call<PagingChatMessageResponse>
+
 }
+

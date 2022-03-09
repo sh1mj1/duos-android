@@ -2,12 +2,11 @@ package com.example.duos.data.remote.partnerProfile
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.ui.main.mypage.myprofile.PartnerProfileListView
+import com.example.duos.data.entities.profile.PartnerProfileListView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 object PartnerProfileService {
     val retrofit = NetworkModule.getRetrofit()

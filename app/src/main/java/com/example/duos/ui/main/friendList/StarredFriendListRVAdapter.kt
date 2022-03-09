@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.duos.data.entities.StarredFriend
 import com.example.duos.databinding.ItemFragmentStarredFriendListBinding
-import com.example.duos.utils.GlideApp
 
 class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFriend>) : RecyclerView.Adapter<StarredFriendListRVAdapter.ViewHolder>() {
 
@@ -76,7 +76,7 @@ class StarredFriendListRVAdapter(private val friendlist : ArrayList<StarredFrien
                     1-> "남자"
                     else -> "여자"
                 }
-            GlideApp.with(binding.myFriendListProfileIdTv.context)
+            Glide.with(binding.myFriendListProfileIdTv.context)
                 .load(myFriend.starredFriendImgUrl)
                 .into(binding.myFriendListProfileImageIv)
 

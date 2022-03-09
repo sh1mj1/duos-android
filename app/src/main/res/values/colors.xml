@@ -16,6 +16,7 @@
     <color name="primary_70">#B334A9AB</color>
     <color name="transparent">#00ff0000</color>
     <color name="red_orange">#F44336</color>    <!--    <color name="form_error">#F44336</color>-->
+    <color name="primary_light">#E3F5F5</color>
 
     <!-- DUOS Color -->
     <color name="nero">#292929</color>  <!--    <color name="color_01">#292929</color>-->
@@ -34,6 +35,13 @@
     <color name="dark_gray_B0">#B0B0B0</color>  <!--    <color name="color_signup_next_txt">#B0B0B0</color>-->
     <color name="french_rose">#EF5DA8</color>   <!--    <color name="color_signup_verifying_time">#EF5DA8</color>-->
     <color name="dark_cyan">#058689</color>
+    <color name="inch_worm">#A4E025</color>
+    <color name="gallery">#F0F0F0</color>
+    <color name="alto">#D1D1D1</color>
+    <color name="wild_sand">#F6F6F6</color>
+    <color name="silver">#C4C4C4</color>
+    <color name="alabaster">#F9F9F9</color>
+    <color name="mint_tulip">#C8F2F2</color>
 
     <color name="color_style_font3">#B8B8B8</color> <!--    마이페이지_후기작성01_지난 약속에서 날짜 부분-->
     <color name="red">#FF0000</color>

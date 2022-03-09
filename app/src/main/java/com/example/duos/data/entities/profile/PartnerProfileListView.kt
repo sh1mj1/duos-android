@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile
+package com.example.duos.data.entities.profile
 
 import com.example.duos.data.entities.PartnerResDto
 

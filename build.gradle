@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     ext{
         kotlin_version = "1.4.32"
@@ -13,7 +14,7 @@ buildscript {
         androidXCore = "1.6.0"
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
         classpath 'com.google.gms:google-services:4.3.10'  // Google Services plugin
 
