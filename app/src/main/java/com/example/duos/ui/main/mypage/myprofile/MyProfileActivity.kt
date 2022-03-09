@@ -29,8 +29,7 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
         val isFromAppointment = intent.getBooleanExtra("isFromAppointment", false)
 
         val partnerUserIdx = intent.getIntExtra("partnerUserIdx", 0)
-        /*TODO :위 thisIdx는 PartnerSearchFragment 에서 혹은 LastAppointmentFragment 에서
-            아이템 클릭시 해당 회원의 고유 인덱스 값이 들어가야 해. 0이 default지만 할당될 일 없음*/
+
         Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch}  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
 
 

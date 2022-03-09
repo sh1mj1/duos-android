@@ -5,6 +5,7 @@ import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageResult
 import com.example.duos.data.entities.dailyMatching.DailyMatchingOption
 import com.example.duos.data.entities.dailyMatching.MyDailyMatchingListResult
 import com.example.duos.data.remote.dailyMatching.AllDailyMatchingListResult
+import com.example.duos.data.remote.dailyMatching.DailyMatchingSearchResultData
 import com.example.duos.data.remote.dailyMatching.DailyWriteResult
 import com.example.duos.data.remote.dailyMatching.ImminentDailyMatchingListResult
 import com.example.duos.data.remote.dailyMatching.PopularDailyMatchingListResult
@@ -22,6 +23,12 @@ interface PopularDailyMatchingView {
 interface ImminentDailyMatchingView {
     fun onGetImminentDailyMatchingViewSuccess(imminentDailyMatchingListResult: ImminentDailyMatchingListResult)
     fun  onGetImminentDailyMatchingViewFailure(code: Int, message: String)
+}
+
+interface DailyMatchingSearchView{
+    fun onGetSearchViewSuccess(dailyMatchingSearchResultData : DailyMatchingSearchResultData)
+    fun onGetSearchViewLoading()
+    fun onGetSearchViewFailure(code : Int, message : String)
 }
 
 interface DailyMatchingEditView {

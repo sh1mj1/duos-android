@@ -2,7 +2,7 @@ package com.example.duos.data.remote.myProfile
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.ui.main.mypage.myprofile.frag.ProfileListView
+import com.example.duos.data.entities.profile.ProfileListView
 import com.example.duos.utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback

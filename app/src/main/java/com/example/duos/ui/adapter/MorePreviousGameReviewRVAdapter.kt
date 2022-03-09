@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.appointment
+package com.example.duos.ui.adapter
 
 
 import android.os.Build
@@ -29,7 +29,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MorePreviousGameReviewRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding: PreviousGamePlayerItemBinding = PreviousGamePlayerItemBinding.inflate(
             LayoutInflater.from(parent.context)
         )
@@ -37,7 +37,7 @@ class MorePreviousGameReviewRVAdapter(private val morePreviousPlayerList: ArrayL
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: MorePreviousGameReviewRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(morePreviousPlayerList[position])
         holder.binding.previousGamePlayerIv.setOnClickListener {
             mItemClickListener.onProfileCLick(morePreviousPlayerList[position])

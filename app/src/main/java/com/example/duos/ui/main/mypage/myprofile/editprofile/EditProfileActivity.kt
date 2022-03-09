@@ -25,7 +25,6 @@ class EditProfileActivity :
         if (fragment is EditProfileFragment) {
             fragment.setRadioButton(tag.toInt())
         }
-//        viewModel.editProfileExperience.value = tag.toInt()
     }
 
 

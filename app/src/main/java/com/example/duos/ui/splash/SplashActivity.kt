@@ -15,14 +15,15 @@ import com.example.duos.ui.login.LoginActivity
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.signup.SignUpActivity
 import com.example.duos.utils.getAccessToken
+import com.example.duos.utils.getRefreshToken
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveJwt
 
-class SplashActivity: AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySplashBinding
     var currentPage = 0
-    lateinit var thread : Thread
+    lateinit var thread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,27 +34,27 @@ class SplashActivity: AppCompatActivity() {
 
     }
 
-    val handler=Handler(Looper.getMainLooper()){
+    val handler = Handler(Looper.getMainLooper()) {
         setPage()
         true
     }
 
     //페이지 변경하기
-    fun setPage(){
-        if(currentPage == 4)
+    fun setPage() {
+        if (currentPage == 4)
             currentPage = 0
         binding.splashViewpagerVp.setCurrentItem(currentPage, true)
-        currentPage+=1
+        currentPage += 1
     }
 
     //2초 마다 페이지 넘기기
-    inner class PagerRunnable:Runnable{
+    inner class PagerRunnable : Runnable {
         override fun run() {
-            while(true){
+            while (true) {
                 try {
                     Thread.sleep(2000)
                     handler.sendEmptyMessage(0)
-                } catch (e : InterruptedException){
+                } catch (e: InterruptedException) {
                     Log.d("interupt", "interupt발생")
                 }
             }
@@ -74,7 +75,7 @@ class SplashActivity: AppCompatActivity() {
         binding.splashCircleIndicatorCi.setViewPager(binding.splashViewpagerVp)
     }
 
-    private fun initStatus(){
+    private fun initStatus() {
         binding.splashStartButtonBtn.setOnClickListener {
             thread.interrupt()
             startActivity(Intent(this, SignUpActivity::class.java))
@@ -85,22 +86,25 @@ class SplashActivity: AppCompatActivity() {
         }
     }
 
+    //fun getAccessToken(): String? = mSharedPreferences.getString(X_ACCESS_TOKEN, null)
     private fun autoLogin() {
         val userDB = UserDatabase.getInstance(this)
-        if (getAccessToken() != null || userDB != null){
-            Log.d("jwt", getAccessToken().toString())
-            if(userDB?.userDao()?.getUser(getUserIdx()!!) != null){
+        Log.d("Splash", userDB.toString())
+        if (getAccessToken() != null || userDB != null) {
+            Log.d("jwt", " jwtAccessToken : ${getAccessToken().toString()}")
+            Log.d("jwt", " jwtRefreshToken : ${getRefreshToken().toString()}")
+            if (userDB?.userDao()?.getUser(getUserIdx()!!) != null) {
+            Log.d("jwt","userDB에 데이터가 남아있는지 확인할거야 ${userDB.userDao().getUser(getUserIdx()!!)}")
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags =
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
-            }
-            else initSet()
+            } else initSet()
 
         } else initSet()
     }
 
-    private fun initSet(){
+    private fun initSet() {
         setContentView(binding.root)
         initViewpager()
         initStatus()

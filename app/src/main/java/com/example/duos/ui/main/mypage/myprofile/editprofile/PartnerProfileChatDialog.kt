@@ -6,18 +6,15 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.Dimension
-import com.example.duos.CustomDialog
 import com.example.duos.R
 import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.databinding.PartnerFilterCustomDialogBinding
-import com.example.duos.ui.main.partnerSearch.PartnerFilterDialog
 
 class PartnerProfileChatDialog(context: Context) : Dialog(context) {
     var partnerChatCount: Int = 0
@@ -29,6 +26,7 @@ class PartnerProfileChatDialog(context: Context) : Dialog(context) {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setCanceledOnTouchOutside(true) // Dialog 바깥 역역 터치 -> Dialog 사라짐.
         mBinding = PartnerFilterCustomDialogBinding.inflate(layoutInflater)
         setContentView(mBinding!!.root)
@@ -50,9 +48,6 @@ class PartnerProfileChatDialog(context: Context) : Dialog(context) {
         mBinding!!.partnerFilterCustomDialogRightBtn.setOnClickListener(View.OnClickListener {
             rightButtonCallback!!.onClick(this) })
     }
-
-
-
 
     class Builder(val context: Context) {
         private var dialog = PartnerProfileChatDialog(context)
@@ -132,7 +127,6 @@ class PartnerProfileChatUnavailableDialog(context: Context) : Dialog(context) {
             return this
         }
 
-
         fun show(): PartnerProfileChatUnavailableDialog {
             dialog.show()
             return dialog
@@ -140,7 +134,6 @@ class PartnerProfileChatUnavailableDialog(context: Context) : Dialog(context) {
     }
     interface PartnerProfileChatDialogCallbackLeft {
         fun onClick(dialog: PartnerProfileChatUnavailableDialog)
-
     }
 
 

@@ -13,8 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
 
         >
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_cl"
         android:layout_width="match_parent"
@@ -37,7 +35,8 @@
                 android:id="@+id/img_write_review_player_iv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/dummy_mask_2">
+                android:scaleType="centerCrop"
+                >
 
             </ImageView>
 
@@ -66,8 +65,8 @@
             android:layout_marginHorizontal="46dp"
             android:layout_marginTop="10dp"
             android:numStars="5"
-            android:rating="3.5"
-            android:stepSize="0.1"
+            android:rating="0.0"
+            android:stepSize="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/write_review_player_nickname_tv" />

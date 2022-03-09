@@ -124,6 +124,7 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
         Glide.with(binding.dailyMatchingDetailProfileImageIv.context)
             .load(dailyMatchingDetail.profileUrl)
             .into(binding.dailyMatchingDetailProfileImageIv)
+        binding.dailyMatchingDetailTitleTv.text = dailyMatchingDetail.title
         binding.dailyMatchingDetailNicknameTv.text = dailyMatchingDetail.nickname
         binding.dailyMatchingDetailReviewCountTv.text = dailyMatchingDetail.review_Num.toString()
         binding.dailyMatchingDetailRatingTv.text = String.format("%.1f", dailyMatchingDetail.rating)

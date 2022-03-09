@@ -141,4 +141,3 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
         viewModel.jwtRefreshSuccess.value = boolean
     }
 }
-

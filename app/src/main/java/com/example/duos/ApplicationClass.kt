@@ -24,7 +24,7 @@ class ApplicationClass : Application() {
     companion object {
         const val X_ACCESS_TOKEN: String = "jwtAccessToken"         // JWT Access Token Key
         const val X_REFRESH_TOKEN: String = "jwtRefreshToken"       // JWT Refresh Token Key
-        const val USER_IDX: String = "userIdx"       // JWT Refresh Token Key
+        const val USER_IDX: String = "userIdx"                     // JWT Refresh Token Key
         const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
         const val TEST_ACCESS_TOKEN: String =
@@ -55,6 +55,7 @@ class ApplicationClass : Application() {
         const val REVIEW_API = "api/reviews"
         const val EDIT_GET_API = "api/mypage/myprofile/previous"
         const val EDIT_PUT_NON_PIC_API = "api/mypage/myprofile/info"
+        const val EDIT_PUT_PIC_API = "api/mypage/myprofile/photo"
         const val DUPLICATE_NICKNAME_API = "api/nickname/duplication"
         const val NOTICE_GET_API = "api/notices"
         const val NOTICE_API = "api/notice"

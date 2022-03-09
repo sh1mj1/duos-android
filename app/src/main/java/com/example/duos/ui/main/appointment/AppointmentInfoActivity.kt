@@ -31,6 +31,9 @@ ShowAppointmentView, DeleteAppointmentView{
         chatRoomIdx = intent.getStringExtra("chatRoomIdx")!!
         chatDB = ChatDatabase.getInstance(this, ChatDatabase.provideGson())!!
         chatRoom = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+        val partnerId = binding.planInfoTitleIdTv
+
+        partnerId.text = chatRoom.chatRoomName
 
         setDialog()
 
@@ -93,6 +96,7 @@ ShowAppointmentView, DeleteAppointmentView{
     override fun onDeleteAppointmentSuccess() {
         chatDB.chatRoomDao().updateAppointmentExist(chatRoomIdx, false)
         chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx, null)
+        setResult(RESULT_OK)
         finish()
     }
 

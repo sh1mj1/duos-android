@@ -1,4 +1,4 @@
-package com.example.duos.ui.main.mypage.myprofile
+package com.example.duos.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,14 +26,14 @@ class ProfileReviewRVAdapter(private val myProfileReviewItemList: ArrayList<Part
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // ViewHolder 생성. (아이템 뷰 객체를 binding해서 뷰 홀더에 던져줌)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileReviewRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: MyPlayingReviewItemBinding =
             MyPlayingReviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     // ViewHolder에 데이터를 binding (리사이클러뷰의 아이템(데이터)이 바뀔 때마다 실행됨)
-    override fun onBindViewHolder(holder: ProfileReviewRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(myProfileReviewItemList[position])
         holder.binding.profileImgCv.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }
         holder.binding.playerReviewNicknameTv.setOnClickListener { mItemClickListener.onItemClick(myProfileReviewItemList[position]) }

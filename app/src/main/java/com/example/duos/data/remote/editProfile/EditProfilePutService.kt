@@ -1,12 +1,12 @@
 package com.example.duos.data.remote.editProfile
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.duos.ApplicationClass
+import com.example.duos.data.entities.editProfile.EditProfilePicPutListView
 import com.example.duos.data.entities.editProfile.EditProfilePutListView
 import com.example.duos.data.entities.editProfile.EditProfilePutReqDto
-import com.example.duos.data.local.UserDatabase
 import com.example.duos.utils.NetworkModule
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,8 +14,7 @@ import retrofit2.Response
 object EditProfilePutService {
     val TAG = "EditProfilePutService"
     val retrofit = NetworkModule.getRetrofit()
-
-    fun putEditProfile(
+    fun putEditNonPicProfile(
         editProfilePutListView: EditProfilePutListView,
         phoneNumber: String,
         nickname: String,
@@ -28,59 +27,56 @@ object EditProfilePutService {
     ) {
         val editProfilePutService = retrofit.create(EditProfileRetrofitInterface::class.java)
 
-        val editProfilePutReqDto = EditProfilePutReqDto(phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction)
+        val editProfilePutReqDto =
+            EditProfilePutReqDto(phoneNumber, nickname, birth, gender, locationIdx, experienceIdx, introduction)
 
-        editProfilePutService.onPutProfileWithoutPic(editProfilePutReqDto, userIdx).enqueue(object : Callback<EditProfilePutResponse> {
-            override fun onResponse(call: Call<EditProfilePutResponse>, response: Response<EditProfilePutResponse>) {
-                val resp = response.body()!!
-                when (resp.code) {
-                    1100 -> {
-                        resp.let {
-                            editProfilePutListView.onPutEditProfileItemSuccess(it, resp.message)
-                            Log.d(TAG, resp.toString())
-
+        editProfilePutService.onPutProfileWithoutPic(editProfilePutReqDto, userIdx)
+            .enqueue(object : Callback<EditProfilePutResponse> {
+                override fun onResponse(call: Call<EditProfilePutResponse>, response: Response<EditProfilePutResponse>) {
+                    val resp = response.body()!!
+                    Log.d("EditProfileFrag", "${resp.toString()} , ${editProfilePutReqDto}")
+                    when (resp.code) {
+                        1100 -> {
+                            resp.let {
+                                editProfilePutListView.onPutEditNonPicProfileItemSuccess(it, resp.message)
+                                Log.d(TAG, resp.toString())
+                            }
+                        }
+                        else -> {
+                            Log.d(TAG, "CODE: ${resp.code}, MESSAGE : ${resp.message}")
                         }
                     }
-                    else -> {
-                        Log.d(TAG, "CODE: ${resp.code}, MESSAGE : ${resp.message}")
-                    }
+                }
+
+                override fun onFailure(call: Call<EditProfilePutResponse>, t: Throwable) {
+                    Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+                    editProfilePutListView.onPutEditNonPicProfileItemFailure(400, "네트워크 오류 발생")
+                }
+
+            })
+    }
+
+    fun putPicEditProfile(editProfilePicPutListView: EditProfilePicPutListView, mFile: MultipartBody.Part?, userIdx: Int) {
+        val putPicEditProfileService = retrofit.create(EditProfileRetrofitInterface::class.java)
+
+        putPicEditProfileService.onPutProfilePic(mFile, userIdx).enqueue(object :Callback<EditProfilePutPicResponse>{
+            override fun onResponse(call: Call<EditProfilePutPicResponse>, response: Response<EditProfilePutPicResponse>) {
+                val resp = response.body()!!
+                Log.d("EditProfilePutPicService", resp.toString())
+
+                when(resp.code){
+                    1101 -> editProfilePicPutListView.onPutPicEditProfileItemSuccess(resp)
+                    else -> editProfilePicPutListView.onPutPicEditProfileItemFailure(resp.code, resp.message)
                 }
             }
 
-            override fun onFailure(call: Call<EditProfilePutResponse>, t: Throwable) {
+            override fun onFailure(call: Call<EditProfilePutPicResponse>, t: Throwable) {
                 Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
-                editProfilePutListView.onPutEditProfileItemFailure(400, "네트워크 오류 발생")
+                editProfilePicPutListView.onPutPicEditProfileItemFailure(400, "네트워크 오류 발생")
             }
 
         })
+
     }
-
-//    fun putEditProfile(editProfilePutListView: EditProfilePutListView,
-//                       editProfilePutReqDto: EditProfilePutReqDto ,
-//                       userIdx : Int){
-//        val editProfilePutService = retrofit.create(EditProfileRetrofitInterface::class.java)
-//
-//        editProfilePutService.onPutProfileWithoutPic(editProfilePutReqDto, userIdx).enqueue(object : Callback<EditProfilePutResponse>{
-//            override fun onResponse(call: Call<EditProfilePutResponse>, response: Response<EditProfilePutResponse>) {
-//                val resp = response.body()
-//                when(resp?.code){
-//                    1000 -> {
-//                        resp.let{
-//                            editProfilePutListView.onPutEditProfileItemSuccess(it)
-//                            Log.d(TAG, resp.toString())
-//                        }
-//                    }
-//                    else -> {
-//                        Log.d(EditProfileGetService.TAG, "CODE: ${resp?.code}, MESSAGE : ${resp?.message}")
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<EditProfilePutResponse>, t: Throwable) {
-//                editProfilePutListView.onPutEditProfileItemFailure(400, "네트워크 오류 발생")
-//            }
-//
-//        })
-
 
 }

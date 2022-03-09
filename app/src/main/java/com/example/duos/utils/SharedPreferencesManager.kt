@@ -28,7 +28,7 @@ fun getAccessToken(): String? = mSharedPreferences.getString(X_ACCESS_TOKEN, nul
 
 fun getRefreshToken(): String? = mSharedPreferences.getString(X_REFRESH_TOKEN, null)
 
-fun getUserIdx(): Int? = mSharedPreferences.getInt(USER_IDX, 0)
+fun getUserIdx(): Int = mSharedPreferences.getInt(USER_IDX, 0)
 
 fun saveFriendListDialogNotShowing(boolean: Boolean){
     // boolean 이 true 이면 더 이상 보여주지 않음,
@@ -75,7 +75,12 @@ fun getCurrentChatRoomIdx(): String =
 fun deleteSharedPreferenceData() {
     val editor = mSharedPreferences.edit()
     editor.clear().apply()
+}
 
+fun isFirstRunAfterInstalling(): Boolean = mSharedPreferences.getBoolean("isFirstRunAfterInstalling", true) // 처음 앱을 실행하면 isFirstRunAfterInstalling이 null이므로 자동 true가 됨
 
-
+fun saveIsFirstRunAfterInstalling(isFirstRunAfterInstalling: Boolean){
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("isFirstRunAfterInstalling", isFirstRunAfterInstalling)
+    editor.apply()
 }

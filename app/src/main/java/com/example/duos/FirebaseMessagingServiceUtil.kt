@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.OneTimeWorkRequest
@@ -20,31 +19,23 @@ import androidx.core.app.NotificationManagerCompat
 
 import android.app.ActivityManager
 import android.content.ComponentName
-import android.widget.Toast
 import com.example.duos.data.entities.ChatType
 import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.UserDatabase
-import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.chat.chat.MessageListData
-import com.example.duos.data.remote.chat.chat.SyncChatMessageData
-import com.example.duos.data.remote.chat.chatList.ChatListService
-import com.example.duos.ui.main.chat.ChatListView
-import com.example.duos.ui.main.chat.ChatMessageView
 import com.example.duos.utils.getCurrentChatRoomIdx
 import com.example.duos.utils.getUserIdx
-import okhttp3.internal.format
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.text.SimpleDateFormat
 
 
-class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, ChatMessageView{
+class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
     val mContext : Context = this
     lateinit var chatDB: ChatDatabase
     lateinit var chatRoomIdx:String
-    lateinit var partnerIdx:String
+    var partnerIdx:Int = -1
     lateinit var type:String
     lateinit var messageData: Map<String, String>
     /**
@@ -91,65 +82,46 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
             Log.d("데이터메세지", remoteMessage.data.toString())
             messageData = remoteMessage.data
 
-            if(chatDB.chatRoomDao().getChatRoomList().isEmpty()){
-                ChatListService.chatList(this, getUserIdx()!!)
-            }
-
-            val chatRoom : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
-            Log.d("채팅방리스트", chatRoom.toString())
+            val chatRoomList : List<ChatRoom> = chatDB.chatRoomDao().getChatRoomList()
+            Log.d("채팅방리스트", chatRoomList.toString())
 
             chatRoomIdx = messageData.get("chatRoomIdx").toString()
-            partnerIdx = messageData.get("senderIdx").toString()
+            partnerIdx = messageData.get("senderIdx")!!.toInt()
+
             //chatDB.chatMessageItemDao().deleteAll(chatRoomIdx)
             type = messageData.get("type").toString()
             if(type.equals("MESSAGE")){
-                val chatMessageIdx: String
-                val lastChatMessageIdx: String
-                val lastMessageData = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx)
-                if(lastMessageData != null){
-                    lastChatMessageIdx = lastMessageData.chatRoomIdx + "@" + lastMessageData.chatMessageIdx
-                    Log.d("마지막 채팅메세지인덱스 존재", "request body에 담아 api 호출"+lastMessageData)
-                    Log.d("onMessageReceived 채팅 동기화api 호출 전 - 룸디비 확인", chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx).toString())
-                    ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
-                } else{  //지금 받은 메세지가 채팅방의 처음 메세지일 때
-                    // 메세지를 룸디비에 저장하기 전 lastAddedChatMessageId 업데이트
-                    lastChatMessageIdx = messageData.get("dataIdx").toString()
-                    Log.d("chatMessageIdx is null or blank", "채팅메세지를 주고받은 적 없음 - " + lastChatMessageIdx)
+                val body = messageData.get("body").toString()
+                val sentAtString = messageData.get("sentAt").toString()
+                Log.d("sentAtString - 1", sentAtString)
+                val formattedSentAt = getFormattedDateTime(sentAtString)
 
-                    val body = messageData.get("body").toString()
-                    val partnerIdx = messageData.get("senderIdx").toString()
-                    val sentAtString = messageData.get("sentAt").toString()
-                    val formattedSentAt = getFormattedDateTime(sentAtString)
+                val parsedSentAtStringArray = sentAtString.split(".")
+                var parsedSentAtString = parsedSentAtStringArray[0]
+                val sentDateTime = LocalDateTime.parse(parsedSentAtString)
+                Log.d("sentDateTime - 2", sentDateTime.toString())
 
-                    val parsedSentAtStringArray = sentAtString.split(".")
-                    var parsedSentAtString = parsedSentAtStringArray[0]
-                    val sentDateTime = LocalDateTime.parse(parsedSentAtString)
+                val chatIdx = messageData.get("dataIdx").toString()
+                var parsedChatMessageIdx = chatIdx.split("@")
+                var uuid = parsedChatMessageIdx[1]
+                val senderId = messageData.get("title").toString()       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
 
-                    val chatIdx = messageData.get("dataIdx").toString()
-                    var parsedChatMessageIdx = chatIdx.split("@")
-                    var uuid = parsedChatMessageIdx[1]
-                    val senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
+//                // 날짜변경선 무조건 추가
+//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 1",sentAtString)
+//                var parsedDateTimeArray = sentAtString.split(".")
+//                var parsedDateTime = parsedDateTimeArray[0]
+//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 2", parsedDateTime)
+//
+//                val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
+//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 3", parsedLocalDateTime.toString())
+//
+//                val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
+//                val dateItem = ChatMessageItem("date", date, "date", sentDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
+//
+                val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
 
-                    // 날짜변경선 무조건 추가
-                    Log.d("날짜변경선 무조건 추가 - 시간포매팅 1",sentAtString)
-                    var parsedDateTimeArray = sentAtString.split(".")
-                    var parsedDateTime = parsedDateTimeArray[0]
-                    Log.d("날짜변경선 무조건 추가 - 시간포매팅 2", parsedDateTime)
+                setIntentByCurrentState(chatMessageItem)
 
-                    val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
-                    Log.d("날짜변경선 무조건 추가 - 시간포매팅 3", parsedLocalDateTime.toString())
-
-                    val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-                    val dateItem = ChatMessageItem("date", date, "date", sentDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
-                    chatDB.chatMessageItemDao().insert(dateItem)
-
-
-                     //여기서 받은 메세지를 룸디비에 저장
-                    val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
-                    chatDB.chatMessageItemDao().insert(chatMessageItem)
-                    setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
-                }
-//                ChatService.syncChatMessage(this, lastChatMessageIdx, chatRoomIdx)
             } else{ // 약속 관련 fcm 일 때
                 if(type.equals("CREATE_APPOINTMENT")){
                     Log.d("fcm data payload - type","약속 생성")
@@ -193,14 +165,18 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
      * FCM 메시지 본문이 수신되었습니다.
      */
 
-    private fun sendMessageData(body: String, senderId: String, targetChatRoomIdx: String){
+    private fun sendMessageIntent(chatMessageItem: ChatMessageItem){
+        val senderId = chatMessageItem.senderId
+        val targetChatRoomIdx = chatMessageItem.chatRoomIdx
+        val body = chatMessageItem.body
         val intent = Intent(mContext, ChattingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("type", type)
         intent.putExtra("chatRoomIdx", targetChatRoomIdx)
         intent.putExtra("senderId", senderId)
         intent.putExtra("byPushAlarmClick", true)
-        intent.putExtra("partnerIdx", partnerIdx)
+        intent.putExtra("partnerIdx", partnerIdx.toString())
+        intent.putExtra("messageItem", chatMessageItem)
 
 
 //        val bundle = Bundle()
@@ -210,9 +186,60 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
 //        bundle.putString("partnerIdx", partnerIdx)
 //        bundle.putBoolean("isAlarmed", true)
 
-        Log.d("fcmService - sendMessageData의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
-        Log.d("fcmService - sendMessageData의 인텐트 - senderId", senderId)
-        Log.d("fcmService - sendMessageData의 인텐트 - partnerIdx", partnerIdx)
+        Log.d("fcmService - sendMessageIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
+        Log.d("fcmService - sendMessageIntent의 인텐트 - senderId", senderId)
+        Log.d("fcmService - sendMessageIntent의 인텐트 - partnerIdx", partnerIdx.toString())
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelId = getString(R.string.firebase_notification_channel_id_testS)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.splash_duos_logo)
+            .setContentTitle(senderId)
+            .setContentText(body)
+            .setAutoCancel(true)
+//            .setExtras(bundle)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 안드로이드 오레오 알림 채널이 필요.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+    
+    private fun sendAppointmentIntent(body: String, senderId: String, targetChatRoomIdx: String){
+        val intent = Intent(mContext, ChattingActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.putExtra("type", type)
+        intent.putExtra("chatRoomIdx", targetChatRoomIdx)
+        intent.putExtra("senderId", senderId)
+        intent.putExtra("byPushAlarmClick", true)
+        intent.putExtra("partnerIdx", partnerIdx.toString())
+
+
+//        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("chatRoomIdx", chatRoomIdx)
+//        bundle.putString("senderId", senderId)
+//        bundle.putString("partnerIdx", partnerIdx)
+//        bundle.putBoolean("isAlarmed", true)
+
+        Log.d("fcmService - sendAppointmentIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
+        Log.d("fcmService - sendAppointmentIntent의 인텐트 - senderId", senderId)
+        Log.d("fcmService - sendAppointmentIntent의 인텐트 - partnerIdx", partnerIdx.toString())
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -249,52 +276,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
         private const val TAG = "MyFirebaseMsgService"
     }
 
-    override fun onSyncChatMessageSuccess(syncChatMessageData: SyncChatMessageData) {
-
-        Log.d("onSyncChatMessageSuccess 시작 - 룸디비 확인", chatDB.chatMessageItemDao().getChatMessages(chatRoomIdx).toString())
-        val listSize = syncChatMessageData.listSize
-        if(listSize != 0){
-            for(i: Int in 0.. listSize-1){
-                Log.d("for문","으아")
-                val messageItem = convertMessageListDataToChatMessageItem(syncChatMessageData.messageList[i])
-                val sentAt = messageItem.sentAt
-                val chatRoomIdx = messageItem.chatRoomIdx
-                val lastSentAt = chatDB.chatMessageItemDao().getLastMessageData(chatRoomIdx).sentAt
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if(!sentAt.toLocalDate().isEqual(lastSentAt.toLocalDate())){    // 같은 날짜가 아닐 때 (날짜 변경선 roomDB에 insert)
-                        //val dateString = sentAt.dayOfYear.toString() + "년 " + (sentAt.dayOfMonth+1).toString()
-                        val dateString = sentAt.toString()
-                        Log.d("날짜 변경선 포매팅 1",dateString)
-                        var parsedDateTimeArray = dateString.split(".")
-                        var parsedDateTime = parsedDateTimeArray[0]
-                        Log.d("날짜 변경선 포매팅 2", parsedDateTime)
-
-                        val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
-                        Log.d("날짜 변경선 포매팅 3", parsedLocalDateTime.toString())
-
-                        val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-                        val chatMessageIdx = messageItem.chatMessageIdx
-                        val dateItem = ChatMessageItem("date", date, "date", sentAt, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+chatMessageIdx)
-                        chatDB.chatMessageItemDao().insert(dateItem)
-                    }
-                } else {
-                    Log.d("isSameDate 확인을 위한 format", "실패")
-                }
-                Log.d("messageItem 확인", messageItem.toString())
-                chatDB.chatMessageItemDao().insert(messageItem) // 채팅 메세지 RoomDB에 insert
-            }
-            Log.d("채팅 동기화 완료", chatDB.chatMessageItemDao().getChatMessages(syncChatMessageData.messageList[0].chatRoomIdx).toString())
-        }
-
-        setIntentByCurrentState(messageData.get("body").toString(), messageData.get("title").toString(), messageData.get("chatRoomIdx").toString())
-    }
-
-    override fun onSyncChatMessageFailure(code: Int, message: String) {
-        Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG)
-    }
-
-    fun setIntentByCurrentState(body: String, senderId: String, chatRoomIdx: String){
+    fun setIntentByCurrentState(chatMessageItem: ChatMessageItem){  // 메세지
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         val componentName: ComponentName?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -305,28 +287,55 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
         val ActivityName = componentName!!.shortClassName.substring(0)
         Log.d("현재액티비티이름", ActivityName)
 
-
-//        val body = messageData.get("body").toString()
-//        val partnerIdx = messageData.get("senderIdx").toString()
-//        val sentAtString = messageData.get("sentAt").toString()
-//        val senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
-
-        // 여기서 받은 메세지를 룸디비에 저장
-//            val formattedSentAt = getFormattedDateTime(sentAtString)
-//            val parsedSentAtStringArray = sentAtString.split(".")
-//            var parsedSentAtString = parsedSentAtStringArray[0]
-//            val sentAt = LocalDateTime.parse(parsedSentAtString)
-//
-//            val chatMessageIdx = messageData.get("dataIdx").toString()
-//            var parsedChatMessageIdx = chatMessageIdx.split("@")
-//            var uuid = parsedChatMessageIdx[1]
-//            val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentAt, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
-//            chatDB.chatMessageItemDao().insert(chatMessageItem)
-
+        val body = chatMessageItem.body
+        val senderId = chatMessageItem.senderId
 
         if(ActivityName.contains("ChattingActivity")){
             if(getCurrentChatRoomIdx().equals(chatRoomIdx)){  //
                 Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 메세지가 옴","onNewIntent로 data payload로 온 data를 보냄, 푸시알림 X")
+
+                val sentAt = chatMessageItem.sentAt.toString()
+                val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
+                intent.putExtra("chatRoomIdx", chatRoomIdx)
+                intent.putExtra("type", type)
+                intent.putExtra("sentAt", sentAt)
+                intent.putExtra("messageItem", chatMessageItem)
+                startActivity(intent)
+
+                //intent.putExtra("body", body)
+                //intent.putExtra("partnerIdx", partnerIdx)
+                //intent.putExtra("sentAt", sentAt)
+                //intent.putExtra("senderId",  senderId)
+                //Log.d("발신자", senderId)
+
+            } else{
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", chatRoomIdx)
+                sendMessageIntent(chatMessageItem)
+            }
+
+        } else{
+            Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
+            sendMessageIntent(chatMessageItem)
+        }
+    }
+
+    fun setIntentByCurrentState(body: String, senderId: String, chatRoomIdx: String){   // 약속
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val componentName: ComponentName?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            componentName = manager.appTasks[0].taskInfo.topActivity
+        }else{
+            componentName = manager.getRunningTasks(1)[0].topActivity
+        }
+        val ActivityName = componentName!!.shortClassName.substring(0)
+        Log.d("현재액티비티이름", ActivityName)
+
+        if(ActivityName.contains("ChattingActivity")){
+            if(getCurrentChatRoomIdx().equals(chatRoomIdx)){  //
+                Log.d("현재 채팅액티비티 & 현재 채팅방의 상대방에게 약속 알림이 옴","onNewIntent로 data payload로 온 data를 보냄(버튼실시간 전환) & 푸시알림도 보냄")
+                sendAppointmentIntent(body, senderId, chatRoomIdx)    //푸시알림 보내기
 
                 val intent = Intent(this, ChattingActivity::class.java) // ChattingActivity의 onNewIntent로 감
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)      // Activity 밖에서 startActivity를 부를 때는 FLAG_ACTIVITY_NEW_TASK 로 세팅해주어야 한다. 안그러면 RuntimeException 발생.
@@ -342,14 +351,14 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
 
 
             } else{
-                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
-                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", chatRoomIdx)
-                sendMessageData(body, senderId, chatRoomIdx)
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게","약속 알림이 옴 - 푸시알림을 띄움")
+                Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게", "약속 알림이 옴"+chatRoomIdx)
+                sendAppointmentIntent(body, senderId, chatRoomIdx)
             }
 
         } else{
             Log.d("현재 채팅액티비티가 아닌 포그라운드", "푸시알림을 띄움")
-            sendMessageData(body, senderId, chatRoomIdx)
+            sendAppointmentIntent(body, senderId, chatRoomIdx)
         }
     }
 
@@ -481,7 +490,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
         return if (componentInfo.packageName == context.packageName) true else false
     }
 
-    private fun sendMessageData(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
+    private fun sendAppointmentIntent(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
         Log.d("노티", body)
         //
 
@@ -604,37 +613,4 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService(), ChatListView, C
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
-
-    override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
-        var chatListGotten = chatList   // 서버에서 불러온 채팅방 목록
-
-        Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
-
-        // 룸디비에 변경된/추가된 채팅방 저장
-        var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
-        var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
-
-        if(!chatListUpdated.isEmpty()){
-            Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
-            for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
-                if(chatDB.chatRoomDao().getChatRoomIdx(chatListUpdated[i].chatRoomIdx).isNullOrEmpty()){    // 새로 생성된 채팅방일 때 ---- 이 부분은 채팅방 생성 fcm 구현 후 수정 필요할 듯
-                    chatDB.chatRoomDao().insert(chatListUpdated[i]) // 새로 생성된 채팅방 룸DB에 추가
-//                    if(chatListUpdated[i].lastAddedChatMessageId <= 0){
-//                        chatDB.chatRoomDao().updateLastAddedChatMessageId(chatListUpdated[i].chatRoomIdx, -1)
-//                    }
-                }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
-                    chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
-                }
-            }
-            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
-        }else{
-            Log.d("업데이트된 채팅방 확인", "없음")
-            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
-        }
-    }
-
-    override fun onGetChatListFailure(code: Int, message: String) {
-        Log.d("FirebaseMessagingServiceUtil", "onGetChatListFailure")
-    }
 }
-

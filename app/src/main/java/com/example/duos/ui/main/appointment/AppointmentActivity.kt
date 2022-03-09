@@ -146,6 +146,7 @@ class AppointmentActivity: BaseActivity<ActivityAppointmentBinding>(ActivityAppo
         Log.d("약속잡기 - appointmentIdx", makeAppointmentResult.appointmentIdx.toString())
         chatDB.chatRoomDao().updateAppointmentIdx(chatRoomIdx,  makeAppointmentResult.appointmentIdx)
         // response result로 오는 것이 없어, updateAppointmentIdx는 약속 현황에서 update함
+        setResult(RESULT_OK)
         finish()
     }
 
