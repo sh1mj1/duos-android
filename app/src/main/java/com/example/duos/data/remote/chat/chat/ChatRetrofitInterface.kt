@@ -16,9 +16,6 @@ interface ChatRetrofitInterface {
     @POST("api/chat")
     fun sendMessage(@Body sendMessageData: sendMessageData): Call<SendMessageResponse>
 
-    @POST("api/chat/sync")
-    fun syncChatMessage(@Body syncChatMessageRequestBody: SyncChatMessageRequestBody): Call<SyncChatMessageResponse>
-
     @POST("api/chat/history")
     fun pagingChatMessage(@Body pagingChatMessageRequestBody: PagingChatMessageRequestBody): Call<PagingChatMessageResponse>
 }

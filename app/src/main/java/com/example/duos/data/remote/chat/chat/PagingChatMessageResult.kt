@@ -1,5 +1,6 @@
 package com.example.duos.data.remote.chat.chat
 
+import com.example.duos.data.entities.chat.MessageListData
 import com.google.gson.annotations.SerializedName
 import org.threeten.bp.LocalDateTime
 

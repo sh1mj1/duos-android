@@ -1,15 +1,9 @@
 package com.example.duos.ui.main.chat
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.ActivityChattingBinding
-import androidx.recyclerview.widget.DefaultItemAnimator
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -21,18 +15,11 @@ import android.text.TextWatcher
 
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import com.example.duos.FirebaseMessagingServiceUtil
 import com.example.duos.R
-import com.example.duos.data.entities.chat.ChatMessageItem
-import com.example.duos.data.entities.chat.ChatRoom
-import com.example.duos.data.entities.chat.PagingChatMessageRequestBody
-import com.example.duos.data.entities.chat.sendMessageData
+import com.example.duos.data.entities.chat.*
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.appointment.AppointmentService
@@ -42,11 +29,8 @@ import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.appointment.AppointmentActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
 import com.example.duos.ui.main.appointment.AppointmentInfoActivity
-import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import com.example.duos.utils.saveCurrentChatRoomIdx
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat

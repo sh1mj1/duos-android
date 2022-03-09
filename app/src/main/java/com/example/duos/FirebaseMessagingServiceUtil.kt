@@ -24,7 +24,7 @@ import com.example.duos.data.entities.chat.ChatMessageItem
 import com.example.duos.data.entities.chat.ChatRoom
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.local.UserDatabase
-import com.example.duos.data.remote.chat.chat.MessageListData
+import com.example.duos.data.entities.chat.MessageListData
 import com.example.duos.utils.getCurrentChatRoomIdx
 import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
