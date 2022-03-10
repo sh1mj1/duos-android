@@ -74,8 +74,7 @@
                     android:id="@+id/daily_matching_detail_profile_image_iv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/friend_list_profile_01" />
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -83,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="4ever_tennis"
+                android:text=""
                 android:textColor="@color/nero"
                 android:textFontWeight="600"
                 android:textSize="16sp"
@@ -130,7 +129,7 @@
                 android:id="@+id/daily_matching_detail_review_count_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="113"
+                android:text="0"
                 android:textColor="@color/silver"
                 android:textFontWeight="500"
                 android:textSize="11sp"
@@ -197,7 +196,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="23dp"
                 android:fontFamily="@font/applesdgothicneoregular"
-                android:text="테니스장에서 가볍게 단식 하실 분 찾아요!"
+                android:text=""
                 android:textColor="@color/nero"
                 android:textFontWeight="600"
                 android:textSize="19sp"
@@ -231,13 +230,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_location"
-                    android:text="목동 테니스장"
+                    android:text=""
                     android:textColor="@color/primary"
                     android:textFontWeight="600"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/daily_matching_post_preview_location_icon_iv"
                     app:layout_constraintStart_toEndOf="@id/daily_matching_post_preview_location_icon_iv"
-                    app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv" />
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_post_preview_location_icon_iv"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <View
                     android:id="@+id/daily_matching_detail_height_line_view"
@@ -254,7 +254,7 @@
                     android:id="@+id/daily_matching_detail_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2022년 2월 28일 (월)"
+                    android:text=""
                     android:textColor="@color/nero"
                     android:textSize="13sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -274,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
-                        android:text="17:00 - 19:00"
+                        android:text=""
                         android:textColor="@color/primary"
                         android:textFontWeight="600"
                         android:textSize="13sp"
@@ -290,7 +290,7 @@
                         android:backgroundTint="@color/mint_tulip"
                         android:gravity="center"
                         android:paddingHorizontal="10dp"
-                        android:text="2시간"
+                        android:text=""
                         android:textColor="@color/primary"
                         android:textFontWeight="600"
                         android:textSize="10sp"
@@ -331,7 +331,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="23dp"
-                android:text="33분전"
+                android:text=""
                 android:textColor="@color/dark_gray_A"
                 android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="@id/daily_matching_detail_content_tv"

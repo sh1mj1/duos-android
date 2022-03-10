@@ -50,6 +50,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val boardText = binding.myPageMyBoardTextTv
         val boardArrow = binding.myPageMyBoardArrowIv
 
+        // 공지사항
         val noticeIcon = binding.myPageNoticeIconIv
         val noticeText = binding.myPageNoticeTextTv
         val noticeArrow = binding.myPageNoticeArrowIv
@@ -57,6 +58,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val customerIcon = binding.myPageCustomerServiceCenterIconIv
         val customerText = binding.myPageCustomerServiceCenterTextTv
         val customerArrow = binding.myPageCustomerServiceCenterArrowIv
+
         // 설정
         val setUpIcon = binding.myPageSetIconIv
         val setUpText = binding.myPageSetTextTv
@@ -78,6 +80,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         appointmentArrow.setOnClickListener {
             val intent = Intent(activity, LastAppointmentActivity::class.java)
             startActivity(intent) }
+
         // 내가 작성한 글
         boardIcon.setOnClickListener {
             val intent = Intent(activity, MyBoardActivity::class.java)
@@ -91,6 +94,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
             val intent = Intent(activity, MyBoardActivity::class.java)
             startActivity(intent)
         }
+
         // 공지 사항
         noticeIcon.setOnClickListener {
             val intent = Intent(activity, NotionActivity::class.java)
@@ -101,6 +105,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         noticeArrow.setOnClickListener {
             val intent = Intent(activity, NotionActivity::class.java)
             startActivity(intent) }
+
         // 고객 센터
         customerIcon.setOnClickListener {
             val intent = Intent(activity, CustomerServiceActivity::class.java)
@@ -111,6 +116,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         customerArrow.setOnClickListener {
             val intent = Intent(activity, CustomerServiceActivity::class.java)
             startActivity(intent) }
+
         // 설정
         setUpIcon.setOnClickListener {
             val intent = Intent(activity, SetupActivity::class.java)

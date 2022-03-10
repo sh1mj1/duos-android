@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDialog
 import com.example.duos.ApplicationClass
 import com.example.duos.CustomDialog
+import com.example.duos.ui.main.dailyMatching.*
 import com.example.duos.ui.main.dailyMatching.AllDailyMatchingView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingSearchView
 import com.example.duos.ui.main.dailyMatching.ImminentDailyMatchingView
@@ -248,5 +249,7 @@ object DailyMatchingListService {
                 }
             })
     }
+
+
 }
 

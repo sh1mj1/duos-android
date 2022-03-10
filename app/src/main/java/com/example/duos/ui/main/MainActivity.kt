@@ -1,5 +1,6 @@
 package com.example.duos.ui.main
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -7,6 +8,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.duos.R
 import com.example.duos.databinding.ActivityMainBinding
 import com.example.duos.ui.BaseActivity
+import com.example.duos.utils.getUserIdx
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
