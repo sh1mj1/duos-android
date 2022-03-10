@@ -93,7 +93,7 @@ class ApplicationClass : Application() {
 
         progressDialog = AppCompatDialog(activity)
         progressDialog.setCancelable(false)
-        progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         progressDialog.setContentView(R.layout.progress_loading)
         progressDialog.show()
 

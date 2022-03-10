@@ -76,7 +76,7 @@ interface DailyMatchingRetrofitInterface {
     fun getMyDailyMatchingList(
         @Query("userIdx") userIdx : Int
     ): Call<MyDailyMatchingListResponse>
-
+////////////////////////////////////////////////////////////////////////////////////////////////
     @GET("/api/board/search")
     fun dailyMatchingSearch(
         @Query("userIdx") userIdx : Int,

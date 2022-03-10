@@ -102,7 +102,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG)
+        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {

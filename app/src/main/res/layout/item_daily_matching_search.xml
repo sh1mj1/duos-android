@@ -23,6 +23,8 @@
         android:layout_marginStart="10dp"
         />
 
+
+
     <ImageView
         android:id="@+id/item_daily_matching_recent_search_delete_iv"
         android:layout_width="15dp"
