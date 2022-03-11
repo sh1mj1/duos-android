@@ -44,6 +44,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         val appointmentIcon = binding.myPageLastAppointmentIconIv
         val appointmentText = binding.myPageLastAppointmentTextTv
         val appointmentArrow = binding.myPageLastAppointmentArrowIv
+        // 공지사항
 
         val boardIcon = binding.myPageMyBoardIconIv
         val boardText = binding.myPageMyBoardTextTv

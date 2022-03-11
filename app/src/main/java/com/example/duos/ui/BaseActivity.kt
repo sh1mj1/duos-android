@@ -129,6 +129,7 @@ abstract class BaseActivity<T : ViewBinding>(private val inflate: (LayoutInflate
         val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
         return ratingStr.toString()
     }
+
     fun strToInt(str: String):Int{
         val resultInt : Int = str.replace("[^0-9]".toRegex(), "").toInt()
         return resultInt

@@ -1,3 +1,5 @@
+package com.example.duos.ui.main.appointment
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (Strin
             binding.itemDailyMatchingRecentSearchDeleteIv.setOnClickListener {
                 historyDeleteClickListener(searchHistoryModel.keyword.orEmpty())
             }
+            binding.itemDailyMatchingRecentSearchTv
         }
 
     }

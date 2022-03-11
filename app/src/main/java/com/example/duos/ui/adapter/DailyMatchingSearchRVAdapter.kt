@@ -3,6 +3,7 @@ package com.example.duos.ui.adapter
 import android.annotation.SuppressLint
 import android.app.appsearch.SearchResult
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.example.duos.R
 import com.example.duos.data.remote.dailyMatching.SearchResultItem
 import com.example.duos.databinding.ItemFragmentDailyMatchingFragmentBinding
+import com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -28,22 +30,29 @@ class DailyMatchingSearchRVAdapter(private val searchResultItem: ArrayList<Searc
     RecyclerView.Adapter<DailyMatchingSearchRVAdapter.ItemViewHolder>() {
 
     lateinit var context: Context
-
+    var positionCount : Int = 0
     interface SearchResultItemClickListener{
         fun onItemClick(searchResultItem : SearchResultItem)
     }
+    interface BindLastViewHolderListener{
+        fun onLastBind()
+    }
+
 
     private lateinit var mItemClickListener : SearchResultItemClickListener
+    private lateinit var mLastBindListener : BindLastViewHolderListener
 
     fun clickSearchResultListener(itemClickListener : SearchResultItemClickListener){
         mItemClickListener = itemClickListener
+    }
+    fun lastBindListener(param: BindLastViewHolderListener) {
+        mLastBindListener = param
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view: View
         context = parent.context
-        Log.d("DailyMatchingSearch", "onCreateViewHolder")
 
         val binding: ItemFragmentDailyMatchingFragmentBinding =
             ItemFragmentDailyMatchingFragmentBinding.inflate(
@@ -55,11 +64,21 @@ class DailyMatchingSearchRVAdapter(private val searchResultItem: ArrayList<Searc
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        Log.d("DailyMatchingSearch", "onBindViewHolder position : $position , getItemCount : $itemCount")
         holder.setItem(searchResultItem[position])
         holder.itemView.setOnClickListener { mItemClickListener.onItemClick(searchResultItem[position]) }
+        // n번째 검색 시 이미 많이 bindViewHolder 해놓음
+        if(position >= itemCount-5){
+            // 첫 검색 혹은
+            Log.d("DailyMatchingSearch", "onBindViewHolder 마지막 ")
+            mLastBindListener.onLastBind()
+        }
+
     }
 
-    override fun getItemCount(): Int = searchResultItem.size
+    override fun getItemCount(): Int {
+        return searchResultItem.size
+    }
 
 
     inner class ItemViewHolder(val binding: ItemFragmentDailyMatchingFragmentBinding) :

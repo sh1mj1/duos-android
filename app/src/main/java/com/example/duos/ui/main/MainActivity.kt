@@ -17,7 +17,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var navHostFragment: NavHostFragment
 
     override fun initAfterBinding() {
-        Log.d("userIdx", "${getUserIdx()}")
         overridePendingTransition(R.anim.horizon_enter, R.anim.none)
 
         navHostFragment =
@@ -65,5 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        })
 //        return token
 //    }
+
+
 
 }

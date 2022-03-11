@@ -27,7 +27,6 @@ interface ImminentDailyMatchingView {
 
 interface DailyMatchingSearchView{
     fun onGetSearchViewSuccess(dailyMatchingSearchResultData : DailyMatchingSearchResultData)
-    fun onGetSearchViewLoading()
     fun onGetSearchViewFailure(code : Int, message : String)
 }
 
