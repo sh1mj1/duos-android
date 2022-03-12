@@ -154,17 +154,14 @@
 
         <!--    검색 결과 창 보여지기-->
 
-        <FrameLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/daily_matching_result_of_search_fl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_result_count_tv">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/all_daily_matching_recyclerview_rc"
@@ -179,10 +176,9 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_fragment_daily_matching_fragment" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
