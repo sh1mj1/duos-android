@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.duos.data.remote.dailyMatching.PopularDailyMatchingListResult
 import com.example.duos.databinding.FragmentPopularDailyMatchingBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.main.MainActivity
+import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 
 class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchingBinding>
@@ -27,6 +29,7 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
     lateinit var mContext: MainActivity
     private var isNextPageAvailable = false // 다음 페이지 유무
     lateinit var dailyMatchingListRVAdapter: DailyMatchingListRVAdapter
+    lateinit var viewModel : ViewModel
 
 
     override fun onAttach(context: Context) {
@@ -37,12 +40,20 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
     }
 
     override fun initAfterBinding() {
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         binding.popularDailyMatchingRecyclerviewRc.setHasFixedSize(true)
         binding.popularDailyMatchingRecyclerviewRc.itemAnimator = DefaultItemAnimator()
         layoutManager = LinearLayoutManager(requireContext())
         binding.popularDailyMatchingRecyclerviewRc.layoutManager = layoutManager
         dailyMatchingListRVAdapter = DailyMatchingListRVAdapter(this)
         binding.popularDailyMatchingRecyclerviewRc.adapter = dailyMatchingListRVAdapter
+        viewModel.dailyMatchingRefreshSwipePopular.observe(viewLifecycleOwner){
+            if (it) {
+                pageNum = 0
+                loadDailyMatchingList()
+
+            }
+        }
     }
 
     override fun onResume() {

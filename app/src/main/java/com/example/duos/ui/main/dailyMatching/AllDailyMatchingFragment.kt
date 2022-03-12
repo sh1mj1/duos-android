@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.data.entities.dailyMatching.DailyMatching
@@ -16,11 +17,12 @@ import com.example.duos.ui.main.MainActivity
 import com.example.duos.utils.getUserIdx
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.databinding.FragmentAllDailyMatchingFragmentBinding
+import com.example.duos.utils.ViewModel
 
 
 class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBinding>
 (FragmentAllDailyMatchingFragmentBinding::inflate), AllDailyMatchingView,
-    DailyMatchingListRVAdapter.OnItemClickListener {
+    DailyMatchingListRVAdapter.OnItemClickListener{
 
     var pageNum : Int = 0
     val listNum : Int = 30
@@ -28,6 +30,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     lateinit var mContext: MainActivity
     private var isNextPageAvailable = false // 다음 페이지 유무
     lateinit var dailyMatchingListRVAdapter : DailyMatchingListRVAdapter
+    lateinit var viewModel : ViewModel
 
 
     override fun onAttach(context: Context) {
@@ -38,12 +41,20 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     override fun initAfterBinding() {
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         binding.allDailyMatchingRecyclerviewRc.setHasFixedSize(true)
         binding.allDailyMatchingRecyclerviewRc.itemAnimator = DefaultItemAnimator()
         layoutManager = LinearLayoutManager(requireContext())
         binding.allDailyMatchingRecyclerviewRc.layoutManager = layoutManager
         dailyMatchingListRVAdapter = DailyMatchingListRVAdapter(this)
         binding.allDailyMatchingRecyclerviewRc.adapter = dailyMatchingListRVAdapter
+
+        viewModel.dailyMatchingRefreshSwipeAll.observe(viewLifecycleOwner){
+            if (it){
+                pageNum = 0
+                loadDailyMatchingList()
+            }
+        }
     }
 
     override fun onResume() {
@@ -123,4 +134,5 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
             startActivity(intent)
         }
     }
+
 }

@@ -1,24 +1,27 @@
 package com.example.duos.ui.main.dailyMatching
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.R
 import com.example.duos.databinding.FragmentDailyMatchingBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.friendList.FriendListViewpagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
+import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity
-import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
+import com.example.duos.utils.ViewModel
 
 
 class DailyMatchingFragment :
     BaseFragment<FragmentDailyMatchingBinding>(FragmentDailyMatchingBinding::inflate) {
 
-    override fun initAfterBinding() {
+    lateinit var viewModel : ViewModel
+    var currentPage : Int = 0
 
+    override fun initAfterBinding() {
+        viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
         val dailyMatchingViewpagerAdapter = DailyMatchingViewpagerAdapter(this)
         binding.dailyMatchingContentViewpagerVp.adapter = dailyMatchingViewpagerAdapter
 
@@ -48,6 +51,30 @@ class DailyMatchingFragment :
             val intent = Intent(activity, DailyMatchingSearchActivity::class.java)
             startActivity(intent)
         }
+
+        binding.dailyMatchingSwiperefreshLayoutSl.setOnRefreshListener {
+            Log.d("새로고침","성공")
+            when (currentPage){
+                0 -> viewModel.dailyMatchingRefreshSwipeAll.value = true
+                1 -> viewModel.dailyMatchingRefreshSwipePopular.value = true
+                2 -> viewModel.dailyMatchingRefreshSwipeImminent.value = true
+            }
+            binding.dailyMatchingSwiperefreshLayoutSl.isRefreshing = false
+            when (currentPage){
+                0 -> viewModel.dailyMatchingRefreshSwipeAll.value = false
+                1 -> viewModel.dailyMatchingRefreshSwipePopular.value = false
+                2 -> viewModel.dailyMatchingRefreshSwipeImminent.value = false
+            }
+
+        }
+
+        binding.dailyMatchingContentViewpagerVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPage = position
+                Log.e("ViewPagerFragment", "Page ${position}")
+            }
+        })
 
 
     }
