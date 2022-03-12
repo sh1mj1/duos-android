@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -13,9 +14,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.duos.R
 import com.example.duos.data.entities.dailyMatching.SearchHistory
 import com.example.duos.data.entities.dailyMatching.SearchHistoryDatabase
@@ -29,6 +28,7 @@ import com.example.duos.ui.main.appointment.DailyMatchingSearchHistoryRVAdapter
 import com.example.duos.ui.main.dailyMatching.DailyMatchingDetail
 import com.example.duos.ui.main.dailyMatching.DailyMatchingSearchView
 import com.example.duos.utils.getUserIdx
+
 
 class DailyMatchingSearchActivity :
     BaseActivity<ActivityDailyMatchingSearchBinding>(ActivityDailyMatchingSearchBinding::inflate),
@@ -57,7 +57,7 @@ class DailyMatchingSearchActivity :
             DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
         allDailyMatchingSearchRV.adapter = dailyMatchingSearchSearchRVAdapter
 
-        binding.dailyMatchingSearchEt.setOnKeyListener { v, keyCode, event ->
+        binding.dailyMatchingSearchEt.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
                 // TODO : 검색 후 검색 기록 리사이클러뷰 binding.dailyMatchingSearchRecordRv 맨 왼쪽으로
                 search(binding.dailyMatchingSearchEt.text.toString())
@@ -176,21 +176,26 @@ class DailyMatchingSearchActivity :
                 startActivity(intent)
             }
         })
-        Log.d(TAG, "문제의 부분 : bindViewHolderCount : $bindViewHolderCount")
-        if (bindViewHolderCount <= dailyMatchingSearchSearchRVAdapter.itemCount-5) {
-            dailyMatchingSearchSearchRVAdapter.lastBindListener(object :
-                DailyMatchingSearchRVAdapter.BindLastViewHolderListener {
-                override fun onLastBind() {
-                    Log.d(TAG, "모든 viewBindHolder 완료 -> searchProgressOFF")
-                    searchProgressOFF()
-                    bindViewHolderCount = dailyMatchingSearchSearchRVAdapter.itemCount
-                }
-            })
-        } else {
+        Handler().postDelayed({
             searchProgressOFF()
+        }, (40 * dailyMatchingSearchSearchRVAdapter.itemCount).toLong())
 
-        }
-        Log.d(TAG, "문제의 부분 지나침 : bindViewHolderCount : $bindViewHolderCount")
+//        searchProgressOFF()
+
+//        Log.d(TAG, "문제의 부분 : bindViewHolderCount : $bindViewHolderCount")
+//        if (bindViewHolderCount <= dailyMatchingSearchSearchRVAdapter.itemCount-5) {
+//            dailyMatchingSearchSearchRVAdapter.lastBindListener(object :
+//                DailyMatchingSearchRVAdapter.BindLastViewHolderListener {
+//                override fun onLastBind() {
+//                    Log.d(TAG, "모든 viewBindHolder 완료 -> searchProgressOFF")
+//                    searchProgressOFF()
+//                    bindViewHolderCount = dailyMatchingSearchSearchRVAdapter.itemCount
+//                }
+//            })
+//        } else {
+//            searchProgressOFF()
+//
+//        }
 
     }
 

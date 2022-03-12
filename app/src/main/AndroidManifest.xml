@@ -186,8 +186,9 @@
 
         <activity android:name="com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            />
+            tools:ignore="LockedOrientationActivity" />
 
 
         <service
