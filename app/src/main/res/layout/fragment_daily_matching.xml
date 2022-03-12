@@ -52,17 +52,25 @@
         android:layout_height="0.3dp"
         android:layout_marginBottom="7dp"
         android:background="@drawable/friend_list_dialog_line"
-        app:layout_constraintBottom_toTopOf="@id/daily_matching_content_viewpager_vp"/>
+        app:layout_constraintBottom_toTopOf="@id/daily_matching_swiperefresh_layout_sl"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/daily_matching_content_viewpager_vp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/daily_matching_swiperefresh_layout_sl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:nestedScrollingEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/daily_matching_content_tab_tb" />
+        app:layout_constraintTop_toBottomOf="@id/daily_matching_content_tab_tb">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/daily_matching_content_viewpager_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:nestedScrollingEnabled="true" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/daily_matching_goto_write_frame_layout_fl"

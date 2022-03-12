@@ -143,7 +143,7 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
             testWithdrawal = "실패함"
         }
         Log.d(TAG, testWithdrawal)
-        // 초기화면 SplashActivity로 가기
+        // 초기화면 SplashActivity 로 가기
         val intent = Intent(activity, SplashActivity::class.java)
         intent.flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -157,14 +157,14 @@ class SetupFragment : BaseFragment<FragmentSetupBinding>(FragmentSetupBinding::i
     }
 
     override fun onLogOutSuccess() {
-        val userDB = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx에 맞는 데이터 있으면 불러오기.
+        val userDB = UserDatabase.getInstance(requireContext().applicationContext) // 룸에 내 idx 에 맞는 데이터 있으면 불러오기.
         userDB!!.userDao().clearAll()
 
         val searchDB = SearchHistoryDatabase.getInstance(requireContext().applicationContext)
         searchDB?.searchHistoryRoomDao()?.clearAll()
 
         Log.d(TAG, "UserDB : ${userDB.userDao().getUser(myUserIdx)}")
-        // sharedPreference의 데이터 삭제
+        // sharedPreference 의 데이터 삭제
         deleteSharedPreferenceData()
         var testWithdrawal = ""
         if (getUserIdx() == 0) {

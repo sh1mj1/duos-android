@@ -105,6 +105,10 @@ class ViewModel : ViewModel() {
     var dailyMatchingEditPlace = MutableLiveData<String?>()
     var dailyMatchingEditContent = MutableLiveData<String?>()
 
+    var dailyMatchingRefreshSwipeAll : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingRefreshSwipePopular : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingRefreshSwipeImminent : MutableLiveData<Boolean> = MutableLiveData(false)
+
 
     init {
         dailyMatchingImgCount.value = 0

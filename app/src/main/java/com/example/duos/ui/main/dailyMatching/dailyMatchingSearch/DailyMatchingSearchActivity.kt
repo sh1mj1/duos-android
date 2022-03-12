@@ -5,17 +5,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDialog
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.duos.R
 import com.example.duos.data.entities.dailyMatching.SearchHistory
 import com.example.duos.data.entities.dailyMatching.SearchHistoryDatabase
@@ -30,6 +30,7 @@ import com.example.duos.ui.main.dailyMatching.DailyMatchingDetail
 import com.example.duos.ui.main.dailyMatching.DailyMatchingSearchView
 import com.example.duos.utils.getUserIdx
 
+
 class DailyMatchingSearchActivity :
     BaseActivity<ActivityDailyMatchingSearchBinding>(ActivityDailyMatchingSearchBinding::inflate),
     DailyMatchingSearchView {
@@ -40,7 +41,6 @@ class DailyMatchingSearchActivity :
     lateinit var dailyMatchingSearchSearchRVAdapter: DailyMatchingSearchRVAdapter
     private var dailyMatchingSearchListDatas = ArrayList<SearchResultItem>()
     private lateinit var progressDialog: AppCompatDialog
-    private var bindViewHolderCount: Int = 0
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -48,16 +48,17 @@ class DailyMatchingSearchActivity :
 
         initView()
 //         하단 검색
-        val allDailyMatchingSearchRV = binding.allDailyMatchingRecyclerviewRc
-        allDailyMatchingSearchRV.setHasFixedSize(true)
-        allDailyMatchingSearchRV.itemAnimator = DefaultItemAnimator()
-        layoutManager = LinearLayoutManager(this)
-        allDailyMatchingSearchRV.layoutManager = layoutManager
-        dailyMatchingSearchSearchRVAdapter =
-            DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
-        allDailyMatchingSearchRV.adapter = dailyMatchingSearchSearchRVAdapter
+//        val allDailyMatchingSearchRV = binding.allDailyMatchingRecyclerviewRc
+//        allDailyMatchingSearchRV.setHasFixedSize(true)
+//        allDailyMatchingSearchRV.itemAnimator = DefaultItemAnimator()
+//        layoutManager = LinearLayoutManager(this)
+//        allDailyMatchingSearchRV.layoutManager = layoutManager
+//        dailyMatchingSearchSearchRVAdapter =
+//            DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
+//        allDailyMatchingSearchRV.adapter = dailyMatchingSearchSearchRVAdapter
+//        allDailyMatchingSearchRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.dailyMatchingSearchEt.setOnKeyListener { v, keyCode, event ->
+        binding.dailyMatchingSearchEt.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
                 // TODO : 검색 후 검색 기록 리사이클러뷰 binding.dailyMatchingSearchRecordRv 맨 왼쪽으로
                 search(binding.dailyMatchingSearchEt.text.toString())
@@ -150,12 +151,26 @@ class DailyMatchingSearchActivity :
 
     }
 
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    @SuppressLint("SetTextI18n")
     override fun onGetSearchViewSuccess(dailyMatchingSearchResultData: DailyMatchingSearchResultData) {
         Log.d(TAG, "API 호출 성공")
         binding.allDailyMatchingRecyclerviewRc.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.VISIBLE // 검색결과 갯수
         binding.dailyMatchingSearchRecentCl.visibility = View.GONE
+
+        val allDailyMatchingSearchRV = DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
+        val recyclerView = binding.allDailyMatchingRecyclerviewRc
+        recyclerView.adapter = allDailyMatchingSearchRV
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        val allDailyMatchingSearchRV = binding.allDailyMatchingRecyclerviewRc
+//        allDailyMatchingSearchRV.setHasFixedSize(true)
+//        allDailyMatchingSearchRV.itemAnimator = DefaultItemAnimator()
+//        layoutManager = LinearLayoutManager(this)
+//        allDailyMatchingSearchRV.layoutManager = layoutManager
+//        dailyMatchingSearchSearchRVAdapter =
+//            DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
+//        allDailyMatchingSearchRV.adapter = dailyMatchingSearchSearchRVAdapter
+//        allDailyMatchingSearchRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.dailyMatchingSearchResultCountTv.text =
             "검색 결과 (${dailyMatchingSearchResultData.resultSize})"
@@ -165,7 +180,7 @@ class DailyMatchingSearchActivity :
         dailyMatchingSearchListDatas.addAll(dailyMatchingSearchResultData.searchResult)
         Log.d(TAG, "하단 결과 뷰 addAll 결과 $dailyMatchingSearchListDatas")
 
-        dailyMatchingSearchSearchRVAdapter.clickSearchResultListener(object :
+        allDailyMatchingSearchRV.clickSearchResultListener(object :
             DailyMatchingSearchRVAdapter.SearchResultItemClickListener {
             override fun onItemClick(searchResultItem: SearchResultItem) {
                 //  해당 게시글로 이동  // 게시글Idx 넘겨주기
@@ -176,28 +191,33 @@ class DailyMatchingSearchActivity :
                 startActivity(intent)
             }
         })
-        Log.d(TAG, "문제의 부분 : bindViewHolderCount : $bindViewHolderCount")
-        if (bindViewHolderCount <= dailyMatchingSearchSearchRVAdapter.itemCount-5) {
-            dailyMatchingSearchSearchRVAdapter.lastBindListener(object :
-                DailyMatchingSearchRVAdapter.BindLastViewHolderListener {
-                override fun onLastBind() {
-                    Log.d(TAG, "모든 viewBindHolder 완료 -> searchProgressOFF")
-                    searchProgressOFF()
-                    bindViewHolderCount = dailyMatchingSearchSearchRVAdapter.itemCount
-                }
-            })
-        } else {
+        Handler().postDelayed({
             searchProgressOFF()
+        }, (40 * allDailyMatchingSearchRV.itemCount).toLong())
 
-        }
-        Log.d(TAG, "문제의 부분 지나침 : bindViewHolderCount : $bindViewHolderCount")
+//        searchProgressOFF()
+
+//        Log.d(TAG, "문제의 부분 : bindViewHolderCount : $bindViewHolderCount")
+//        if (bindViewHolderCount <= dailyMatchingSearchSearchRVAdapter.itemCount-5) {
+//            dailyMatchingSearchSearchRVAdapter.lastBindListener(object :
+//                DailyMatchingSearchRVAdapter.BindLastViewHolderListener {
+//                override fun onLastBind() {
+//                    Log.d(TAG, "모든 viewBindHolder 완료 -> searchProgressOFF")
+//                    searchProgressOFF()
+//                    bindViewHolderCount = dailyMatchingSearchSearchRVAdapter.itemCount
+//                }
+//            })
+//        } else {
+//            searchProgressOFF()
+//
+//        }
 
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
         searchProgressOFF()
         showToast(message)
-        binding.allDailyMatchingRecyclerviewRc.visibility = View.GONE
+        binding.allDailyMatchingRecyclerviewRc.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.GONE // 검색결과 갯수
         binding.dailyMatchingSearchRecentCl.visibility = View.VISIBLE
 
