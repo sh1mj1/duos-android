@@ -46,6 +46,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DailyMatchingWrite :
@@ -155,32 +156,82 @@ class DailyMatchingWrite :
         })
 
         this.viewModel.dailyMatchingTitle.observe(this, {
-            Log.d("1", "")
-            if (it!!.isNotEmpty()) {
-
-                this.viewModel.dailyMatchingPlace.observe(this, { it2 ->
-                    if (it2!!.isNotEmpty()) {
-                        Log.d("2", "")
-                        this.viewModel.dailyMatchingContent.observe(this, { it3 ->
-                            if (it3!!.isNotEmpty()) {
-                                Log.d("3", "")
-                                this.viewModel.dailyMatchingDateCheck.observe(this, { it4 ->
-                                    if (it4 == true) {
-                                        Log.d("4", "")
-                                        this.viewModel.dailyMatchingTimeCheck.observe(this, { it5 ->
-                                            if (it5 == true) {
-                                                Log.d("5", "")
-                                                setWriteBtnEnable()
-                                            } else setWriteBtnUnable()
-                                        })
-                                    } else setWriteBtnUnable()
-                                })
-                            } else setWriteBtnUnable()
-                        })
-                    } else setWriteBtnUnable()
-                })
+            Log.d("1", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingPlace.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setWriteBtnEnable()
             } else setWriteBtnUnable()
         })
+        this.viewModel.dailyMatchingPlace.observe(this, {
+            Log.d("2", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setWriteBtnEnable()
+            } else setWriteBtnUnable()
+        })
+        this.viewModel.dailyMatchingContent.observe(this, {
+            Log.d("3", "ㅎㅇ")
+            if (it!!.isNotEmpty() && this.viewModel.dailyMatchingTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ) {
+                setWriteBtnEnable()
+            } else setWriteBtnUnable()
+        })
+        this.viewModel.dailyMatchingDateCheck.observe(this, {
+            Log.d("4", "ㅎㅇ")
+            if (it!! && this.viewModel.dailyMatchingTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingTimeCheck.value == true
+            ){
+                setWriteBtnEnable()
+            } else setWriteBtnUnable()
+        })
+        this.viewModel.dailyMatchingTimeCheck.observe(this, {
+            Log.d("5", "ㅎㅇ")
+            if (it!! && this.viewModel.dailyMatchingTitle.value?.isNotEmpty() == true
+                && this.viewModel.dailyMatchingPlace.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingContent.value?.isNotEmpty() == true &&
+                this.viewModel.dailyMatchingDateCheck.value == true
+            ) {
+                setWriteBtnEnable()
+            } else setWriteBtnUnable()
+        })
+
+//        this.viewModel.dailyMatchingTitle.observe(this, {
+//            Log.d("1", "")
+//            if (it!!.isNotEmpty()) {
+//                this.viewModel.dailyMatchingPlace.observe(this, { it2 ->
+//                    if (it2!!.isNotEmpty()) {
+//                        Log.d("2", "")
+//                        this.viewModel.dailyMatchingContent.observe(this, { it3 ->
+//                            if (it3!!.isNotEmpty()) {
+//                                Log.d("3", "")
+//                                this.viewModel.dailyMatchingDateCheck.observe(this, { it4 ->
+//                                    if (it4 == true) {
+//                                        Log.d("4", "")
+//                                        this.viewModel.dailyMatchingTimeCheck.observe(this, { it5 ->
+//                                            if (it5 == true) {
+//                                                Log.d("5", "")
+//                                                setWriteBtnEnable()
+//                                            } else setWriteBtnUnable()
+//                                        })
+//                                    } else setWriteBtnUnable()
+//                                })
+//                            } else setWriteBtnUnable()
+//                        })
+//                    } else setWriteBtnUnable()
+//                })
+//            } else setWriteBtnUnable()
+//        })
 
         binding.dailyMatchingWriteRadioGroupRg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = findViewById(checkedId)
@@ -315,6 +366,8 @@ class DailyMatchingWrite :
             json.put("matchPlace", viewModel.dailyMatchingPlace.value.toString())
             json.put("startTime", startTime)
             json.put("endTime", endTime)
+
+            Log.d("matchDate startTime endTime","$matchDate $startTime $endTime")
 
             val writeInfo = json.toString().toRequestBody(JSON)
 
