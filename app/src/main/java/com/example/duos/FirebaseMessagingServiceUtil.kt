@@ -104,20 +104,8 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
                 val chatIdx = messageData.get("dataIdx").toString()
                 var parsedChatMessageIdx = chatIdx.split("@")
                 var uuid = parsedChatMessageIdx[1]
-                val senderId = messageData.get("title").toString()       // data payload로 title은 받지 않아도 될 듯.. 나중에 말씀드리자
+                val senderId = messageData.get("title").toString()
 
-//                // 날짜변경선 무조건 추가
-//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 1",sentAtString)
-//                var parsedDateTimeArray = sentAtString.split(".")
-//                var parsedDateTime = parsedDateTimeArray[0]
-//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 2", parsedDateTime)
-//
-//                val parsedLocalDateTime = LocalDateTime.parse(parsedDateTime)
-//                Log.d("날짜변경선 무조건 추가 - 시간포매팅 3", parsedLocalDateTime.toString())
-//
-//                val date = parsedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-//                val dateItem = ChatMessageItem("date", date, "date", sentDateTime, ChatType.CENTER_MESSAGE, chatRoomIdx, "date"+ uuid)
-//
                 val chatMessageItem = ChatMessageItem(senderId, body, formattedSentAt, sentDateTime, ChatType.LEFT_MESSAGE, chatRoomIdx, uuid)
 
                 setIntentByCurrentState(chatMessageItem)
@@ -178,17 +166,9 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         intent.putExtra("partnerIdx", partnerIdx.toString())
         intent.putExtra("messageItem", chatMessageItem)
 
-
-//        val bundle = Bundle()
-//        bundle.putString("type", type)
-//        bundle.putString("chatRoomIdx", chatRoomIdx)
-//        bundle.putString("senderId", senderId)
-//        bundle.putString("partnerIdx", partnerIdx)
-//        bundle.putBoolean("isAlarmed", true)
-
-        Log.d("fcmService - sendMessageIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
-        Log.d("fcmService - sendMessageIntent의 인텐트 - senderId", senderId)
-        Log.d("fcmService - sendMessageIntent의 인텐트 - partnerIdx", partnerIdx.toString())
+//        Log.d("fcmService - sendMessageIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
+//        Log.d("fcmService - sendMessageIntent의 인텐트 - senderId", senderId)
+//        Log.d("fcmService - sendMessageIntent의 인텐트 - partnerIdx", partnerIdx.toString())
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -201,7 +181,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
             .setContentTitle(senderId)
             .setContentText(body)
             .setAutoCancel(true)
-//            .setExtras(bundle)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
@@ -229,17 +208,9 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         intent.putExtra("byPushAlarmClick", true)
         intent.putExtra("partnerIdx", partnerIdx.toString())
 
-
-//        val bundle = Bundle()
-//        bundle.putString("type", type)
-//        bundle.putString("chatRoomIdx", chatRoomIdx)
-//        bundle.putString("senderId", senderId)
-//        bundle.putString("partnerIdx", partnerIdx)
-//        bundle.putBoolean("isAlarmed", true)
-
-        Log.d("fcmService - sendAppointmentIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
-        Log.d("fcmService - sendAppointmentIntent의 인텐트 - senderId", senderId)
-        Log.d("fcmService - sendAppointmentIntent의 인텐트 - partnerIdx", partnerIdx.toString())
+//        Log.d("fcmService - sendAppointmentIntent의 인텐트 - targetChatRoomIdx", targetChatRoomIdx)
+//        Log.d("fcmService - sendAppointmentIntent의 인텐트 - senderId", senderId)
+//        Log.d("fcmService - sendAppointmentIntent의 인텐트 - partnerIdx", partnerIdx.toString())
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
@@ -252,7 +223,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
             .setContentTitle(senderId)
             .setContentText(body)
             .setAutoCancel(true)
-//            .setExtras(bundle)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
@@ -302,13 +272,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
                 intent.putExtra("sentAt", sentAt)
                 intent.putExtra("messageItem", chatMessageItem)
                 startActivity(intent)
-
-                //intent.putExtra("body", body)
-                //intent.putExtra("partnerIdx", partnerIdx)
-                //intent.putExtra("sentAt", sentAt)
-                //intent.putExtra("senderId",  senderId)
-                //Log.d("발신자", senderId)
-
             } else{
                 Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴","푸시알림을 띄움")
                 Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게 메세지가 옴", chatRoomIdx)
@@ -342,14 +305,6 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
                 intent.putExtra("chatRoomIdx", chatRoomIdx)
                 intent.putExtra("type", type)
                 startActivity(intent)
-
-                //intent.putExtra("body", body)
-                //intent.putExtra("partnerIdx", partnerIdx)
-                //intent.putExtra("sentAt", sentAt)
-                //intent.putExtra("senderId",  senderId)
-                //Log.d("발신자", senderId)
-
-
             } else{
                 Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게","약속 알림이 옴 - 푸시알림을 띄움")
                 Log.d("현재 채팅액티비티이지만 현재 채팅방이 아닌 다른 채팅방의 상대방에게", "약속 알림이 옴"+chatRoomIdx)
@@ -421,15 +376,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
 
         return time
     }
-
-
-
-
-
-
-    // 지훈님부분 or 안쓴부분
-
-
+    
     // [START on_new_token]
     /* FCM 등록 토큰이 업데이트되면 호출됩니다. 이전 토큰의 보안이 손상된 경우 이 문제가 발생할 수 있습니다.
      * FCM 등록 토큰이 처음 생성될 때 호출되므로 토큰을 검색할 수 있습니다. */
@@ -446,171 +393,4 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         //sendRegistrationToServer(token)
     }
     // [END on_new_token]
-
-    // WorkManager를 사용하여 비동기 작업을 예약
-    private fun scheduleJob() {
-        // [START dispatch_job]
-        val work = OneTimeWorkRequest.Builder(MyWorker::class.java).build()
-        WorkManager.getInstance(this).beginWith(work).enqueue()
-        // [END dispatch_job]
-    }
-
-    /* Handle time allotted to BroadcastReceivers. 브로드캣트 수신기에 할당된 시간을 처리 */
-    private fun handleNow() {
-        Log.d(TAG, "Short lived task is done.")
-    }
-
-    /**
-     * Persist token to third-party servers.
-     * Modify this method to associate the user's FCM registration token with any server-side account
-     * 사용자의 FCM 등록 토큰을 서버측 계정과 연결하도록 이 방법 수정
-     * maintained by your application. 응용 프로그램에 의해 유지 관리됩니다.
-     * @param token The new token.
-     */
-    private fun sendRegistrationToServer(token: String?) {
-
-        // TODO: Implement this method to send token to your app server.
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
-    }
-
-
-    fun isForeground(context: Context): Boolean {
-
-        // Get the Activity Manager
-        val manager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-
-        // Get a list of running tasks, we are only interested in the last one,
-        // the top most so we give a 1 as parameter so we only get the topmost.
-        val task = manager.runningAppProcesses
-
-        // Get the info we need for comparison.
-        val componentInfo = task[0].importanceReasonComponent
-
-        // Check if it matches our package name. // If not then our app is not on the foreground.
-        return if (componentInfo.packageName == context.packageName) true else false
-    }
-
-    private fun sendAppointmentIntent(chatRoomIdx: String, type: String, body: String, senderIdx: String, sentAt: String, senderId: String){
-        Log.d("노티", body)
-        //
-
-        val intent = Intent(this, ChattingActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val channelId = getString(R.string.firebase_notification_channel_id_testS)
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.splash_duos_logo)
-            .setContentTitle(senderId)
-            .setContentText(body)
-//            .setExtras(bundle)
-            .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // 안드로이드 오레오 알림 채널이 필요.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-    }
-
-    // 채팅 메세지를 디바이스에 알려주는 함수
-    private fun sendNotification(chatRoomIdx: String, type: String, from: String, to:String, messageBody: String, sendTime: Long) {  // 보낸사람, 받는사람의 인덱스와 메세지 본문, 메세지 type, chatRoomIdx??
-        Log.d("노티", messageBody)
-        //
-
-        val intent = Intent(this, ChattingActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-//        val bundle = Bundle()
-//        bundle.putString("type", type)
-//        bundle.putString("from", from)
-//        bundle.putString("to", to)
-//        bundle.putString("messageBody", messageBody)
-//        bundle.putLong("sendTime", sendTime)
-
-        intent.putExtra("chatRoomIdx", chatRoomIdx)
-        intent.putExtra("type", type)
-        intent.putExtra("from", from)
-        intent.putExtra("to", to)
-        intent.putExtra("messageBody", messageBody)
-        intent.putExtra("sendTime", sendTime)
-
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val channelId = getString(R.string.firebase_notification_channel_id_testS)
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.splash_duos_logo)
-            .setContentTitle(from)
-            .setContentText(messageBody)
-//            .setExtras(bundle)
-            .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // 안드로이드 오레오 알림 채널이 필요.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-    }
-
-    private fun sendNotification(messageBody: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
-
-        val channelId = getString(R.string.firebase_notification_channel_id_testS)
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.splash_duos_logo)
-            .setContentTitle(getString(R.string.fcm_message))
-            .setContentText(messageBody)
-            .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // 안드로이드 오레오 알림 채널이 필요.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-    }
 }

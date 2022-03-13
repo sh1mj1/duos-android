@@ -1,8 +1,6 @@
 package com.example.duos.data.remote.dailyMatching
 
 import com.example.duos.data.entities.dailyMatching.DailyMatching
-import com.example.duos.data.remote.chat.chat.MessageListData
-import com.example.duos.data.remote.chat.chat.PagingChatMessageResult
 import com.google.gson.annotations.SerializedName
 
 data class AllDailyMatchingListResult(
