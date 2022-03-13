@@ -25,16 +25,17 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
 
         /* FromPartnerSearchFrag ? True else> 기본값 false*/
         val isFromSearch = intent.getBooleanExtra("isFromSearch", false)
+        val isFromDailyMatching = intent.getBooleanExtra("isFromDailyMatching", false)
         /* AppointmentFragment 에서 넘어왔다면 True else> 기본값 false*/
         val isFromAppointment = intent.getBooleanExtra("isFromAppointment", false)
 
         val partnerUserIdx = intent.getIntExtra("partnerUserIdx", 0)
 
-        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch}  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
+        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch} isFromDailyMatching? : $isFromDailyMatching  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
 
 
         // PartnerSearch OR Appointment OR Chatting 에서 호출될 때 항상 다른 PlayerFrag 로감.
-        if (isFromSearch or isFromAppointment) {
+        if (isFromSearch or isFromAppointment or isFromDailyMatching) {
             goToPlayerProfile(partnerUserIdx)
         } else {    /* 그게 아니라면 항상 나의 프로필 Frag 가 되고 이때 backStack 이 없음.*/
             supportFragmentManager.beginTransaction()

@@ -211,17 +211,19 @@ class DailyMatchingListRVAdapter(val itemClickListener: OnItemClickListener) :
                     )
                 )
             }
-            val simpleDateFormat = SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.US)
+//            val simpleDateFormat = SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.US)
+            val simpleDateFormat = SimpleDateFormat(("yyyy-MM-dd 00:00:00"))
             val dateFormat = SimpleDateFormat("M/d")
             val matchingDate = simpleDateFormat.parse(simpleDateFormat.format(item.matchDate))
-            if (((matchingDate.time - Date(System.currentTimeMillis()).time) / (24 * 60 * 60 * 1000)).toInt() == 0) {
+            val todayDate = simpleDateFormat.parse(simpleDateFormat.format(Date(System.currentTimeMillis())))
+            Log.d("날짜 / 오늘","$matchingDate $todayDate")
+            if (((matchingDate.time - todayDate.time) / (24 * 60 * 60 * 1000)).toInt() == 0) {
                 matchDate.text = matchDate.context.getString(R.string.daily_matching_date_today)
 
-            } else if (((matchingDate.time - Date(System.currentTimeMillis()).time) / (24 * 60 * 60 * 1000)).toInt() == 1) {
+            } else if (((matchingDate.time - todayDate.time) / (24 * 60 * 60 * 1000)).toInt() == 1) {
                 matchDate.text =
                     matchDate.context.getString(R.string.daily_matching_date_tomorrow)
             } else {
-
                 matchDate.text = dateFormat.format(matchingDate)
             }
 

@@ -21,16 +21,16 @@ import com.example.duos.utils.ViewModel
 
 
 class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBinding>
-(FragmentAllDailyMatchingFragmentBinding::inflate), AllDailyMatchingView,
-    DailyMatchingListRVAdapter.OnItemClickListener{
+    (FragmentAllDailyMatchingFragmentBinding::inflate), AllDailyMatchingView,
+    DailyMatchingListRVAdapter.OnItemClickListener {
 
-    var pageNum : Int = 0
-    val listNum : Int = 30
+    var pageNum: Int = 0
+    val listNum: Int = 30
     private var layoutManager: RecyclerView.LayoutManager? = null
     lateinit var mContext: MainActivity
     private var isNextPageAvailable = false // 다음 페이지 유무
-    lateinit var dailyMatchingListRVAdapter : DailyMatchingListRVAdapter
-    lateinit var viewModel : ViewModel
+    lateinit var dailyMatchingListRVAdapter: DailyMatchingListRVAdapter
+    lateinit var viewModel: ViewModel
 
 
     override fun onAttach(context: Context) {
@@ -49,8 +49,8 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
         dailyMatchingListRVAdapter = DailyMatchingListRVAdapter(this)
         binding.allDailyMatchingRecyclerviewRc.adapter = dailyMatchingListRVAdapter
 
-        viewModel.dailyMatchingRefreshSwipeAll.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.dailyMatchingRefreshSwipeAll.observe(viewLifecycleOwner) {
+            if (it) {
                 pageNum = 0
                 loadDailyMatchingList()
             }
@@ -65,47 +65,52 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     private fun initScrollListener() {
-       binding.allDailyMatchingRecyclerviewRc.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+        binding.allDailyMatchingRecyclerviewRc.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 layoutManager = binding.allDailyMatchingRecyclerviewRc.layoutManager
-                if(hasNextPage()){
-                    val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() // 화면에 보이는 마지막 아이템의 position
-                    val itemTotalCount = recyclerView.adapter!!.itemCount - 1 // 어댑터에 등록된 아이템의 총 개수 -1
+                if (hasNextPage()) {
+                    val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() // 화면에 보이는 마지막 아이템의 position
+                    val itemTotalCount =
+                        recyclerView.adapter!!.itemCount - 1 // 어댑터에 등록된 아이템의 총 개수 -1
 
                     // 스크롤이 끝에 도달했는지 확인
-                    if (lastVisibleItemPosition == itemTotalCount && isNextPageAvailable)  {
-                        Log.d("끝도달","ㅊㅋ")
+                    if (lastVisibleItemPosition == itemTotalCount && isNextPageAvailable) {
+                        Log.d("끝도달", "ㅊㅋ")
                         loadMoreDailyMatchingList()
                         setHasNextPage(false)
                     }
                 }
             }
-       })
+        })
 
     }
 
-    private fun loadDailyMatchingList(){
-        val dailyMatchingRequestBody = DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
+    private fun loadDailyMatchingList() {
+        val dailyMatchingRequestBody =
+            DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
     }
 
-    private fun loadMoreDailyMatchingList(){
+    private fun loadMoreDailyMatchingList() {
         dailyMatchingListRVAdapter.setLoadingView(true)
-        val dailyMatchingRequestBody = DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
+        val dailyMatchingRequestBody =
+            DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         Handler(Looper.getMainLooper()).postDelayed({
             DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
         }, 1000)
     }
 
     override fun onGetAllDailyMatchingViewSuccess(allDailyMatchingListResult: AllDailyMatchingListResult) {
-        var allDailyMatchingListDatas : List<DailyMatching?> = allDailyMatchingListResult.dailyMatching
+        var allDailyMatchingListDatas: List<DailyMatching?> =
+            allDailyMatchingListResult.dailyMatching
         isNextPageAvailable = allDailyMatchingListResult.isNextPageExists
 
-        if (pageNum == 0){
+        if (pageNum == 0) {
             dailyMatchingListRVAdapter.setPagingMessages(allDailyMatchingListDatas)
-        }
-        else {
+        } else {
             dailyMatchingListRVAdapter.run {
                 setLoadingView(false)
                 addPagingMessages(allDailyMatchingListDatas)
@@ -126,13 +131,12 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
         isNextPageAvailable = hasNextPage
     }
 
-    override fun onItemClicked(boardIdx: Int, recruitmentStatus : String) {
-        Log.d("상태", "$boardIdx $recruitmentStatus")
-        if (recruitmentStatus.equals("recruiting")) {
-            val intent = Intent(activity, DailyMatchingDetail::class.java)
-            intent.putExtra("boardIdx", boardIdx)
-            startActivity(intent)
-        }
+    override fun onItemClicked(boardIdx: Int, recruitmentStatus: String) {
+        val intent = Intent(activity, DailyMatchingDetail::class.java)
+        intent.putExtra("boardIdx", boardIdx)
+        intent.putExtra("recruitmentStatus", recruitmentStatus)
+        startActivity(intent)
+
     }
 
 }
