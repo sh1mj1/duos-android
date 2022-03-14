@@ -28,8 +28,6 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
     lateinit var context : Context
     lateinit var chatDB: ChatDatabase
 
-    //private val messages = mutableListOf<ChatMessageItem>()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
         context = parent.getContext()
@@ -124,33 +122,28 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
     }
 
     class CenterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //private var progressBar : ProgressBar
         var contentText: TextView
         fun setItem(item: ChatMessageItem) {
-            //progressBar.visibility = View.GONE
             contentText.setText(item.body)
         }
 
         init {
             contentText = itemView.findViewById(R.id.enter_tv)
-            //progressBar= itemView.findViewById(R.id.chatting_loading_pb)
         }
     }
 
     class LeftViewHolder(itemView: View, context: Context, partnerProfileImgUrl: String) : RecyclerView.ViewHolder(itemView) {
-        //private var progressBar : ProgressBar
+
         var nameText: TextView
         var contentText: TextView
         var sendTimeText: TextView
         fun setItem(item: ChatMessageItem) {
-            //progressBar.visibility = View.GONE
             nameText.setText(item.senderId)
             contentText.setText(item.body)
             sendTimeText.setText(item.formattedSentAt)
         }
 
         init {
-            //progressBar= itemView.findViewById(R.id.chatting_loading_pb)
             nameText = itemView.findViewById(R.id.chatting_partner_id_tv)
             contentText = itemView.findViewById(R.id.chatting_received_message_body)
             sendTimeText = itemView.findViewById(R.id.chatting_received_message_time)
@@ -159,17 +152,14 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
     }
 
     class RightViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //private var progressBar : ProgressBar
         var contentText: TextView
         var sendTimeText: TextView
         fun setItem(item: ChatMessageItem) {
-            //progressBar.visibility = View.GONE
             contentText.setText(item.body)
             sendTimeText.setText(item.formattedSentAt)
         }
 
         init {
-            //progressBar= itemView.findViewById(R.id.chatting_loading_pb)
             contentText = itemView.findViewById(R.id.my_message_body)
             sendTimeText = itemView.findViewById(R.id.my_message_time)
         }
@@ -177,7 +167,6 @@ class ChattingMessagesRVAdapter(private var chatRoomIdx: String) : RecyclerView.
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private var progressBar : ProgressBar
-
         init {
             progressBar= itemView.findViewById(R.id.chatting_loading_pb)
         }

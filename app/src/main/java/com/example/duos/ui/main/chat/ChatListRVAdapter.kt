@@ -60,11 +60,6 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteCli
 
     inner class ViewHolder(val binding: ItemChatListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(chatRoom : ChatRoom){
-//            binding.chatListProfileIv.setImageResource(chatListItem.profileImg!!)
-//            binding.chatListUserIdTv.text = chatListItem.id
-//            binding.chatListChatPreviewTv.text = chatListItem.contentPreview
-//            binding.chatListChatMessageTime.text = chatListItem.messageTime
-
             val messageTime = getFormattedDateTime(chatRoom.lastUpdatedAt)
             binding.chatListChatMessageTime.text = messageTime
             binding.chatListChatPreviewTv.text = chatRoom.lastMessage

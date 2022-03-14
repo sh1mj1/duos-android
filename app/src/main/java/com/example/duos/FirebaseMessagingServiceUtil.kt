@@ -376,7 +376,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
 
         return time
     }
-    
+
     // [START on_new_token]
     /* FCM 등록 토큰이 업데이트되면 호출됩니다. 이전 토큰의 보안이 손상된 경우 이 문제가 발생할 수 있습니다.
      * FCM 등록 토큰이 처음 생성될 때 호출되므로 토큰을 검색할 수 있습니다. */

@@ -53,15 +53,8 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
     }
 
     // 아이템을 터치하거나 스와이프하는 등 뷰에 변화가 생길 경우 호출
-    override fun onChildDraw(
-        c: Canvas,
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        dX: Float,
-        dY: Float,
-        actionState: Int,
-        isCurrentlyActive: Boolean
-    ) {
+    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         if (actionState == ACTION_STATE_SWIPE) {
             val view = getView(viewHolder)
             val isClamped = getTag(viewHolder)      // 고정할지 말지 결정, true : 고정함 false : 고정 안 함
@@ -74,15 +67,7 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
             }
 
             currentDx = newX
-            getDefaultUIUtil().onDraw(
-                c,
-                recyclerView,
-                view,
-                newX,
-                dY,
-                actionState,
-                isCurrentlyActive
-            )
+            getDefaultUIUtil().onDraw(c, recyclerView, view, newX, dY, actionState, isCurrentlyActive)
         }
     }
 
@@ -100,14 +85,8 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
     // swipe_view 반환 -> swipe_view만 이동할 수 있게 해줌
     private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(R.id.chat_list_item_layout)
 
-    private fun getDeleteBtnView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(R.id.chat_list_delete_btn)
-
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정
-    private fun clampViewPositionHorizontal(
-        dX: Float,
-        isClamped: Boolean,
-        isCurrentlyActive: Boolean
-    ) : Float {
+    private fun clampViewPositionHorizontal(dX: Float, isClamped: Boolean, isCurrentlyActive: Boolean) : Float {
         // RIGHT 방향으로 swipe 막기
         val max = 0f
 
@@ -133,7 +112,6 @@ class ChatListItemTouchHelperCallback(private val rvAdapter: ChatListRVAdapter):
     // isClamped = true : 고정, false : 고정 해제
     private fun setTag(viewHolder: RecyclerView.ViewHolder, isClamped: Boolean) { viewHolder.itemView.tag = isClamped }
     fun getTag(viewHolder: RecyclerView.ViewHolder) : Boolean =  viewHolder.itemView.tag as? Boolean ?: false
-
 
     // view가 swipe 되었을 때 고정될 크기 설정
     fun setClamp(clamp: Float) { this.clamp = clamp }
