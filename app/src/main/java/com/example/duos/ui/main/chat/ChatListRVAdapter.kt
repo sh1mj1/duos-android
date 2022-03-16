@@ -10,12 +10,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.duos.CustomDialog
 import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.entities.chat.QuitChatRoomRequestBody
+import com.example.duos.data.remote.chat.chat.ChatService
+import com.example.duos.data.remote.chat.chat.QuitChatRoomResult
 import com.example.duos.databinding.ItemChatListBinding
+import com.example.duos.utils.getUserIdx
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
-class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteClickListener: DeleteClickListener) : RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
+class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteClickListener: DeleteClickListener) : QuitChatRoomView, RecyclerView.Adapter<ChatListRVAdapter.ViewHolder>(){
     private lateinit var dialogBuilder: CustomDialog.Builder
     private lateinit var context: Context
     private lateinit var deleteBtnTv: TextView
@@ -84,8 +88,8 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteCli
             .setRightButton("삭제", object : CustomDialog.CustomDialogCallback {
                 override fun onClick(dialog: CustomDialog, message: String) {//오른쪽 버튼 클릭시 이벤트 설정하기
                     // API호출해서 채팅목록 삭제시키고,그에 따른 이벤트처리
+                    quitChatRoom(position)
                     Log.d("CustomDialog in SetupFrag", message.toString())//테스트 로그
-                    removeData(position)
                     dialog.dismiss()
                 }
             })
@@ -124,5 +128,23 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteCli
     interface DeleteClickListener{
         fun getIsClamped(viewHolder: RecyclerView.ViewHolder):Boolean
         fun onDeleteClick()
+    }
+
+    fun quitChatRoom(position: Int){
+        val quitChatRoomRequestBody = QuitChatRoomRequestBody(chatList[position].chatRoomIdx, getUserIdx())
+        ChatService.quitChatRoom(this, quitChatRoomRequestBody)
+
+    }
+
+    override fun onQuitChatRoomSuccess(quitChatRoomResult: QuitChatRoomResult) {
+        for(i: Int in 0..chatList.size-1){
+            if(chatList[i].chatRoomIdx.equals(quitChatRoomResult.chatRoomIdx)){
+                removeData(i)
+            }
+        }
+    }
+
+    override fun onQuitChatRoomFailure(code: Int, message: String) {
+        Log.d("채팅방 나가기 api 호출 실패",code.toString() + ": " + message)
     }
 }

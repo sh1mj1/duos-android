@@ -4,9 +4,11 @@ import android.util.Log
 import com.example.duos.ApplicationClass
 import com.example.duos.data.entities.chat.CreateChatRoomData
 import com.example.duos.data.entities.chat.PagingChatMessageRequestBody
+import com.example.duos.data.entities.chat.QuitChatRoomRequestBody
 import com.example.duos.data.entities.chat.sendMessageData
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.chat.PagingChatMessageView
+import com.example.duos.ui.main.chat.QuitChatRoomView
 import com.example.duos.ui.main.chat.SendMessageView
 import com.example.duos.ui.main.mypage.myprofile.frag.PartnerProfileChatDialog
 import com.example.duos.utils.NetworkModule
@@ -74,6 +76,31 @@ object ChatService {
         })
     }
 
+    fun quitChatRoom(quitChatRoomView: QuitChatRoomView, quitChatRoomRequestBody: QuitChatRoomRequestBody) {
+        val quitChatRoomService = retrofit.create(ChatRetrofitInterface::class.java)
+//        createChatRoomView.onCreateChatRoomLoading()
+        quitChatRoomService.quitChatRoom(quitChatRoomRequestBody).enqueue(object :
+            Callback<QuitChatRoomResponse> {
+            override fun onResponse(
+                call: Call<QuitChatRoomResponse>,
+                response: Response<QuitChatRoomResponse>
+            ) {
+                val resp = response.body()!!
+                Log.d("resp", resp.toString())
+
+                when (resp.code) {
+                    1000 -> quitChatRoomView.onQuitChatRoomSuccess(resp.result)
+                    else -> quitChatRoomView.onQuitChatRoomFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<QuitChatRoomResponse>, t: Throwable) {
+                Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
+
+                quitChatRoomView.onQuitChatRoomFailure(400, "네트워크 오류가 발생했습니다.")
+            }
+        })
+    }
 
     fun sendMessage(
         sendMessageView: SendMessageView,
