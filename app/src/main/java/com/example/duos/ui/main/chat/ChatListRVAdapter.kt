@@ -88,7 +88,8 @@ class ChatListRVAdapter(private var chatList: ArrayList<ChatRoom>, val deleteCli
             .setRightButton("삭제", object : CustomDialog.CustomDialogCallback {
                 override fun onClick(dialog: CustomDialog, message: String) {//오른쪽 버튼 클릭시 이벤트 설정하기
                     // API호출해서 채팅목록 삭제시키고,그에 따른 이벤트처리
-                    quitChatRoom(position)
+                    removeData(position)
+                    //quitChatRoom(position)
                     Log.d("CustomDialog in SetupFrag", message.toString())//테스트 로그
                     dialog.dismiss()
                 }
