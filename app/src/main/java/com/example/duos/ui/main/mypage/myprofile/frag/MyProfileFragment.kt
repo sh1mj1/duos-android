@@ -40,13 +40,17 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         postponeEnterTransition()
     }
 
+    override fun onResume() {
+        super.onResume()
+        MyProfileService.myProfileInfo(this, myUserIdx)
+    }
+
     override fun initAfterBinding() {
         // 내 프로필 데이터 불러오기(Room)
         val db = UserDatabase.getInstance(requireContext())
         val myProfileDB = db!!.userDao().getUser(getUserIdx())
         binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
-        MyProfileService.myProfileInfo(this, myUserIdx)
 
         // 화면 상단 뷰 설정 (채팅 Constraint layout GONE, 상단 text : 나의 프로필, 나의 프로필 수정하기, 뒤로가기)
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager

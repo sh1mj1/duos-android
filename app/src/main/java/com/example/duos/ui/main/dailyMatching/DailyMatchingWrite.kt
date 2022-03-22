@@ -206,32 +206,6 @@ class DailyMatchingWrite :
             } else setWriteBtnUnable()
         })
 
-//        this.viewModel.dailyMatchingTitle.observe(this, {
-//            Log.d("1", "")
-//            if (it!!.isNotEmpty()) {
-//                this.viewModel.dailyMatchingPlace.observe(this, { it2 ->
-//                    if (it2!!.isNotEmpty()) {
-//                        Log.d("2", "")
-//                        this.viewModel.dailyMatchingContent.observe(this, { it3 ->
-//                            if (it3!!.isNotEmpty()) {
-//                                Log.d("3", "")
-//                                this.viewModel.dailyMatchingDateCheck.observe(this, { it4 ->
-//                                    if (it4 == true) {
-//                                        Log.d("4", "")
-//                                        this.viewModel.dailyMatchingTimeCheck.observe(this, { it5 ->
-//                                            if (it5 == true) {
-//                                                Log.d("5", "")
-//                                                setWriteBtnEnable()
-//                                            } else setWriteBtnUnable()
-//                                        })
-//                                    } else setWriteBtnUnable()
-//                                })
-//                            } else setWriteBtnUnable()
-//                        })
-//                    } else setWriteBtnUnable()
-//                })
-//            } else setWriteBtnUnable()
-//        })
 
         binding.dailyMatchingWriteRadioGroupRg.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = findViewById(checkedId)
@@ -242,14 +216,7 @@ class DailyMatchingWrite :
             when (radio.tag) {
                 "today" -> {
                     setTime = currentTime.hour + 1
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
+
                     dailyMatchingWritetRVAdapter.updateStartTime(setTime)
                     binding.dailyMatchingTodayTv.setTextColor(
                         ContextCompat.getColor(
@@ -273,14 +240,7 @@ class DailyMatchingWrite :
                     viewModel.dailyMatchingDate.value = "오늘"
                 }
                 "tomorrow" -> {
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
+
                     setTime = 0
                     dailyMatchingWritetRVAdapter.updateStartTime(setTime)
                     binding.dailyMatchingTomorrowTv.setTextColor(
@@ -305,14 +265,7 @@ class DailyMatchingWrite :
                     viewModel.dailyMatchingDate.value = "내일"
                 }
                 "dayaftertomorrow" -> {
-//                    for (i in 0 until dailyMatchingWritetRVAdapter.itemCount){
-//                        val view =
-//                            binding.dailyMatchingWriteSelectTimeRecyclerviewRv.findViewHolderForAdapterPosition(
-//                                i
-//                            )?.itemView
-//                        val btn = view?.findViewById<Button>(R.id.daily_matching_time_selector_btn)
-//                        btn?.isSelected = false
-//                    }
+
                     setTime = 0
                     dailyMatchingWritetRVAdapter.updateStartTime(setTime)
 
@@ -713,44 +666,6 @@ class DailyMatchingWrite :
                 }
             }
 
-//            multiplePermissionsCode1 -> {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    val bitmap = BitmapFactory.decodeFile(contentUri.path)
-//                    // 사진 조정 된것
-//                    val degree = getDegree(
-//                        contentUri,
-//                        contentUri.path!!
-//                    )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
-//                    val bitmap2 = resizeBitmap(1024, bitmap)
-//                    val bitmap3 = rotateBitmap(bitmap2, degree)
-//                    contentBitmap = bitmap3
-//                    contentBitmap = bitmap!!
-//                    if (viewModel.dailyMatchingImg01.value == false) {
-//                        viewModel.dailyMatchingImg01Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg01.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout01Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage01Iv.setImageBitmap(bitmap)
-//                        binding.dailyMatchingWriteSelectImage01Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                    } else if (viewModel.dailyMatchingImg02.value == false) {
-//                        viewModel.dailyMatchingImg02Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg02.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout02Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage03Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                        binding.dailyMatchingWriteSelectImage02Iv.setImageBitmap(bitmap)
-//                    } else if (viewModel.dailyMatchingImg03.value == false) {
-//                        viewModel.dailyMatchingImg03Bitmap.value = contentBitmap
-//                        viewModel.dailyMatchingImg03.value = true
-//                        binding.dailyMatchingWriteSelectImageLayout03Iv.visibility = View.VISIBLE
-//                        binding.dailyMatchingWriteSelectImage03Iv.setImageBitmap(bitmap)
-//                        binding.dailyMatchingWriteSelectImage03Iv.scaleType =
-//                            ImageView.ScaleType.FIT_XY
-//                    } else {
-//                        showToast("사진은 3장까지 선택 가능합니다.")
-//                    }
-//                }
-//            }
             multiplePermissionsCode2 -> {
                 if (resultCode == Activity.RESULT_OK) {
                     Log.d("ㅎㅇ2", resultCode.toString())
@@ -876,51 +791,6 @@ class DailyMatchingWrite :
         }
     }
 
-    // 사진의 사이즈를 조정하는 메서드
-    fun resizeBitmap(targetWidth: Int, source: Bitmap): Bitmap {
-        // 이미지 비율 계산
-        val ratio = targetWidth.toDouble() / source.width.toDouble()
-        // 보정될 세로 길이 구하기
-        var targetHeight = (source.height * ratio).toInt()
-        // 크기를 조정한 bitmap 객체를 생성
-        val result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false)
-        return result
-    }
-
-    // 이미지의 회전 각도값을 구하기
-// 11버전 이상부터 달라짐 (외부저장소 보안 때문에)
-    fun getDegree(uri: Uri, source: String): Float {
-        var exif: ExifInterface? = null
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val photoUri = MediaStore.setRequireOriginal(uri)
-            val stream = this.contentResolver.openInputStream(photoUri)
-            exif = ExifInterface(source)
-        } else {
-            exif = ExifInterface(source)
-        }
-        var degree = 0
-        var ori = exif.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            -1
-        )   // 만약 회전값이 저장이 안되어 있으면 default값으로 -1 넣기 (0 넣으면 안댐)
-        when (ori) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
-        }
-        return degree.toFloat()
-    }
-
-    // 사진 돌리기
-    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
-        // 각도값을 관리하는 객체
-        val matrix = Matrix()
-        matrix.postRotate(degree)
-        // 회전된 이미지를 받아온다.
-        val bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        return bitmap2
-    }
 
     inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
         override fun contentType(): MediaType = "image/png".toMediaType()

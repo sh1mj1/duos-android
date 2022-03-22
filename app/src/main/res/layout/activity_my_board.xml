@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/myboard_top_back_arrow_iv"
+            android:id="@+id/top_left_arrow_iv"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="5dp"
@@ -42,7 +42,7 @@
             android:textColor="@color/nero"
             android:textSize="19sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/myboard_top_back_arrow_iv"
+            app:layout_constraintStart_toEndOf="@+id/top_left_arrow_iv"
             app:layout_constraintTop_toTopOf="parent"
 
             />
