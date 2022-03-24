@@ -88,6 +88,7 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
     }
 
     override fun onGetPopularDailyMatchingViewSuccess(popularDailyMatchingListResult: PopularDailyMatchingListResult) {
+        progressOFF()
         var allDailyMatchingListDatas: List<DailyMatching?> = popularDailyMatchingListResult.popularList
         isNextPageAvailable = popularDailyMatchingListResult.isNextPageExists
 
@@ -107,6 +108,7 @@ class PopularAllDailyMatchingFragment : BaseFragment<FragmentPopularDailyMatchin
     }
 
     private fun loadDailyMatchingList() {
+        progressON()
         val dailyMatchingRequestBody =
             DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         DailyMatchingListService.getPopularDailyMatching(this, dailyMatchingRequestBody)

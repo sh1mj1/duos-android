@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialog
@@ -22,14 +23,13 @@ import java.util.concurrent.TimeUnit
 // Retrofit을 호출하기 위한 Creator( API를 바로 호출할 수 있도록 설정해주는 클래스)
 class ApplicationClass : Application() {
     companion object {
-        const val X_ACCESS_TOKEN: String = "jwtAccessToken"         // JWT Access Token Key
-        const val X_REFRESH_TOKEN: String = "jwtRefreshToken"       // JWT Refresh Token Key
+        const val X_ACCESS_TOKEN: String = "jwtAccessToken"        // JWT Access Token Key
+        const val X_REFRESH_TOKEN: String = "jwtRefreshToken"      // JWT Refresh Token Key
         const val USER_IDX: String = "userIdx"                     // JWT Refresh Token Key
-        const val TAG: String = "TEMPLATE-APP"                      // Log, SharedPreference
+        const val TAG: String = "TEMPLATE-APP"                     // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
         const val TEST_ACCESS_TOKEN: String =
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWR4IjoxNDUsImlhdCI6MTY0MzQ3MTU2MiwiZXhwIjoxNjQzNDczMzYyfQ.n5Zc8GtSvS5JHv1AFnZaCAF_GHmswdpEIgWZRmICKC9gGpcJv-6aupTZGlWkZT9isG72IfZMn_PTP06YuOt_ag"
-
 
         const val DEV_URL: String = "https://duos.co.kr/"       // 테스트 서버 주소
         const val PROD_URL: String = "https://api.template.com/"    // 실서버 주소
@@ -44,8 +44,6 @@ class ApplicationClass : Application() {
         fun getInstance(): ApplicationClass {
             return baseApplication
         }
-
-
 
         const val MY_PAGE_API = "api/mypage"
         const val MY_PROFILE_API = "api/mypage/myprofile"
@@ -85,55 +83,27 @@ class ApplicationClass : Application() {
 
     fun context(): Context = applicationContext
 
-
-    fun progressON(activity: Activity?, message: String?) {
+    fun progressON(activity: Activity?, message : String?) {
         if (activity == null || activity.isFinishing) {
             return
         }
 
         progressDialog = AppCompatDialog(activity)
         progressDialog.setCancelable(false)
+        progressDialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         progressDialog.setContentView(R.layout.progress_loading)
         progressDialog.show()
 
-//        if (progressDialog != null && progressDialog.isShowing()) {
-//            //progressSET(message)
-//        } else {
-//            progressDialog = AppCompatDialog(activity)
-//            progressDialog.setCancelable(false)
-//            progressDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//            progressDialog.setContentView(R.layout.progress_loading)
-//            progressDialog.show()
-//        }
-
         val img_loading_frame = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
         val frameAnimation = img_loading_frame?.background as AnimationDrawable
         img_loading_frame.post { frameAnimation.start() }
-
     }
-
 
     fun progressOFF() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss()
         }
     }
-
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun toDateStr(localDateTime: String): String {
-//
-//        if (ChronoUnit.DAYS.between(
-//                LocalDateTime.parse(localDateTime, DateTimeFormatter.ISO_DATE_TIME),
-//                now()
-//            ) < 35) {
-//            // 7일 이내임.
-//        } else{
-//
-//        }
-//
-//    }
-
 
 }

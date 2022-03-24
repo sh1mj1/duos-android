@@ -40,6 +40,7 @@ class MyBoardFragment: BaseFragment<FragmentMyBoardBinding>(FragmentMyBoardBindi
 
     override fun onResume() {
         super.onResume()
+        progressON()
         DailyMatchingListService.getMyDailyMatching(this, getUserIdx()!!)
     }
 
@@ -79,7 +80,11 @@ class MyBoardFragment: BaseFragment<FragmentMyBoardBinding>(FragmentMyBoardBindi
 
         if (oldBoardList.isEmpty()){
             binding.myboardOldLayoutCl.visibility = View.INVISIBLE
+        } else {
+            binding.myboardOldLayoutCl.visibility = View.VISIBLE
         }
+
+        progressOFF()
     }
 
     // extension function to convert dp to equivalent pixels

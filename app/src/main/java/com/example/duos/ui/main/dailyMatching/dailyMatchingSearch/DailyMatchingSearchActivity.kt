@@ -62,7 +62,8 @@ class DailyMatchingSearchActivity :
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
                 // TODO : 검색 후 검색 기록 리사이클러뷰 binding.dailyMatchingSearchRecordRv 맨 왼쪽으로
                 search(binding.dailyMatchingSearchEt.text.toString())
-                searchProgressON()
+//                searchProgressON()
+                progressON()
                 return@setOnKeyListener true
             } else {
                 return@setOnKeyListener false
@@ -192,7 +193,8 @@ class DailyMatchingSearchActivity :
             }
         })
         Handler().postDelayed({
-            searchProgressOFF()
+            progressOFF()
+//            searchProgressOFF()
         }, (40 * allDailyMatchingSearchRV.itemCount).toLong())
 
 //        searchProgressOFF()
@@ -215,7 +217,8 @@ class DailyMatchingSearchActivity :
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
-        searchProgressOFF()
+        progressOFF()
+//        searchProgressOFF()
         showToast(message)
         binding.allDailyMatchingRecyclerviewRc.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.GONE // 검색결과 갯수
@@ -223,27 +226,27 @@ class DailyMatchingSearchActivity :
 
     }
 
-
-    private fun searchProgressON() {
-        Log.d(TAG, "searchProgressOn : ")
-        progressDialog = AppCompatDialog(this)
-        progressDialog.apply {
-            setCanceledOnTouchOutside(false)
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setContentView(R.layout.progress_loading)
-            show()
-        }
-        val img_loading_framge = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
-        val frameAnimation = img_loading_framge?.background as AnimationDrawable
-        img_loading_framge.post(Runnable { frameAnimation.start() })
-    }
-
-    private fun searchProgressOFF() {
-        Log.d(TAG, "searchProgressOFF : ")
-        if (progressDialog != null && progressDialog.isShowing) {
-            progressDialog.dismiss()
-        }
-    }
+//
+//    private fun searchProgressON() {
+//        Log.d(TAG, "searchProgressOn : ")
+//        progressDialog = AppCompatDialog(this)
+//        progressDialog.apply {
+//            setCanceledOnTouchOutside(false)
+//            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//            setContentView(R.layout.progress_loading)
+//            show()
+//        }
+//        val img_loading_framge = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
+//        val frameAnimation = img_loading_framge?.background as AnimationDrawable
+//        img_loading_framge.post(Runnable { frameAnimation.start() })
+//    }
+//
+//    private fun searchProgressOFF() {
+//        Log.d(TAG, "searchProgressOFF : ")
+//        if (progressDialog != null && progressDialog.isShowing) {
+//            progressDialog.dismiss()
+//        }
+//    }
 
 }
 

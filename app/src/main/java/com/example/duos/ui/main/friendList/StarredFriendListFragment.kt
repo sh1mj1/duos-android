@@ -30,10 +30,9 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
     }
 
     override fun onResume() {
-        FriendListService.getStarredFriendList(this, getUserIdx()!!)
+        getStarredFriend()
         super.onResume()
     }
-
 
     override fun initAfterBinding() {
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
@@ -44,7 +43,14 @@ class StarredFriendListFragment() : BaseFragment<FragmentStarredFriendListBindin
 
     }
 
+    fun getStarredFriend(){
+        progressON()
+        FriendListService.getStarredFriendList(this, getUserIdx()!!)
+    }
+
+
     override fun onGetStarredFriendListSuccess(starredFriendList: List<StarredFriend>) {
+        progressOFF()
         Log.d("찜한친구","성공")
         friendListDatas.clear()
         friendListDatas.addAll(starredFriendList)

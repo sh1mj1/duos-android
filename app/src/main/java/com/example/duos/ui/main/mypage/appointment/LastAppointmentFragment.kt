@@ -1,16 +1,21 @@
 package com.example.duos.ui.main.mypage.appointment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.appointment.AppointmentListView
@@ -21,6 +26,7 @@ import com.example.duos.databinding.FragmentLastAppointmentGameBinding
 import com.example.duos.ui.BaseFragment
 import com.example.duos.ui.adapter.MorePreviousGameReviewRVAdapter
 import com.example.duos.ui.adapter.PreviousGameReviewRVAdapter
+import com.example.duos.ui.main.dailyMatching.DailyMatchingListRVAdapter
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
 import com.example.duos.utils.getUserIdx
 import com.google.gson.Gson
@@ -43,8 +49,23 @@ class LastAppointmentFragment :
         postponeEnterTransition()
     }
 
-    override fun initAfterBinding() {
+    override fun onResume() {
+        super.onResume()
+        progressON()
         AppointmentService.getAppointmentList(this, userIdx)
+    }
+
+    override fun initAfterBinding() {
+
+        binding.alreadyWriteReviewPlayerlistRv.setHasFixedSize(true)
+        binding.alreadyWriteReviewPlayerlistRv.itemAnimator = DefaultItemAnimator()
+        binding.alreadyWriteReviewPlayerlistRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.alreadyWriteReviewPlayerlistRv.adapter = MorePreviousGameReviewRVAdapter(morePreviousPlayerDatas)
+
+        binding.notYetWriteReviewPlayerlistRv.setHasFixedSize(true)
+        binding.notYetWriteReviewPlayerlistRv.itemAnimator = DefaultItemAnimator()
+        binding.notYetWriteReviewPlayerlistRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.notYetWriteReviewPlayerlistRv.adapter = PreviousGameReviewRVAdapter(previousPlayerData)
 
 
         val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
@@ -106,6 +127,7 @@ class LastAppointmentFragment :
             }
             i++
         }
+        progressOFF()
         startPostponedEnterTransition()
         // 어댑터 설정
         val previousGameReviewRVAdapter = initPreviousRecyclerView()
@@ -122,6 +144,14 @@ class LastAppointmentFragment :
 
     // 지난 약속 리사이클러뷰
     private fun initPreviousRecyclerView(): PreviousGameReviewRVAdapter {
+
+        if (previousPlayerData.isEmpty()){
+            (binding.alreadyWriteReviewPlayerlistLayoutCl.layoutParams as LinearLayoutCompat.LayoutParams).apply {
+                // individually set text view any side margin
+                topMargin = 10.dpToPixels(requireContext())
+            }
+        }
+        binding.alreadyWriteReviewPlayerlistLayoutCl.visibility = View.VISIBLE
         val previousGameReviewRVAdapter = PreviousGameReviewRVAdapter(previousPlayerData)
         binding.notYetWriteReviewPlayerlistRv.adapter = previousGameReviewRVAdapter
         binding.notYetWriteReviewPlayerlistRv.layoutManager =
@@ -129,8 +159,21 @@ class LastAppointmentFragment :
         return previousGameReviewRVAdapter
     }
 
+    // extension function to convert dp to equivalent pixels
+    fun Int.dpToPixels(context: Context):Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
+    ).toInt()
+
+
     // 이전 약속 보기 리사이클러뷰 (하단)
     private fun initMorePreviousRecyclerView(): MorePreviousGameReviewRVAdapter {
+
+        if (morePreviousPlayerDatas.isEmpty()){
+            binding.alreadyWriteReviewPlayerlistLayoutCl.visibility = View.INVISIBLE
+        } else {
+            binding.alreadyWriteReviewPlayerlistLayoutCl.visibility = View.VISIBLE
+        }
+
         val morePreviousGameReviewRVAdapter =
             MorePreviousGameReviewRVAdapter(morePreviousPlayerDatas)
         binding.alreadyWriteReviewPlayerlistRv.adapter = morePreviousGameReviewRVAdapter
@@ -142,7 +185,7 @@ class LastAppointmentFragment :
     private fun previousGameClickListener(previousGameReviewRVAdapter: PreviousGameReviewRVAdapter) {
         previousGameReviewRVAdapter.previousReviewItemClickListener(object :
             PreviousGameReviewRVAdapter.PreviousPlayerItemClickListener {
-            // 프로필 클릭 시 해당 회원 프롶필로 이동
+            // 프로필 클릭 시 해당 회원 프로필로 이동
             override fun onProfileClick(appointmentItem: AppointmentResDto) {
                 val intent = Intent(activity, MyProfileActivity::class.java)
                 intent.apply {

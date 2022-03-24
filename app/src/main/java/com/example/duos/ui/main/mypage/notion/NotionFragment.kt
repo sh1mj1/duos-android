@@ -24,6 +24,7 @@ class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding
     override fun initAfterBinding() {
 // 서비스 업데이트 공지사항 펼치기/펼치지 않기
 
+        progressON()
         NoticeGetService.onGetNotice(this)
 
         binding.btnShowServiceUpdateCl.setOnClickListener {
@@ -48,6 +49,7 @@ class NotionFragment : BaseFragment<FragmentNotionBinding>(FragmentNotionBinding
     }
 
     override fun onGetNoticeSuccess(noticeGetResponse: NoticeGetResponse) {
+        progressOFF()
         noticeGetResult.clear()
         noticeGetResult.addAll(noticeGetResponse.result)
         val notionIdx =

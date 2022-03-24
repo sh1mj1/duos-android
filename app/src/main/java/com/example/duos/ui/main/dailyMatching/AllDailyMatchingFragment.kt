@@ -89,6 +89,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     private fun loadDailyMatchingList() {
+        progressON()
         val dailyMatchingRequestBody =
             DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
@@ -104,6 +105,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     override fun onGetAllDailyMatchingViewSuccess(allDailyMatchingListResult: AllDailyMatchingListResult) {
+        progressOFF()
         var allDailyMatchingListDatas: List<DailyMatching?> =
             allDailyMatchingListResult.dailyMatching
         isNextPageAvailable = allDailyMatchingListResult.isNextPageExists

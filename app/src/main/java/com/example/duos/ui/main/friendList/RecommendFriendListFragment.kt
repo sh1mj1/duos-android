@@ -44,6 +44,8 @@ class RecommendFriendListFragment() :
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetRecommendedFriendListSuccess(starredFriendList: List<RecommendHistoryDto>) {
 
+        progressOFF()
+
         Log.d("지난추천친구","성공")
 
         if (!getFriendListDiaglogNotShowing()) {
@@ -130,6 +132,7 @@ class RecommendFriendListFragment() :
     }
 
     fun getRecommendedFriend(){
+        progressON()
         FriendListService.getRecommendedFriendList(this, getUserIdx()!!)
     }
 

@@ -33,6 +33,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     override fun initAfterBinding() {
 
+        progressON()
         MyPageService.getUserPage(this, myUserIdx)
 
         initClickListener()
@@ -94,6 +95,8 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     }
 
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
+
+        progressOFF()
 
         Log.d(TAG, "onGetMyPageItemSuccess")
         val phoneNumberView = toMyPagePhoneNumber(myPageInfo.phoneNumber)

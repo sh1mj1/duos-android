@@ -90,6 +90,7 @@ class ImminentAllDailyMatchingFragment : BaseFragment<FragmentImminentDailyMatch
 
 
     override fun onGetImminentDailyMatchingViewSuccess(imminentDailyMatchingListResult: ImminentDailyMatchingListResult) {
+        progressOFF()
         var imminentDailyMatchingListDatas: List<DailyMatching?> = imminentDailyMatchingListResult.aboutToCloseList
         isNextPageAvailable = imminentDailyMatchingListResult.isNextPageExists
 
@@ -109,6 +110,7 @@ class ImminentAllDailyMatchingFragment : BaseFragment<FragmentImminentDailyMatch
     }
 
     private fun loadDailyMatchingList() {
+        progressON()
         val dailyMatchingRequestBody =
             DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         DailyMatchingListService.getImminentDailyMatching(this, dailyMatchingRequestBody)

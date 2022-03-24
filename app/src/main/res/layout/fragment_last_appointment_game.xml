@@ -1,85 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.mypage.appointment.LastAppointmentFragment">
+    android:overScrollMode="never">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <!--후기를 작성하지 않은 상단 리사이클러뷰        -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/not_yet_write_review_playerlist_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="19dp"
-            android:layout_marginBottom="50dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/see_previous_promise_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/previous_game_player_item" />
-
-        <!--        이전 약속 보기 -->
-
-
-        <View
-            android:id="@+id/write_review_playerlist_left_divider"
-            style="@style/Light_gray_Divider"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
-            app:layout_constraintEnd_toStartOf="@+id/see_previous_promise_tv"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/not_yet_write_review_playerlist_rv" />
-
-        <TextView
-            android:id="@+id/see_previous_promise_tv"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="5dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:paddingTop="30dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/previous_game_player_item"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/already_write_review_playerlist_layout_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="50dp"
-            android:text="이전 약속 보기"
-            android:textColor="@color/color_style_font3"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/write_review_playerlist_right_divider"
-            app:layout_constraintStart_toEndOf="@id/write_review_playerlist_left_divider"
-            app:layout_constraintTop_toBottomOf="@+id/not_yet_write_review_playerlist_rv" />
-
-        <View
-            android:id="@+id/write_review_playerlist_right_divider"
-            style="@style/Light_gray_Divider"
-            android:layout_width="wrap_content"
             android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/see_previous_promise_tv"
-            app:layout_constraintTop_toTopOf="@id/write_review_playerlist_left_divider"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-            />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/friend_list_dialog_line"
+                app:layout_constraintBottom_toBottomOf="@id/already_write_review_playerlist_tv"
+                app:layout_constraintEnd_toStartOf="@id/already_write_review_playerlist_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/already_write_review_playerlist_tv"
+                />
 
+            <TextView
+                android:id="@+id/already_write_review_playerlist_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:colorBackground"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:text="@string/myboard_previous"
+                android:textColor="@color/color_style_font3"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/already_write_review_playerlist_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="19dp"
+            android:layout_marginTop="5dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/write_review_playerlist_left_divider"
-            tools:listitem="@layout/more_previous_game_player_item" />
+            android:overScrollMode="never"
+            android:paddingTop="25dp"
+            android:paddingBottom="30dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/more_previous_game_player_item"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 </androidx.core.widget.NestedScrollView>
-

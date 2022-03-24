@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.duos.AccessTokenView
 import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.BASE_URL
+import com.example.duos.ApplicationClass.Companion.progressDialog
 import com.example.duos.config.XAccessTokenInterceptor
 import com.example.duos.data.entities.ResponseWrapper
 import com.example.duos.data.remote.accessToken.AccessTokenService
@@ -38,6 +39,7 @@ import java.util.*
 object NetworkModule {
 
     fun getRetrofit(): Retrofit {
+
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
