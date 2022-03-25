@@ -93,7 +93,7 @@ class MyBoardFragment: BaseFragment<FragmentMyBoardBinding>(FragmentMyBoardBindi
     ).toInt()
 
     override fun onMyDailyMatchingViewFailure(code: Int, message: String) {
-
+        progressOFF()
     }
 
     override fun onItemClicked(boardIdx: Int, recruitmentStatus: String) {

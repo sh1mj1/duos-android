@@ -987,7 +987,7 @@ class DailyMatchingEdit :
     }
 
     override fun onDailyMatchingEditFailure(code: Int, message: String) {
-        Log.d(ApplicationClass.TAG, code.toString() + " : " + message)
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
     private fun setImage01() {

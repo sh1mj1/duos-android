@@ -115,6 +115,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     @SuppressLint("SetTextI18n")
     override fun onGetMyPageItemFailure(code: Int, message: String) {
+        progressOFF()
         Log.d(TAG, "code: $code , message : $message ")
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         // 내 프로필 데이터 불러오기(Room)

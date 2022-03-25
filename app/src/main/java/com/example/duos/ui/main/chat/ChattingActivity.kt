@@ -672,7 +672,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onPagingChatMessageFailure(code: Int, message: String) {
-        showToast(message)
+        //showToast(message)
     }
 
     private fun loadMessages(){

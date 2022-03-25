@@ -138,6 +138,7 @@ class LastAppointmentFragment :
     }
 
     override fun onGetAppointmentFailure(code: Int, message: String) {
+        progressOFF()
         startPostponedEnterTransition()
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }

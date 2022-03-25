@@ -41,6 +41,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun onStart() {
         super.onStart()
+        progressON()
         Log.d("PartnerSearchFragment 생명주기", "onStart")
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
@@ -75,8 +76,9 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 PartnerSearchService.partnerSearchData(this, userIdx)
 
             }
-        }
 
+        }
+        progressOFF()
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
@@ -187,7 +189,8 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
+        progressOFF()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
 

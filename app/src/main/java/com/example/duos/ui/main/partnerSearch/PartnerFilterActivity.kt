@@ -242,14 +242,15 @@ class PartnerFilterActivity :
                         "필터적용 후 파트너 추천 api로 받은 리스트 룸DB에 잘 저장되었는지 확인" + recommendedPartnerDB.recommendedPartnerDao()
                             .getRecommendedPartnerList()
                     )
-
-                    val intent = Intent(this@PartnerFilterActivity, MainActivity::class.java)
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //액티비티 스택제거
-                    startActivity(intent)
-
-                    // 이 화면은, 오른쪽에서 왼쪽으로 슬라이딩 하면서 사라집니다.
-                    overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+//
+//                    val intent = Intent(this@PartnerFilterActivity, MainActivity::class.java)
+//                    intent.flags =
+//                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //액티비티 스택제거
+//                    startActivity(intent)
+//
+//                    // 이 화면은, 오른쪽에서 왼쪽으로 슬라이딩 하면서 사라집니다.
+//                    overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+                    finish()
                 }
 
                 override fun onGetPartnerFilterFailure(code: Int, message: String) {
