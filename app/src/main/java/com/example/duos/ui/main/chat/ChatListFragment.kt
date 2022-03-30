@@ -35,7 +35,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
-            progressON()
+//            progressON()
             ChatListService.chatList(this, getUserIdx()!!)
             Log.d("인터넷 연결 확인", "CONNECTED")
         } else {    // 인터넷 연결 안돼있을 때
@@ -84,7 +84,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
 
     override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
 
-        progressOFF()
+//        progressOFF()
 
         chatListDatas.clear()
 
@@ -134,7 +134,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        progressOFF()
+//        progressOFF()
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         //Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }

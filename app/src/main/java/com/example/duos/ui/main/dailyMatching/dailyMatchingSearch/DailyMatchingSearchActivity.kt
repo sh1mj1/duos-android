@@ -63,7 +63,7 @@ class DailyMatchingSearchActivity :
                 // TODO : 검색 후 검색 기록 리사이클러뷰 binding.dailyMatchingSearchRecordRv 맨 왼쪽으로
                 search(binding.dailyMatchingSearchEt.text.toString())
 //                searchProgressON()
-                progressON()
+//                progressON()
                 return@setOnKeyListener true
             } else {
                 return@setOnKeyListener false
@@ -193,7 +193,7 @@ class DailyMatchingSearchActivity :
             }
         })
         Handler().postDelayed({
-            progressOFF()
+//            progressOFF()
 //            searchProgressOFF()
         }, (40 * allDailyMatchingSearchRV.itemCount).toLong())
 

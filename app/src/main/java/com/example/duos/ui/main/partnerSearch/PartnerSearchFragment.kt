@@ -41,7 +41,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun onStart() {
         super.onStart()
-        progressON()
+//        progressON()
         Log.d("PartnerSearchFragment 생명주기", "onStart")
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
@@ -72,13 +72,13 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
                 recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             }else{
-                progressON()
+//                progressON()
                 PartnerSearchService.partnerSearchData(this, userIdx)
 
             }
 
         }
-        progressOFF()
+//        progressOFF()
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
@@ -147,7 +147,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
 
     override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
 
-        progressOFF()
+//        progressOFF()
         Log.d("get_recommendedPartnerList","ongetSuccess")
 
         var currentTime = System.currentTimeMillis()
@@ -189,7 +189,7 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
     }
 
     override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        progressOFF()
+//        progressOFF()
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
