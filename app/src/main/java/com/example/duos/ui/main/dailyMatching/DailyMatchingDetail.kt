@@ -252,7 +252,7 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
     }
 
     override fun onGetDailyMatchingDetailFailure(code: Int, message: String) {
-        Log.d(TAG, code.toString() + " : " + message)
+        showToast(message)
         finish()
     }
 
@@ -265,7 +265,7 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
     }
 
     override fun onGetDailyMatchingOptionFailure(code: Int, message: String) {
-        Log.d(TAG, code.toString() + " : " + message)
+        showToast(message)
     }
 
     override fun onClickEdit() {

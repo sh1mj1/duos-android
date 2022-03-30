@@ -33,6 +33,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     override fun initAfterBinding() {
 
+        progressON()
         MyPageService.getUserPage(this, myUserIdx)
 
         initClickListener()
@@ -41,28 +42,19 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
     // 클릭리스너
     private fun initClickListener() {
         // 약속
-        val appointmentIcon = binding.myPageLastAppointmentIconIv
-        val appointmentText = binding.myPageLastAppointmentTextTv
-        val appointmentArrow = binding.myPageLastAppointmentArrowIv
-        // 공지사항
+        val appointment = binding.myPageLastAppointmentCl
 
-        val boardIcon = binding.myPageMyBoardIconIv
-        val boardText = binding.myPageMyBoardTextTv
-        val boardArrow = binding.myPageMyBoardArrowIv
+        // 내가 작성한 글
+        val board = binding.myPageMyBoardCl
 
         // 공지사항
-        val noticeIcon = binding.myPageNoticeIconIv
-        val noticeText = binding.myPageNoticeTextTv
-        val noticeArrow = binding.myPageNoticeArrowIv
+        val notice = binding.myPageNoticeCl
+
         // 고객센터
-        val customerIcon = binding.myPageCustomerServiceCenterIconIv
-        val customerText = binding.myPageCustomerServiceCenterTextTv
-        val customerArrow = binding.myPageCustomerServiceCenterArrowIv
+        val customer = binding.myPageCustomerServiceCl
 
         // 설정
-        val setUpIcon = binding.myPageSetIconIv
-        val setUpText = binding.myPageSetTextTv
-        val setUpArrow = binding.myPageSetArrowIv
+        val setUp = binding.myPageSetCl
 
         // 나의 프로필 클릭 리스너
         binding.myProfileHomeConstraintLayoutCl.setOnClickListener {
@@ -71,66 +63,40 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
         }
 
         // 지난 약속
-        appointmentIcon.setOnClickListener {
+        appointment.setOnClickListener {
             val intent = Intent(activity, LastAppointmentActivity::class.java)
-            startActivity(intent) }
-        appointmentText.setOnClickListener {
-            val intent = Intent(activity, LastAppointmentActivity::class.java)
-            startActivity(intent) }
-        appointmentArrow.setOnClickListener {
-            val intent = Intent(activity, LastAppointmentActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
 
         // 내가 작성한 글
-        boardIcon.setOnClickListener {
-            val intent = Intent(activity, MyBoardActivity::class.java)
-            startActivity(intent)
-        }
-        boardText.setOnClickListener {
-            val intent = Intent(activity, MyBoardActivity::class.java)
-            startActivity(intent)
-        }
-        boardArrow.setOnClickListener {
+        board.setOnClickListener {
             val intent = Intent(activity, MyBoardActivity::class.java)
             startActivity(intent)
         }
 
         // 공지 사항
-        noticeIcon.setOnClickListener {
+        notice.setOnClickListener {
             val intent = Intent(activity, NotionActivity::class.java)
-            startActivity(intent) }
-        noticeText.setOnClickListener {
-            val intent = Intent(activity, NotionActivity::class.java)
-            startActivity(intent) }
-        noticeArrow.setOnClickListener {
-            val intent = Intent(activity, NotionActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
 
         // 고객 센터
-        customerIcon.setOnClickListener {
+        customer.setOnClickListener {
             val intent = Intent(activity, CustomerServiceActivity::class.java)
-            startActivity(intent) }
-        customerText.setOnClickListener {
-            val intent = Intent(activity, CustomerServiceActivity::class.java)
-            startActivity(intent) }
-        customerArrow.setOnClickListener {
-            val intent = Intent(activity, CustomerServiceActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
 
         // 설정
-        setUpIcon.setOnClickListener {
+        setUp.setOnClickListener {
             val intent = Intent(activity, SetupActivity::class.java)
-            startActivity(intent) }
-        setUpText.setOnClickListener {
-            val intent = Intent(activity, SetupActivity::class.java)
-            startActivity(intent) }
-        setUpArrow.setOnClickListener {
-            val intent = Intent(activity, SetupActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
 
     }
 
     override fun onGetMyPageItemSuccess(myPageInfo: MyPageInfo) {
+
+        progressOFF()
 
         Log.d(TAG, "onGetMyPageItemSuccess")
         val phoneNumberView = toMyPagePhoneNumber(myPageInfo.phoneNumber)
@@ -149,6 +115,7 @@ class MypageFragment() : BaseFragment<FragmentMypageBinding>(FragmentMypageBindi
 
     @SuppressLint("SetTextI18n")
     override fun onGetMyPageItemFailure(code: Int, message: String) {
+        progressOFF()
         Log.d(TAG, "code: $code , message : $message ")
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         // 내 프로필 데이터 불러오기(Room)

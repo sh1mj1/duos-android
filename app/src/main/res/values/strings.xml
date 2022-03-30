@@ -412,7 +412,7 @@
     <string name="daily_matching_detail_chatting">채팅하기</string>
     <string name="daily_matching_detail_chatting_list">채팅 목록 보기</string>
     <string name="daily_matching_write_cancel">작성중인 글을 삭제하시겠습니까?</string>
-    <string name="daily_matching_edit_cancel">수정중인 글을 삭제하시겠습니까?</string>
+    <string name="daily_matching_edit_cancel">수정을 취소하시겠습니까?</string>
     <string name="daily_matching_write_continue">계속 작성하기</string>
     <string name="daily_matching_write_delete">삭제</string>
     <string name="daily_matching_option_deadline">모집마감</string>

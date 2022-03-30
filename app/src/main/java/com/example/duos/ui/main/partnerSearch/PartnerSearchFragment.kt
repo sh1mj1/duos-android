@@ -39,74 +39,9 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
         fun newInstance(): PartnerSearchFragment = PartnerSearchFragment()
     }
 
-//    override fun onGetPartnerSearchDataLoading() {
-////        progressON()
-//        Log.d("로딩중","파트너 추천 api")
-//        //Handler(Looper.getMainLooper()).postDelayed(Runnable { progressOFF() }, 3500)
-//    }
-
-    override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
-        // 서울시 마포구로 필터링됐을 떄를 가정
-        //        recommendedPartnerDatas.apply {
-//            // FLO clone coding 211110자 커밋 참고했음
-//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 서대문구", "구력 3년", "time456 ","30대", 4.7, 21))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_4, "서울시 마포구", "구력 2년", "qop123", "20대", 4.7, 15))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_3, "서울시 마포구", "구력 1년", "Olivia", "30대", 4.6, 8))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_1, "서울시 마포구", "구력 1년", "berlinalena", "30대", 4.8, 11))
-//            add(RecommendedPartner(R.drawable.partner_profile_img_2, "서울시 마포구", "구력 3년", "time456 ","30대", 4.7, 21))
-//        }
-
-        Log.d("get_recommendedPartnerList","ongetSuccess")
-        //progressOFF()
-        var currentTime = System.currentTimeMillis()
-        var todayDate = Date(currentTime)
-        var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-        var formattedTodayDate = dateFormatter.format(todayDate)
-        saveLastUpdatedDate(formattedTodayDate)
-        Log.d("saved lastUpdatedDate", getLastUpdatedDate())
-
-        val userNickName = partnerSearchData.userNickname
-
-        recommendedPartnerDatabase.recommendedPartnerDao().deleteAll()
-        var recommendedPartnerList = partnerSearchData.recommendedPartnerList
-        for(i: Int in 0 .. recommendedPartnerList.size-1){
-            recommendedPartnerDatabase.recommendedPartnerDao().insert(recommendedPartnerList[i])
-        }
-
-        recommendedPartnerDatas.clear()
-        recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
-
-        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
-
-        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
-
-        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
-
-        partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
-            override fun onItemClick(recommendedPartner: RecommendedPartner) {
-                // 파트너 세부 화면으로 이동
-                Log.d("그리드","itemClick")
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.apply {
-                    this.putExtra("isFromSearch", true)
-                    this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
-                }
-                startActivity(intent)
-            }
-        })
-    }
-
-    override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
-    }
-
     override fun onStart() {
         super.onStart()
+//        progressON()
         Log.d("PartnerSearchFragment 생명주기", "onStart")
         partnerSearchRecommendedPartnerRv = binding.partnerSearchRecommendedPartnerRv
         partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
@@ -137,11 +72,13 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
                 var storedRecommendedPartnerList = recommendedPartnerDatabase.recommendedPartnerDao().getRecommendedPartnerList()
                 recommendedPartnerDatas.addAll(storedRecommendedPartnerList)
             }else{
+//                progressON()
                 PartnerSearchService.partnerSearchData(this, userIdx)
 
             }
-        }
 
+        }
+//        progressOFF()
         partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
             override fun onItemClick(recommendedPartner: RecommendedPartner) {
                 // 파트너 세부 화면으로 이동
@@ -186,25 +123,9 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
 
 
-        // 임시로 사용자의 프로필이미지와 닉네임 세팅함
-//        Glide.with(this).load("https://duosimage.s3.ap-northeast-2.amazonaws.com/profile/5.jpg")
-//            .apply(RequestOptions().circleCrop()).into(binding.partnerSearchMyProfileIv)    //이미지 원형으로 크롭
-//        binding.partnerSearchUserIdTv.text = "tennis1010"
-
-
-
-
-
         binding.partnerSearchFilteringIc.setOnClickListener{
             startActivity(Intent(activity, PartnerFilterActivity::class.java))
         }
-
-//        // fcm 등록f토큰 받아오기
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
 
         // fcm 등록토큰 받아오기
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -223,6 +144,55 @@ class PartnerSearchFragment(): BaseFragment<FragmentPartnerSearchBinding>(Fragme
             //Toast.makeText(context, token, Toast.LENGTH_LONG).show()
         })
     }
+
+    override fun onGetPartnerSearchDataSuccess(partnerSearchData: PartnerSearchData) {
+
+//        progressOFF()
+        Log.d("get_recommendedPartnerList","ongetSuccess")
+
+        var currentTime = System.currentTimeMillis()
+        var todayDate = Date(currentTime)
+        var dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        var formattedTodayDate = dateFormatter.format(todayDate)
+        saveLastUpdatedDate(formattedTodayDate)
+        Log.d("saved lastUpdatedDate", getLastUpdatedDate())
+
+        val userNickName = partnerSearchData.userNickname
+
+        recommendedPartnerDatabase.recommendedPartnerDao().deleteAll()
+        var recommendedPartnerList = partnerSearchData.recommendedPartnerList
+        for(i: Int in 0 .. recommendedPartnerList.size-1){
+            recommendedPartnerDatabase.recommendedPartnerDao().insert(recommendedPartnerList[i])
+        }
+
+        recommendedPartnerDatas.clear()
+        recommendedPartnerDatas.addAll(partnerSearchData.recommendedPartnerList)
+
+        partnerSearchRVGridAdapter = PartnerSearchRVGridAdapter(recommendedPartnerDatas)
+
+        binding.partnerSearchRecommendedPartnerRv.adapter = partnerSearchRVGridAdapter
+
+        partnerSearchRecommendedPartnerRv.layoutManager = GridLayoutManager(context, 2)
+
+        partnerSearchRVGridAdapter.setRecommendedPartnerItemClickListener(object: PartnerSearchRVGridAdapter.recommendedPartnerItemClickListener{
+            override fun onItemClick(recommendedPartner: RecommendedPartner) {
+                // 파트너 세부 화면으로 이동
+                Log.d("그리드","itemClick")
+                val intent = Intent(activity, MyProfileActivity::class.java)
+                intent.apply {
+                    this.putExtra("isFromSearch", true)
+                    this.putExtra("partnerUserIdx", recommendedPartner.partnerIdx)
+                }
+                startActivity(intent)
+            }
+        })
+    }
+
+    override fun onGetPartnerSearchDataFailure(code: Int, message: String) {
+//        progressOFF()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+    }
+
 
     override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
         if(!chatList.isEmpty()){

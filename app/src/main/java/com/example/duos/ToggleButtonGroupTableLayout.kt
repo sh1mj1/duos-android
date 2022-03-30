@@ -68,6 +68,11 @@ class ToggleButtonGroupTableLayout : TableLayout, View.OnClickListener {
             (radioBtnListener as PartnerFilterActivity).setRadiobutton("init")
         }
 
+        if (v.context is EditProfileActivity){
+            radioBtnListener = editProfileContext as EditProfileActivity
+            (radioBtnListener as EditProfileActivity).setRadiobutton("0")
+        }
+
         if (activeRadioButton != null) {
             activeRadioButton!!.isChecked = false
         }

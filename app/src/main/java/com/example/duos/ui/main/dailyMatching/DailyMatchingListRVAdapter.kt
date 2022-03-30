@@ -229,8 +229,8 @@ class DailyMatchingListRVAdapter(val itemClickListener: OnItemClickListener) :
 
             title.text = item.title
             userNickname.text = item.userNickname
-            if (item.matchPlace.length > 25){
-                matchPlace.text = item.matchPlace.substring(0,24) + "…"
+            if (item.matchPlace.length > 16){
+                matchPlace.text = item.matchPlace.substring(0,16) + "…"
             }
             else matchPlace.text = item.matchPlace
             val format = SimpleDateFormat("M/d(E)", Locale.KOREAN)

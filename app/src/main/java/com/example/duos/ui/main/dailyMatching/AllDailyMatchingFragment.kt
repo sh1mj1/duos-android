@@ -89,6 +89,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     private fun loadDailyMatchingList() {
+        progressON()
         val dailyMatchingRequestBody =
             DailyMatchingListRequesetBody(getUserIdx()!!, pageNum, listNum)
         DailyMatchingListService.getAllDailyMatching(this, dailyMatchingRequestBody)
@@ -104,6 +105,7 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     override fun onGetAllDailyMatchingViewSuccess(allDailyMatchingListResult: AllDailyMatchingListResult) {
+        progressOFF()
         var allDailyMatchingListDatas: List<DailyMatching?> =
             allDailyMatchingListResult.dailyMatching
         isNextPageAvailable = allDailyMatchingListResult.isNextPageExists
@@ -120,7 +122,8 @@ class AllDailyMatchingFragment : BaseFragment<FragmentAllDailyMatchingFragmentBi
     }
 
     override fun onGetAllDailyMatchingViewFailure(code: Int, message: String) {
-        Log.d("실패", code.toString() + " : " + message)
+        progressOFF()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 
     private fun hasNextPage(): Boolean {

@@ -20,10 +20,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -70,6 +67,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     var inputIntroduction: String = ""
     var originExperience: Int? = null
     var profileBitmap: Bitmap? = null
+    private lateinit var expBtn : RadioButton
 
     lateinit var user: User
     var putSuccess: Boolean = false
@@ -602,8 +600,13 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Glide.with(binding.myProfileImgIv.context)
             .load(getEditProfileResDto.existingProfileInfo.profileImgUrl)
             .into(binding.myProfileImgIv)
-        binding.editProfileTableLayoutTl.checkedRadioButtonId = getEditProfileResDto.existingProfileInfo.experienceIdx
-
+        val btnId: Int = resources.getIdentifier(
+            "edit_profile_table_" + getEditProfileResDto.existingProfileInfo.experienceIdx.toString() + "_btn",
+            "id",
+            requireActivity().packageName
+        )
+        expBtn = requireView().findViewById(btnId)
+        expBtn.isChecked = true
 
     }
 
@@ -732,8 +735,12 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     fun setRadioButton(tag: Int) {
-        viewModel.editProfileExperience.value = tag
-        viewModel.setEditProfileExperience.value = viewModel.editProfileExperience.value != originExperience
+        if (tag == 0){
+            expBtn.isChecked = false
+        } else {
+            viewModel.editProfileExperience.value = tag
+            viewModel.setEditProfileExperience.value = viewModel.editProfileExperience.value != originExperience
+        }
     }
 
     override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {

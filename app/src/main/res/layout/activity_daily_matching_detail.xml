@@ -227,8 +227,8 @@
 
                 <TextView
                     android:id="@+id/daily_matching_post_preview_location_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_location"
                     android:text=""
                     android:textColor="@color/primary"
@@ -316,7 +316,7 @@
             <TextView
                 android:id="@+id/daily_matching_detail_content_tv"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="16dp"

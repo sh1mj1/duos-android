@@ -216,7 +216,6 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 chattingMessagesRVAdapter.addPagingMessages(storedMessages)
                 chattingRV.scrollToPosition(0)
             } else{
-                showToast("주고받은 채팅 메세지가 없습니다.")
                 Log.d("ChattingActivity - initView","채팅방 생성 이후 아무 메세지도 주고받지 않음")
             }
         }
@@ -648,7 +647,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
     }
 
     override fun onPagingChatMessageFailure(code: Int, message: String) {
-        showToast(message)
+        //showToast(message)
     }
 
     private fun loadMessages(){

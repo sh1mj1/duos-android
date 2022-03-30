@@ -192,7 +192,6 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/my_page_last_appointment_icon"
-            android:onClick="ClickLastAppointment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -205,7 +204,6 @@
             android:textStyle="bold"
             android:fontFamily="@font/applesdgothicneosemibold"
             android:text="@string/my_page_last_appointment"
-            android:onClick="ClickLastAppointment"
             app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
             app:layout_constraintStart_toEndOf="@id/my_page_last_appointment_icon_iv"
             app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
@@ -217,7 +215,6 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/ic_arrow_right"
             android:backgroundTint="@color/grey"
-            android:onClick="ClickLastAppointment"
             app:layout_constraintBottom_toBottomOf="@id/my_page_last_appointment_icon_iv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/my_page_last_appointment_icon_iv" />
@@ -237,7 +234,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:onClick="ClickLastAppointment"
             android:src="@drawable/my_page_my_board_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -248,7 +244,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/applesdgothicneosemibold"
-            android:onClick="ClickLastAppointment"
             android:text="@string/my_page_my_board"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -263,7 +258,6 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/ic_arrow_right"
             android:backgroundTint="@color/grey"
-            android:onClick="ClickLastAppointment"
             app:layout_constraintBottom_toBottomOf="@id/my_page_my_board_icon_iv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/my_page_my_board_icon_iv" />
