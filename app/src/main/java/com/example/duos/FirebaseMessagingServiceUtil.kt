@@ -323,7 +323,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         val senderIdx = messageListData.senderIdx
 
         val senderId = getSenderId(chatRoomIdx, senderIdx)
-        val body = messageListData.message
+        val body = messageListData.msgContent
         val sentAt = messageListData.sentAt
         val formattedSentAt = getFormattedDateTime(sentAt.toString())
         val viewType = getViewType(senderIdx)

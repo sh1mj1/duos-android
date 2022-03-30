@@ -7,8 +7,8 @@ data class MessageListData (
     var chatIdx: String,  // 채팅 메세지 복합 인덱스 (chatRoomIdx @ uuid)
     var uuid: String, // 채팅 메세지 자체 인덱스
     var chatRoomIdx: String,
-    var type: String,
-    var message: String,
+    var msgType: String,
+    var msgContent: String,
     var senderIdx: Int,
     var sentAt: LocalDateTime
 )

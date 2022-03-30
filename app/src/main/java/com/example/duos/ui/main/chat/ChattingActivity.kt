@@ -129,6 +129,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             ChatListService.chatList(this, getUserIdx()!!)
         }
 
+        if(chatDB.chatRoomDao().getPartnerId(chatRoomIdx).isNullOrEmpty()){
+            ChatListService.chatList(this, getUserIdx()!!)
+        }
+
         initView(chatRoomIdx, partnerIdx)
 
         initScrollListener()
@@ -306,6 +310,10 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             Log.d("채팅화면일때 인텐트","is null")
         }
 
+        if(chatDB.chatRoomDao().getPartnerId(chatRoomIdx).isNullOrEmpty()){
+            ChatListService.chatList(this, getUserIdx()!!)
+        }
+
         var bundle = intent?.extras
         if(bundle != null){
             var type = bundle.getString("type")
@@ -420,19 +428,28 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             val chatRoomIdxByFCM = bundle.getString("chatRoomIdx").toString()
             Log.d("chatRoomIdxByFCM", chatRoomIdxByFCM)
 
-            val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
-            Log.d("chatRoomData", chatRoomData.toString())
-            val senderId = chatRoomData.chatRoomName
-            partnerIdx = chatRoomData.participantIdx!!
-            val type = bundle.getString("type").toString()
-            Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")  // 페이징 처리해주니까 chatRoomIdx, partnerIdx, chatRoomName 세팅해주는거말고 할일 X
-            Log.d("getFCMIntent - chatRoomIdx", chatRoomIdxByFCM)
-            Log.d("getFCMIntent - senderId", senderId)
-            Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
-            Log.d("getFCMIntent - type", type)
-
             chatRoomIdx = chatRoomIdxByFCM
-            chatRoomName.text = senderId
+            // 채팅방 삭제 후 다시 메세지를 받아 채팅방으로 이동했을 때도, 룸디비가 업데이트되지 않아 아직 삭제되어있는 상태 그대로라서 getPartnerId하면 null이 나옴
+            // 따라서 getPartnerId가 null을 반환하는지 검증하고 null이라면 채팅방 목록api 호출하여 다시 룸디비에 저장되도록 함
+            if(chatDB.chatRoomDao().getPartnerId(chatRoomIdx).isNullOrEmpty()){
+
+                ChatListService.chatList(this, getUserIdx()!!)
+            } else{
+                val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdxByFCM)
+                Log.d("chatRoomData", chatRoomData.toString())
+                val senderId = chatRoomData.chatRoomName
+                partnerIdx = chatRoomData.participantIdx!!
+                val type = bundle.getString("type").toString()
+                Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")  // 페이징 처리해주니까 chatRoomIdx, partnerIdx, chatRoomName 세팅해주는거말고 할일 X
+                Log.d("getFCMIntent - chatRoomIdx", chatRoomIdxByFCM)
+                Log.d("getFCMIntent - senderId", senderId)
+                Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
+                Log.d("getFCMIntent - type", type)
+
+//                chatRoomIdx = chatRoomIdxByFCM
+                chatRoomName.text = senderId
+            }
+
         }else{
             Log.d("onStart", "푸시알림을 통해 채팅화면으로 온 것이 아님 근데 채팅방에서 이동, 혹은 파트너세부화면의 채팅하기눌러서 이동한 경우는 위에서 다 처리해줌.. ")
             // 이미 initAfterBinding에서 intent로 chatRoomIdx를 받음
@@ -670,7 +687,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
         val chatRoomIdx = messageListData.chatRoomIdx
         val senderIdx = messageListData.senderIdx
         val senderId = getSenderId(chatRoomIdx, senderIdx)
-        val body = messageListData.message
+        val body = messageListData.msgContent
         val sentAt = messageListData.sentAt
         val sentAtLocalDateTime = messageListData.sentAt
         val formattedSentAt = getFormattedDateTime(sentAtLocalDateTime.toString())
@@ -696,6 +713,11 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             senderId = getUserIdx()?.let { userDB.userDao().getUserNickName(it) }.toString()
         } else{
             senderId = chatDB.chatRoomDao().getPartnerId(chatRoomIdx)
+        }
+        if(senderId.isNullOrEmpty()){
+            Log.d("getSenderId", "느앙")
+        } else{
+            Log.d("getSenderId", "성공")
         }
         return senderId
     }
@@ -736,6 +758,18 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
                 }
             }
             Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+
+            val chatRoomData = chatDB.chatRoomDao().getChatRoom(chatRoomIdx)
+            Log.d("chatRoomData", chatRoomData.toString())
+            val senderId = chatRoomData.chatRoomName
+            partnerIdx = chatRoomData.participantIdx!!
+            Log.d("getFCMIntent", "푸시알림을 통해 채팅화면으로 옴")  // 페이징 처리해주니까 chatRoomIdx, partnerIdx, chatRoomName 세팅해주는거말고 할일 X
+            Log.d("getFCMIntent - chatRoomIdx", chatRoomIdx)
+            Log.d("getFCMIntent - senderId", senderId)
+            Log.d("getFCMIntent - partnerIdx", partnerIdx.toString())
+
+            chatRoomIdx = chatRoomIdx
+            chatRoomName.text = senderId
         }else{
             Log.d("업데이트된 채팅방 확인", "없음")
             //Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
