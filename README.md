@@ -1,6 +1,8 @@
 <h1>
 안녕하세요, 듀오스(DUOS)팀 입니다.
 <br> 🎾 운동 친구 찾는 가장 빠른 방법, 듀오스</h1>
+<img width="902" alt="" src="https://user-images.githubusercontent.com/64790176/211185417-dd4f90ad-b558-425a-ac67-9abcdecd36b5.png">
+
 <br>
 <h3>시연 영상 링크</h3>
 https://youtu.be/Gl-dfiXDCes
