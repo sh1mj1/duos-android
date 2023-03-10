@@ -68,10 +68,8 @@ https://youtu.be/Gl-dfiXDCes
 * **MVC Pattern** <br>
 * **Jetpack** - Room, Navigation, ViewModel <br>
 * **Adapter&RecyclerView&Paging** <br>
-* **ViewPage0**r <br>
+* **ViewPager** <br>
 * **Retrofit2** <br>
-* Glide<br>
-* Gson<br>
 <br>
 
 ## Collaboration 
