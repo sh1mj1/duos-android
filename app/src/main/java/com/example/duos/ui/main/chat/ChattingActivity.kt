@@ -162,7 +162,7 @@ class ChattingActivity: BaseActivity<ActivityChattingBinding>(ActivityChattingBi
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(chattingEt.length() > 0){
+                if(!chattingEt.text.toString().isNullOrBlank()){    // 메세지 입력 칸에 아무것도 입력하지 않았거나, 공백문자(" ", 엔터 등)만을 입력한 경우
                     sendBtn.isClickable = true
                     sendBtn.setImageResource(R.drawable.ic_btn_airplane_send_blue)
                 } else{
