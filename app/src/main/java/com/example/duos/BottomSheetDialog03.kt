@@ -35,7 +35,7 @@ class BottomSheetDialog03  : BottomSheetDialogFragment() {
             mListener.onClickDelete()
             this.dismiss()
         }
-        view?.findViewById<TextView>(R.id.daily_matching_option_02_bottom_btn)?.setOnClickListener {
+        view?.findViewById<TextView>(R.id.option_cancle_btn)?.setOnClickListener {
             this.dismiss()
         }
     }

@@ -8,7 +8,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_matching_option_block_tv"
+        android:id="@+id/option_block_tv"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
@@ -18,7 +18,7 @@
         android:textSize="16sp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_matching_option_report_tv"
+        android:id="@+id/option_report_tv"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
@@ -28,7 +28,7 @@
         android:textSize="16sp"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/daily_matching_option_02_bottom_btn"
+        android:id="@+id/option_cancle_btn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@drawable/unselected_btn"
