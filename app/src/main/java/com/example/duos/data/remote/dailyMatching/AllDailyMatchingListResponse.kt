@@ -68,3 +68,5 @@ data class MyDailyMatchingListResponse(
     @SerializedName("message") val message: String,
     @SerializedName("result") val result: MyDailyMatchingListResult
 )
+
+

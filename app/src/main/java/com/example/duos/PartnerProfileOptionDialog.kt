@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.duos.ui.main.dailyMatching.DailyMatchingOptionListener
+import com.example.duos.ui.main.partnerSearch.PartnerProfileOptionListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheetDialog02 : BottomSheetDialogFragment() {
+class PartnerProfileOptionDialog : BottomSheetDialogFragment() {
 
-    private lateinit var mListener : DailyMatchingOptionListener
+    private lateinit var mListener : PartnerProfileOptionListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,7 +18,7 @@ class BottomSheetDialog02 : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        mListener = requireContext() as DailyMatchingOptionListener
+        mListener = requireContext() as PartnerProfileOptionListener
         return inflater.inflate(R.layout.block_report_dialog, container, false)
     }
 

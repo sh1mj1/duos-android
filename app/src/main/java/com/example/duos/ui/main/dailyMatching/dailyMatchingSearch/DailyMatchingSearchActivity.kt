@@ -2,21 +2,14 @@ package com.example.duos.ui.main.dailyMatching.dailyMatchingSearch
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDialog
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.R
 import com.example.duos.data.entities.dailyMatching.SearchHistory
 import com.example.duos.data.entities.dailyMatching.SearchHistoryDatabase
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService

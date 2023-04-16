@@ -5,11 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import com.example.duos.data.remote.dailyMatching.DailyMatchingService
-import com.example.duos.ui.main.dailyMatching.DailyMatchingEndView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingOptionListener
-import com.example.duos.utils.getUserIdx
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetDialog01(val boardIdx : Int) : BottomSheetDialogFragment() {
