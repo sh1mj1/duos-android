@@ -13,14 +13,14 @@ import com.example.duos.BottomSheetDialog02
 import com.example.duos.BottomSheetDialog03
 import com.example.duos.R
 import com.example.duos.data.entities.chat.ChatRoom
+import com.example.duos.data.entities.dailyMatching.DailyMatchingBlockRequest
 import com.example.duos.data.entities.dailyMatching.DailyMatchingDetail
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageParticipantIdx
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageResult
 import com.example.duos.data.entities.dailyMatching.DailyMatchingOption
+import com.example.duos.data.entities.dailyMatching.DailyMatchingReportRequest
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.appointment.AppointmentService
-import com.example.duos.data.remote.chat.chat.ChatService
-import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
 import com.example.duos.data.remote.dailyMatching.DailyMatchingService
 import com.example.duos.databinding.ActivityDailyMatchingDetailBinding
@@ -28,9 +28,7 @@ import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.main.appointment.AppointmentExistView
 import com.example.duos.ui.main.chat.ChattingActivity
-import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.mypage.myprofile.MyProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.PartnerProfileChatDialog
 import com.example.duos.ui.main.mypage.myprofile.frag.PartnerProfileChatUnavailableDialog
 import com.example.duos.utils.getUserIdx
 
@@ -38,12 +36,14 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
     ActivityDailyMatchingDetailBinding::inflate
 ), GetDailyMatchingDetailView, GetDailyMatchingOptionView, DailyMatchingOptionListener,
     DailyMatchingEndView,
+    DailyMatchingBlockView,
+    DailyMatchingReportView,
     DailyMatchingMessageView,
     DailyMatchingDeleteView, AppointmentExistView {
     var boardIdx: Int = -1
     var recruitmentStatus: String? = "finished"
     lateinit var dailyMatchingInfo: DailyMatchingDetail
-    var optionSize: Int = 0
+    var optionFlag: Int = 0
     var myUserIdx: Int = getUserIdx()!!
     var partnerUserIdx: Int = 0
 
@@ -86,7 +86,7 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
             finish()
         }
         binding.dailyMatchingDetailOptionIconIv.setOnClickListener {
-            when (optionSize) {
+            when (optionFlag) {
                 1 -> {
                     val bottomSheet = BottomSheetDialog02()
                     bottomSheet.show(supportFragmentManager, bottomSheet.tag)
@@ -103,7 +103,7 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
         }
 
         binding.dailyMatchingDetailBottomBtn.setOnClickListener {
-            when (optionSize) {
+            when (optionFlag) {
                 1 -> {
                     onClickChat()
                 }
@@ -257,8 +257,12 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
     }
 
     override fun onGetDailyMatchingOptionSuccess(dailyMatchingOption: DailyMatchingOption) {
-        optionSize = dailyMatchingOption.options.size
-        if (optionSize == 3) {
+        optionFlag = dailyMatchingOption.options.size
+        val firstOptionContent = dailyMatchingOption.options[0]
+        if(firstOptionContent.equals("차단하기")){
+            optionFlag = 1
+        }
+        if (optionFlag == 3) {
             binding.dailyMatchingDetailBottomBtn.text =
                 getString(R.string.daily_matching_detail_chatting_list)
         }
@@ -309,8 +313,19 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
 
     }
 
+    // 모집마감
     override fun onClickEnd() {
         DailyMatchingService.dailyMatchingEnd(this, boardIdx, getUserIdx()!!)
+    }
+
+    // 유저 차단
+    override fun onClickBlock() {
+        DailyMatchingService.dailyMatchingBlock(this, DailyMatchingBlockRequest(getUserIdx()!!, partnerUserIdx))
+    }
+
+    // 유저 신고
+    override fun onClickReport() {
+        DailyMatchingService.dailyMatchingReport(this, DailyMatchingReportRequest(getUserIdx()!!, partnerUserIdx))
     }
 
     override fun onDailyMatchingEndSuccess() {
@@ -507,5 +522,24 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
     override fun onAppointmentExistFailure(code: Int, message: String) {
         Toast.makeText(this, code, Toast.LENGTH_LONG).show()
         Log.d(TAG, "CODE : $code , MESSAGE : $message ")
+    }
+
+    override fun onDailyMatchingBlockSuccess() {
+        showToast("해당 유저를 차단하여 더이상 나타나지 않습니다.")
+        finish()
+    }
+
+    override fun onDailyMatchingBlockFailure(code: Int, message: String) {
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        finish()
+    }
+
+    override fun onDailyMatchingReportSuccess() {
+        showToast("해당 유저에 대한 신고가 접수되어 고객센터에서 검토할 예정입니다.")
+        finish()
+    }
+
+    override fun onDailyMatchingReportFailure(code: Int, message: String) {
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
     }
 }

@@ -1,6 +1,8 @@
 package com.example.duos.data.remote.dailyMatching
 
+import com.example.duos.data.entities.dailyMatching.DailyMatchingBlockRequest
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageParticipantIdx
+import com.example.duos.data.entities.dailyMatching.DailyMatchingReportRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -83,4 +85,13 @@ interface DailyMatchingRetrofitInterface {
         @Query("searchParam") searchParam : String
     ) : Call<DailyMatchingSearchResponse>
 
+    @POST("/api/block")
+    fun dailyMatchingBlock(
+        @Body blockRequest: DailyMatchingBlockRequest
+    ) : Call<DailyMatchingBlockResponse>
+
+    @POST("/api/report")
+    fun dailyMatchingReport(
+        @Body reportRequest: DailyMatchingReportRequest
+    ) : Call<DailyMatchingReportResponse>
 }

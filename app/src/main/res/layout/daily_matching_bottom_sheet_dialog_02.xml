@@ -8,11 +8,21 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_matching_option_message_tv"
+        android:id="@+id/daily_matching_option_block_tv"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="@string/daily_matching_option_message"
+        android:text="@string/daily_matching_option_block"
+        android:textColor="@color/grey"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/daily_matching_option_report_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/daily_matching_option_report"
         android:textColor="@color/grey"
         android:textFontWeight="600"
         android:textSize="16sp"/>

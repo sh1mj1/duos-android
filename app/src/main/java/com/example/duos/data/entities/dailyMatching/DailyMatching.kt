@@ -66,3 +66,13 @@ data class MyDailyMatchingListResult(
     @SerializedName("activePostList") val activePostList : List<DailyMatching>,
     @SerializedName("oldPostList") val oldPostList : List<DailyMatching>
 )
+
+data class DailyMatchingBlockRequest (
+    @SerializedName("userIdx") val userIdx : Int,
+    @SerializedName("blockRequestedUserIdx") val blockRequestedUserIdx : Int
+)
+
+data class DailyMatchingReportRequest(
+    @SerializedName("userIdx") val userIdx : Int,
+    @SerializedName("reportedUserIdx") val reportedUserIdx : Int
+)

@@ -24,9 +24,14 @@ class BottomSheetDialog02 : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        view?.findViewById<TextView>(R.id.daily_matching_option_message_tv)?.setOnClickListener {
-            // 메세지 보내기
-            mListener.onClickChat()
+        view?.findViewById<TextView>(R.id.daily_matching_option_block_tv)?.setOnClickListener {
+            // 차단하기
+            mListener.onClickBlock()
+            this.dismiss()
+        }
+        view?.findViewById<TextView>(R.id.daily_matching_option_report_tv)?.setOnClickListener {
+            // 신고하기
+            mListener.onClickReport()
             this.dismiss()
         }
         view?.findViewById<TextView>(R.id.daily_matching_option_02_bottom_btn)?.setOnClickListener {
