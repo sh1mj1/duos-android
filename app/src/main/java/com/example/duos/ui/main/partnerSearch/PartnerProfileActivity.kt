@@ -7,17 +7,24 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.duos.BottomSheetDialog01
+import com.example.duos.BottomSheetDialog02
+import com.example.duos.BottomSheetDialog03
 import com.example.duos.R
 import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.data.remote.chat.chat.CreateChatRoomResultData
+import com.example.duos.data.remote.dailyMatching.DailyMatchingService
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.databinding.ActivityPartnerProfileBinding
 import com.example.duos.ui.BaseActivity
 import com.example.duos.ui.main.chat.ChattingActivity
 import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
+import com.example.duos.utils.getUserIdx
 
-class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(ActivityPartnerProfileBinding::inflate), CreateChatRoomView{
+class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(ActivityPartnerProfileBinding::inflate), CreateChatRoomView
+//    , PartnerProfileOptionListener
+{
     var thisUserIdx = 102
     var targetUserIdx = 76
 
@@ -31,6 +38,11 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
 
         binding.partnerProfileBackIv.setOnClickListener {
             finish()
+        }
+
+        binding.partnerProfileOptionIconIv.setOnClickListener {
+            val bottomSheet = BottomSheetDialog02()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
     }
 
@@ -65,5 +77,13 @@ class PartnerProfileActivity: BaseActivity<ActivityPartnerProfileBinding>(Activi
         //Toast.makeText(this,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
-
+//    // 유저 차단
+//    override fun onClickBlock() {
+//        DailyMatchingService.dailyMatchingBlock(this, DailyMatchingBlockRequest(getUserIdx()!!, targetUserIdx))
+//    }
+//
+//    // 유저 신고
+//    override fun onClickReport() {
+//        DailyMatchingService.dailyMatchingReport(this, DailyMatchingReportRequest(getUserIdx()!!, targetUserIdx))
+//    }
 }

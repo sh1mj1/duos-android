@@ -2,12 +2,13 @@ package com.example.duos.data.remote.dailyMatching
 
 import android.util.Log
 import com.example.duos.ApplicationClass
-import com.example.duos.data.entities.dailyMatching.DailyMatchingBlockRequest
+import com.example.duos.data.entities.block_report.BlockRequest
+import com.example.duos.data.entities.block_report.ReportRequest
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageParticipantIdx
-import com.example.duos.data.entities.dailyMatching.DailyMatchingReportRequest
+import com.example.duos.data.remote.block_report.BlockResponse
+import com.example.duos.data.remote.block_report.ReportResponse
 import com.example.duos.ui.main.dailyMatching.DailyMatchingBlockView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingDeleteView
-import com.example.duos.ui.main.dailyMatching.DailyMatchingDetail
 import com.example.duos.ui.main.dailyMatching.DailyMatchingEndView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingMessageView
 import com.example.duos.ui.main.dailyMatching.DailyMatchingReportView
@@ -154,17 +155,17 @@ object DailyMatchingService {
 
     fun dailyMatchingBlock(
         blockView: DailyMatchingBlockView,
-        dailyMatchingBlockRequest : DailyMatchingBlockRequest
+        blockRequest : BlockRequest
     ) {
         val dailyMatchingBlockService =
             retrofit.create(DailyMatchingRetrofitInterface::class.java)
 
-        dailyMatchingBlockService.dailyMatchingBlock(dailyMatchingBlockRequest)
+        dailyMatchingBlockService.dailyMatchingBlock(blockRequest)
             .enqueue(object :
-                Callback<DailyMatchingBlockResponse> {
+                Callback<BlockResponse> {
                 override fun onResponse(
-                    call: Call<DailyMatchingBlockResponse>,
-                    response: Response<DailyMatchingBlockResponse>
+                    call: Call<BlockResponse>,
+                    response: Response<BlockResponse>
                 ) {
                     val resp = response.body()!!
                     Log.d("resp", resp.toString())
@@ -177,7 +178,7 @@ object DailyMatchingService {
                     }
                 }
 
-                override fun onFailure(call: Call<DailyMatchingBlockResponse>, t: Throwable) {
+                override fun onFailure(call: Call<BlockResponse>, t: Throwable) {
                     Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
                     blockView.onDailyMatchingBlockFailure(400, "네트워크 오류가 발생했습니다.")
                 }
@@ -186,17 +187,17 @@ object DailyMatchingService {
 
     fun dailyMatchingReport(
         reportView: DailyMatchingReportView,
-        dailyMatchingReportRequest: DailyMatchingReportRequest
+        reportRequest: ReportRequest
     ) {
         val dailyMatchingMessageService =
             retrofit.create(DailyMatchingRetrofitInterface::class.java)
 
-        dailyMatchingMessageService.dailyMatchingReport(dailyMatchingReportRequest)
+        dailyMatchingMessageService.dailyMatchingReport(reportRequest)
             .enqueue(object :
-                Callback<DailyMatchingReportResponse> {
+                Callback<ReportResponse> {
                 override fun onResponse(
-                    call: Call<DailyMatchingReportResponse>,
-                    response: Response<DailyMatchingReportResponse>
+                    call: Call<ReportResponse>,
+                    response: Response<ReportResponse>
                 ) {
                     val resp = response.body()!!
                     Log.d("resp", resp.toString())
@@ -209,7 +210,7 @@ object DailyMatchingService {
                     }
                 }
 
-                override fun onFailure(call: Call<DailyMatchingReportResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ReportResponse>, t: Throwable) {
                     Log.d("${ApplicationClass.TAG}/API-ERROR", t.message.toString())
                     reportView.onDailyMatchingReportFailure(400, "네트워크 오류가 발생했습니다.")
                 }

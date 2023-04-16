@@ -12,13 +12,13 @@ import com.example.duos.BottomSheetDialog01
 import com.example.duos.BottomSheetDialog02
 import com.example.duos.BottomSheetDialog03
 import com.example.duos.R
+import com.example.duos.data.entities.block_report.BlockRequest
+import com.example.duos.data.entities.block_report.ReportRequest
 import com.example.duos.data.entities.chat.ChatRoom
-import com.example.duos.data.entities.dailyMatching.DailyMatchingBlockRequest
 import com.example.duos.data.entities.dailyMatching.DailyMatchingDetail
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageParticipantIdx
 import com.example.duos.data.entities.dailyMatching.DailyMatchingMessageResult
 import com.example.duos.data.entities.dailyMatching.DailyMatchingOption
-import com.example.duos.data.entities.dailyMatching.DailyMatchingReportRequest
 import com.example.duos.data.local.ChatDatabase
 import com.example.duos.data.remote.appointment.AppointmentService
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
@@ -320,12 +320,12 @@ class DailyMatchingDetail : BaseActivity<ActivityDailyMatchingDetailBinding>(
 
     // 유저 차단
     override fun onClickBlock() {
-        DailyMatchingService.dailyMatchingBlock(this, DailyMatchingBlockRequest(getUserIdx()!!, partnerUserIdx))
+        DailyMatchingService.dailyMatchingBlock(this, BlockRequest(getUserIdx()!!, partnerUserIdx))
     }
 
     // 유저 신고
     override fun onClickReport() {
-        DailyMatchingService.dailyMatchingReport(this, DailyMatchingReportRequest(getUserIdx()!!, partnerUserIdx))
+        DailyMatchingService.dailyMatchingReport(this, ReportRequest(getUserIdx()!!, partnerUserIdx))
     }
 
     override fun onDailyMatchingEndSuccess() {

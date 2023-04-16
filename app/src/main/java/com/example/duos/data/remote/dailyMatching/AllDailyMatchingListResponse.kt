@@ -69,14 +69,4 @@ data class MyDailyMatchingListResponse(
     @SerializedName("result") val result: MyDailyMatchingListResult
 )
 
-data class DailyMatchingBlockResponse(
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("code") val code: Int,
-    @SerializedName("message") val message: String
-)
 
-data class DailyMatchingReportResponse(
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("code") val code: Int,
-    @SerializedName("message") val message: String
-)
