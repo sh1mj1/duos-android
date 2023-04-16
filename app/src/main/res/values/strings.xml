@@ -419,6 +419,8 @@
     <string name="daily_matching_option_delete">삭제하기</string>
     <string name="daily_matching_option_edit">수정하기</string>
     <string name="daily_matching_option_message">메시지 보내기</string>
+    <string name="daily_matching_option_block">차단하기</string>
+    <string name="daily_matching_option_report">신고하기</string>
     <string name="daily_matching_option_cancel">취소</string>
     <string name="daily_matching_edit_tv">수정하기</string>
 

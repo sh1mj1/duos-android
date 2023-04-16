@@ -7,22 +7,17 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.duos.R
 import com.example.duos.data.entities.dailyMatching.DailyMatching
 import com.example.duos.data.entities.dailyMatching.MyDailyMatchingListResult
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
-import com.example.duos.data.remote.dailyMatching.DailyMatchingWriteService
 import com.example.duos.databinding.FragmentMyBoardBinding
-import com.example.duos.databinding.FragmentSetupBinding
 import com.example.duos.ui.BaseFragment
-import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.main.dailyMatching.DailyMatchingDetail
 import com.example.duos.ui.main.dailyMatching.DailyMatchingListRVAdapter
 import com.example.duos.ui.main.dailyMatching.MyDailyMatchingView
-import com.example.duos.ui.main.mypage.notion.NotionActivity
 import com.example.duos.utils.getUserIdx
 
 class MyBoardFragment: BaseFragment<FragmentMyBoardBinding>(FragmentMyBoardBinding::inflate), MyDailyMatchingView, DailyMatchingListRVAdapter.OnItemClickListener {

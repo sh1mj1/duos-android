@@ -45,6 +45,16 @@ interface DailyMatchingEndView {
     fun onDailyMatchingEndFailure(code: Int, message: String)
 }
 
+interface DailyMatchingBlockView {
+    fun onDailyMatchingBlockSuccess()
+    fun onDailyMatchingBlockFailure(code: Int, message: String)
+}
+
+interface DailyMatchingReportView {
+    fun onDailyMatchingReportSuccess()
+    fun onDailyMatchingReportFailure(code: Int, message: String)
+}
+
 interface DailyMatchingMessageView {
     fun onDailyMatchingMessageSuccess(dailyMatchingMessageResult: DailyMatchingMessageResult)
     fun onDailyMatchingMessageFailure(code: Int, message: String)

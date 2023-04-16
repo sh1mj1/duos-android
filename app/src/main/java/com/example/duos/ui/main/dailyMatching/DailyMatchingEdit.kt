@@ -10,8 +10,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -22,10 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.toolbox.ImageLoader
-import com.bumptech.glide.Glide
 import com.example.duos.ApplicationClass
 import com.example.duos.CustomDialog
 import com.example.duos.R
@@ -35,14 +30,9 @@ import com.example.duos.data.remote.dailyMatching.DailyWriteResult
 
 import com.example.duos.databinding.ActivityDailyMatchingEditBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.utils.GlideApp.with
 import com.example.duos.utils.ViewModel
 import com.example.duos.utils.getUserIdx
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -56,13 +46,8 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
 import java.io.File
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.core.graphics.drawable.toBitmap
 import java.lang.Exception
 
 

@@ -5,4 +5,6 @@ interface DailyMatchingOptionListener {
     fun onClickDelete()
     fun onClickChat()
     fun onClickEnd()
+    fun onClickBlock()
+    fun onClickReport()
 }
