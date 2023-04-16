@@ -69,10 +69,11 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
 
         birthTextView = binding.signup02BirthEt
         if (savedInstanceState != null && savedState == null) {
+            Log.d("SignUpFrag02", "savedInstanceState != null , savedState == null")
             savedState = savedInstanceState.getBundle("savedState")
         }
         if (savedState != null) {
-            Log.d("ㅎㅇ", "저장")
+            Log.d("SignUpFrg02", "savedState != null")
             checkStore = true
             binding.signup02NickNameDuplicateBtn.isEnabled = false
             binding.signup02NickNameDuplicateBtn.setBackgroundResource(R.drawable.signup_phone_verifying_rectangular)
@@ -86,6 +87,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
             Log.d("ㅎㅇ", "복구다함")
         }
         else {
+            Log.d("SignUpFrg02", "else 저장X")
             Log.d("ㅎㅇ", "저장X")
             viewModel.nickName.value = ""
             viewModel.setBirth.value = false
@@ -104,7 +106,9 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
         this.viewModel.nickName.observe(viewLifecycleOwner, {
             val pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"
             if (!checkStore) {
+                Log.d("SignUpFrag02"," checkStore가 아닐 때")
                 if (it!!.isNotEmpty()) {
+                    Log.d("SignUpFrag02"," 닉네임 칸에 있는 내용이 empty가 아님")
                     binding.signup02NickNameLayout.isEndIconVisible = true
                     if (!Pattern.matches(pattern, it.toString()) or (it.length < 2)) {
                         binding.signup02NickNameErrorTv.visibility = View.VISIBLE
@@ -119,6 +123,7 @@ class SignUpFragment02() : Fragment(), SignUpNickNameView {
                             )
                         )
                     } else {
+                        Log.d("SignUpFrag02","checkStore True 임")
                         binding.signup02NickNameErrorTv.visibility = View.INVISIBLE
                         binding.signup02NickNameCheckIconIv.visibility = View.VISIBLE
                         binding.signup02NickNameCheckIconIv.setImageResource(R.drawable.ic_signup_phone_verifying_check_done)

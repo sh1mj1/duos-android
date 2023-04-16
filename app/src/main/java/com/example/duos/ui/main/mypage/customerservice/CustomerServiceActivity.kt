@@ -12,8 +12,6 @@ class CustomerServiceActivity :
         supportFragmentManager.beginTransaction()
             .replace(R.id.customer_service_into_fragment_container_fc, CsMenuFragment())
             .commitAllowingStateLoss()
-
-
     }
 
 

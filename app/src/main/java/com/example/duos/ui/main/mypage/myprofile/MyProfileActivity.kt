@@ -1,21 +1,14 @@
 package com.example.duos.ui.main.mypage.myprofile
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.example.duos.R
 import com.example.duos.data.local.UserDatabase
-import com.example.duos.data.remote.chat.chat.ChatService
 import com.example.duos.databinding.ActivityMyprofileBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.chat.ChattingActivity
-import com.example.duos.ui.main.chat.CreateChatRoomView
 import com.example.duos.ui.main.mypage.myprofile.editprofile.EditProfileActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
 import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.ui.main.mypage.myprofile.frag.PlayerFragment
 import com.example.duos.utils.getUserIdx
@@ -32,17 +25,17 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(ActivityMyprofi
 
         /* FromPartnerSearchFrag ? True else> 기본값 false*/
         val isFromSearch = intent.getBooleanExtra("isFromSearch", false)
+        val isFromDailyMatching = intent.getBooleanExtra("isFromDailyMatching", false)
         /* AppointmentFragment 에서 넘어왔다면 True else> 기본값 false*/
         val isFromAppointment = intent.getBooleanExtra("isFromAppointment", false)
 
         val partnerUserIdx = intent.getIntExtra("partnerUserIdx", 0)
-        /*TODO :위 thisIdx는 PartnerSearchFragment 에서 혹은 LastAppointmentFragment 에서
-            아이템 클릭시 해당 회원의 고유 인덱스 값이 들어가야 해. 0이 default지만 할당될 일 없음*/
-        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch}  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
+
+        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch} isFromDailyMatching? : $isFromDailyMatching  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
 
 
         // PartnerSearch OR Appointment OR Chatting 에서 호출될 때 항상 다른 PlayerFrag 로감.
-        if (isFromSearch or isFromAppointment) {
+        if (isFromSearch or isFromAppointment or isFromDailyMatching) {
             goToPlayerProfile(partnerUserIdx)
         } else {    /* 그게 아니라면 항상 나의 프로필 Frag 가 되고 이때 backStack 이 없음.*/
             supportFragmentManager.beginTransaction()

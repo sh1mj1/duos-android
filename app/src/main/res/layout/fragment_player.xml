@@ -4,6 +4,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@null"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.mypage.myprofile.frag.PlayerFragment">
@@ -96,11 +97,12 @@
             android:layout_marginTop="14dp"
             android:src="@drawable/ic_pin_location_fill"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/profile_location_tv"
             app:layout_constraintTop_toBottomOf="@+id/player_nickname_tv" />
 
         <TextView
             android:id="@+id/profile_location_tv"
-            android:layout_width="75dp"
+            android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:fontFamily="@font/applesdgothicneoregular"
             android:gravity="center_horizontal|bottom"
@@ -109,6 +111,7 @@
             android:textColor="@color/primary"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/profile_place_iv"
+            app:layout_constraintEnd_toStartOf="@+id/partner_profile_grade_rb"
             app:layout_constraintTop_toTopOf="@+id/profile_place_iv" />
 
 
@@ -146,12 +149,14 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:gravity="top"
-            android:lineSpacingExtra="3sp"
-            android:textSize="11sp"
+            android:lineHeight="20sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_location_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_location_tv"
+            tools:targetApi="p" />
+<!--        android:text="오랜만에 테니스 연습해보려고 하는데 파트너 구하는게 너무 어렵네요.같이 플레이 하실 분 구합니다. 지역은 마포구 성산동인데 근처 계신 분이면 오시는데 부담없으실테니 좋고, 이쪽으로 오실 수 있다면 지역은 크게 상관없을 것 같습니다. 실력은 아주 초보만 아니시라면 좋을 것 같습니다. 관심 있으신 분 편하게 메시지 주세요."-->
 
         <!--구력, 게임 수, 구분선    -->
         <View
@@ -259,7 +264,7 @@
             android:id="@+id/playing_review_content_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

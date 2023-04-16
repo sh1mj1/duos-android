@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.duos.AccessTokenView
 import com.example.duos.ApplicationClass
 import com.example.duos.ApplicationClass.Companion.BASE_URL
+import com.example.duos.ApplicationClass.Companion.progressDialog
 import com.example.duos.config.XAccessTokenInterceptor
 import com.example.duos.data.entities.ResponseWrapper
 import com.example.duos.data.remote.accessToken.AccessTokenService
@@ -32,11 +33,13 @@ import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import kotlin.coroutines.coroutineContext
 import okhttp3.ResponseBody
+import java.util.*
 
 
 object NetworkModule {
 
     fun getRetrofit(): Retrofit {
+
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
@@ -45,6 +48,7 @@ object NetworkModule {
             .build()
 
         val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
             .registerTypeAdapter(
                 LocalDateTime::class.java,
                 JsonDeserializer { json, _, _ ->
@@ -109,7 +113,7 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
             builder.header(ApplicationClass.X_ACCESS_TOKEN, token)
     }
 
-    fun getRefreshToken() {
+    private fun getRefreshToken() {
         AccessTokenService.getAccessToken(this)
     }
 
@@ -138,29 +142,4 @@ internal class AuthInterceptor : Interceptor, LogoutListView, AccessTokenView {
         Log.d("onAccessTokenCode", boolean.toString())
         viewModel.jwtRefreshSuccess.value = boolean
     }
-
-
 }
-
-
-//
-//object NetworkModule {
-//    fun getRetrofit(): Retrofit {
-//        val client: OkHttpClient = OkHttpClient.Builder()
-//            .readTimeout(30000, TimeUnit.MILLISECONDS)
-//            .connectTimeout(30000, TimeUnit.MILLISECONDS)
-//            .writeTimeout(30000, TimeUnit.MILLISECONDS)
-//            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
-//            .build()
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(BASE_URL) // 기본 URL 세팅
-//            .client(client) //Logger 세팅
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//
-//        return retrofit
-//    }
-//}

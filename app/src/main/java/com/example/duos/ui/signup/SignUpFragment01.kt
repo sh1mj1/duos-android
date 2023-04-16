@@ -14,6 +14,7 @@ import com.example.duos.R
 import com.example.duos.databinding.FragmentSignup01Binding
 import com.example.duos.utils.ViewModel
 import android.content.Context
+import android.graphics.Bitmap
 
 import android.text.Editable
 
@@ -69,6 +70,7 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
             param.marginEnd = 20.toDp(requireContext())
             binding.signup01ConstraintLayout01Cl.layoutParams = param
         } else{
+            Log.d("SignUp", "else")
             viewModel.phoneNumber.value = ""
             signupNextBtnListener.onNextBtnUnable()
         }
@@ -76,6 +78,9 @@ class SignUpFragment01() : Fragment(), SignUpCreateAuthNumView, SignUpVerifyAuth
 //
 //        // skip 테스트 버튼
 //        binding.signup01SkipBtn.setOnClickListener { onGoingNextListener.onGoingNext() }
+
+        //val bitmap = data?.getParcelableExtra<Bitmap>("data")
+        //profileBitmap = bitmap!!
 
         return binding.root
     }

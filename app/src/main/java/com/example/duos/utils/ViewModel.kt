@@ -51,7 +51,7 @@ class ViewModel : ViewModel() {
 
     // editProfile
 
-    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+//    var editProfileSetNickname : MutableLiveData<Boolean> = MutableLiveData(false)
 
     var editProfileNickname = MutableLiveData<String?>()
 
@@ -61,10 +61,21 @@ class ViewModel : ViewModel() {
     var editProfileLocationName = MutableLiveData<String?>()
     var editProfileLocationDialogShowing : MutableLiveData<Boolean> = MutableLiveData(false)
 
-    var editProfileIntroduce = MutableLiveData<String>()
+    var editProfileIntroduce = MutableLiveData<String?>()
     var editProfileExperience = MutableLiveData<Int?>()
+    var editProfileImg = MutableLiveData<Bitmap?>()
 
-    var appointmentReviewContent = MutableLiveData<String>()
+    var setEditProfileNickName : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileImgUrl : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileLocation : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileIntroduction : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileExperience : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileIsDuplicated : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isChangedNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+    var setEditProfileNonPic : MutableLiveData<Boolean> = MutableLiveData(false)
+
+    // 수정 조건 1
+    var isValidNicknameEditCondition : MutableLiveData<Boolean> = MutableLiveData(false)
 
 
 
@@ -74,6 +85,34 @@ class ViewModel : ViewModel() {
     // jwt 재발급
     var jwtRefreshSuccess :  MutableLiveData<Boolean> = MutableLiveData(false)
 
+    // 데일리 매칭
+    var dailyMatchingTitle = MutableLiveData<String?>()
+    var dailyMatchingPlace = MutableLiveData<String?>()
+    var dailyMatchingContent = MutableLiveData<String?>()
+    var dailyMatchingDateCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingTimeCheck : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingDate = MutableLiveData<String?>()
+
+    var dailyMatchingImg01 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg02 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg03 : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingImg01Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImg02Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImg03Bitmap = MutableLiveData<Bitmap?>()
+    var dailyMatchingImgCount = MutableLiveData<Int?>()
+
+    var dailyMatchingEditTitle = MutableLiveData<String?>()
+    var dailyMatchingEditPlace = MutableLiveData<String?>()
+    var dailyMatchingEditContent = MutableLiveData<String?>()
+
+    var dailyMatchingRefreshSwipeAll : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingRefreshSwipePopular : MutableLiveData<Boolean> = MutableLiveData(false)
+    var dailyMatchingRefreshSwipeImminent : MutableLiveData<Boolean> = MutableLiveData(false)
+
+
+    init {
+        dailyMatchingImgCount.value = 0
+    }
 
     companion object {
         private var instance: com.example.duos.utils.ViewModel? = null

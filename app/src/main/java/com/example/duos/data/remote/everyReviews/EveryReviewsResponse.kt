@@ -13,3 +13,20 @@ data class EveryReviewsResponse(
     @SerializedName("result") val result: List<EveryReviewsItem>
 
 )
+
+/*
+        ㄴ boardIdx	int
+ㄴ title	String
+ㄴ content	String
+ㄴ matchPlace	String
+ㄴ matchDate	Date
+ㄴ startTime	LocalDateTime
+ㄴ endTime	LocalDateTime
+ㄴ recruitmentStatus	String
+ㄴ userProfileImage	String
+ㄴ userNickname	String
+ㄴ userAge	int
+ㄴ userGender	int
+ㄴ viewCount	int
+ㄴ messageCount	int
+ */

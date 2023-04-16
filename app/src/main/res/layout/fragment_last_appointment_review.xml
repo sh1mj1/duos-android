@@ -13,8 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
 
         >
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_cl"
         android:layout_width="match_parent"
@@ -25,8 +23,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/write_review_player_cv"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="24dp"
             app:cardCornerRadius="60dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +35,8 @@
                 android:id="@+id/img_write_review_player_iv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/dummy_mask_2">
+                android:scaleType="centerCrop"
+                >
 
             </ImageView>
 
@@ -62,12 +61,12 @@
             android:id="@+id/review_rating_rb"
             style="@style/duos_custom_star_big"
             android:layout_width="wrap_content"
-            android:layout_height="51dp"
+            android:layout_height="46dp"
             android:layout_marginHorizontal="46dp"
             android:layout_marginTop="10dp"
             android:numStars="5"
-            android:rating="3.5"
-            android:stepSize="0.1"
+            android:rating="0.0"
+            android:stepSize="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/write_review_player_nickname_tv" />
@@ -78,10 +77,10 @@
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="90dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_rectangler_introduction_on"
+            android:src="@drawable/ic_rectangle_introduction_on"
             app:layout_constraintTop_toBottomOf="@+id/review_rating_rb"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
@@ -91,7 +90,6 @@
             android:layout_width="0dp"
             android:layout_height="160dp"
             android:layout_marginStart="14dp"
-
             android:layout_marginEnd="14dp"
             android:background="@color/transparent"
             android:enabled="true"
@@ -103,7 +101,7 @@
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:letterSpacing="0.05"
-            android:maxLength="301"
+            android:maxLength="300"
             android:textColor="@color/dark_gray_B4"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/dimension_review_content_iv"
@@ -116,7 +114,6 @@
             android:id="@+id/count_text_length_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/appointment_review_content_notice"
             android:textColor="@color/red"
             android:layout_marginTop="8dp"
             android:textSize="12sp"

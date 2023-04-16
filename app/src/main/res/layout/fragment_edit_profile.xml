@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <data>
-
         <variable
             name="viewmodel"
             type="com.example.duos.utils.ViewModel" />
@@ -33,8 +33,7 @@
                     android:id="@+id/myProfile_img_iv"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dummy_mask_1" />
+                    android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
 
@@ -72,45 +71,54 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nickname_et_field"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_profile_nickname_cl"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="19dp"
-                android:animateLayoutChanges="false"
-                android:paddingTop="10dp"
-                app:boxBackgroundMode="none"
-                app:endIconCheckable="true"
-                app:endIconMode="clear_text"
-                app:errorEnabled="false"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toStartOf="@+id/nickname_check_icon_iv"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="100dp"
+                android:background="@drawable/edt_underline_unselected"
+                app:layout_constraintEnd_toStartOf="@id/btn_check_duplication_tv"
+                app:layout_constraintStart_toStartOf="@id/guide_nickname_tv"
                 app:layout_constraintTop_toBottomOf="@+id/guide_nickname_tv">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nickname_et"
-                    style="@style/styleTextInputEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nickname_et_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:hint="@string/signup_nick_name"
-                    android:inputType="textNoSuggestions"
-                    android:maxLength="13"
-                    android:singleLine="true"
-                    android:textColor="@color/nero"
-                    android:textColorHint="@color/dim_gray"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginEnd="20dp"
+                    android:animateLayoutChanges="false"
+                    android:paddingTop="10dp"
+                    app:boxBackgroundMode="none"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="false"
+                    app:hintEnabled="false"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/edit_profile_nickname_cl"
+                    app:layout_constraintTop_toTopOf="@+id/edit_profile_nickname_cl"
 
+                    >
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nickname_et"
+                        style="@style/styleTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:inputType="textNoSuggestions"
+                        android:maxLength="13"
+                        android:singleLine="true"
+                        android:text="@={viewmodel.editProfileNickname}"
+                        android:textColor="@color/grey"
+                        android:textColorHint="@color/dim_gray"
+                        android:textSize="16sp"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/nick_name_error_tv"
@@ -120,8 +128,9 @@
                 android:textColor="@color/red"
                 android:textSize="10sp"
                 android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/nickname_et_field"
-                app:layout_constraintTop_toBottomOf="@id/nickname_et_field" />
+                app:layout_constraintStart_toStartOf="@id/edit_profile_nickname_cl"
+                app:layout_constraintTop_toBottomOf="@id/edit_profile_nickname_cl"
+                tools:ignore="SmallSp" />
 
             <ImageView
                 android:id="@+id/nickname_check_icon_iv"
@@ -129,11 +138,10 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_signup_phone_verifying_check_done"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/nickname_et_field"
-                app:layout_constraintEnd_toStartOf="@+id/btn_check_duplication_tv"
-                app:layout_constraintStart_toEndOf="@+id/nickname_et_field"
-                app:layout_constraintTop_toTopOf="@+id/nickname_et_field" />
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_profile_nickname_cl"
+                app:layout_constraintEnd_toEndOf="@id/edit_profile_nickname_cl"
+                 />
 
             <TextView
                 android:id="@+id/btn_check_duplication_tv"
@@ -147,7 +155,7 @@
                 android:textColor="@color/dark_gray_A"
                 android:textSize="11sp"
                 android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/nickname_et_field"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_profile_nickname_cl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/nickname_check_icon_iv"
 
@@ -166,7 +174,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nickname_et_field"
+                app:layout_constraintTop_toBottomOf="@+id/edit_profile_nickname_cl"
 
                 />
 
@@ -174,7 +182,7 @@
                 android:id="@+id/location_info_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="18dp"
                 android:layout_marginTop="19dp"
                 android:fontFamily="@font/applesdgothicneoregular"
                 android:hint="@string/edit_profile_fillin_location"
@@ -186,6 +194,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guide_location_tv" />
+
+            <ImageView
+                android:id="@+id/edit_profile_location_line_iv"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/signup_unselected_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/location_info_tv"
+                app:layout_constraintTop_toBottomOf="@id/location_info_tv" />
 
             <TextView
                 android:id="@+id/guide_introduction_tv"
@@ -229,7 +247,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="4dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_rectangler_introduction_off"
+                android:src="@drawable/ic_rectangle_introduction_off"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guide_introduction_tv" />
@@ -250,12 +268,12 @@
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:letterSpacing="0.05"
+                android:text="@={viewmodel.editProfileIntroduce}"
                 android:textColor="@color/dark_gray_B4"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="@id/dimension_introduction_iv"
                 app:layout_constraintStart_toStartOf="@+id/dimension_introduction_iv"
                 app:layout_constraintTop_toTopOf="@+id/dimension_introduction_iv" />
-<!--                android:text="@={viewmodel.editProfileIntroduce}"-->
 
 
             <TextView
@@ -555,10 +573,10 @@
                 android:id="@+id/activating_apply_btn"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@drawable/next_btn_done_rectangular"
+                android:background="@drawable/signup_next_btn_rectangular"
                 android:gravity="center"
                 android:text="@string/edit_profile_apply"
-                android:textColor="@color/white"
+                android:textColor="@color/dark_gray_B0"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent" />

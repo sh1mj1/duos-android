@@ -23,9 +23,14 @@ interface ChatMessageItemDao {
     @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx = :chatRoomIdx")
     fun getChatMessages(chatRoomIdx: String): List<ChatMessageItem>
 
-    @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx =:chatRoomIdx AND chatMessageId > :lastAddedChatMessageId")
-    fun getUpdatedMessages(chatRoomIdx: String, lastAddedChatMessageId: Int): List<ChatMessageItem>
+    @Query("DELETE FROM ChatMessageItemTable")  // 테이블에 있는 모든 값을 지워라
+    fun clearAll()
 
-    @Query("SELECT * FROM ChatMessageItemTable WHERE chatRoomIdx =:chatRoomIdx ORDER BY ROWID DESC LIMIT 1")
-    fun getLastMessageData(chatRoomIdx: String): ChatMessageItem
+    @Insert
+    fun insertAll(chatMessageItemList: ArrayList<ChatMessageItem>)
 }
+
+/*
+    @Query("DELETE FROM ChatRoomTable") // 테이블에 들어있는 모든 값을 지워라
+    fun clearAll()
+ */

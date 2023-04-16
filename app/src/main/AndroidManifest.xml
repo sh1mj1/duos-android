@@ -15,7 +15,9 @@
 
     <application
         android:name="com.example.duos.ApplicationClass"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_duos"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_duos_round"
@@ -120,6 +122,11 @@
 
         <!--        마이 페이지 B 파트     -->
         <activity
+            android:name=".ui.main.mypage.myboard.MyBoardActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.mypage.notion.NotionActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -161,6 +168,27 @@
                 android:resource="@xml/file_path" />
             <!--            파일을 쓰고 싶습니다. provider에 요청. provider가 접근 권한 보고 허용 or 거부-->
         </provider>
+
+        <!-- 데일리 매칭 -->
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingWrite"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingDetail"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.example.duos.ui.main.dailyMatching.DailyMatchingEdit"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+
+        <activity android:name="com.example.duos.ui.main.dailyMatching.dailyMatchingSearch.DailyMatchingSearchActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
 
 
         <service

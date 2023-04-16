@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.duos.utils.ViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/daily_matching_write_top_layout_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/daily_matching_write_back_arrow_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="23dp"
+                android:src="@drawable/back_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/daily_matching_write_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/daily_matching_write"
+                android:textColor="@color/nero"
+                android:textFontWeight="700"
+                android:textSize="19sp"
+                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_back_arrow_iv"
+                app:layout_constraintStart_toEndOf="@id/daily_matching_write_back_arrow_iv"
+                app:layout_constraintTop_toTopOf="@id/daily_matching_write_back_arrow_iv" />
+
+            <View
+                android:id="@+id/daily_matching_write_line_01_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/friend_list_dialog_line"
+                android:backgroundTint="@color/alto"
+                app:layout_constraintTop_toBottomOf="@id/daily_matching_write_back_arrow_iv" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/daily_matching_write_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/daily_matching_write_top_layout_cl">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingBottom="20dp">
+
+
+                <EditText
+                    android:id="@+id/daily_matching_write_title_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@null"
+                    android:hint="@string/daily_matching_write_title"
+                    android:maxLength="20"
+                    android:inputType="text"
+                    android:text="@={viewmodel.dailyMatchingTitle}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <View
+                    android:id="@+id/daily_matching_write_line_02_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/friend_list_dialog_line"
+                    android:backgroundTint="@color/alto"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_title_et" />
+
+                <EditText
+                    android:id="@+id/daily_matching_write_location_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@null"
+                    android:hint="@string/daily_matching_write_location"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:text="@={viewmodel.dailyMatchingPlace}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_line_02_view" />
+
+
+                <View
+                    android:id="@+id/daily_matching_write_line_03_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/friend_list_dialog_line"
+                    android:backgroundTint="@color/alto"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_location_et" />
+
+
+                <RadioGroup
+                    android:id="@+id/daily_matching_write_radio_group_rg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_line_03_view">
+
+
+                    <RadioButton
+                        android:id="@+id/daily_matching_write_today_radio_btn"
+                        android:layout_width="83dp"
+                        android:layout_height="51dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/btn_color_selector"
+                        android:button="@null"
+                        android:tag="today" />
+
+
+                    <RadioButton
+                        android:id="@+id/daily_matching_write_tomorrow_radio_btn"
+                        android:layout_width="83dp"
+                        android:layout_height="51dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/btn_color_selector"
+                        android:button="@null"
+                        android:tag="tomorrow" />
+
+                    <RadioButton
+                        android:id="@+id/daily_matching_write_day_after_tomorrow_radio_btn"
+                        android:layout_width="83dp"
+                        android:layout_height="51dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/btn_color_selector"
+                        android:button="@null"
+                        android:tag="dayaftertomorrow" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/daily_matching_today_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="29dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="@string/daily_matching_date_today"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+
+                <TextView
+                    android:id="@+id/daily_matching_today_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="2월 28일(월)"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="500"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_today_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_today_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_today_tv" />
+
+                <TextView
+                    android:id="@+id/daily_matching_tomorrow_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="123dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="@string/daily_matching_date_tomorrow"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+
+                <TextView
+                    android:id="@+id/daily_matching_tomorrow_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="2월 28일(월)"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="500"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_tomorrow_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_tomorrow_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_tomorrow_tv" />
+
+                <TextView
+                    android:id="@+id/daily_matching_day_after_tomorrow_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="215dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="@string/daily_matching_date_day_after_tomorrow"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_radio_group_rg" />
+
+                <TextView
+                    android:id="@+id/daily_matching_day_after_tomorrow_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="2월 28일(월)"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="500"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="@id/daily_matching_day_after_tomorrow_tv"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_day_after_tomorrow_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_day_after_tomorrow_tv" />
+
+                <TextView
+                    android:id="@+id/daily_matching_write_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text="@string/daily_matching_write_time"
+                    android:textColor="@color/dark_gray_A"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_radio_group_rg"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_radio_group_rg" />
+
+                <TextView
+                    android:id="@+id/daily_matching_write_select_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:text=""
+                    android:textColor="@color/primary"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/daily_matching_write_time_tv"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_radio_group_rg" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/daily_matching_write_select_time_layout_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_time_tv">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/daily_matching_write_select_time_recyclerview_rv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:paddingEnd="16dp"
+                        app:layout_constrainedWidth="true"
+                        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_daily_matching_time_selector" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <ImageView
+                    android:id="@+id/daily_matching_write_content_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/daily_matching_content_rectangle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_select_time_layout_ll" />
+
+
+                <EditText
+                    android:id="@+id/daily_matching_write_content_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@null"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/applesdgothicneoregular"
+                    android:gravity="top"
+                    android:hint="@string/daily_matching_write_content"
+                    android:textFontWeight="600"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:letterSpacing="0.05"
+                    android:paddingStart="9dp"
+                    android:paddingTop="9dp"
+                    android:text="@={viewmodel.dailyMatchingContent}"
+                    android:textColor="@color/nero"
+                    android:textColorHint="@color/dark_gray_A"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="@id/daily_matching_write_content_iv"
+                    app:layout_constraintTop_toTopOf="@id/daily_matching_write_content_iv" />
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="29dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daily_matching_write_content_iv">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/daily_matching_write_select_image_layout_cl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_image_iv"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/daily_matching_content_rectangle"
+                                android:scaleType="centerInside"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white_smoke_E" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_camera_icon_iv"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginTop="14dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_camera_edit"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_image_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_image_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_image_iv"
+                                app:tint="@color/dark_gray_B0" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_image_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_image_iv"
+                                app:layout_constraintTop_toBottomOf="@id/daily_matching_write_camera_icon_iv">
+
+                                <TextView
+                                    android:id="@+id/daily_matching_write_image_count_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/dark_gray_B0"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/daily_matching_write_image_all_count_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/daily_matching_write_image_count"
+                                    android:textColor="@color/dark_gray_B0"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/daily_matching_write_select_image_layout_01_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:visibility="invisible" >
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_image_01_iv"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/partner_profile_img_1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_01_iv"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="3dp"
+                                android:src="@drawable/daily_matching_write_circle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_icon_01_iv"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_erase"
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_01_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_01_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_01_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_01_iv" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/daily_matching_write_select_image_layout_02_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:visibility="invisible" >
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_image_02_iv"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/partner_profile_img_2"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_02_iv"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="3dp"
+                                android:src="@drawable/daily_matching_write_circle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_icon_02_iv"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_erase"
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_02_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_02_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_02_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_02_iv" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/daily_matching_write_select_image_layout_03_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:visibility="invisible" >
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_image_03_iv"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/partner_profile_img_3"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_03_iv"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="3dp"
+                                android:src="@drawable/daily_matching_write_circle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/white" />
+
+                            <ImageView
+                                android:id="@+id/daily_matching_write_select_erase_icon_03_iv"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_erase"
+                                app:layout_constraintBottom_toBottomOf="@id/daily_matching_write_select_erase_03_iv"
+                                app:layout_constraintEnd_toEndOf="@id/daily_matching_write_select_erase_03_iv"
+                                app:layout_constraintStart_toStartOf="@id/daily_matching_write_select_erase_03_iv"
+                                app:layout_constraintTop_toTopOf="@id/daily_matching_write_select_erase_03_iv" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/daily_matching_write_btn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/signup_next_btn_rectangular"
+            android:enabled="false"
+            android:text="@string/daily_matching_write_complete"
+            android:textColor="@color/dark_gray_B0"
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -87,6 +87,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
                 viewModel.editProfileLocationName.value = myLocation.locationName
                 viewModel.editProfileLocationDialogShowing.value = true
 
+
             }
         }
     }
@@ -124,6 +125,7 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
 
         // category 에 해당하는 시/구/군을 보여준다.
         val filteredLocationList = ArrayList<LocationList>()
+        filteredLocationList.add(LocationList(cateIdx, cateIdx+1000, "전체"))
         for (location in locationList) {
             if (location.locationCategoryIdx == cateIdx) {
                 filteredLocationList.add(location)
@@ -139,14 +141,10 @@ class LocationDialogFragment() : DialogFragment(), LocationView {
         locationRVAdapter.setMyItemClickListener(object : LocationRVAdapter.MyItemClickListener {
             override fun onChooseLocation(location: LocationList) {
                 myLocation = location
+                Log.d("위치",myLocation.toString())
             }
         })
     }
-
-    fun filter() {
-
-    }
-
 
     override fun onResume() {
         super.onResume()

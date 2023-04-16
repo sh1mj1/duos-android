@@ -35,6 +35,7 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
         chatDB = ChatDatabase.getInstance(requireContext(), ChatDatabase.provideGson())!!
 
         if(isNetworkAvailable(mContext)){   // 인터넷 연결 돼있을 때
+//            progressON()
             ChatListService.chatList(this, getUserIdx()!!)
             Log.d("인터넷 연결 확인", "CONNECTED")
         } else {    // 인터넷 연결 안돼있을 때
@@ -43,61 +44,8 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             chatListDatas.addAll(chatDB.chatRoomDao().getChatRoomList())
         }
 
-//        chatListDatas.apply {
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-//            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-//            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-//            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-//        }
         initRecyclerView()
     }
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        binding = FragmentChatListBinding.inflate(inflater, container, false)
-//
-//        chatListRv = binding.chatListRv
-//        chatListRv.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-//        chatListRVAdapter = ChatListRVAdapter(chatListDatas, this)
-//        chatListRv.adapter = chatListRVAdapter
-//
-//        ChatListService.chatList(this, 76)
-////        chatListDatas.apply {
-////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-////            add(ChatList(R.drawable.chat_profile_img_1, "4evertennis", "네네 그럼 그때 뵐게요~!!", "오후 10:59"))
-////            add(ChatList(R.drawable.chat_profile_img_2, "uiii_88", "알겠습니다", "오전 09:11"))
-////            add(ChatList(R.drawable.chat_profile_img_3, "djeikd0620", "넵~", "오후 11:33"))
-////            add(ChatList(R.drawable.chat_profile_img_4, "drahm0422", "아~~ 그러면", "오후 04:14"))
-////        }
-//        initRecyclerView()
-//        return binding.root
-//    }
 
     companion object {
         fun newInstance(): ChatListFragment = ChatListFragment()
@@ -136,28 +84,28 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
 
     override fun onGetChatListSuccess(chatList: List<ChatRoom>) {
 
+//        progressOFF()
+
         chatListDatas.clear()
 
         var chatListGotten = chatList   // 서버에서 불러온 채팅방 목록
 
         chatListDatas.addAll(chatListGotten)    // 서버에서 불러온 채팅방을 리사이클러뷰에 그대로 띄워주기 위해 chatListDatas에 담음
 
-        Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
+        //Log.d("채팅방 확인", chatDB.chatRoomDao().getChatRoomList().toString())
 
         initRecyclerView()
 
         // 룸디비에 변경된/추가된 채팅방 저장
         var chatListStored = chatDB.chatRoomDao().getChatRoomList()     // 룸DB에 저장되어있는 채팅방 목록
         var chatListUpdated = chatListGotten.filterNot { it in chatListStored } //서버에서 불러온 채팅방 목록 중 룸DB에 저장되어있지 않은 채팅방들의 리스트
+        var chatListDeleted = chatListStored.filterNot { it in chatListGotten } // 룸DB에 저장되어있는 채팅방 목록 중 서버에서 불러온 채팅방 목록에 속하지 않은 채팅방들의 리스트(회원탈퇴로 삭제된 채팅방)
 
         if(!chatListUpdated.isEmpty()){
             Log.d("업데이트된 채팅방 확인", chatListUpdated.toString())
             for (i: Int in 0..chatListUpdated.size-1){    // 룸DB에 아직 업데이트되지 않은 채팅방을 모두 룸DB에 저장
                 if(chatDB.chatRoomDao().getChatRoomIdx(chatListUpdated[i].chatRoomIdx).isNullOrEmpty()){    // 새로 생성된 채팅방일 때 ---- 이 부분은 채팅방 생성 fcm 구현 후 수정 필요할 듯
                     chatDB.chatRoomDao().insert(chatListUpdated[i]) // 새로 생성된 채팅방 룸DB에 추가
-//                    if(chatListUpdated[i].lastAddedChatMessageId <= 0){
-//                        chatDB.chatRoomDao().updateLastAddedChatMessageId(chatListUpdated[i].chatRoomIdx, -1)
-//                    }
                 }else{  // 기존 채팅방에 업데이트된 내용이 있을 때
                     chatDB.chatRoomDao().update(chatListUpdated[i]) // 룸DB에서 update()는 primary key를 기준으로 한다
                 }
@@ -166,12 +114,26 @@ class ChatListFragment(): BaseFragment<FragmentChatListBinding>(FragmentChatList
             Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }else{
             Log.d("업데이트된 채팅방 확인", "없음")
-            Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+            //Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }
+
+        if(!chatListDeleted.isEmpty()){
+            Log.d("삭제된 채팅방 확인", chatListDeleted.toString())
+
+            for (i: Int in 0..chatListDeleted.size-1){    // 룸DB에 아직 삭제처리되지 않은 채팅방을 모두 룸DB에서 삭제
+                chatDB.chatRoomDao().delete(chatListDeleted[i])
+            }
+            //Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
+        }else{
+            Log.d("삭제된 채팅방 확인", "없음")
+            //Log.d("chatDB에 저장된 chatRoomList", chatDB.chatRoomDao().getChatRoomList().toString())
         }
     }
 
     override fun onGetChatListFailure(code: Int, message: String) {
-        Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
+//        progressOFF()
+        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        //Toast.makeText(activity,"code: $code, message: $message", Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {

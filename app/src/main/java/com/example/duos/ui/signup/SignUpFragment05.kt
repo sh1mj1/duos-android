@@ -137,7 +137,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
         val file_path = requireActivity().getExternalFilesDir(null).toString()
 
-        binding.signup05ProfileImageBackgroundIv.setOnClickListener{
+        binding.signup05ProfileImageBackgroundIv.setOnClickListener {
 
             val dialogBuilder = AlertDialog.Builder(activity)
             dialogBuilder.setTitle(R.string.upload_pic_dialog_title)
@@ -184,53 +184,6 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
                             }
 
-//                            // 사진 1 -> 갤러리에 저장 함 (용량 큰). 이미지의 용량이 너무 크면 서버와 송수신할 때 데이터를 너무 많이 써서 용량 줄이는 작업 ㄱ,  사진 보정 가능
-//                            1 -> {
-//
-//                                // 거부 Or 아직 수락하지 않은 퍼미션을 저장할 String 배열리스트
-//                                val rejectedPermissionList = ArrayList<String>()
-//                                // 필요한 퍼미션들이 현재 권한을 받았는지 체크
-//                                for (permission in requiredPermissions1) {
-//                                    if (ContextCompat.checkSelfPermission(
-//                                            requireContext(),
-//                                            permission
-//                                        ) != PackageManager.PERMISSION_GRANTED
-//                                    ) {
-//                                        //만약 권한이 없다면 rejectedPermissionList에 추가
-//                                        rejectedPermissionList.add(permission)
-//                                    }
-//                                }
-//
-//                                if (rejectedPermissionList.isNotEmpty()) {   // 거절된 퍼미션 있다면?
-//                                    val array = arrayOfNulls<String>(rejectedPermissionList.size)
-//                                    requestPermissions(
-//                                        rejectedPermissionList.toArray(array),
-//                                        multiplePermissionsCode1
-//                                    )
-//                                } else {// 모두 허용된 퍼미션이라면
-//                                    Log.d("Signup_Image_Upload_Dialog", "PERMISSION_GRANTED$which")
-//                                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//
-//                                    // 촬영한 사진이 저장될 파일 이름
-//                                    val file_name = "/temp_${System.currentTimeMillis()}.jpg"
-//                                    // 경로 + 파일 이름
-//                                    val pic_path = "$file_path/$file_name"
-//                                    val file = File(pic_path)
-//
-//                                    // 사진이 저장될 위치를 관리하는 Uri 객체
-//                                    // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
-//                                    // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
-//                                    contentUri = FileProvider.getUriForFile(
-//                                        requireContext(),
-//                                        "com.duos.camera.file_provider",
-//                                        file
-//                                    )
-//
-//                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-//                                    startActivityForResult(intent, multiplePermissionsCode1)
-//                                }
-//                            }
-                            // 파일 접근
                             1 -> {
                                 Log.d("Signup_Image_Upload_Dialog", "파일 접근 $which")
                                 val rejectedPermissionList = ArrayList<String>()
@@ -305,44 +258,6 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                 }
             }
 
-            multiplePermissionsCode1 -> {
-                var startCam = true
-                if (grantResults.isNotEmpty()) {
-                    for ((i, permission) in permissions.withIndex()) {
-                        // 권한이 없는 permission이 있다면
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            Log.d("Signup", "사용하려면 권한 체크 해야되")
-                            Toast.makeText(
-                                requireContext(),
-                                "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            startCam = false
-                        }
-                    }
-                    if (startCam) {
-                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-                        // 촬영한 사진이 저장될 파일 이름
-                        val file_name = "/temp_${System.currentTimeMillis()}.jpg"
-                        // 경로 + 파일 이름
-                        val pic_path = "$file_path/$file_name"
-                        val file = File(pic_path)
-
-                        // 사진이 저장될 위치를 관리하는 Uri 객체
-                        // val contentUri = Uri(pic_path) // 예전에는 파일명을 기술하면 바로 접근 가능
-                        // -> 현재 안드로이드 OS 6.0 부터는 OS에서 해당 경로를 집어 넣으면 이 경로로 접근할 수 있는지 없는지를 판단. 접근할 수 있으면 Uri 객체를 넘겨줌.
-                        contentUri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.duos.camera.file_provider",
-                            file
-                        )
-
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-                        startActivityForResult(intent, 200)
-                    }
-                }
-            }
             multiplePermissionsCode2 -> {
                 var startAlb = true
                 if (grantResults.isNotEmpty()) {
@@ -388,43 +303,29 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                     profileBitmap = bitmap!!
                     viewModel.profileImg.value = profileBitmap
                     binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
-                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
+//                    binding.signup05ProfileImageBackgroundIv.scaleType = ImageView.ScaleType.FIT_XY
+                    binding.signup05ProfileImageBackgroundIv.scaleType =
+                        ImageView.ScaleType.CENTER_CROP
                 }
             }
 
-            multiplePermissionsCode1 -> {
-                if (resultCode == RESULT_OK) {
-                    val bitmap = BitmapFactory.decodeFile(contentUri.path)
-                    // 사진 조정 된것
-                    val degree = getDegree(
-                        contentUri,
-                        contentUri.path!!
-                    )   // contentUri 는 안드로이드 10버전 이상, contentUri.path!! 는 9버전 이하를 위해 넣음
-                    val bitmap2 = resizeBitmap(1024, bitmap)
-                    val bitmap3 = rotateBitmap(bitmap2, degree)
-                    profileBitmap = bitmap3
-                    viewModel.profileImg.value = profileBitmap
-                    binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap3)
-//                    // 사진 파일 삭제한다.
-//                    val file = File(contentUri.path)
-//                    file.delete()
-                }
-            }
             multiplePermissionsCode2 -> {
                 if (resultCode == RESULT_OK) {
                     // 선택한 이미지의 경로 데이터를 관리하는 Uri 객체를 추출
-
                     val uri = data?.data
-
                     if (uri != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             // 안드로이드 10버전 이상
                             val source =
                                 ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            var bitmap = ImageDecoder.decodeBitmap(source)
+                            bitmap = resizeBitmap(1024, bitmap)
                             profileBitmap = bitmap
                             viewModel.profileImg.value = profileBitmap
                             binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
+                            binding.signup05ProfileImageBackgroundIv.scaleType =
+                                ImageView.ScaleType.CENTER_CROP
+
                         } else {
                             val cursor =
                                 requireActivity().contentResolver.query(uri, null, null, null, null)
@@ -434,10 +335,13 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
                                 val index = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
                                 val source = cursor.getString(index)
                                 // 이미지 생성
-                                val bitmap = BitmapFactory.decodeFile(source)
+                                var bitmap = BitmapFactory.decodeFile(source)
+                                bitmap = resizeBitmap(1024, bitmap)
                                 profileBitmap = bitmap
                                 viewModel.profileImg.value = profileBitmap
                                 binding.signup05ProfileImageBackgroundIv.setImageBitmap(bitmap)
+                                binding.signup05ProfileImageBackgroundIv.scaleType =
+                                    ImageView.ScaleType.CENTER_CROP
                             }
                         }
                     }
@@ -451,7 +355,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         // 이미지 비율 계산
         val ratio = targetWidth.toDouble() / source.width.toDouble()
         // 보정될 세로 길이 구하기
-        var targetHeight = (source.height * ratio).toInt()
+        val targetHeight = (source.height * ratio).toInt()
         // 크기를 조정한 bitmap 객체를 생성
         val result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false)
         return result
@@ -578,7 +482,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         }
     }
 
-    fun setUser(result : SignUpRequestResultData) : User {
+    fun setUser(result: SignUpRequestResultData): User {
         var user = User(
             result.phoneNumber,
             result.nickname,
@@ -594,7 +498,7 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
         return user
     }
 
-    override fun onSignUpRequestSuccess(result : SignUpRequestResultData) {
+    override fun onSignUpRequestSuccess(result: SignUpRequestResultData) {
         Log.d("success", "hi")
         //         roomDB 에 회원가입 정보 모두 저장
         // 인증번호 확인 성공!
@@ -604,10 +508,10 @@ class SignUpFragment05() : Fragment(), SignUpRequestView {
 
         val db = UserDatabase.getInstance(requireContext())
         var user = db!!.userDao().getUser(result.userIdx)
-        if (user != null){
+        if (user != null) {
             user = setUser(result)
             db!!.userDao().update(user)
-        } else{
+        } else {
             user = setUser(result)
             db!!.userDao().insert(user)
         }

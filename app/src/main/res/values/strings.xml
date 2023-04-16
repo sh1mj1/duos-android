@@ -305,6 +305,10 @@
 
     <!--    여기까지 마이 프로필 수정하기-->
 
+    <!-- 내가 작성한 글 -->
+    <string name="myboard">내가 작성한 글</string>
+    <string name="myboard_previous">이전 글 보기</string>
+
     <!--    고객센터-->
     <string name="customer_service_customer_service">고객센터</string>
     <string name="customer_service_send_email">고객센터로 이메일 보내기</string>
@@ -371,6 +375,7 @@
     <!-- 마이 페이지 홈 -->
     <string name="my_page_text">마이 페이지</string>
     <string name="my_page_last_appointment">지난 약속</string>
+    <string name="my_page_my_board">내가 작성한 글</string>
     <string name="my_page_notice">공지사항</string>
     <string name="my_page_customer_service_center">고객센터</string>
     <string name="my_page_set">설정</string>
@@ -383,6 +388,39 @@
     <string name="msg_token_fmt">반갑습니다. ~~ 님</string>
 
     <string name="text_nickname_blank">___________________</string>
+
+
+    <!-- 데일리 매칭 -->
+    <string name="daily_matching_tv">데일리 매칭</string>
+    <string name="daily_matching_tab_01">전체</string>
+    <string name="daily_matching_tab_02">인기글</string>
+    <string name="daily_matching_tab_03">마감임박</string>
+    <string name="daily_matching_date_today">오늘</string>
+    <string name="daily_matching_date_tomorrow">내일</string>
+    <string name="daily_matching_date_day_after_tomorrow">모레</string>
+    <string name="daily_matching_state_ongoing">모집 중</string>
+    <string name="daily_matching_state_complete">모집 완료</string>
+    <string name="daily_matching_write">글쓰기</string>
+    <string name="daily_matching_write_title">제목</string>
+    <string name="daily_matching_write_location">장소</string>
+    <string name="daily_matching_write_time">시간</string>
+    <string name="daily_matching_write_content">내용</string>
+    <string name="daily_matching_write_complete">완료</string>
+    <string name="daily_matching_write_image_count">&#160;/&#160;3</string>
+    <string name="daily_matching_detail_review">(&#160;리뷰&#160;</string>
+    <string name="daily_matching_detail_review_02">개)</string>
+    <string name="daily_matching_detail_chatting">채팅하기</string>
+    <string name="daily_matching_detail_chatting_list">채팅 목록 보기</string>
+    <string name="daily_matching_write_cancel">작성중인 글을 삭제하시겠습니까?</string>
+    <string name="daily_matching_edit_cancel">수정을 취소하시겠습니까?</string>
+    <string name="daily_matching_write_continue">계속 작성하기</string>
+    <string name="daily_matching_write_delete">삭제</string>
+    <string name="daily_matching_option_deadline">모집마감</string>
+    <string name="daily_matching_option_delete">삭제하기</string>
+    <string name="daily_matching_option_edit">수정하기</string>
+    <string name="daily_matching_option_message">메시지 보내기</string>
+    <string name="daily_matching_option_cancel">취소</string>
+    <string name="daily_matching_edit_tv">수정하기</string>
 
 
 </resources>

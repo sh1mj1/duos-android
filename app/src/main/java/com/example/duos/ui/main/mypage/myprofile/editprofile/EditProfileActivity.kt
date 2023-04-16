@@ -5,15 +5,13 @@ import com.example.duos.R
 import com.example.duos.ToggleButtonInterface
 import com.example.duos.databinding.ActivityEditProfileBinding
 import com.example.duos.ui.BaseActivity
-import com.example.duos.ui.main.mypage.myprofile.frag.EditProfileFragment
-import com.example.duos.ui.main.mypage.myprofile.frag.MyProfileFragment
 import com.example.duos.utils.ViewModel
 
 class EditProfileActivity :
     BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate),
     ToggleButtonInterface {
 
-    lateinit var viewModel : ViewModel
+    lateinit var viewModel: ViewModel
 
     override fun initAfterBinding() {
         supportFragmentManager.beginTransaction()
@@ -23,9 +21,11 @@ class EditProfileActivity :
     }
 
     override fun setRadiobutton(tag: String) {
-        viewModel.editProfileExperience.value = tag.toInt()
+        val fragment = supportFragmentManager.findFragmentById(R.id.edit_profile_into_fragment_container_fc)
+        if (fragment is EditProfileFragment) {
+            fragment.setRadioButton(tag.toInt())
+        }
     }
-
 
 
 }

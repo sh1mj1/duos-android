@@ -70,9 +70,15 @@ class PartnerSearchRVGridAdapter(val recommendedPartnerList: ArrayList<Recommend
 //            if (age != null) {
 //                ageRange = (round(age.toFloat()/10)*10).roundToInt().toString() + "대"
 //            }
+
             binding.partnerSearchRecommendedPartnerAgeTv.text = recommendedPartner.age
-            binding.partnerSearchRecommendedPartnerStarRatingTv.text = recommendedPartner.starRating.toString()
+            binding.partnerSearchRecommendedPartnerStarRatingTv.text = toRatingStr(recommendedPartner.starRating)
             binding.partnerSearchRecommendedPartnerReviewCountTv.text = recommendedPartner.reviewCount.toString()
         }
+    }
+
+    fun toRatingStr(ratingFloat : Float): String{
+        val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
+        return ratingStr.toString()
     }
 }

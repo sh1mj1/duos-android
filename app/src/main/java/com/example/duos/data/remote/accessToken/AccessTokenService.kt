@@ -2,26 +2,16 @@ package com.example.duos.data.remote.accessToken
 
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import com.example.duos.AccessTokenView
 import com.example.duos.ApplicationClass
 import com.example.duos.data.local.UserDatabase
 import com.example.duos.data.remote.logout.LogOutService
 import com.example.duos.data.remote.logout.LogoutListView
-import com.example.duos.ui.login.LoginActivity
-import com.example.duos.ui.main.MainActivity
 import com.example.duos.ui.splash.SplashActivity
-import com.example.duos.utils.getRefreshToken
-import com.example.duos.utils.getUserIdx
-import com.example.duos.utils.saveJwt
-import com.example.duos.utils.withdrawalAllData
+import com.example.duos.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 object AccessTokenService : LogoutListView {
     fun getAccessToken(accessTokenView: AccessTokenView) {
@@ -43,6 +33,7 @@ object AccessTokenService : LogoutListView {
                 when (resp.code) {
                     1000 -> {
                         saveJwt(resp.result.jwtAccessToken)
+                        saveRefreshJwt(resp.result.jwtRefreshToken)
                         accessTokenView.onAccessTokenCode(true)
                     }
                     else -> {
@@ -72,7 +63,7 @@ object AccessTokenService : LogoutListView {
         }
 
         // sharedPreference의 데이터 삭제
-        withdrawalAllData()
+        deleteSharedPreferenceData()
         var testWithdrawal = ""
         if(getUserIdx() == 0){
             testWithdrawal =  "성공함"
