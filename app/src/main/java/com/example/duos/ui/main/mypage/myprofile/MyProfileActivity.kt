@@ -112,8 +112,12 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(
     }
 
     override fun onPartnerBlockFailure(code: Int, message: String) {
-        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
-        finish()
+        if(code == 2300){   // 이미 차단한 유저일 경우
+            showToast(message)
+        }else{
+            showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+            finish()
+        }
     }
 
     override fun onPartnerReportSuccess() {
