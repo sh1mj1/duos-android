@@ -67,6 +67,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/partner_profile_option_icon_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_more"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/top_left_arrow_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/top_left_arrow_iv" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
