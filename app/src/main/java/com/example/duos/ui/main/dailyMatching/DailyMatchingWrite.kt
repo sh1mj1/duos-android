@@ -305,8 +305,13 @@ class DailyMatchingWrite :
         binding.dailyMatchingWriteBtn.setOnClickListener {
             startTime =
                 LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, start, 0, 0)
-            endTime =
-                LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, end, 0, 0)
+            if (end==24){
+                endTime =
+                    LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, 23, 0, 0).plusHours(1)
+            }else{
+                endTime =
+                    LocalDateTime.of(matchDate.year, matchDate.month, matchDate.dayOfMonth, end, 0, 0)
+            }
 
 
             val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
