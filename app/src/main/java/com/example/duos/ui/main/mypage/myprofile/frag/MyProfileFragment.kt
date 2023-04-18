@@ -8,7 +8,9 @@ import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -35,18 +37,30 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     private var myProfileReviewDatas = ArrayList<PartnerProfileReviewItem>()
     private val myUserIdx = getUserIdx()
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.e(TAG, "onCreateView called")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        MyProfileService.myProfileInfo(this, myUserIdx)
+        Log.e(TAG, "onViewCreated called")
         postponeEnterTransition()
+    }
+
+    override fun onResume() {
+        Log.e(TAG, "onResumes called")
+        super.onResume()
     }
 
 
     override fun initAfterBinding() {
-        MyProfileService.myProfileInfo(this, myUserIdx)
+//        MyProfileService.myProfileInfo(this, myUserIdx)
         // 내 프로필 데이터 불러오기(Room)
-//        val db = UserDatabase.getInstance(requireContext())
-//        val myProfileDB = db!!.userDao().getUser(getUserIdx())
-//        binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
+        val db = UserDatabase.getInstance(requireContext())
+        val myProfileDB = db!!.userDao().getUser(getUserIdx())
+        binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
 
         // 화면 상단 뷰 설정 (채팅 Constraint layout GONE, 상단 text : 나의 프로필, 나의 프로필 수정하기, 뒤로가기)
@@ -68,8 +82,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     }
 
     override fun onGetMyProfileInfoSuccess(myProfile: MyProfileResult) {
+        Log.e(TAG, "myProfile: $myProfile")
         setMyProfileInfo(myProfile) // 위쪽 데이터 (프로필) 설정
-        setExperienceView()
+//        setExperienceView()
 
         myProfileReviewDatas.clear()
         myProfileReviewDatas.addAll(myProfile.reviews)
@@ -85,7 +100,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         showToast("네트워크 상태 확인 후 다시 시도해주세요.")
         // 내 프로필 데이터 불러오기 (Room)
         setMyProfileInfoWithoutAPI()
-        setExperienceView()
+//        setExperienceView()
     }
 
     private fun setMyProfileInfoWithoutAPI() {
@@ -183,7 +198,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     }
 
     // 내 프로필 데이터 설정 (API) {닉네임, 나이, 위치, 평점(2), 소개글, 구력, 게임 수
-    @SuppressLint("SetTextI18n")
     private fun setMyProfileInfo(myProfile: MyProfileResult) {
         Glide.with(binding.myProfileImgIv.context)
             .load(myProfile.profileInfo.profileImgUrl)
@@ -194,15 +208,16 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         binding.myGradeNumTv.text = myProfile.profileInfo.rating.toString() // 평점 텍스트
         binding.myGradeRb.rating = myProfile.profileInfo.rating!!           // 평점
         binding.myIntroductionTv.text = myProfile.profileInfo.introduction  // 소개글
-        binding.careerYearNumTv.text = myProfile.profileInfo.experience     // 구력 Str 로 넘어옴.
+        setExperienceView(myProfile.profileInfo.experience)
+//        binding.careerYearNumTv.text = myProfile.profileInfo.experience     // 구력 Str 로 넘어옴.
         binding.careerPlayedNumTv.text = myProfile.profileInfo.gamesCount.toString()    // 게임수
         binding.playingReviewCountTv.text = "후기(${myProfile.profileInfo.reviewCount.toString()})"
     }
 
     // /* 구력 텍스트 년(숫자) 부분 확대 및 bold 체 적용 */
-    private fun setExperienceView() {
-        val textExperience = binding.careerYearNumTv
-        val textExperienceData: String = textExperience.text.toString()
+    private fun setExperienceView(textExperience: String) {
+//        val textExperience = binding.careerYearNumTv
+        val textExperienceData: String = textExperience/*.text.toString()*/
         val textExperienceBuilder = SpannableStringBuilder(textExperienceData)
         val boldSpanEx = StyleSpan(Typeface.BOLD)
         if (textExperienceData == "10년 이상" || textExperienceData == "10년 미만") {
@@ -215,7 +230,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
             textExperienceBuilder.setSpan(sizeBigSpanEx, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         // TextView에 적용
-        textExperience.text = textExperienceBuilder
+//        textExperience.text = textExperienceBuilder
+        binding.careerYearNumTv.text = textExperienceBuilder
     }
 }
 

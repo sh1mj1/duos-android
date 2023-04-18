@@ -24,7 +24,6 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -67,10 +66,10 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     var inputIntroduction: String = ""
     var originExperience: Int? = null
     var profileBitmap: Bitmap? = null
-    private lateinit var expBtn : RadioButton
+    private lateinit var expBtn: RadioButton
 
     lateinit var user: User
-    var putSuccess: Boolean = false
+    private var isEditPicAndNonPic = false
 
     private val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     private val CAMERA_PERMISSION_REQUEST = 100
@@ -295,7 +294,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         locationText = binding.locationInfoTv
 
         // 지역 설정 관련
-            // 다이얼로그 띄우기
+        // 다이얼로그 띄우기
         binding.locationInfoTv.setOnClickListener {
             val dialog = LocationDialogFragment()
             activity?.supportFragmentManager?.let { fragmentManager ->
@@ -304,7 +303,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 )
             }
         }
-            // 다이얼로그의 값 observe 해서 위젯에 값 띄우기
+        // 다이얼로그의 값 observe 해서 위젯에 값 띄우기
         viewModel.editProfileLocationDialogShowing.observe(viewLifecycleOwner,
             Observer {
                 if (it) {
@@ -334,7 +333,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         }
 
         // 소개글 관련
-            // 소개 focus
+        // 소개 focus
         binding.contentIntroductionEt.onFocusChangeListener =
             View.OnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
@@ -358,7 +357,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                 }
             }
 
-            // 소개글 길이에 따라 활성화 비활성화
+        // 소개글 길이에 따라 활성화 비활성화
         val introductionEt = binding.contentIntroductionEt
         introductionEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -451,21 +450,23 @@ class EditProfileFragment : Fragment(), EditProfileListView,
             }
             //프로필 이미지 변경 X 나머지 변경됨.
             else if (viewModel.setEditProfileImgUrl.value == false && viewModel.setEditProfileNonPic.value == true) {
-                EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
-                    locationIdx, experienceIdx, introduction, myUserIdx)
-                val intent = Intent(activity, MyProfileActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
+                EditProfilePutService.putEditNonPicProfile(
+                    this, phoneNumber, nickname, birth, gender,
+                    locationIdx, experienceIdx, introduction, myUserIdx
+                )
             }
             // 프로필 이미지 변경되고 나머지도 변경됨
             else {
-                EditProfilePutService.putEditNonPicProfile(this, phoneNumber, nickname, birth, gender,
-                    locationIdx, experienceIdx, introduction, myUserIdx)
+                isEditPicAndNonPic = true
                 EditProfilePutService.putPicEditProfile(this, bitmapMultipartBody, myUserIdx)
+                EditProfilePutService.putEditNonPicProfile(
+                    this, phoneNumber, nickname, birth, gender,
+                    locationIdx, experienceIdx, introduction, myUserIdx
+                )
+
             }
         }
 
-        val fragmentTransaction: FragmentManager = requireActivity().supportFragmentManager
         (context as EditProfileActivity).findViewById<ImageView>(R.id.edit_top_left_arrow_iv).setOnClickListener {
             requireActivity().finish()
         }
@@ -495,7 +496,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
 
                 } else {
                     // 권한 거부 시 로그 띄우기
-                    Toast.makeText(requireContext(), "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
+                    Toast.makeText(
+                        requireContext(), "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -507,7 +509,8 @@ class EditProfileFragment : Fragment(), EditProfileListView,
                     for ((i, permission) in permissions.withIndex()) {
                         // 권한이 없는 permission 이 있다면
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(requireContext(),
+                            Toast.makeText(
+                                requireContext(),
                                 "프로필 사진을 업로드하려면 카메라 접근 권한을 허용해야 합니다.",
                                 Toast.LENGTH_LONG
                             ).show()
@@ -623,6 +626,25 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
     }
 
+    override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
+//        DB에 사진 Uri 업데이트 -> RESULT 값으로 uri 값 요청하기
+        val db = UserDatabase.getInstance(requireContext())
+        db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
+        val myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
+        Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
+
+        if (!isEditPicAndNonPic) {
+            val intent = Intent(activity, MyProfileActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
+
+    }
+
+    override fun onPutPicEditProfileItemFailure(code: Int, message: String) {
+        Log.d(TAG, "onPutPicEditProfileItemFailure : $message")
+        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+    }
 
     override fun onPutEditNonPicProfileItemSuccess(
         editPutProfileResponse: EditProfilePutResponse,
@@ -646,7 +668,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         )
         db.userDao().update(user)
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        putSuccess = true
+
+        val intent = Intent(activity, MyProfileActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+
     }
 
     override fun onPutEditNonPicProfileItemFailure(code: Int, message: String) {
@@ -735,7 +761,7 @@ class EditProfileFragment : Fragment(), EditProfileListView,
     }
 
     fun setRadioButton(tag: Int) {
-        if (tag == 0){
+        if (tag == 0) {
             expBtn.isChecked = false
         } else {
             viewModel.editProfileExperience.value = tag
@@ -743,28 +769,11 @@ class EditProfileFragment : Fragment(), EditProfileListView,
         }
     }
 
-    override fun onPutPicEditProfileItemSuccess(editProfilePutPicResponse: EditProfilePutPicResponse) {
-//        DB에 사진 Uri 업데이트 -> RESULT 값으로 uri 값 요청하기
-        val db = UserDatabase.getInstance(requireContext())
-        db!!.userDao().update(myUserIdx, editProfilePutPicResponse.result.profilePhotoUrl)
-        val myProfileDB = db.userDao().getUser(myUserIdx) /* 룸에 내 idx에 맞는 데이터 있으면 불러오기... */
-        Toast.makeText(context, editProfilePutPicResponse.message, Toast.LENGTH_LONG).show()
-        putSuccess = true
-        val intent = Intent(activity, MyProfileActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-
-    }
-
-    override fun onPutPicEditProfileItemFailure(code: Int, message: String) {
-        Log.d(TAG, "onPutPicEditProfileItemFailure : $message")
-        Toast.makeText(context, "네트워크 상태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
-    }
 
     inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
         override fun contentType(): MediaType = "image/jpeg".toMediaType()
         override fun writeTo(sink: BufferedSink) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, sink.outputStream())
         }
     }
 
