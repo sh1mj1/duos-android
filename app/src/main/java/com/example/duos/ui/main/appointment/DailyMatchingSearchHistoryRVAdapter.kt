@@ -44,13 +44,13 @@ class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (Strin
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<SearchHistory>() {
             override fun areItemsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
-                return oldItem.uid == newItem.uid
+                return oldItem == newItem
             }
             override fun areContentsTheSame(
                 oldItem: SearchHistory,
                 newItem: SearchHistory
             ): Boolean {
-                return oldItem.keyword == newItem.keyword
+                return oldItem == newItem
             }
 
         }

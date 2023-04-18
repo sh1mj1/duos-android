@@ -13,7 +13,7 @@ import com.google.android.datatransport.runtime.dagger.Provides
 import com.google.gson.Gson
 import javax.inject.Singleton
 
-@Database(entities = [SearchHistory::class], version = 1, exportSchema = false)
+@Database(entities = [SearchHistory::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class SearchHistoryDatabase : RoomDatabase() {
     abstract fun searchHistoryRoomDao() : SearchHistoryRoomDao

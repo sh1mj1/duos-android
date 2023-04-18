@@ -32,6 +32,7 @@ class DailyMatchingSearchActivity :
     val TAG = "DailyMatchingSearchActivity"
     private lateinit var searchHistoryAdapter: DailyMatchingSearchHistoryRVAdapter
     private var dailyMatchingSearchListDatas = ArrayList<SearchResultItem>()
+    private var historySearchListData = ArrayList<SearchHistory>()
     private var isNewSearch = true
 
     lateinit var historyRv: RecyclerView
@@ -67,7 +68,6 @@ class DailyMatchingSearchActivity :
 
         binding.dailyMatchingSearchEt.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
-                // TODO : 검색 후 검색 기록 리사이클러뷰 binding.dailyMatchingSearchRecordRv 맨 왼쪽으로
                 imm.hideSoftInputFromWindow(searchEt.windowToken, 0)
                 progressON()
                 search(binding.dailyMatchingSearchEt.text.toString())
@@ -81,8 +81,7 @@ class DailyMatchingSearchActivity :
 
     private fun deleteAllHistoryListener() {
         binding.dailyMatchingDeleteSearchRecordTv.setOnClickListener {
-            db.searchHistoryRoomDao().clearAll()
-            Log.e(TAG, "전체 삭제 후 getAll ${db.searchHistoryRoomDao().getAll()}")
+            historySearchListData.clear()
             historyRv.visibility = View.GONE
             binding.dailyMatchingSearchRecordNullTv.visibility = View.VISIBLE
             binding.dailyMatchingSearchResultCountTv.visibility = View.GONE
@@ -93,25 +92,31 @@ class DailyMatchingSearchActivity :
 
     // 검색 후 키워드 Room DB에 저장
     private fun saveSearchKeyword(keyword: String) {
-        val searchedKeywordList = db.searchHistoryRoomDao().searchKeyword(keyword)
+        Log.e(TAG, "saveSearchKeyword called first - historySearchListData $historySearchListData")
 
-        Log.e(TAG, "searchedKeywordList: $searchedKeywordList")
-        searchedKeywordList.listIterator().forEach {
-            if (it.keyword == keyword) {
+        val iter = historySearchListData.iterator()
+        while (iter.hasNext()) {
+            val t = iter.next()
+            if (t.keyword == keyword) {
                 isNewSearch = false
-                return@forEach
+                historySearchListData.remove(t)
+                Log.e(TAG, "saveSearchKeyword called after remove - historySearchListData $historySearchListData")
+                historySearchListData.add(t)
+                Log.e(TAG, "saveSearchKeyword called after add - historySearchListData $historySearchListData")
+                showToast("지금 같은 $t")
+                break
             } else {
                 isNewSearch = true
             }
-            return@forEach
-        }
-        if (isNewSearch) {
-            db.searchHistoryRoomDao().insert(SearchHistory(null, keyword))
         }
 
-        val keywords = db.searchHistoryRoomDao().getAll()
-        Log.e(TAG, "showResultOfSearch - $keywords")
-        searchHistoryAdapter.submitList(keywords)
+        if (isNewSearch) {
+            historySearchListData.add(SearchHistory(/*null, */keyword))
+        }
+
+        Log.e(TAG, "saveSearchKeyword called last - historySearchListData $historySearchListData")
+
+        searchHistoryAdapter.submitList(historySearchListData.toList()/*keywords*/)
         historyRv.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.VISIBLE
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
@@ -132,14 +137,19 @@ class DailyMatchingSearchActivity :
 
     // 최근 검색어 삭제
     private fun deleteSearchKeyword(keyword: String) {
-        db.searchHistoryRoomDao().delete(keyword)
-        showResultOfSearch()
+//        db.searchHistoryRoomDao().delete(keyword)
+        historySearchListData.listIterator().forEach {
+            if (it.keyword == keyword) {
+                historySearchListData.remove(it)
+            }
+        }
+        showResultOfSearch(historySearchListData)
     }
 
-    private fun showResultOfSearch() {
-        val keywords = db.searchHistoryRoomDao().getAll()
-        Log.e(TAG, "showResultOfSearch - $keywords")
-        searchHistoryAdapter.submitList(keywords)
+    private fun showResultOfSearch(historySearchListData: ArrayList<SearchHistory>) {
+//        val keywords = db.searchHistoryRoomDao().getAll()
+        Log.e(TAG, "showResultOfSearch - $historySearchListData isEmpty?: ${historySearchListData.isEmpty()}")
+        searchHistoryAdapter.submitList(/*keywords*/historySearchListData.toList())
         historyRv.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.VISIBLE
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
@@ -181,18 +191,21 @@ class DailyMatchingSearchActivity :
         binding.dailyMatchingSearchRecentCl.visibility = View.VISIBLE
 
         // 처음 검색하는 것이면 (DB 가 비어있으면) 처음에는 최근 검색어가 없습니다.
-        val mySearchHistory = db.searchHistoryRoomDao().getAll()
-        Log.d(TAG, "검색어 DB 가 비어있나 $mySearchHistory , isEmpty? : ${mySearchHistory.isEmpty()}")
+        val mySearchHistoryFromDB = db.searchHistoryRoomDao().getAll()
+        Log.e(TAG, "검색어 DB 가 비어있나 $mySearchHistoryFromDB , isEmpty? : ${mySearchHistoryFromDB.isEmpty()}")
+
+        historySearchListData.addAll(mySearchHistoryFromDB)
+        Log.e(TAG, "historySearchData: $historySearchListData")
 
         initHistoryRV()
 
-        if (mySearchHistory.isEmpty()) {    // 처음 검색
+        if (historySearchListData/*mySearchHistoryFromDB*/.isEmpty()) {    // 처음 검색
             historyRv.visibility = View.GONE
             binding.dailyMatchingSearchRecordNullTv.visibility = View.VISIBLE
         } else {    // 검색한 적 있음
             historyRv.visibility = View.VISIBLE
             binding.dailyMatchingSearchRecordNullTv.visibility = View.GONE
-            showResultOfSearch()
+            showResultOfSearch(historySearchListData)
         }
     }
 
@@ -244,5 +257,41 @@ class DailyMatchingSearchActivity :
 
     }
 
+    override fun onStop() {
+        db.searchHistoryRoomDao().clearAll()
+//        historySearchListData.listIterator().forEach {
+//            db.searchHistoryRoomDao().insert(it)
+//        }
+//        val iter = historySearchListData.iterator()
+//        while (iter.hasNext()) {
+//            val t = iter.next()
+//            db.searchHistoryRoomDao().insert(t)
+//        }
+
+        for (item in historySearchListData) {
+            db.searchHistoryRoomDao().insert(item)
+        }
+
+        super.onStop()
+
+    }
+
 }
 
+/*
+        val iter = historySearchListData.iterator()
+        while (iter.hasNext()) {
+            val t = iter.next()
+            if (t.keyword == keyword) {
+                isNewSearch = false
+                historySearchListData.remove(t)
+                Log.e(TAG, "saveSearchKeyword called after remove - historySearchListData $historySearchListData")
+                historySearchListData.add(t)
+                Log.e(TAG, "saveSearchKeyword called after add - historySearchListData $historySearchListData")
+                showToast("지금 같은 $t")
+                break
+            } else {
+                isNewSearch = true
+            }
+        }
+ */
