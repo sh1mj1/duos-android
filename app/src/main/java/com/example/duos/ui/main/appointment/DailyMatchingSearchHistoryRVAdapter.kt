@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.duos.data.entities.dailyMatching.SearchHistory
 import com.example.duos.databinding.ItemDailyMatchingSearchBinding
 
-class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (String) -> Unit) :
+class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (String) -> Unit, val historyItemClickListener: (String) -> Unit) :
     ListAdapter<SearchHistory, DailyMatchingSearchHistoryRVAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemDailyMatchingSearchBinding) :
@@ -19,7 +19,9 @@ class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (Strin
             binding.itemDailyMatchingRecentSearchDeleteIv.setOnClickListener {
                 historyDeleteClickListener(searchHistoryModel.keyword.orEmpty())
             }
-            binding.itemDailyMatchingRecentSearchTv
+            binding.itemDailyMatchingRecentSearchTv.setOnClickListener {
+                historyItemClickListener(searchHistoryModel.keyword.orEmpty())
+            }
         }
 
     }
@@ -42,7 +44,7 @@ class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (Strin
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<SearchHistory>() {
             override fun areItemsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
-                return oldItem == newItem
+                return oldItem.uid == newItem.uid
             }
             override fun areContentsTheSame(
                 oldItem: SearchHistory,

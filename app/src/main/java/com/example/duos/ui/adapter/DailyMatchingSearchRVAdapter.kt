@@ -71,12 +71,6 @@ class DailyMatchingSearchRVAdapter(private val searchResultItem: ArrayList<Searc
         Log.d("DailyMatchingSearch", "onBindViewHolder position : $position , getItemCount : $itemCount")
         holder.setItem(searchResultItem[position])
         holder.itemView.setOnClickListener { mItemClickListener.onItemClick(searchResultItem[position]) }
-        // n번째 검색 시 이미 많이 bindViewHolder 해놓음
-//        if(position >= itemCount-5){
-//            // 첫 검색 혹은
-//            Log.d("DailyMatchingSearch", "onBindViewHolder 마지막 ")
-//            mLastBindListener.onLastBind()
-//        }
 
     }
 
