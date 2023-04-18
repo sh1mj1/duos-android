@@ -156,15 +156,7 @@ class DailyMatchingSearchActivity :
         val recyclerView = binding.allDailyMatchingRecyclerviewRc
         recyclerView.adapter = allDailyMatchingSearchRV
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        val allDailyMatchingSearchRV = binding.allDailyMatchingRecyclerviewRc
-//        allDailyMatchingSearchRV.setHasFixedSize(true)
-//        allDailyMatchingSearchRV.itemAnimator = DefaultItemAnimator()
-//        layoutManager = LinearLayoutManager(this)
-//        allDailyMatchingSearchRV.layoutManager = layoutManager
-//        dailyMatchingSearchSearchRVAdapter =
-//            DailyMatchingSearchRVAdapter(dailyMatchingSearchListDatas)
-//        allDailyMatchingSearchRV.adapter = dailyMatchingSearchSearchRVAdapter
-//        allDailyMatchingSearchRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
 
         binding.dailyMatchingSearchResultCountTv.text =
             "검색 결과 (${dailyMatchingSearchResultData.resultSize})"
@@ -185,61 +177,22 @@ class DailyMatchingSearchActivity :
                 startActivity(intent)
             }
         })
-        Handler().postDelayed({
-//            progressOFF()
-//            searchProgressOFF()
-        }, (40 * allDailyMatchingSearchRV.itemCount).toLong())
 
-//        searchProgressOFF()
 
-//        Log.d(TAG, "문제의 부분 : bindViewHolderCount : $bindViewHolderCount")
-//        if (bindViewHolderCount <= dailyMatchingSearchSearchRVAdapter.itemCount-5) {
-//            dailyMatchingSearchSearchRVAdapter.lastBindListener(object :
-//                DailyMatchingSearchRVAdapter.BindLastViewHolderListener {
-//                override fun onLastBind() {
-//                    Log.d(TAG, "모든 viewBindHolder 완료 -> searchProgressOFF")
-//                    searchProgressOFF()
-//                    bindViewHolderCount = dailyMatchingSearchSearchRVAdapter.itemCount
-//                }
-//            })
-//        } else {
-//            searchProgressOFF()
-//
-//        }
 
     }
 
     override fun onGetSearchViewFailure(code: Int, message: String) {
         progressOFF()
 //        searchProgressOFF()
-        showToast("네트워크 상태 확인 후 다시 시도해주세요.")
+        showToast(message)
         binding.allDailyMatchingRecyclerviewRc.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.GONE // 검색결과 갯수
         binding.dailyMatchingSearchRecentCl.visibility = View.VISIBLE
 
     }
 
-//
-//    private fun searchProgressON() {
-//        Log.d(TAG, "searchProgressOn : ")
-//        progressDialog = AppCompatDialog(this)
-//        progressDialog.apply {
-//            setCanceledOnTouchOutside(false)
-//            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//            setContentView(R.layout.progress_loading)
-//            show()
-//        }
-//        val img_loading_framge = progressDialog.findViewById<ImageView>(R.id.iv_frame_loading)
-//        val frameAnimation = img_loading_framge?.background as AnimationDrawable
-//        img_loading_framge.post(Runnable { frameAnimation.start() })
-//    }
-//
-//    private fun searchProgressOFF() {
-//        Log.d(TAG, "searchProgressOFF : ")
-//        if (progressDialog != null && progressDialog.isShowing) {
-//            progressDialog.dismiss()
-//        }
-//    }
+
 
 }
 
