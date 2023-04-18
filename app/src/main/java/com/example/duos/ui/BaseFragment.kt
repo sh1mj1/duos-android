@@ -52,9 +52,6 @@ abstract class BaseFragment<VB : ViewBinding>(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    fun showToastShort(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
 
     fun progressON() {
         ApplicationClass.getInstance().progressON(activity, null)
@@ -131,17 +128,6 @@ abstract class BaseFragment<VB : ViewBinding>(
         val ratingStr = String.format("%.0f", ratingFloat*10).toDouble()/10
         return ratingStr.toString()
     }
-
-    /*
-    	println(round(dNum))	// 454.0
-
-	println(String.format("%.0f", dNum/100).toDouble() * 100)	// 500.0
-
-
-    	val dNum:Double = 454.14600
-
-	println(String.format("%.0f", dNum/100).toDouble() * 100)	// 500.0
-     */
 
     fun strToInt(str: String):Int{
         val resultInt : Int = str.replace("[^0-9]".toRegex(), "").toInt()

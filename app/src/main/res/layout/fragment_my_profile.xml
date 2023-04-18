@@ -24,7 +24,8 @@
                 android:id="@+id/myProfile_img_iv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                tools:src="@drawable/chat_profile_img_1" />
 
 
         </androidx.cardview.widget.CardView>
@@ -43,8 +44,8 @@
             android:textSize="25sp"
             app:layout_constraintEnd_toStartOf="@+id/my_generation_tv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv" />
-        <!--            android:text="@string/my_profile_my_nickname"-->
+            app:layout_constraintTop_toBottomOf="@+id/myProfile_img_cv"
+            tools:text="@string/app_name" />
 
 
         <TextView
@@ -58,7 +59,8 @@
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/my_nickname_tv"
             app:layout_constraintEnd_toStartOf="@+id/divider_with_age_and_sex"
-            app:layout_constraintStart_toEndOf="@+id/my_nickname_tv" />
+            app:layout_constraintStart_toEndOf="@+id/my_nickname_tv"
+            tools:text="@string/partner_filter_age_min_bottom" />
 
         <View
             android:id="@+id/divider_with_age_and_sex"
@@ -83,7 +85,8 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/my_generation_tv"
             app:layout_constraintStart_toEndOf="@+id/divider_with_age_and_sex"
             app:layout_goneMarginStart="12dp"
-            app:layout_goneMarginTop="27dp" />
+            app:layout_goneMarginTop="27dp"
+            tools:text="" />
 
 
         <ImageView
@@ -93,8 +96,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
             android:src="@drawable/ic_pin_location_fill"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/my_location_tv"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_nickname_tv" />
 
         <TextView
@@ -106,9 +109,10 @@
             android:letterSpacing="0.04"
             android:textColor="@color/primary"
             android:textSize="13sp"
-            app:layout_constraintStart_toEndOf="@+id/my_place_iv"
             app:layout_constraintEnd_toStartOf="@+id/my_grade_rb"
-            app:layout_constraintTop_toTopOf="@+id/my_place_iv" />
+            app:layout_constraintStart_toEndOf="@+id/my_place_iv"
+            app:layout_constraintTop_toTopOf="@+id/my_place_iv"
+            tools:text="@string/edit_profile_fillin_location" />
 
 
         <RatingBar
@@ -135,7 +139,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/my_grade_rb"
             app:layout_constraintStart_toEndOf="@+id/my_grade_rb"
-            app:layout_constraintTop_toTopOf="@+id/my_place_iv" />
+            app:layout_constraintTop_toTopOf="@+id/my_place_iv"
+            tools:text="0.0" />
 
 
         <TextView
@@ -146,15 +151,14 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:gravity="top"
-            android:text="오랜만에 테니스 연습해보려고 하는데 파트너 구하는게 너무 어렵네요.같이 플레이 하실 분 구합니다. 지역은 마포구 성산동인데 근처 계신 분이면 오시는데 부담없으실테니 좋고, 이쪽으로 오실 수 있다면 지역은 크게 상관없을 것 같습니다. 실력은 아주 초보만 아니시라면 좋을 것 같습니다. 관심 있으신 분 편하게 메시지 주세요."
             android:lineHeight="20sp"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/career_line1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_place_iv"
-            tools:targetApi="p" />
-        <!--        android:text="@string/my_profile_my_introduction"-->
+            tools:targetApi="p"
+            tools:text="@string/my_profile_my_introduction" />
 
         <!--구력, 게임 수, 구분선    -->
         <View
@@ -199,7 +203,8 @@
             app:layout_constraintBottom_toTopOf="@+id/career_line3"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/career_line1" />
+            app:layout_constraintTop_toBottomOf="@id/career_line1"
+            tools:text="@string/edit_profile_under_1m" />
 
         <TextView
             android:id="@+id/career_tv"
@@ -227,7 +232,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/career_line2"
-            app:layout_constraintTop_toBottomOf="@id/career_line1" />
+            app:layout_constraintTop_toBottomOf="@id/career_line1"
+            tools:text="@string/my_profile_played_num" />
 
         <TextView
             android:id="@+id/career_game_tv"
@@ -247,17 +253,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="41dp"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/career_line3" />
+            app:layout_constraintTop_toBottomOf="@+id/career_line3"
+            tools:text="@string/my_profile_review_counts" />
 
         <ImageView
             android:id="@+id/playing_review_iv"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_right"
             app:layout_constraintStart_toEndOf="@+id/playing_review_count_tv"
-            app:layout_constraintTop_toTopOf="@+id/playing_review_count_tv" />
+            app:layout_constraintTop_toTopOf="@+id/playing_review_count_tv"
+            app:layout_constraintBottom_toBottomOf="@+id/playing_review_count_tv"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playing_review_content_rv"

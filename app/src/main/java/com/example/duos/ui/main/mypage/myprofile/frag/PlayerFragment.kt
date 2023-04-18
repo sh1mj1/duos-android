@@ -329,7 +329,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
 
     override fun onAddStarredFriendSuccess() {
         Log.d(TAG, "친구 찜하기 성공")
-        showToastShort("친구를 찜했습니다")
+        showToast("친구를 찜했습니다")
     }
 
     override fun onAddStarredFriendFailure(code: Int, message: String) {
@@ -337,7 +337,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     }
 
     override fun onDeleteStarredFriendSuccess() {
-        showToastShort("친구를 찜 해제했습니다")
+        showToast("친구를 찜 해제했습니다")
     }
 
     override fun onDeleteStarredFriendFailure(code: Int, message: String) {

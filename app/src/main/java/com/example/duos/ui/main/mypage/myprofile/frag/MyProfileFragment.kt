@@ -40,16 +40,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
         postponeEnterTransition()
     }
 
-    override fun onResume() {
-        super.onResume()
-        MyProfileService.myProfileInfo(this, myUserIdx)
-    }
 
     override fun initAfterBinding() {
+        MyProfileService.myProfileInfo(this, myUserIdx)
         // 내 프로필 데이터 불러오기(Room)
-        val db = UserDatabase.getInstance(requireContext())
-        val myProfileDB = db!!.userDao().getUser(getUserIdx())
-        binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
+//        val db = UserDatabase.getInstance(requireContext())
+//        val myProfileDB = db!!.userDao().getUser(getUserIdx())
+//        binding.mySexTv.text = toGenderStr(myProfileDB.gender!!)
 
 
         // 화면 상단 뷰 설정 (채팅 Constraint layout GONE, 상단 text : 나의 프로필, 나의 프로필 수정하기, 뒤로가기)
@@ -59,9 +56,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
             findViewById<TextView>(R.id.top_myProfile_tv).text = "나의 프로필"
             findViewById<TextView>(R.id.edit_myProfile_tv).visibility = View.VISIBLE
             findViewById<ImageView>(R.id.top_left_arrow_iv).setOnClickListener {
-                if (fragmentTransaction.backStackEntryCount >= 1){
+                if (fragmentTransaction.backStackEntryCount >= 1) {
                     fragmentTransaction.popBackStack()
-                }else{
+                } else {
                     requireActivity().finish()
                 }
             }
