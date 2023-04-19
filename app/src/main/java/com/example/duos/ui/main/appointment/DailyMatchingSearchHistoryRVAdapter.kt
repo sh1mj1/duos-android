@@ -6,20 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.duos.data.entities.dailyMatching.SearchHistory
+import com.example.duos.data.entities.dailyMatching.SearchHistoryData
 import com.example.duos.databinding.ItemDailyMatchingSearchBinding
 
-class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (String) -> Unit) :
-    ListAdapter<SearchHistory, DailyMatchingSearchHistoryRVAdapter.ViewHolder>(diffUtil) {
+class DailyMatchingSearchHistoryRVAdapter(
+    val historyDeleteClickListener: (String) -> Unit,
+    val historyItemClickListener: (String) -> Unit
+) :
+    ListAdapter<SearchHistoryData, DailyMatchingSearchHistoryRVAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemDailyMatchingSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(searchHistoryModel: SearchHistory) {
+        fun bind(searchHistoryModel: SearchHistoryData) {
             binding.itemDailyMatchingRecentSearchTv.text = searchHistoryModel.keyword
             binding.itemDailyMatchingRecentSearchDeleteIv.setOnClickListener {
                 historyDeleteClickListener(searchHistoryModel.keyword.orEmpty())
             }
-            binding.itemDailyMatchingRecentSearchTv
+            binding.itemDailyMatchingRecentSearchTv.setOnClickListener {
+                historyItemClickListener(searchHistoryModel.keyword.orEmpty())
+            }
         }
 
     }
@@ -40,13 +45,14 @@ class DailyMatchingSearchHistoryRVAdapter(val historyDeleteClickListener: (Strin
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<SearchHistory>() {
-            override fun areItemsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<SearchHistoryData>() {
+            override fun areItemsTheSame(oldItem: SearchHistoryData, newItem: SearchHistoryData): Boolean {
                 return oldItem == newItem
             }
+
             override fun areContentsTheSame(
-                oldItem: SearchHistory,
-                newItem: SearchHistory
+                oldItem: SearchHistoryData,
+                newItem: SearchHistoryData
             ): Boolean {
                 return oldItem.keyword == newItem.keyword
             }

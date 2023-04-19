@@ -325,10 +325,11 @@
 
     <!--    공지사항-->
     <string name="notion_service_update_notion">서비스 업데이트 공지</string>
-    <string name="notion_service_update_date">2022.01.02</string>
-    <string name="notion_service_update_info">정식 오픈 후 2주간 받은 여러분의 소중한 피드백을 반영했습니다. \n\n [업데이트 내용] \n\n 1. 사진 인증 : 회원가입을 할 때 운동을 하고 있는 나의 모습이 담긴 사진을 인증하는 단계가 추가되었습니다. \n\n 2. 이용약관 : 이용약관을 웹 연결없이 앱 내에서도 볼 수 있도록 페이지를 추가하였습니다.\n</string>
+    <string name="notion_service_update_date">2023.04.18</string>
+    <string name="notion_service_update_info">정식 오픈 후 여러분들의 소중한 피드백을 반영하겠습니다. \n 버그 제보나 원하시는 기능을 \'마이페이지 - 고객센터\' 에서 제보해주세요</string>
     <string name="notion_error_code_notion">오류 코드 공지</string>
-    <string name="notion_error_code_date">2022.01.01</string>
+    <string name="notion_error_code_info">오류 코드 공지가 없습니다.</string>
+    <string name="error_code_on_create">2023.04.18</string>
 
     <!--    후기 작성하기-->
     <string name="appointment_review_write_done">작성 완료</string>

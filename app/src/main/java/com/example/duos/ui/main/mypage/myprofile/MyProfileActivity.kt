@@ -30,11 +30,27 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(
     var thisUserIdx = 102
     var targetUserIdx = 2
     var partnerUserIdx = 2
-    val userIdx = getUserIdx()!!
+    val userIdx = getUserIdx()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.e("MyProfileActivity", "onCreate called")
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        Log.e("MyProfileActivity", "onStart called")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.e("MyProfileActivity", "onResume called")
+        super.onResume()
+    }
+
 
     override fun initAfterBinding() {
         val db = UserDatabase.getInstance(applicationContext)
-        val myProfileDB = db!!.userDao().getUser(userIdx)
 
         /* FromPartnerSearchFrag ? True else> 기본값 false*/
         val isFromSearch = intent.getBooleanExtra("isFromSearch", false)
@@ -44,7 +60,9 @@ class MyProfileActivity : BaseActivity<ActivityMyprofileBinding>(
 
         val partnerUserIdx = intent.getIntExtra("partnerUserIdx", 0)
 
-        Log.d("PartnerUserIdx", "isFromParterSearch? : ${isFromSearch} isFromDailyMatching? : $isFromDailyMatching  isFromAppointment? : ${isFromAppointment}  partnerUserIdx : ${partnerUserIdx}" )
+        Log.d("PartnerUserIdx", "isFromParterSearch? : $isFromSearch " +
+                "isFromDailyMatching? : $isFromDailyMatching  isFromAppointment? : $isFromAppointment  " +
+                "partnerUserIdx : $partnerUserIdx" )
 
 
         // PartnerSearch OR Appointment OR Chatting 에서 호출될 때 항상 다른 PlayerFrag 로감.

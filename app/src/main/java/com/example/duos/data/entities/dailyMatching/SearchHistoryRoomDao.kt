@@ -6,22 +6,20 @@ import androidx.room.*
 interface SearchHistoryRoomDao {
 
     @Query("SELECT * FROM searchhistory")
-    fun getAll() : List<SearchHistory>
+    fun getAll(): List<SearchHistory>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(searchHistory: SearchHistory)
 
     @Query("DELETE FROM searchhistory WHERE keyword == :keyword")
-    fun delete(keyword : String)
+    fun delete(keyword: String)
 
     @Query("DELETE FROM searchhistory") // 테이블에 들어있는 모든 값을 지워라
     fun clearAll()
 
+    @Query("SELECT * FROM searchhistory WHERE keyword == :keyword")
+    fun searchKeyword(keyword: String): List<SearchHistory>
 
 
 }
 
-/*
-    @Query("DELETE FROM UserTable") // 테이블에 들어있는 모든 값을 지워라
-    fun clearAll()
- */
