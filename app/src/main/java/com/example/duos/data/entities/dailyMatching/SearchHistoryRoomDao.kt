@@ -8,7 +8,7 @@ interface SearchHistoryRoomDao {
     @Query("SELECT * FROM searchhistory")
     fun getAll(): List<SearchHistory>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(searchHistory: SearchHistory)
 
     @Query("DELETE FROM searchhistory WHERE keyword == :keyword")

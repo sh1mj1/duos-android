@@ -125,17 +125,27 @@
 
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/daily_matching_search_record_rv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/daily_matching_search_record_cv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal"
+            android:layout_marginHorizontal="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_recent_cl"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_daily_matching_search" />
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/daily_matching_search_record_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_daily_matching_search" />
+
+        </LinearLayout>
+
+
 
 
         <!--    검색 결과 카운트-->
@@ -150,7 +160,7 @@
             android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_record_rv" />
+            app:layout_constraintTop_toBottomOf="@+id/daily_matching_search_record_cv" />
 
         <!--    검색 결과 창 보여지기-->
 

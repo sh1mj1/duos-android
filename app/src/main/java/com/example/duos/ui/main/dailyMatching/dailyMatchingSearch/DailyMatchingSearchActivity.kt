@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.duos.data.entities.dailyMatching.SearchHistory
+import com.example.duos.data.entities.dailyMatching.SearchHistoryData
 import com.example.duos.data.entities.dailyMatching.SearchHistoryDatabase
 import com.example.duos.data.remote.dailyMatching.DailyMatchingListService
 import com.example.duos.data.remote.dailyMatching.DailyMatchingSearchResultData
@@ -32,7 +33,7 @@ class DailyMatchingSearchActivity :
     val TAG = "DailyMatchingSearchActivity"
     private lateinit var searchHistoryAdapter: DailyMatchingSearchHistoryRVAdapter
     private var dailyMatchingSearchListDatas = ArrayList<SearchResultItem>()
-    private var historySearchListData = ArrayList<SearchHistory>()
+    private var historySearchListData = ArrayList<SearchHistoryData>()
     private var isNewSearch = true
 
     lateinit var historyRv: RecyclerView
@@ -92,18 +93,13 @@ class DailyMatchingSearchActivity :
 
     // 검색 후 키워드 Room DB에 저장
     private fun saveSearchKeyword(keyword: String) {
-        Log.e(TAG, "saveSearchKeyword called first - historySearchListData $historySearchListData")
-
         val iter = historySearchListData.iterator()
         while (iter.hasNext()) {
             val t = iter.next()
             if (t.keyword == keyword) {
                 isNewSearch = false
                 historySearchListData.remove(t)
-                Log.e(TAG, "saveSearchKeyword called after remove - historySearchListData $historySearchListData")
                 historySearchListData.add(t)
-                Log.e(TAG, "saveSearchKeyword called after add - historySearchListData $historySearchListData")
-                showToast("지금 같은 $t")
                 break
             } else {
                 isNewSearch = true
@@ -111,12 +107,12 @@ class DailyMatchingSearchActivity :
         }
 
         if (isNewSearch) {
-            historySearchListData.add(SearchHistory(/*null, */keyword))
+            historySearchListData.add(SearchHistoryData(keyword))
         }
 
-        Log.e(TAG, "saveSearchKeyword called last - historySearchListData $historySearchListData")
+        Log.d(TAG, "saveSearchKeyword called last - historySearchListData $historySearchListData")
 
-        searchHistoryAdapter.submitList(historySearchListData.toList()/*keywords*/)
+        searchHistoryAdapter.submitList(historySearchListData.toList())
         historyRv.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.VISIBLE
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
@@ -137,19 +133,20 @@ class DailyMatchingSearchActivity :
 
     // 최근 검색어 삭제
     private fun deleteSearchKeyword(keyword: String) {
-//        db.searchHistoryRoomDao().delete(keyword)
-        historySearchListData.listIterator().forEach {
-            if (it.keyword == keyword) {
-                historySearchListData.remove(it)
+        val iter = historySearchListData.iterator()
+        while (iter.hasNext()) {
+            val t = iter.next()
+            if (t.keyword == keyword) {
+                iter.remove()
             }
         }
         showResultOfSearch(historySearchListData)
+
     }
 
-    private fun showResultOfSearch(historySearchListData: ArrayList<SearchHistory>) {
-//        val keywords = db.searchHistoryRoomDao().getAll()
+    private fun showResultOfSearch(historySearchListData: ArrayList<SearchHistoryData>) {
         Log.e(TAG, "showResultOfSearch - $historySearchListData isEmpty?: ${historySearchListData.isEmpty()}")
-        searchHistoryAdapter.submitList(/*keywords*/historySearchListData.toList())
+        searchHistoryAdapter.submitList(historySearchListData.toList())
         historyRv.visibility = View.VISIBLE
         binding.dailyMatchingSearchResultCountTv.visibility = View.VISIBLE
         binding.dailyMatchingResultOfSearchFl.visibility = View.VISIBLE
@@ -176,6 +173,7 @@ class DailyMatchingSearchActivity :
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 historyRv.layoutManager!!.smoothScrollToPosition(historyRv, null, searchHistoryAdapter.itemCount)
             }
+
         })
         historyRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
@@ -194,12 +192,15 @@ class DailyMatchingSearchActivity :
         val mySearchHistoryFromDB = db.searchHistoryRoomDao().getAll()
         Log.e(TAG, "검색어 DB 가 비어있나 $mySearchHistoryFromDB , isEmpty? : ${mySearchHistoryFromDB.isEmpty()}")
 
-        historySearchListData.addAll(mySearchHistoryFromDB)
+        mySearchHistoryFromDB.listIterator().forEach {
+            historySearchListData.add(SearchHistoryData(it.keyword))
+        }
+
         Log.e(TAG, "historySearchData: $historySearchListData")
 
         initHistoryRV()
 
-        if (historySearchListData/*mySearchHistoryFromDB*/.isEmpty()) {    // 처음 검색
+        if (historySearchListData.isEmpty()) {    // 처음 검색
             historyRv.visibility = View.GONE
             binding.dailyMatchingSearchRecordNullTv.visibility = View.VISIBLE
         } else {    // 검색한 적 있음
@@ -259,17 +260,9 @@ class DailyMatchingSearchActivity :
 
     override fun onStop() {
         db.searchHistoryRoomDao().clearAll()
-//        historySearchListData.listIterator().forEach {
-//            db.searchHistoryRoomDao().insert(it)
-//        }
-//        val iter = historySearchListData.iterator()
-//        while (iter.hasNext()) {
-//            val t = iter.next()
-//            db.searchHistoryRoomDao().insert(t)
-//        }
-
         for (item in historySearchListData) {
-            db.searchHistoryRoomDao().insert(item)
+            val itemForDB = SearchHistory(item.keyword)
+            db.searchHistoryRoomDao().insert(itemForDB)
         }
 
         super.onStop()
@@ -277,21 +270,3 @@ class DailyMatchingSearchActivity :
     }
 
 }
-
-/*
-        val iter = historySearchListData.iterator()
-        while (iter.hasNext()) {
-            val t = iter.next()
-            if (t.keyword == keyword) {
-                isNewSearch = false
-                historySearchListData.remove(t)
-                Log.e(TAG, "saveSearchKeyword called after remove - historySearchListData $historySearchListData")
-                historySearchListData.add(t)
-                Log.e(TAG, "saveSearchKeyword called after add - historySearchListData $historySearchListData")
-                showToast("지금 같은 $t")
-                break
-            } else {
-                isNewSearch = true
-            }
-        }
- */
